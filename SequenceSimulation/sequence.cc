@@ -6,7 +6,7 @@
 using namespace std;
 
 void printHelp(){
-	cout << "\t Call skript with:\t./makeFasta S L P \n" <<endl;
+	cout << "\t Call skript with:\t./main S L P \n" <<endl;
 	cout << "\t S: Must be an integer greater then zero." << endl;
 	cout << "\t\t S is the number of sequences that will created.\n" << endl;
 	cout << "\t L: Must be an integer greater then zero." << endl;
