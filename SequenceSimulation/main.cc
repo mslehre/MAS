@@ -20,7 +20,7 @@ int main(int argc, char *argv[]){
         printHelp();
         return -1;
     }
-	unsigned int DNAlength = atoi(argv[2]);
+    unsigned int DNAlength = atoi(argv[2]);
     if (DNAlength <= 0) {
         cerr << "\nThe second number must be an positive integer.\n"  << endl;
         printHelp();
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
         cerr << "\nThe thirth number must be an double between 0 and 1.\n" << endl;
         printHelp();
         return -1;
-	}
+    }
 
     vector<string> DNAsequences;
     string DNA = randomDNA(DNAlength);
@@ -40,13 +40,13 @@ int main(int argc, char *argv[]){
     for (unsigned int i = 1; i <= numberOfSeqencens - 1; i++) {
         string mutantDNA=mutateDNA(DNA,mutationpProbability);
         DNAsequences.push_back(mutantDNA);
-	}
+    }
 	
     ofstream outfile("sequences.fa");
     if (!outfile.is_open()) {
         cerr << "Error creating the output file." << endl;
         return -1;
-        }
+    }
 
     for (unsigned int i = 0; i < DNAsequences.size(); i++) {
         outfile << ">seq" << i+1;

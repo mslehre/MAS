@@ -9,7 +9,7 @@ using namespace std;
 
 void printHelp(){
     cout << "\t Call skript with:\t./main S L P \n" <<endl;
-	cout << "\t S: Must be an integer greater then zero." << endl;
+    cout << "\t S: Must be an integer greater then zero." << endl;
     cout << "\t\t S is the number of sequences that will created.\n" << endl;
     cout << "\t L: Must be an integer greater then zero." << endl;
     cout << "\t\t L is the lenght of the created sequences.\n" << endl;
@@ -43,7 +43,7 @@ string mutateDNA(string DNA, double mutationProbability){
         double isMutant = ((double) rand() / RAND_MAX); // random number between 0 and 1
         if (isMutant <= mutationProbability)
             DNA[i - 1] = alphabet[dis(gen)];
-	}
+    }
 
     return DNA;
 }
