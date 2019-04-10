@@ -7,9 +7,9 @@
 #include "sequence.h"
 
 // This programm create one multiple fasta file with S sequences of lenght L. 
-// If there are more then one sequence then we have mutants with mutation probabilty P. 
-// Call skript with: ./main S L P
-// Exemple: ./main 5 100 0.3
+// If there are more then one sequence then we have mutants with mutation probability P. 
+// Call script with: ./main S L P
+// Example: ./main 5 100 0.3
 
 using namespace std;
 
@@ -28,7 +28,7 @@ int main(int argc, char *argv[]){
     }
     double mutationpProbability = atof(argv[3]);
     if (mutationpProbability < 0 || mutationpProbability > 1) {
-        cerr << "\nThe thirth number must be an double between 0 and 1.\n" << endl;
+        cerr << "\nThe third number must be an double between 0 and 1.\n" << endl;
         printHelp();
         return -1;
     }
