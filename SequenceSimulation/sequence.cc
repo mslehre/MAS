@@ -14,7 +14,7 @@ void printHelp(){
     cout << "\t L: Must be an integer greater then zero." << endl;
     cout << "\t\t L is the length of the created sequences.\n" << endl;
     cout << "\t P: Must be an double between zero and one." << endl;
-    cout << "\t\t P: is the probability for mutations in the sequencens.\n" << endl;
+    cout << "\t\t P is the probability for mutations in the sequencens.\n" << endl;
 }
 
 string randomDNA(unsigned int DNAlength){	
