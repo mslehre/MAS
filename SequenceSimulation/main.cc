@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "sequence.h"
 
-// This programm create one multiple fasta file with S random sequences of lenght L. 
+// This programm create one multiple FASTA file with S random sequences of lenght L. 
 // If there are more then one sequence then we have mutants with mutation probability P. 
 // Call script with: ./main S L P
 // Example: ./main 5 100 0.3
@@ -38,7 +38,7 @@ int main(int argc, char *argv[]){
     DNAsequences.push_back(DNA);
 
     for (unsigned int i = 1; i <= numberOfSeqencens - 1; i++) {
-        string mutantDNA=mutateDNA(DNA,mutationpProbability);
+        string mutantDNA = mutateDNA(DNA, mutationpProbability);
         DNAsequences.push_back(mutantDNA);
     }
 	
@@ -47,7 +47,6 @@ int main(int argc, char *argv[]){
         cerr << "Error creating the output file." << endl;
         return -1;
     }
-
     for (unsigned int i = 0; i < DNAsequences.size(); i++) {
         outfile << ">seq" << i + 1;
         for (unsigned int j = 0; j < DNAlength; j++) {
