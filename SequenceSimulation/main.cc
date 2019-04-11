@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include "sequence.h"
 
-// This programm create one multiple FASTA file with S random sequences of lenght L. 
-// If there are more then one sequence then we have mutants with mutation probability P. 
+// This programm creates one multiple FASTA file with S random sequences of lenght L. 
+// If there is more then one sequence then we have mutations with mutation probability P. 
 // Call script with: ./main S L P
 // Example: ./main 5 100 0.3
 
