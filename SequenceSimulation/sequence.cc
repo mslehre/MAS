@@ -18,14 +18,14 @@ void printHelp(){
 }
 
 string randomDNA(unsigned int DNAlength){	
-    random_device rd;   // Will be used to obtain a seed for the random number engine
-    mt19937 gen(rd());  // Standard mersenne_twister_engine seeded with rd()
-    uniform_int_distribution<> dis(0, 3);   // Selects a number between 0 and 3
+    random_device rd;   // will be used to obtain a seed for the random number engine
+    mt19937 gen(rd());  // standard mersenne_twister_engine seeded with rd()
+    uniform_int_distribution<> dis(0, 3);   // selects a number between 0 and 3
 
     string alphabet = "ACTG";    
     string DNA;  
        
-    for (unsigned int i = 0; i <= DNAlength; i++) {
+    for (unsigned int i = 0; i < DNAlength; i++) {
         DNA = DNA + alphabet[dis(gen)];                    
     }
 
@@ -36,13 +36,15 @@ string mutateDNA(string DNA, double mutationProbability){
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dis(0, 3);
-    string alphabet = "ACTG";
+    uniform_int_distribution<> dis2(0, 1000000);
 
-    for (unsigned int i = 1; i <= (DNA.length() + 1); i++) {
-        srand((time(NULL) * i));    // random seed for rand()
+    string alphabet = "ACTG";
+    srand(time(NULL) + dis2(gen));    // random seed for rand()
+
+    for (unsigned int i = 0; i < DNA.length(); i++) {
         double isMutant = ((double) rand() / RAND_MAX); // random number between 0 and 1
         if (isMutant <= mutationProbability)
-            DNA[i - 1] = alphabet[dis(gen)];
+            DNA[i] = alphabet[dis(gen)];
     }
 
     return DNA;
