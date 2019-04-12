@@ -1,8 +1,6 @@
 #include <iostream>
 #include <random>
 #include <string>
-#include <cstdlib>
-#include <ctime>
 #include "sequence.h"
 
 using namespace std;
@@ -36,13 +34,11 @@ string mutateDNA(string DNA, double mutationProbability){
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<> dis(0, 3);
-    uniform_int_distribution<> dis2(0, 1000000);
 
     string alphabet = "ACTG";
-    srand(time(NULL) + dis2(gen));    // random seed for rand()
 
     for (unsigned int i = 0; i < DNA.length(); i++) {
-        double isMutant = ((double) rand() / RAND_MAX); // random number between 0 and 1
+        double isMutant = ((double) rd() / rd.max()); // random number between 0 and 1
         if (isMutant <= mutationProbability)
             DNA[i] = alphabet[dis(gen)];
     }
