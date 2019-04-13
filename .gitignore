@@ -1,2 +1,4 @@
 *.o
 *~
+doxytest/doxygen
+*.fa
