@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <fstream>
@@ -9,24 +8,21 @@
 
 class Graph {
 	private:
-		int kMer;												// number k-mer
-		std::vector<int> numberOfKmer;							// vector of number of k-mer
-		std::vector<std::array<int,3>> listOfEdges;				// vector of edges (as array with size 3)
-		std::vector<std::string> stringListSequence;			// vector of strings for the sequences
-		std::vector<std::vector<std::string>> splitString;		// vector of vectors for splitted string
+		int kMer;
+		
+		std::vector<std::array<int,3>> listOfEdges;					// vector of edges (as array with size 3)
+		std::vector<std::string> stringListSequence;				// vector of strings for the sequences
+		std::vector<int> numberOfKmer;								// vector amount of k-mer
 		
 	public:
-	    Graph(int k);											// constructor
+	    Graph(int k);											    // constructor
 
-		void readingFastaFiles(std::string nameFile);			// Method: reading fasta file
-		void calcGetEdgeList(); 								// Method: calculate list of edges
+		void readingFastaFiles(std::string nameFile);			    // Method: reading fasta file
+		int getSimpleKOfKmer();									    // Method: length k-mer
 
-		const std::vector<int>& getNumberOfKmer();				// Method: get Number of k-mer
-		std::vector<std::string>& getStringListSequence();		// Method: get StringListSequence
-		std::vector<std::vector<std::string>>& getSplitString();// Method: get splitString
-		std::vector<std::array<int,3>>& getEdgeList();			// Method: get EdgeList
-		int getSimpleKOfKmer();									// get number k of k-mer
-
-	
-	
+		std::vector<std::string>& getStringListSequence();		    // Method: get StringListSequence
+		std::vector<std::array<int,3>>& getEdgeList();				// Method: get EdgeList
+		std::vector<int> getAdjacentEdge(int sequence, int kNum);	// Method: get adjacent edges from one node
+		const std::vector<int>& getAmountOfKmer();					// Method: get Number of k-mer for all sequences
+		void calcEdgeList(); 								        // Method: calculate list of edges
 };
