@@ -1,33 +1,48 @@
 #include <iostream>
-#include <random>
-#include <fstream>
 #include <string>
 #include <vector>
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include "kmercolor.h"
-
-// This programm create one multiple fasta file with S sequences of lenght L. 
-// If there are more then one sequence then we have mutants with mutation probabilty P. 
-// Call skript with: ./main S L P
-// Exemple: ./main 5 100 0.3
+#include "Graph.h"
 
 using namespace std;
 
-int main(int argc, char *argv[]){	
-	//string a = "hallo";
-	//bool ex = a[1]=='a';
-	//bool ey = a[1]=='v';	
-	//cout << a[1] <<a[4]<<a.size()<<ex<<ey<<endl;
-	long a = 255*255*255;
-	bool b;
-	for(int i=1;i<40;i++){
-		b = a>pow(4,i);
-		cout << b << " in the with k-mer size "<<i<< " with possible elements: "<<pow(4,i)<<endl;
-	}
-	cout << "hallo welt!" <<endl;
-	sf::Color v = kmerPatternColor("CGC");
-	cout << (int)v.r << (int)v.g<<(int)v.r <<endl;
+int main(int argc, char **argv){
+    //Initalize the Graph
+    Graph Example(3);
+
+    //Bug Catching for fasta files
+    if(argc != 2){
+        cerr << "Please start your program with: ./main [fileName.fa]" << endl; 
+        return -1;
+    }
+
+    //Declare the Graph in terms of a fasta file
+    Example.readingFastaFiles(argv[1]);
+
+    //Get a vector of colors (with the same structure like in the graph to map unique for each kmer)
+    vector<vector<sf::Color>> ColorList = ColorBasedOnGraph(Example);
+
+    //get Graph information for the following iteration (Example)
+    int index;
+    int k = Example.getSimpleKOfKmer();
+    vector<int> SequenceSize = Example.getNumberOfKmer();
+    vector<string> Sequences = Example.getStringListSequence();
+    for (int i = 0;i<SequenceSize.size();i++) {
+        if (Sequences[i].substr(k*(SequenceSize[i]-1),k).size()!=k)
+            SequenceSize[i] -= 1;
+    }
+
+    //iterate to test the colors of all kmers - main part of the Example
+    for (int i=0;i<Sequences.size();i++) {
+        index = 0;
+        while (index<SequenceSize[i]) {
+            cout << Sequences[i].substr(index*k, k) << " bekommt die Farbe: (" << (int)ColorList[i][index].r;
+            cout << ", "<<(int)ColorList[i][index].g<<", "<<(int)ColorList[i][index].b<<")" <<endl;
+            index += 1;
+        }    
+    }
 }
 
