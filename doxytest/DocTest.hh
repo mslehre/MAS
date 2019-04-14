@@ -2,9 +2,9 @@
  * \mainpage What stands here goes to the main doxygen page.
  *
  * \section RL
- * \subsection Learning Algorithm 1
+ * \subsection State and Action Spaces
  * Bla Bla
- * \subsection Learning Algorithm 2
+ * \subsection Learning Algorithm
  * Bla Bla
  * \section Human Player
  * Bla Bla
@@ -22,12 +22,16 @@ public:
     /** 
      * \param n the number of something
      * \param x a coordinate of something
+     * \param c the short code of something
+     * \param b a binary flag for something
      * \return a letter code that means something
      */
-    char do_something(int n, float x);
+    char do_something(int n, float x, char c, bool b){
+    	return 0;
+    }
       
-    int width;
-    int height;
+    int width;  ///< horizontal number of pixels
+    int height; ///< verticalnumber of pixels
 };
 
 /** \brief first derived class
@@ -36,13 +40,14 @@ public:
  */
 class DocTestD1: public DocTestB {
 public:
+	///< the set of choices for something
     enum Actions {
 	top,   ///< brief description of action top
 	down,  ///< brief description of action down
 	left,  ///< brief description of action left
 	right, ///< brief description of action right
 	still  ///< brief description of action still
-    }
+    };
     /**
      * detailed description of data member 'other'
      * If it would not go over multiple lines, a brief 
@@ -54,8 +59,8 @@ public:
 
 /** \brief second derived class
  *        
- * state  | #actions
- * -------| -------------
+ * state  | number of actions
+ * -------| -----------------
  * start  | 5
  * term   | 1
  */

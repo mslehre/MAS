@@ -2,3 +2,7 @@
 *~
 doxytest/doxygen
 *.fa
+# eclipse excludes
+.cproject
+.project
+.settings
