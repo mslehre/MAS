@@ -79,7 +79,7 @@ vector<vector<Color>> ColorBasedOnGraph(Graph copiedGraph){
 
     //Informations about the Graph
     int k = copiedGraph.getSimpleKOfKmer();
-    vector<int> SequenceSize = copiedGraph.getNumberOfKmer();
+    vector<int> SequenceSize = copiedGraph.getAmountOfKmer();
     vector<string> Sequences = copiedGraph.getStringListSequence();
     //iteration to ignore the unnecessary end of each sequence
     for (int i = 0;i<SequenceSize.size();i++) {
