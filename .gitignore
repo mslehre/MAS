@@ -1,6 +1,5 @@
 *.o
 *~
-doxytest/doxygen
 *.fa
 # eclipse excludes
 .cproject
