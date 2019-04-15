@@ -8,3 +8,4 @@ sequence.o: sequence.cc sequence.h
 	g++ -std=c++11 -c sequence.cc
 clean:
 	rm main *.o
+
