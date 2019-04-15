@@ -2,7 +2,7 @@
 #include <vector>
 #include <SFML/Graphics/Color.hpp>
 #include <array>
-#include "Graph.h"
+#include "src/alignment/Graph.h"
 #include "kmercolor.h"
 #include <iostream>
 

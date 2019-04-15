@@ -3,7 +3,7 @@
 #define kmercolor_H_
 
 #include <string>
-#include "Graph.h"
+#include "src/alignment/Graph.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 
