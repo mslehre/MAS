@@ -1,4 +1,7 @@
 *.o
 *~
-kmerColorPalette/main
 *.fa
+# eclipse excludes
+.cproject
+.project
+.settings

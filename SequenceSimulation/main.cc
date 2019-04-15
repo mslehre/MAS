@@ -14,8 +14,8 @@
 using namespace std;
 
 int main(int argc, char *argv[]){	
-    unsigned int numberOfSeqencens = atoi(argv[1]);
-    if (numberOfSeqencens <= 0) {
+    unsigned int numberOfSequences = atoi(argv[1]);
+    if (numberOfSequences <= 0) {
         cerr << "\nThe first number must be an positive integer.\n" << endl;
         printHelp();
         return -1;
@@ -35,9 +35,8 @@ int main(int argc, char *argv[]){
 
     vector<string> DNAsequences;
     string DNA = randomDNA(DNAlength);
-    DNAsequences.push_back(DNA);
 
-    for (unsigned int i = 1; i <= numberOfSeqencens - 1; i++) {
+    for (unsigned int i = 0; i < numberOfSequences; i++) {
         string mutantDNA = mutateDNA(DNA, mutationpProbability);
         DNAsequences.push_back(mutantDNA);
     }
@@ -47,12 +46,14 @@ int main(int argc, char *argv[]){
         cerr << "Error creating the output file." << endl;
         return -1;
     }
+
+    const int maxLineLength = 80;
+
     for (unsigned int i = 0; i < DNAsequences.size(); i++) {
         outfile << ">seq" << i + 1;
         for (unsigned int j = 0; j < DNAlength; j++) {
-            if (j % 80 == 0) { 
+            if (j % maxLineLength == 0) 
                 outfile << "\n";
-            }
             outfile << DNAsequences[i][j];
         }
         outfile << endl;
@@ -61,8 +62,4 @@ int main(int argc, char *argv[]){
 
     return 0;
 }
-
-
-
-
 
