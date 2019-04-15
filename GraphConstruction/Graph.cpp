@@ -9,8 +9,8 @@
 using namespace std;
 
 // constructor , store k-mer
-Graph::Graph(int k){
-	kMer = k;
+Graph::Graph(int km){
+	k = km;
 }	
 
 // get StringListSequence
@@ -19,8 +19,8 @@ vector<string>& Graph::getStringListSequence(){
 }
 
 // get number k of k-mer
-int Graph::getSimpleKOfKmer(){
-	return kMer;
+int Graph::getK(){
+	return k;
 }	
 
 // Method: get list of Edges
@@ -58,6 +58,7 @@ void Graph::readingFastaFiles(std::string nameFile){
 		if (!name.empty())
 			stringListSequence.push_back(content); 					// push sequence into vector		
 	}
+	calcEdgeList();
 }
 
 // Method: get adjacent edges from node
@@ -70,7 +71,7 @@ vector<int> Graph::getAdjacentEdge(int seq, int kNum){
 		return adjacentNode;
 	}
 	
-	int kmer = getSimpleKOfKmer(); 
+	int kmer = getK(); 
 	int position = kmer * kNum;										
 
 	if (position + kmer <= stringList.at(seq).size()) {				
@@ -88,7 +89,6 @@ vector<int> Graph::getAdjacentEdge(int seq, int kNum){
 	cerr << kNum << ".k-mer don't exists in sequence " << seq  << "." << endl;
 	return adjacentNode;
 }
-
 // Method: get Number of k-mer
 const vector<int>& Graph::getAmountOfKmer(){
 	vector<string>& stringList = getStringListSequence();
@@ -98,7 +98,7 @@ const vector<int>& Graph::getAmountOfKmer(){
 		return numberOfKmer; 		
 	} else {
 		for (int i = 0; i < sizeOfStringList; i++) {
-			numberOfKmer.push_back(stringList.at(i).size() / getSimpleKOfKmer());						
+			numberOfKmer.push_back(stringList.at(i).size() / getK());						
 		}
 	}
 	return numberOfKmer; 

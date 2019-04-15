@@ -16,13 +16,12 @@ int main(int argc, char **argv){
 	}
 	g.readingFastaFiles(argv[1]);							                        	
 	
-	cout << "Just an example: with " << g.getSimpleKOfKmer() << "-mer.\n" <<  endl;
+	cout << "Just an example: with " << g.getK() << "-mer.\n" <<  endl;
 	cout << "output sequences:" << endl;
 	// output sequences
 	for (const string &element : g.getStringListSequence()) {
 		cout << element << endl;
 	}  	
-	g.calcEdgeList();
 
 	for(const array<int,3>& element : g.getEdgeList()){
 		for(const int& a :element ){
