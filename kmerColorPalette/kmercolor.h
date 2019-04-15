@@ -8,6 +8,6 @@
 #include <vector>
 
 sf::Color ColorBasedOnMapping(std::string kmer);
-std::vector<std::vector<sf::Color>> ColorBasedOnGraph(Graph copiedGraph);
+std::vector<std::vector<sf::Color>> ColorBasedOnGraph(Graph& copiedGraph);
 
 #endif //kmercolor_H_

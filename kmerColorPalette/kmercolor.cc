@@ -72,7 +72,7 @@ vector<vector<int>> giveColorList(int numbOfKmer){
 }
 
 //This is the Method 2: based on mapping all Kmers of the whole Graph - completed
-vector<vector<Color>> ColorBasedOnGraph(Graph copiedGraph){
+vector<vector<Color>> ColorBasedOnGraph(Graph& copiedGraph){
     //Placeholder for the outputformal "Color"
     Color placeholder;
     vector<vector<Color>> output;
@@ -80,7 +80,7 @@ vector<vector<Color>> ColorBasedOnGraph(Graph copiedGraph){
     //Informations about the Graph
     int k = copiedGraph.getSimpleKOfKmer();
     vector<int> SequenceSize = copiedGraph.getAmountOfKmer();
-    vector<string> Sequences = copiedGraph.getStringListSequence();
+    vector<string>& Sequences = copiedGraph.getStringListSequence();
     //iteration to ignore the unnecessary end of each sequence
     for (int i = 0;i<SequenceSize.size();i++) {
         if (Sequences[i].substr(k*(SequenceSize[i]-1),k).size()!=k)
