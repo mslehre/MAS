@@ -4,7 +4,7 @@ main: main.o State.o
 main.o: main.cc State.h
 	g++ -std=c++11 -c main.cc
 
-State.o: State.cc State.h 
+State.o: State.cc State.h
 	g++ -std=c++11 -c State.cc 
 
 clean:
