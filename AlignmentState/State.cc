@@ -3,55 +3,55 @@
 using namespace std;
 
 state::state(vector <array<int,3>> e){
-		for(int i=0;i<e.size();i++){
-			this->consistentSubset.push_back(false);
-			this->selectable.push_back(true);
-		}
-		this->edges=e;
+        for(int i=0;i<e.size();i++){
+            this->selectedSubset.push_back(false);
+            this->selectable.push_back(true);
+        }
+        this->edges=e;
 }
 
 state::state(){
-		vector <bool> consistentSubset;
-		vector <array<int,3>> edges;
-		vector <bool> selectable;
+        vector <bool> selectedSubset;
+        vector <array<int,3>> edges;
+        vector <bool> selectable;
 }
 
 state::~state(){}; 
 
-void state::select(array<int,3> edge){
-		for(int i=0;i<this->edges.size();i++){
-			if(this->edges[i]==edge && selectable[i]==true){
-				this->consistentSubset[i]=true;
-				this->selectable[i]=false;
-				this->possibleActions();
-				break;
-			}
-		}
+void state::select(int i){
+    if(this->selectable[i]==true){
+        this->selectedSubset[i]=true;
+        this->selectable[i]=false;
+        this->possibleActions();
+    }
 }
 
 void state::possibleActions(){
-	int l,r;
-	for(int i=0;i<this->edges.size();i++){
-		if(this->consistentSubset[i]==true){ //if selected -> not selectable
-			this->selectable[i]=false;
-		}
-		else {
-			l=i;
-			r=i;
-			while(l!=-1 && edges[l].at(0)==edges[i].at(0)){ //checks edges on the same sequence that could cross edges[i] from the left
-				if(this->consistentSubset[l]==true && ((edges[l].at(1)<edges[i].at(1) && edges[l].at(2)>edges[i].at(2)) || (edges[l].at(1)>edges[i].at(1) && edges[l].at(2)<edges[i].at(2)))){
-					this->selectable[i]=false;
-				}
-			l--;
-			}
-			while(r<this->edges.size() && edges[r].at(0)==edges[i].at(0)){ //checks edges on the same sequence that could cross edges[i] from the right
-				if(this->consistentSubset[r]==true && ((edges[r].at(1)<edges[i].at(1) && edges[r].at(2)>edges[i].at(2)) || (edges[r].at(1)>edges[i].at(1) && edges[r].at(2)<edges[i].at(2)))){
-					this->selectable[i]=false;
-				}
-			r++;
-			}
-		}
-	}
+    for(int i=0;i<this->edges.size();i++){
+        if(this->selectedSubset[i]==true)
+            this->selectable[i]=false;
+        else if(this->checkConsistency(i)!=true)
+            this->selectable[i]=false;
+    }
 }
-				
-			
+
+bool state::checkConsistency(int i){
+    int left=i;
+    int right=i;
+    ///< checks edges on the same sequence that could cross edges[i] from the left
+    while(left!=-1 && edges[left].at(0)==edges[i].at(0)){ 
+        if(this->selectedSubset[left]==true && ((edges[left].at(1)<edges[i].at(1) && edges[left].at(2)>edges[i].at(2)) || (edges[left].at(1)>edges[i].at(1) && edges[left].at(2)<edges[i].at(2)))){
+            return false;
+        }
+        left--;
+    }
+    ///< checks edges on the same sequence that could cross edges[i] from the right
+    while(right<this->edges.size() && edges[right].at(0)==edges[i].at(0)){
+        if(this->selectedSubset[right]==true && ((edges[right].at(1)<edges[i].at(1) && edges[right].at(2)>edges[i].at(2)) || (edges[right].at(1)>edges[i].at(1) && edges[right].at(2)<edges[i].at(2)))){
+            return false;
+        }
+        right++;
+    }
+    return true;
+}
+                                                                                                                                                                
