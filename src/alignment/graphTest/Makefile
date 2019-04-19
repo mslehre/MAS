@@ -3,7 +3,7 @@ OBJ = main.o Graph.o Node.o
 HEADER1 = ../Graph.h
 HEADER2 = ../Node.h 
 CFLAGS = -c -Wall -I../
-
+all: main
 main: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 

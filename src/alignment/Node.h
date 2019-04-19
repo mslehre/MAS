@@ -1,17 +1,15 @@
 #pragma once
 
-#include<fstream>
 #include<string>
-#include<vector>
-#include<array>
+
+using std::string;
 
 class Node {
-    private:
     public:
         // constructor: i sequence, j node in i, string of node 
-        Node(unsigned i, unsigned j, std::string kmer);
+        Node(unsigned int i, unsigned int j, string kmer);
 
-        unsigned i;
-        unsigned j;
-        std::string kmer;
+        unsigned int i;         ///< the index of the row/sequence
+        unsigned int j;         ///< the index of the node
+        string kmer;            ///< the string of the node
 };

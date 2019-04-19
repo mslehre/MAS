@@ -8,50 +8,60 @@
 #include "Node.h"
 #include<utility>
 
+using std::vector;
+using std::string;
+
 class Graph {
     private:
-        // length of any node (kmer)
-        int k;
+        
+        int k;                                     ///< length of any node (kmer)
 
-        // vector for vectors and inside a vector are vectors
-        // for the adjacent nodes of a node
-        // (implicit adjacent edges) 
-        std::vector<std::vector<std::vector<Node> >> listOfEdges;
+        /** vector of adjacency edges for each 
+         *  node in each sequence
+         */
+        vector<vector<vector<Node> >> listOfEdges;
 
-        // vector of strings for the sequences   
-        std::vector<std::string> stringListSequence;
-           
-        // vector of amount of nodes in all sequences   
-        std::vector<int> numberOfKmers;
-
-        // list of nodes                                        
-		std::vector<std::vector<Node>> nodeList;
-
-        // Method: calculate list of edges                              
-        void calcEdgeList();
+        vector<string> stringListSequence;         ///< vector of strings for the sequences 
+        
+        vector<unsigned int> numberOfKmers;        ///< the numbers of nodes for each sequence 
+                                        
+        vector<vector<Node>> nodeList;             ///< list of nodes for each sequence
+               
+        /** calculate the list of edges <br>
+         *  at first: function calcNodeList() is called <br>
+         *  second: pushes vector of adjacent edges from 
+         *  all nodes in one sequence in listOfEdges through
+         *  the function getAdjacentEdges(unsigned int index)   
+         */               
+        void calcEdgeList();                       
     public:
         // constructor
         Graph();
-                                               
-        // Method: length of node (kmer)             
-        int getK();
-                                                
-        // Method: get StringListSequence
-        std::vector<std::string>& getStringListSequence();
+                                                                 
+        int getK();                                 ///< get the length of node (kmer)
+                                                    
+        vector<string>& getStringListSequence();    ///< get the string for every sequence
           
-        // Method: get EdgeList
-        std::vector<std::vector<std::vector<Node> >>& getEdgeList();
+        /** get the vector of adjacency edges for each
+         *  node in each sequence 
+         */
+        vector<vector<vector<Node> >>& getEdgeList();
               
-        // Method: get adjacent edges from one node
-        //         index 
-        std::vector<std::vector<Node>> getAdjacentEdge(int index);
+        /** \param index for a sequence
+         *  \return vector of adjacent edges from all nodes in one sequence (=index)
+         */
+        vector<vector<Node>> getAdjacentEdges(unsigned int index);
+
+        // get nodeList
+        vector<vector<Node>>& getNodeList();
                
-        // Method: get amount of nodes for all sequences
-        const std::vector<int>& getAmountOfKmer();
+        // get the numbers of nodes for each sequences
+        const vector<unsigned int>& getAmountOfKmer();
+                        
+        void calcNodeList(); ///<fill the vector of nodes with all possible nodes (with properties)
 
-        // Method: calculate list of nodes                  
-        void calcNodeList();
-
-        // Method: reading fasta file, k length of any node (kmer)
-        void readingFastaFiles(std::string nameFile, int k); 
+        /** \param nameFile name of the fasta file
+         *  \param k length of any node (kmer)
+         */
+        void readFastaFiles(string nameFile, int k);
 };

@@ -17,18 +17,23 @@ vector<string>& Graph::getStringListSequence(){
     return stringListSequence;
 }
 
-// get length of node
+// get the length of node (kmer)
 int Graph::getK(){
     return k;
 }	
+
+// Method: get nodeList
+vector<vector<Node>>& Graph::getNodeList(){
+    return nodeList;
+}
 
 // Method: get list of Edges
 vector<vector<vector<Node>>>& Graph::getEdgeList(){
     return listOfEdges;
 }
 
-// Method: reading fasta file
-void Graph::readingFastaFiles(std::string nameFile, int k){
+// Method: read fasta file
+void Graph::readFastaFiles(std::string nameFile, int k){
     this->k = k;
 
     ifstream data (nameFile);                                         			
@@ -45,9 +50,9 @@ void Graph::readingFastaFiles(std::string nameFile, int k){
                     stringListSequence.push_back(content);              
                     name.clear();
                 }
-                if (!line.empty())
+                if (!line.empty()) {
                     name = line.substr(1);
-
+                }
                     content.clear();
                 } else if (!name.empty()) {
                     // Invalid sequence--no spaces allowed
@@ -67,7 +72,7 @@ void Graph::readingFastaFiles(std::string nameFile, int k){
 }
 
 // Method: get vector of adjacent edges from all nodes in one sequence
-vector<vector<Node>> Graph::getAdjacentEdge(int index){			
+vector<vector<Node>> Graph::getAdjacentEdges(unsigned int index){			
     vector<vector<Node>> adjacentNodes;
     vector<Node> emptyVecNode;
     vector<string>& stringList = getStringListSequence();
@@ -78,10 +83,10 @@ vector<vector<Node>> Graph::getAdjacentEdge(int index){
         return adjacentNodes;
     }
     // calculate adjacent edges from all nodes in one sequence 
-    for (int i = 0; i < nodeList.at(index).size(); i++) {
+    for (unsigned int i = 0; i < nodeList.at(index).size(); i++) {
         // initialize adjacentNode
         adjacentNodes.push_back(emptyVecNode);
-        for (int j = 0; j < nodeList.at(index + 1).size(); j++) {
+        for (unsigned int j = 0; j < nodeList.at(index + 1).size(); j++) {
             // compare strings of nodes
             if (nodeList.at(index).at(i).kmer == nodeList.at(index + 1).at(j).kmer){
                 adjacentNodes.at(i).push_back(nodeList.at(index + 1).at(j));  
@@ -92,7 +97,7 @@ vector<vector<Node>> Graph::getAdjacentEdge(int index){
 }
 
 // Method: get amount of nodes for all sequences
-const vector<int>& Graph::getAmountOfKmer(){
+const vector<unsigned int>& Graph::getAmountOfKmer(){
     vector<string>& stringList = getStringListSequence();
     int sizeOfStringList = stringList.size();
 
@@ -112,26 +117,26 @@ void Graph::calcEdgeList() {
     calcNodeList();
 
     // fill edge list
-    for (int i = 0; i < nodeList.size() - 1; i++) {      
-            listOfEdges.push_back(getAdjacentEdge(i));
+    for (unsigned int i = 0; i < nodeList.size() - 1; i++) {      
+            listOfEdges.push_back(getAdjacentEdges(i));
             }
         }	
 
 // Method:: calculate list of nodes
 void Graph::calcNodeList() {
     vector<string>& stringList = getStringListSequence();
-    const vector<int>& amountKmer = getAmountOfKmer();
+    const vector<unsigned int>& amountKmer = getAmountOfKmer();
     int stringLength = k;
-    int j;
+    unsigned int j;
     vector<Node> emptyNodeVector;
   
     // initialize vector of nodes
-    for (int i = 0; i < stringList.size(); i++) {
+    for (unsigned int i = 0; i < stringList.size(); i++) {
         nodeList.push_back(emptyNodeVector);
     }
     
     // fill the vector of nodes with all possible nodes (with properties)
-    for (int i = 0; i < stringList.size(); i++) {
+    for (unsigned int i = 0; i < stringList.size(); i++) {
         for (j = 0; j < amountKmer.at(i); j++) {
             if (stringList.at(i).length() - k >= j * k){
                 nodeList.at(i).push_back(Node(i, j, stringList.at(i).substr(j * k, stringLength)));     

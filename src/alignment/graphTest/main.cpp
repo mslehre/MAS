@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<string>
+#include<stdlib.h>
 #include "Graph.h"
 
 using namespace std;
@@ -15,6 +16,6 @@ int main(int argc, char **argv){
         return -1;
     }
     // reading fasta file and calculate edgelist, 2 length of node
-    g.readingFastaFiles(argv[1],2);	
+    g.readFastaFiles(argv[1],atoi(argv[2]));	
     return 0;
 }
