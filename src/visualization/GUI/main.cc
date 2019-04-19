@@ -26,11 +26,9 @@ int main()
 
     bool clicked_startButton = false;
     
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             ///< "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -45,26 +43,27 @@ int main()
                     std::cout << "the left button was pressed" << std::endl;
                     std::cout << "mouse x: " << mouse_pos.x << std::endl;
                     std::cout << "mouse y: " << mouse_pos.y << std::endl;
+
+                    if (!clicked_startButton) {
+                        if (startButton.getGlobalBounds().contains(global_mouse_pos)) {
+                            clicked_startButton = true;
+                            std::cout << "startButton clicked" << std::endl;
+                        }
+                    }
                 }
                 if (event.mouseButton.button == sf::Mouse::Right) {
                     std::cout << "the right button was pressed" << std::endl;
                     std::cout << "mouse x: " << mouse_pos.x << std::endl;
                     std::cout << "mouse y: " << mouse_pos.y << std::endl;
                 }
-                if (!clicked_startButton) {
-                    if (startButton.getGlobalBounds().contains(global_mouse_pos)) {
-                        clicked_startButton = true;
-                        std::cout << "startButton clicked" << std::endl;
-                    }
-                }
+                
             }     
         }
 
         window.clear(sf::Color::White);
-        if (!clicked_startButton) {
+        if (!clicked_startButton)
             window.draw(startButton);
-        }
-		window.display();
+        window.display();
     }
 
     return 0;
