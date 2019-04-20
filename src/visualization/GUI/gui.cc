@@ -9,7 +9,6 @@
  */
 
 sf::Sprite loadtexture(std::string name){ //TODO: solve the white box problem (missing texture)
-
     sf::Texture ButtonTexture;
 
     if (!ButtonTexture.loadFromFile(name)) {

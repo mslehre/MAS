@@ -8,8 +8,7 @@
  * \brief This is the main function for the GUI.
  */
 
-int main()
-{
+int main() {
     sf::RenderWindow window(sf::VideoMode(800, 800), "MAS");
 
     sf::Texture startButtonTexture;
