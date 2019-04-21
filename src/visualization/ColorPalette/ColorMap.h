@@ -1,6 +1,6 @@
 
-#ifndef kmercolor_H_ 
-#define kmercolor_H_
+#ifndef ColorMap_H_
+#define ColorMap_H_
 
 #include <string>
 #include <SFML/Graphics.hpp>
@@ -14,13 +14,14 @@ class ColorMap {
 
     public:
         ColorMap(std::vector<std::string>& Sequences, int k);
-        ColorMap(int numberOfKmer);
+        ColorMap(int numbOfKmer);
         ColorMap();
 
-        void updateColorList(int numberOfKmer);
+        void updateColorList(int numbOfKmer);
         void updateSequenceLists(std::vector<std::string>& Sequences, int k);
         sf::Color Map(std::string kmer);
         std::vector<sf::Color> giveColorList();
+        std::vector<std::string> giveKmerlist();
 
 };
 

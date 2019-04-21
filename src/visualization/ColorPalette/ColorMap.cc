@@ -3,17 +3,17 @@
 #include <SFML/Graphics/Color.hpp>
 #include <array>
 #include <cmath>
-#include "kmercolor.h"
+#include "ColorMap.h"
 #include <iostream>
 
 using namespace std;
 using namespace sf;
 
-ColorMap::ColorMap(vector<string>& Sequences){
+ColorMap::ColorMap(vector<string>& Sequences, int k){
     vector<int> SequenceSizes;
     //Informations about the Graph
     for(int i=0;i<Sequences.size();i++){
-        SequenceSizes[i] = (int)floor((Sequences[i].size())/k);
+        SequenceSizes.push_back((int)floor((Sequences[i].size())/k));
     }
 
     //a List of Colorvalues with a parallel list of k-mers to compare
@@ -26,11 +26,8 @@ ColorMap::ColorMap(vector<string>& Sequences){
     //a boolean for the "got this kmer a color?"-Check and a index for the k-mers per sequence
     bool matched = false;
     int index;
-    
     //The mainmethod of this function
-    for (int i=0;i<Sequences.sizes();i++) {
-        vector<Color> filler;
-        output.push_back(filler);
+    for (int i=0;i<Sequences.size();i++) {
         index = 0;
         while (index<SequenceSizes[i]) {
             //Comparing all k-mers which got a color already to give the same color
@@ -48,10 +45,10 @@ ColorMap::ColorMap(vector<string>& Sequences){
             index += 1;
         }
     }
-    vector<string> differentKmers = kmerDeclarations;
+    differentKmers = kmerDeclarations;
 }
 
-ColorMap::ColorMap(int numberOfKmer){
+ColorMap::ColorMap(int numbOfKmer){
     vector<Color> returnList;
     Color placeholder;
     int index = 0;
@@ -104,9 +101,7 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
     int index;
     
     //The mainmethod of this function
-    for (int i=0;i<Sequences.sizes();i++) {
-        vector<Color> filler;
-        output.push_back(filler);
+    for (int i=0;i<Sequences.size();i++) {
         index = 0;
         while (index<SequenceSizes[i]) {
             //Comparing all k-mers which got a color already to give the same color
@@ -130,7 +125,7 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
 
 
 //This method calculate the color list (most possible different colors)
-void ColorMap::updateColorList(int numberOfKmer){
+void ColorMap::updateColorList(int numbOfKmer){
     vector<Color> returnList;
     Color placeholder;
     int index = 0;
@@ -179,4 +174,11 @@ vector<Color> ColorMap::giveColorList(){
     }
     return ColorList;
 }
+
+vector<string> ColorMap::giveKmerlist(){
+    return differentKmers;
+}
+
+
+
 

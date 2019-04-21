@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include "kmercolor.h"
+#include "ColorMap.h"
 #include "Graph.h"
 
 using namespace std;
@@ -22,27 +22,17 @@ int main(int argc, char **argv){
     //Declare the Graph in terms of a fasta file
     Example.readingFastaFiles(argv[1]);
 
-    //Get a vector of colors (with the same structure like in the graph to map unique for each kmer)
-    vector<vector<sf::Color>> ColorList = ColorBasedOnGraph(Example);
-
     //get Graph information for the following iteration (Example)
-    int index;
-    int k = Example.getSimpleKOfKmer();
-    vector<int> SequenceSize = Example.getNumberOfKmer();
+    int k = Example.getK();
     vector<string> Sequences = Example.getStringListSequence();
-    for (int i = 0;i<SequenceSize.size();i++) {
-        if (Sequences[i].substr(k*(SequenceSize[i]-1),k).size()!=k)
-            SequenceSize[i] -= 1;
-    }
-
     //iterate to test the colors of all kmers - main part of the Example
-    for (int i=0;i<Sequences.size();i++) {
-        index = 0;
-        while (index<SequenceSize[i]) {
-            cout << Sequences[i].substr(index*k, k) << " bekommt die Farbe: (" << (int)ColorList[i][index].r;
-            cout << ", "<<(int)ColorList[i][index].g<<", "<<(int)ColorList[i][index].b<<")" <<endl;
-            index += 1;
-        }    
+    ColorMap Expl(Sequences,k);
+    vector<string> Kmers = Expl.giveKmerlist();
+    sf::Color ph;
+
+    for(int i = 0;i<Kmers.size();i++){
+        ph = Expl.Map(Kmers[i]);
+        cout <<i<<": "<< Kmers[i] << " bekommt die Farbe: (" << (int)ph.r << ", "<<(int)ph.g<<", "<<(int)ph.b<<")" <<endl;
     }
 }
 
