@@ -9,34 +9,44 @@
 using namespace std;
 using namespace sf;
 
+/**
+ * This Method will compute in terms of the argument sequences and the k, all kmers we are looking for and call
+ * the method which compute us in terms of this number a Colormap. Then the method will compute
+ * all different Kmers and push them in a List. We'll use this list to initialize differentKmers.
+ */
 ColorMap::ColorMap(vector<string>& Sequences, int k){
+    ///< This is a variable which save the number of Kmers per Sequence which we have
     vector<int> SequenceSizes;
-    //Informations about the Graph
     for (int i=0;i<Sequences.size();i++)
-        SequenceSizes.push_back((int)floor((Sequences[i].size())/k));
+        SequenceSizes[i] = (int)floor((Sequences[i].size())/k);
 
-    //a List of Colorvalues with a parallel list of k-mers to compare
+    ///< This is a variable which save the number of Kmers
     int numbOfKmer = 0;
     for (int i=0;i<SequenceSizes.size();i++)
         numbOfKmer += SequenceSizes[i];
     updateColorList(numbOfKmer);
+    ///< This variable is the output List
     vector<string> kmerDeclarations;
 
-    //a boolean for the "got this kmer a color?"-Check and a index for the k-mers per sequence
+    ///< a boolean for the "got this kmer a color?"-Check
     bool matched = false;
+    ///< a index for the k-mers per sequence
     int index;
-    //The mainmethod of this function
+    
+    /**
+     * This part of the method will push all Kmers in the List, which are not in the list already.
+     */
     for (int i=0;i<Sequences.size();i++) {
         index = 0;
         while (index<SequenceSizes[i]) {
-            //Comparing all k-mers which got a color already to give the same color
+            ///< Comparing all k-mers to know if the Kmer is already in the list
             for (int j=0;j<kmerDeclarations.size();j++) {
                 if (kmerDeclarations[j]==Sequences[i].substr(index*k, k)) {
                     matched = true;
                     break;
                 }
             }
-            //If its a new kmer, then put a new color out of it
+            ///< If its a new kmer, so we push it here
             if (!matched)
                 kmerDeclarations.push_back(Sequences[i].substr(index*k, k));
             matched = false;
@@ -46,9 +56,18 @@ ColorMap::ColorMap(vector<string>& Sequences, int k){
     differentKmers = kmerDeclarations;
 }
 
+/**
+ * This Method will make a vector of Colors in terms of a number, which defines the Length of the 
+ * length of the List. Then it will initialize ColorList with it. In our case the argument 
+ * describes the number of Kmers we are looking for to map.
+ */
 ColorMap::ColorMap(int numbOfKmer){
-    vector<Color> returnList;
-    Color placeholder;
+    vector<Color> returnList; ///< the list i use to adjust this as the new List
+    Color placeholder; ///< A placeholder which is needed to programm with rgb values
+    /**
+     * In this part of the method i push Colors in the List which i searched in the
+     * web, so that they are well different.
+     */
     placeholder.r = 255;
     placeholder.g = 0;
     placeholder.b = 0;
@@ -79,7 +98,11 @@ ColorMap::ColorMap(int numbOfKmer){
     placeholder.g = 128;
     placeholder.b = 128;
     returnList.push_back(placeholder);
-    int index = 0;
+    /**
+     * In this part of the method i push Colors in terms of a algorithm i made for myself.
+     * This algorithm is maybe not completed yet.
+     */
+    int index = 0; ///< i use this index to count about how much Colors are pushed.
     int array[60];
     for (int i=0;i<60;i++)
         array[i] = 11 + i;
@@ -109,36 +132,44 @@ ColorMap::ColorMap(){
 
 }
 
+/**
+ * This Method will compute in terms of the argument sequences and the k, all kmers we are looking for and call
+ * the method which compute us in terms of this number a Colormap. Then the method will compute
+ * all different Kmers and push them in a List. We'll use this list to update differentKmers.
+ */
 void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
-    
+    ///< This is a variable which save the number of Kmers per Sequence which we have
     vector<int> SequenceSizes;
-    //Informations about the Graph
     for (int i=0;i<Sequences.size();i++)
         SequenceSizes[i] = (int)floor((Sequences[i].size())/k);
 
-    //a List of Colorvalues with a parallel list of k-mers to compare
+    ///< This is a variable which save the number of Kmers
     int numbOfKmer = 0;
     for (int i=0;i<SequenceSizes.size();i++)
         numbOfKmer += SequenceSizes[i];
     updateColorList(numbOfKmer);
+    ///< This variable is the output List
     vector<string> kmerDeclarations;
 
-    //a boolean for the "got this kmer a color?"-Check and a index for the k-mers per sequence
+    ///< a boolean for the "got this kmer a color?"-Check
     bool matched = false;
+    ///< a index for the k-mers per sequence
     int index;
     
-    //The mainmethod of this function
+    /**
+     * This part of the method will push all Kmers in the List, which are not in the list already.
+     */
     for (int i=0;i<Sequences.size();i++) {
         index = 0;
         while (index<SequenceSizes[i]) {
-            //Comparing all k-mers which got a color already to give the same color
+            ///< Comparing all k-mers to know if the Kmer is already in the list
             for (int j=0;j<kmerDeclarations.size();j++) {
                 if (kmerDeclarations[j]==Sequences[i].substr(index*k, k)) {
                     matched = true;
                     break;
                 }
             }
-            //If its a new kmer, then put a new color out of it
+            ///< If its a new kmer, so we push it here
             if (!matched)
                 kmerDeclarations.push_back(Sequences[i].substr(index*k, k));
             matched = false;
@@ -148,12 +179,18 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
     differentKmers = kmerDeclarations;
 }
 
-
-
-//This method calculate the color list (most possible different colors)
+/**
+ * This Method will make a vector of Colors in terms of a number, which defines the Length of the 
+ * length of the List. Then it will update our ColorList with it. In our case the argument 
+ * describes the number of Kmers we are looking for to map.
+ */
 void ColorMap::updateColorList(int numbOfKmer){
-    vector<Color> returnList;
-    Color placeholder;
+    vector<Color> returnList; ///< the list i use to adjust this as the new List
+    Color placeholder; ///< A placeholder which is needed to programm with rgb values
+    /**
+     * In this part of the method i push Colors in the List which i searched in the
+     * web, so that they are well different.
+     */
     placeholder.r = 255;
     placeholder.g = 0;
     placeholder.b = 0;
@@ -184,7 +221,11 @@ void ColorMap::updateColorList(int numbOfKmer){
     placeholder.g = 128;
     placeholder.b = 128;
     returnList.push_back(placeholder);
-    int index = 0;
+    /**
+     * In this part of the method i push Colors in terms of a algorithm i made for myself.
+     * This algorithm is maybe not completed yet.
+     */
+    int index = 0; ///< i use this index to count about how much Colors are pushed.
     int array[60];
     for (int i=0;i<60;i++)
         array[i] = 11 + i;
@@ -210,7 +251,11 @@ void ColorMap::updateColorList(int numbOfKmer){
     ColorList = returnList;
 }
 
-
+/**
+ * This method will map a single Kmer to a unique Color in terms of the 
+ * Lists which are in the class. If these lists are not initialized, then
+ * the map won't work.
+ */
 Color ColorMap::Map(string kmer){
     if (ColorList.size()==0 || differentKmers.size()==0) {
         cerr << "Warning: The map can't be used, until all is initialized!" << endl;
