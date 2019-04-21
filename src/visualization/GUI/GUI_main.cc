@@ -14,7 +14,7 @@ int main() {
 
     std::vector<sf::Texture> all_textures;
     all_textures.push_back(loadtexture("startButton.png"));
-    all_textures.push_back(loadtexture("settingsButton.jpg"));
+    all_textures.push_back(loadtexture("settingsButton.png"));
     all_textures.push_back(loadtexture("quitButton.png"));
     sf::Sprite startButton = loadSprite(all_textures, 0, 400, 100);
     sf::Sprite settingsButton = loadSprite(all_textures, 1, 400, 300);
