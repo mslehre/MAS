@@ -12,9 +12,8 @@ using namespace sf;
 ColorMap::ColorMap(vector<string>& Sequences, int k){
     vector<int> SequenceSizes;
     //Informations about the Graph
-    for(int i=0;i<Sequences.size();i++){
+    for (int i=0;i<Sequences.size();i++)
         SequenceSizes.push_back((int)floor((Sequences[i].size())/k));
-    }
 
     //a List of Colorvalues with a parallel list of k-mers to compare
     int numbOfKmer = 0;
@@ -38,9 +37,8 @@ ColorMap::ColorMap(vector<string>& Sequences, int k){
                 }
             }
             //If its a new kmer, then put a new color out of it
-            if (!matched) {
+            if (!matched)
                 kmerDeclarations.push_back(Sequences[i].substr(index*k, k));
-            }
             matched = false;
             index += 1;
         }
@@ -51,9 +49,39 @@ ColorMap::ColorMap(vector<string>& Sequences, int k){
 ColorMap::ColorMap(int numbOfKmer){
     vector<Color> returnList;
     Color placeholder;
+    placeholder.r = 255;
+    placeholder.g = 0;
+    placeholder.b = 0;
+    returnList.push_back(placeholder);
+    placeholder.g = 128;
+    returnList.push_back(placeholder);
+    placeholder.g = 255;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 0;
+    returnList.push_back(placeholder);
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
+    placeholder.b = 255;
+    returnList.push_back(placeholder);
+    placeholder.g = 128;
+    returnList.push_back(placeholder);
+    placeholder.g = 0;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 255;
+    returnList.push_back(placeholder);
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    placeholder.g = 128;
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
     int index = 0;
     int array[60];
-    for(int i=0;i<60;i++)
+    for (int i=0;i<60;i++)
         array[i] = 11 + i;
     for (int l=59;l>=0;l--) {
         for (int i=0;i<4;i++) {
@@ -85,9 +113,8 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
     
     vector<int> SequenceSizes;
     //Informations about the Graph
-    for(int i=0;i<Sequences.size();i++){
+    for (int i=0;i<Sequences.size();i++)
         SequenceSizes[i] = (int)floor((Sequences[i].size())/k);
-    }
 
     //a List of Colorvalues with a parallel list of k-mers to compare
     int numbOfKmer = 0;
@@ -112,9 +139,8 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
                 }
             }
             //If its a new kmer, then put a new color out of it
-            if (!matched) {
+            if (!matched)
                 kmerDeclarations.push_back(Sequences[i].substr(index*k, k));
-            }
             matched = false;
             index += 1;
         }
@@ -128,9 +154,39 @@ void ColorMap::updateSequenceLists(vector<string>& Sequences, int k){
 void ColorMap::updateColorList(int numbOfKmer){
     vector<Color> returnList;
     Color placeholder;
+    placeholder.r = 255;
+    placeholder.g = 0;
+    placeholder.b = 0;
+    returnList.push_back(placeholder);
+    placeholder.g = 128;
+    returnList.push_back(placeholder);
+    placeholder.g = 255;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 0;
+    returnList.push_back(placeholder);
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
+    placeholder.b = 255;
+    returnList.push_back(placeholder);
+    placeholder.g = 128;
+    returnList.push_back(placeholder);
+    placeholder.g = 0;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 255;
+    returnList.push_back(placeholder);
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
+    placeholder.r = 128;
+    placeholder.g = 128;
+    placeholder.b = 128;
+    returnList.push_back(placeholder);
     int index = 0;
     int array[60];
-    for(int i=0;i<60;i++)
+    for (int i=0;i<60;i++)
         array[i] = 11 + i;
     for (int l=59;l>=0;l--) {
         for (int i=0;i<4;i++) {
@@ -156,20 +212,19 @@ void ColorMap::updateColorList(int numbOfKmer){
 
 
 Color ColorMap::Map(string kmer){
-    if(ColorList.size()==0 || differentKmers.size()==0){
+    if (ColorList.size()==0 || differentKmers.size()==0) {
         cerr << "Warning: The map can't be used, until all is initialized!" << endl;
         Color nullElement;
         return nullElement;
     }
-    for(int i = 0;i<differentKmers.size();i++){
-        if(differentKmers[i]==kmer){
+    for (int i = 0;i<differentKmers.size();i++) {
+        if (differentKmers[i]==kmer)
             return ColorList[i];
-        }
     }
 }
 
 vector<Color> ColorMap::giveColorList(){
-    if(ColorList.size()==0){
+    if (ColorList.size()==0) {
         cerr << "Warning: ColorList is not initialized!" << endl;
     }
     return ColorList;
