@@ -1,6 +1,7 @@
 .PHONY: docu clean
 
 all: docu
+	cd src; make all
 
 # make HTML documentation and PDF manual with doxygen 
 docu:
@@ -9,3 +10,4 @@ docu:
 
 clean:
 	rm -r doxygen
+	cd src; make clean
