@@ -10,4 +10,4 @@ ColorMap.o: ColorMap.cc ColorMap.h Graph.h
 Graph.o: Graph.cpp Graph.h ColorMap.h
 	g++ -c -std=c++11 Graph.cpp
 clean:
-	rm *.o main
+	rm -f *.o main
