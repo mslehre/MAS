@@ -18,7 +18,9 @@ addons:
 before_install:
   - printenv | grep -E '^TRAVIS_' > .env
 
-script: make
+script:
+  - make all
+  - doxygen doxygen.conf
 
 deploy:
   provider: pages
