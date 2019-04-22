@@ -1,0 +1,29 @@
+language: cpp
+
+matrix:
+  include:
+  - os: linux
+    dist: xenial
+    sudo: required
+
+addons:
+  apt:
+    packages:
+      - doxygen
+      - doxygen-doc
+      - doxygen-latex
+      - doxygen-gui
+      - graphviz
+
+before_install:
+  - printenv | grep -E '^TRAVIS_' > .env
+
+script: make
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: $TRAVIS_BUILD_DIR/doxygen/html
+  github-token: $GITHUB_API_KEY
+  on:
+    branch: master
