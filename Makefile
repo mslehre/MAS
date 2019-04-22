@@ -9,5 +9,5 @@ docu:
 	cd doxygen/latex; make pdf
 
 clean:
-	rm -r doxygen
+	rm -rf doxygen
 	cd src; make clean
