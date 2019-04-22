@@ -6,10 +6,10 @@
 
 /** 
  * \param all_textures is a vector with all textures
- * \param index is the index of the texture you will load from all_textures
+ * \param index is the index of the texture you want to load from all_textures
  * \param x_pos is the x coordinate of the sprite in the window
  * \param y_pos is the y coordinate of the sprite in the window
- * \return a sprite with texture on a specific position
+ * \return a Sprite with texture on a specific position
  */
 
 sf::Sprite loadSprite(std::vector<sf::Texture>& all_textures, int index, int x_pos, int y_pos) { 
