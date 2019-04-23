@@ -7,4 +7,4 @@ GUI_main.o: GUI_main.cc gui.h
 gui.o: gui.cc gui.h
 	g++ -Wall -std=c++11 -c gui.cc
 clean:
-	rm *.o GUI_main
+	rm -f *.o GUI_main
