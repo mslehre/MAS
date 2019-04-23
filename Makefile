@@ -1,12 +1,13 @@
 .PHONY: docu clean
 
-all: docu
+all:
+	cd src; make all
 
 # make HTML documentation and PDF manual with doxygen 
 docu:
-	cd doxytest; doxygen doxygen.conf
-	cd doxytest/doxygen/latex; make pdf
-	cd doxytest; make
+	doxygen doxygen.conf
+	cd doxygen/latex; make pdf
 
 clean:
-	rm -r doxytest/doxygen
+	rm -rf doxygen
+	cd src; make clean
