@@ -20,7 +20,7 @@ before_install:
 
 script:
   - make all
-  - doxygen doxygen.conf
+  - make docu
 
 deploy:
   provider: pages

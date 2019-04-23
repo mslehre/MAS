@@ -1,6 +1,6 @@
 .PHONY: docu clean
 
-all: docu
+all:
 	cd src; make all
 
 # make HTML documentation and PDF manual with doxygen 
