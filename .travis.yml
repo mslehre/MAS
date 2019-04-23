@@ -14,6 +14,7 @@ addons:
       - doxygen-latex
       - doxygen-gui
       - graphviz
+      - libsfml-dev
 
 before_install:
   - printenv | grep -E '^TRAVIS_' > .env
