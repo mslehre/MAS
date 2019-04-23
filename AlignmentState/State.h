@@ -20,6 +20,6 @@ class state{
     void select(int i);    ///< selects edge i if selectable (does nothing otherwise)
     void possibleActions();    ///< updates state after selecting an edge
     bool checkConsistency(int i);   ///< checks whether edge is selectable while maintaining consistency in current subset
-}; ///< This documentation is for a test
+};
 #endif
 
