@@ -12,7 +12,7 @@ colorlist::colorlist(int numbOfKmers) {
     updateList(numbOfKmers);
 }
 
-///< standard constructor
+///< standard consstructor
 colorlist::colorlist() {
 
 }

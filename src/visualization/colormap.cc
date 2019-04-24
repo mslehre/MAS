@@ -29,7 +29,7 @@ void colormap::updateAssignment(vector<string>& givenKmers, vector<Color>& given
         if (colorAssignment.size() > 0) {
             colorAssignment.clear();
         }
-        for (int i = 0; i < givenColorlist.size(); i++) {
+        for (unsigned int i = 0; i < givenColorlist.size(); i++) {
             colorAssignment[givenKmers[i]] = givenColorlist[i];
         }
     }
