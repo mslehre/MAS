@@ -8,21 +8,21 @@
 using namespace std;
 using namespace sf;
 
-///< complete constructor
+// complete constructor
 colormap::colormap(vector<string>& givenKmers, vector<Color>& givenColorlist) {
     updateAssignment(givenKmers, givenColorlist);
 }
 
-///< standard constructor
+// standard constructor
 colormap::colormap() {
 
 }
 
-/**
+/*
  * this method initialize the unordered map colorAssignment.
  */
 void colormap::updateAssignment(vector<string>& givenKmers, vector<Color>& givenColorlist) {
-    ///< bugcatching for wrong arguments
+    // bugcatching for wrong arguments
     if (givenKmers.size() != givenColorlist.size()) {
         cerr << "Warning: the lists haven't the same size! it can't be initialized." << endl;
     } else {
@@ -36,7 +36,7 @@ void colormap::updateAssignment(vector<string>& givenKmers, vector<Color>& given
 }
 
 
-/**
+/*
  * this method will map a single Kmer (string) to a unique Color value
  * with the class functions of the unorderd map.
  */

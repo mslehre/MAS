@@ -22,26 +22,43 @@ class colormap {
         std::unordered_map<std::string,sf::Color> colorAssignment; ///< a unordered map with Kmers as Keys and Colors as values
     public:
         /**
+         * the complete constructor, which initialize the unordered_map
+         * with strings as keys and Color values as values
+         * 
          * \param givenKmers a vector of different kmers (strings)
          * \param givenColorlist a vector of different Color values 
          */
-        colormap(std::vector<std::string>& givenKmers, std::vector<sf::Color>& givenColorlist);   ///< the complete Constructor
+        colormap(std::vector<std::string>& givenKmers, std::vector<sf::Color>& givenColorlist);
+
+        /**
+         * the standard constructor, which initialize the unordered_map empty
+         */
         colormap(); ///< standard Constructor
+
         /**
+         * this method initialize the unordered map colorAssignment.
+         * 
          * \param givenKmers a vector of different kmers (strings)
          * \param givenColorlist a vector of different Color values 
          */
-        void updateAssignment(std::vector<std::string>& givenKmers, std::vector<sf::Color>& givenColorlist);   ///< update function for colorAssignment
+        void updateAssignment(std::vector<std::string>& givenKmers, std::vector<sf::Color>& givenColorlist);
+
         /**
+         * this method will map a single Kmer (string) to a unique Color value
+         * with the class functions of the unorderd map.
+         *
          * \param kmer a string which is a Kmer
          * \return a Color value (unique)
          */
-        sf::Color Map(std::string Kmer);    ///< the Method to map single Kmers to a color
+        sf::Color Map(std::string Kmer);
+
         /**
+         * Method to return the private unordered_map colorAssignment, which have
+         * strings as keys and Color values as values
+         *
          * \return an unordered_map with kmers as keys and Colors as values
          */
-        std::unordered_map<std::string,sf::Color> giveAssignment(); ///< return method for the class variable
-
+        std::unordered_map<std::string,sf::Color> giveAssignment();
 };
 
 #endif //colormap_H_
