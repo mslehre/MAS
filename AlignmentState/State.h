@@ -5,9 +5,10 @@
 #include <vector>
 #include <array>
 
-/** \brief state class encapsulates the current game state.
- *         It can output possible Actions and select them.
- */
+/** \brief This state class encapsulates the current game state.
+*       It can output possible actions and select them.
+*       
+*/
 
 class state{
     public:
@@ -18,8 +19,14 @@ class state{
     std::vector <bool> selectedSubset;    ///< shows whether edge is selected in current subset (true=selected)
     std::vector <bool> selectable;    ///< shows whether edge is selectable in the current subset (true=selectable)
     void select(int i);    ///< selects edge i if selectable (does nothing otherwise)
-    void possibleActions();    ///< updates state after selecting an edge
-    bool checkConsistency(int i);   ///< checks whether edge is selectable while maintaining consistency in current subset
-}; ///< This documentation is for a test
+    void updateSelectability();    ///< if checkConsistensy returns false or if edge has been selected, sets selectable to false
+    /**
+    *Checks whether edge i is selectable (true) while maintaining consistency in current subset.
+    *The first while loop checks edges on the same sequence that could cross edges[i] from the left.
+    *The second loop checks for crossings from the right.
+    *Returns true if edge selection maintains consistency, false if it does not.
+    */
+    bool checkConsistency(int i);
+};
 #endif
 
