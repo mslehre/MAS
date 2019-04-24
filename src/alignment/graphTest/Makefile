@@ -1,20 +1,24 @@
 CC = g++
-OBJ = main.o Graph.o Node.o
+OBJ = graphtest.o Graph.o Node.o Edge.o
 HEADER1 = ../Graph.h
-HEADER2 = ../Node.h 
+HEADER2 = ../Node.h
+HEADER3 = ../Edge.h
 CFLAGS = -c -Wall -I../
-all: main
-main: $(OBJ) 
+all: graphtest
+graphtest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 
-main.o: main.cpp $(HEADER1)
+graphtest.o: graphtest.cpp $(HEADER1)
 	$(CC) $(CFLAGS) $< -o $@
 
-Graph.o: ../Graph.cpp $(HEADER1) $(HEADER2)
+Graph.o: ../Graph.cpp $(HEADER1) $(HEADER2) $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
 Node.o: ../Node.cpp $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
+Edge.o: ../Edge.cpp $(HEADER3)
+	$(CC) $(CFLAGS) $< -o $@
+
 clean: 
-	rm -rf *o main
+	rm -rf *o graphtest
