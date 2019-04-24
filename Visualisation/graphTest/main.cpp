@@ -37,6 +37,8 @@ void drawRectangle(sf::RenderWindow& window, int i, int j, vector<int> col, stri
 	window.draw(text);	
 }
 
+ 
+
 void drawLine(sf::RenderWindow& window, int i, int j){
 	sf::RectangleShape line;
 	line.setSize(sf::Vector2f(100, 1));
@@ -151,7 +153,6 @@ void drawGraph(sf::RenderWindow& window, Graph& g){
 	//If the substring matches a substring, then use its color to draw the rectangle
 					colorCounter=l;
 					stopped=true;
-					cout <<"matched"<<endl;
 				}
 			}
 	
@@ -160,9 +161,6 @@ void drawGraph(sf::RenderWindow& window, Graph& g){
 				stringColor.push_back(nodeList.at(i).at(j).kmer);
 	//if it doesn't match any substring, then use a new color
 				colorCounter=stringColor.size()-1;
-				cout << colorCounter << endl;
-
-	//save the string of the new color
 			}
 
 	//draw the rectangle and the line
@@ -192,16 +190,72 @@ void drawGraph(sf::RenderWindow& window, Graph& g){
 	}
 }
 
+Node& positionToNode(uint xpos, uint ypos, vector<vector<Node>>& nodeList){
+	uint x=(xpos-20)/180;
+	uint y=(ypos-20)/70;
+	Node& actualNode=nodeList.at(y).at(x);
+	return actualNode;
+}
+
+
+bool isPositionNode(uint xpos, uint ypos){
+	uint x=(xpos-20)/180;
+	uint y=(ypos-20)/70;
+	if(xpos-x*180-20<100 && ypos-y*70-20<50){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
+void highlightRectangle(Node node, sf::Color color, sf::RenderWindow& window){
+	sf::RectangleShape rectangle;
+	rectangle.setSize(sf::Vector2f(100, 50));
+	rectangle.setFillColor(sf::Color::Transparent);
+	rectangle.setOutlineColor(color);
+	rectangle.setOutlineThickness(5);
+	rectangle.setPosition(20+(180)*node.j, 20+(70)*node.i);
+	window.draw(rectangle);
+			
+
+
+}
+
+	
+
+
 int main(int argc, char **argv){
 
-	Graph g;									// example create object from class Graph
+	// example create object from class Graph
+	Graph g;									
 	
-	g.readFastaFiles(argv[1],atoi(argv[2]));				// read fasta file
-
+	// read fasta file
+	g.readFastaFiles(argv[1],atoi(argv[2]));				
+	
+	//Get the nodelist
+	vector<vector<Node>>& nodeList=g.getNodeList();
+	//Get the edgelist
+	vector<vector<vector<Node>>>& listOfEdges=g.getEdgeList();
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
+	sf::View view;
+
+	
+	//Set the backcolor
 	window.clear(sf::Color::Blue);
+	//Draw the graph
 	drawGraph(window,g);
 	window.display();
+	view.setSize(sf::Vector2f(10,10));
+	//Initialise the acutal Node
+	Node& actualNode=nodeList.at(0).at(0);
+	//Initialise the actual indices 
+	int actual_i=-1;
+	int actual_j=-1;
+
+	bool choosed=false;
+
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -212,6 +266,36 @@ int main(int argc, char **argv){
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
+	
+			//Save the position of a left mouse click
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+				sf::Vector2i globalPosition = sf::Mouse::getPosition(window);
+			
+			//If the click has been in the window and on a rectangle
+				if(globalPosition.x<=1600 && 0<=globalPosition.x && globalPosition.y<=900 
+					&& 0<=globalPosition.y && isPositionNode(globalPosition.x, globalPosition.y)){
+			//Calculate the node on which has been clicked
+					actualNode=positionToNode(globalPosition.x, globalPosition.y, nodeList);
+					cout <<actualNode.i<<", "<<actualNode.j<<endl;
+				}
+		
+			//If it's the first node that has been choosen, set the outline color red
+				if(!choosed && (actual_i!=actualNode.i || actual_j!=actualNode.j)){
+					highlightRectangle(actualNode, sf::Color::Red, window);
+					actual_i=actualNode.i;
+					actual_j=actualNode.j;
+					choosed=true;
+			//Set for all nodes that can be choosen from the node above that has been picked the outline color white
+					for(uint l=0; l<listOfEdges.at(actual_i).at(actual_j).size(); l++){
+						highlightRectangle(listOfEdges.at(actual_i).at(actual_j).at(l), sf::Color::White, window);
+					}
+					window.display();	
+					
+				}
+					
+			}
+		window.display();	
+										
         }
 		
 			
