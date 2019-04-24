@@ -22,11 +22,11 @@ void state::select(int i){
     if(this->selectable[i]==true){
         this->selectedSubset[i]=true;
         this->selectable[i]=false;
-        this->possibleActions();
+        this->updateSelectability();
     }
 }
 
-void state::possibleActions(){
+void state::updateSelectability(){
     for(int i=0;i<this->edges.size();i++){
         if(this->selectedSubset[i]==true)
             this->selectable[i]=false;
@@ -38,14 +38,12 @@ void state::possibleActions(){
 bool state::checkConsistency(int i){
     int left=i;
     int right=i;
-    ///< checks edges on the same sequence that could cross edges[i] from the left
     while(left!=-1 && edges[left].at(0)==edges[i].at(0)){ 
         if(this->selectedSubset[left]==true && ((edges[left].at(1)<edges[i].at(1) && edges[left].at(2)>edges[i].at(2)) || (edges[left].at(1)>edges[i].at(1) && edges[left].at(2)<edges[i].at(2)))){
             return false;
         }
         left--;
     }
-    ///< checks edges on the same sequence that could cross edges[i] from the right
     while(right<this->edges.size() && edges[right].at(0)==edges[i].at(0)){
         if(this->selectedSubset[right]==true && ((edges[right].at(1)<edges[i].at(1) && edges[right].at(2)>edges[i].at(2)) || (edges[right].at(1)>edges[i].at(1) && edges[right].at(2)<edges[i].at(2)))){
             return false;
