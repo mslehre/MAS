@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/mslehre/MAS.svg?branch=master)](https://travis-ci.com/mslehre/MAS)
+
 # MAS/MSA Game
 ![MSA](docs/msa.png)
 
