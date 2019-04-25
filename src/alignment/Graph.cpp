@@ -11,7 +11,7 @@ vector<string>& Graph::getStringListSequence(){
 }
 
 // get the length of node (kmer)
-int Graph::getK(){
+unsigned int Graph::getK(){
     return k;
 }	
 
@@ -26,7 +26,7 @@ vector<Node>& Graph::getNodeList() {
 }
 
 // Method: read fasta file
-void Graph::readFastaFiles(std::string nameFile, int k){
+void Graph::readFastaFiles(std::string nameFile, unsigned int k){
     this->k = k;
 
     ifstream data (nameFile);                                  			
@@ -74,7 +74,7 @@ void Graph::calcAdjacentEdges(unsigned int index){
         return;
     }
     // counter for nodes with matches
-    int counter = 0;
+    unsigned int counter = 0;
     // calculate adjacent edges from all nodes in one sequence
     // list of nodes for the sequence i
     for (unsigned int i = 0; i < nodeListAll.at(index).size(); i++) {
@@ -119,7 +119,7 @@ vector<array<unsigned int,2>>& Graph::getNumberOfKmers(){
                 if ((*it).i != (*(it+1)).i) {
                     arrayTemp = {(*it).i, counter};
                     numberOfKmers.push_back(arrayTemp);
-                    counter = 0;
+                    counter = 1;
                 }   
             } else {    
                 arrayTemp = {(*it).i, 1};
@@ -158,7 +158,7 @@ void Graph::calcNodeList() {
     }
 
     // get length of any k-mer
-    int stringLength = k;
+    unsigned int stringLength = k;
     unsigned int j;
     // empty vector of nodes for the initialization
     vector<Node> emptyNodeVector;
