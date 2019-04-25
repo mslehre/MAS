@@ -15,7 +15,12 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]){	
+int main(int argc, char *argv[]){
+    if (argc != 4) {
+        cerr << "\nMissing arguments or too mutch arguments.\n" << endl;
+        printHelp();
+        return -1;
+    }	
     unsigned int numberOfSequences = atoi(argv[1]);
     if (numberOfSequences <= 0) {
         cerr << "\nThe first number must be an positive integer.\n" << endl;
