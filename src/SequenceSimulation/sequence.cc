@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <chrono>
 #include "sequence.h"
 
 using namespace std;
@@ -26,15 +27,14 @@ void printHelp(){
  */
 
 string randomDNA(unsigned int DNAlength){	
-    random_device rd;   
-    mt19937 gen(rd());  
-    uniform_int_distribution<> dis(0, 3); ///< selects a number between 0 and 3
+    mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
+    uniform_int_distribution<> dis(0, 3); // selects a number between 0 and 3
 
     string alphabet = "ACTG";    
     string DNA;  
        
     for (unsigned int i = 0; i < DNAlength; i++) {
-        DNA = DNA + alphabet[dis(gen)];                    
+        DNA = DNA + alphabet[dis(rng)];                    
     }
 
     return DNA;
@@ -47,16 +47,16 @@ string randomDNA(unsigned int DNAlength){
  */
 
 string mutateDNA(string DNA, double mutationProbability){
-    random_device rd;
-    mt19937 gen(rd());
+    mt19937 rng(chrono::high_resolution_clock::now().time_since_epoch().count());
     uniform_int_distribution<> dis(0, 3);
+    uniform_real_distribution<> dis2(0, 1);
 
     string alphabet = "ACTG";
 
     for (unsigned int i = 0; i < DNA.length(); i++) {
-        double isMutant = ((double) rd() / rd.max()); ///< random number between 0 and 1
+        double isMutant = dis2(rng); // random number between 0 and 1
         if (isMutant <= mutationProbability)
-            DNA[i] = alphabet[dis(gen)];
+            DNA[i] = alphabet[dis(rng)];
     }
 
     return DNA;
