@@ -7,8 +7,7 @@ using std::string;
 
 class Edge {
     public:
-        Edge();
-        Node* first;
-        Node* second;
-        //std::pair<Node*, Node*> edge;
+        Edge();             ///< default constructor Edge
+        Node first;         ///< first node of the edge
+        Node second;        ///< second node of the edge
 };

@@ -16,8 +16,11 @@ int main(int argc, char **argv){
     // reading fasta file and calculate edgelist, length of node
     g.readFastaFiles(argv[1],atoi(argv[2]));
 
+    //###################################################################
+    // test
     cout << "TestProgramm: k-mer with length the of " << atoi(argv[2]) << endl; 
 
+    // get list of nodes only with matches 
     vector<Node> nodes = g.getNodeList();
     cout << "All nodes only with matches:" << endl;
     for (auto &node : nodes) {
@@ -28,16 +31,13 @@ int main(int argc, char **argv){
         cout << endl;
         cout << "###################################################" << endl;
     }
-
+    // get list of edges
     vector<Edge> edgeVec = g.getEdgesVector();
-    int q;
-    int p;
+    cout << "Output all edges:" << endl;
     for (auto a : edgeVec) {
-        q=a.first->i;
-        p=a.second->j;
-        cout << "(" << q << " ," << p << ")" << endl;
+        cout << "(" << a.first.i << " ," << a.second.j << ")" << endl;
     }
-    
+    //#####################################################################
 
     return 0;
 }

@@ -88,14 +88,13 @@ void Graph::calcAdjacentEdges(unsigned int index){
 
                 // create edge from sequence i to sequence i+1
                 Edge edge;
-                edge.first = &firstNode;
-                edge.second = &secondNode;
-
-                cout << edge.first->i << endl;
+                edge.first = firstNode;
+                edge.second = secondNode;
 
                 //update list of edges
                 edgesVector.push_back(edge);
 
+                // update adjacency list for this node
                 nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
 
                 // pushes only nodes in nodeList with matches

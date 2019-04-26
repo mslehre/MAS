@@ -7,6 +7,8 @@ using std::vector;
 
 class Node {
     public:
+        Node();
+
         // constructor: i sequence, j node in i, string of node
         Node(unsigned int i, unsigned int j, string kmer);
 
