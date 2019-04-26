@@ -6,14 +6,21 @@
 #include <stdlib.h>
 #include "sequence.h"
 
-// This programm creates one multiple FASTA file with S random sequences of lenght L. 
-// If there is more then one sequence then we have mutations with mutation probability P. 
-// Call script with: ./main S L P
-// Example: ./main 5 100 0.3
+/**
+ * \brief This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
+ * If there is more then one sequence then we have mutations with mutation probability P. 
+ * Call script with: ./simulation_main S L P
+ * Example: ./simulation_main 5 100 0.3
+ */
 
 using namespace std;
 
-int main(int argc, char *argv[]){	
+int main(int argc, char *argv[]){
+    if (argc != 4) {
+        cerr << "\nMissing arguments or too mutch arguments.\n" << endl;
+        printHelp();
+        return -1;
+    }	
     unsigned int numberOfSequences = atoi(argv[1]);
     if (numberOfSequences <= 0) {
         cerr << "\nThe first number must be an positive integer.\n" << endl;
@@ -33,12 +40,12 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    vector<string> DNAsequences;
+    vector<string> DNAsequences(numberOfSequences);
     string DNA = randomDNA(DNAlength);
 
     for (unsigned int i = 0; i < numberOfSequences; i++) {
         string mutantDNA = mutateDNA(DNA, mutationpProbability);
-        DNAsequences.push_back(mutantDNA);
+        DNAsequences[i] = mutantDNA;
     }
 	
     ofstream outfile("sequences.fa");
