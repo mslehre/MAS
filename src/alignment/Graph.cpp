@@ -74,11 +74,10 @@ void Graph::calcAdjacentEdges(unsigned int index){
         return;
     }
     // counter for nodes with matches
-    unsigned int counter = 0;
+    unsigned int matches = 0;
     // calculate adjacent edges from all nodes in one sequence
     // list of nodes for the sequence i
     for (unsigned int i = 0; i < nodeListAll.at(index).size(); i++) {
-        counter = 0;
         // list of nodes for the sequence i+1
         for (unsigned int j = 0; j < nodeListAll.at(index + 1).size(); j++) {
             // compare strings of nodes
@@ -88,19 +87,26 @@ void Graph::calcAdjacentEdges(unsigned int index){
                 Node secondNode = nodeListAll.at(index + 1).at(j);
 
                 // create edge from sequence i to sequence i+1
-                Edge edgeTemp;
-                edgeTemp.edge = make_pair(&firstNode,&secondNode);
+                Edge edge;
+                edge.first = &firstNode;
+                edge.second = &secondNode;
+
+                cout << edge.first->i << endl;
 
                 //update list of edges
-                edgesVector.push_back(edgeTemp); 
+                edgesVector.push_back(edge);
+
+                nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
 
                 // pushes only nodes in nodeList with matches
-                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer && counter == 0) {
-                    nodeList.push_back(firstNode);
-                    counter = 1;
+                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
+                    matches = 1;
                 }                       
             }                         
         }
+        if (matches == 1)
+            nodeList.push_back(nodeListAll.at(index).at(i));
+        matches = 0;
     }
 }
 
