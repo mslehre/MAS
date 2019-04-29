@@ -5,22 +5,6 @@
 #include "gui.h"
 
 /** 
- * \param all_textures is a vector with all textures
- * \param index is the index of the texture you want to load from all_textures
- * \param x_pos is the x coordinate of the sprite in the window
- * \param y_pos is the y coordinate of the sprite in the window
- * \return a Sprite with texture on a specific position
- */
-
-sf::Sprite loadSprite(std::vector<sf::Texture>& all_textures, int index, int x_pos, int y_pos) { 
-    sf::Sprite Button;
-    Button.setTexture(all_textures[index]);
-    Button.setPosition(sf::Vector2f(x_pos, y_pos));
-
-    return Button;
-}
-
-/** 
  * \param name is the name of the texture
  * \return a Texture
  */
@@ -34,3 +18,17 @@ sf::Texture loadtexture(std::string name) {
 
     return ButtonTexture;
 }
+
+/** 
+ * \return a vector with all textures
+ */
+
+std::vector<sf::Texture> load_all_textures() {
+    std::vector<sf::Texture> textures;
+    textures.push_back(loadtexture("../../../fig/startButton.png"));
+    textures.push_back(loadtexture("../../../fig/settingsButton.png"));
+    textures.push_back(loadtexture("../../../fig/quitButton.png"));
+
+    return textures;
+}
+

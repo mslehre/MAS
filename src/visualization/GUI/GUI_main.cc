@@ -4,6 +4,11 @@
 #include <vector>
 #include <string>
 #include "gui.h"
+#include "button.h"
+
+void test() { // for tests TODO: delete this function later
+    std::cout << "test" << std::endl;
+} 
 
 /**
  * \brief This is the main function for the GUI.
@@ -12,16 +17,14 @@
 int main() {
     sf::RenderWindow window(sf::VideoMode(1200, 800), "MAS");
 
-    std::vector<sf::Texture> all_textures;
-    all_textures.push_back(loadtexture("startButton.png"));
-    all_textures.push_back(loadtexture("settingsButton.png"));
-    all_textures.push_back(loadtexture("quitButton.png"));
-    sf::Sprite startButton = loadSprite(all_textures, 0, 400, 100);
-    sf::Sprite settingsButton = loadSprite(all_textures, 1, 400, 300);
-    sf::Sprite quitButton = loadSprite(all_textures, 2, 400, 500);
+    std::vector<sf::Texture> all_textures = load_all_textures();
+
+    Button startButton = Button(all_textures, 0, 400, 100, test);
+    Button settingsButton = Button(all_textures, 1, 400, 300, test);
+    Button quitButton = Button(all_textures, 2, 400, 500, test);
 
     bool clicked_startButton = false;
-    bool clicked_settingsButton = false;
+    //bool clicked_settingsButton = false;
     
     while (window.isOpen()) {
         sf::Event event;
@@ -29,7 +32,6 @@ int main() {
             ///< "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
-
             ///< "mouseButton clicked" events
             if (event.type == sf::Event::MouseButtonPressed) {
 
@@ -42,16 +44,19 @@ int main() {
                     std::cout << "mouse y: " << mouse_pos.y << std::endl;
 
                     if (!clicked_startButton) {
-                        if (startButton.getGlobalBounds().contains(global_mouse_pos)) {
+                        if (startButton.get_Button_texture().getGlobalBounds().contains(global_mouse_pos)) {
                             clicked_startButton = true;
                             std::cout << "startButton clicked" << std::endl;
+                            startButton.Button_function();
                         }
-                        if (settingsButton.getGlobalBounds().contains(global_mouse_pos)) {
-                            clicked_settingsButton = true;
+                        if (settingsButton.get_Button_texture().getGlobalBounds().contains(global_mouse_pos)) {
+                            //clicked_settingsButton = true;
                             std::cout << "settingsButton clicked" << std::endl;
+                            settingsButton.Button_function();
                         }
-                        if (quitButton.getGlobalBounds().contains(global_mouse_pos)) {
+                        if (quitButton.get_Button_texture().getGlobalBounds().contains(global_mouse_pos)) {
                             std::cout << "quitButton clicked" << std::endl;
+                            quitButton.Button_function();
                             window.close();
                         }
                     }
@@ -67,9 +72,9 @@ int main() {
 
         window.clear(sf::Color::White);
         if (!clicked_startButton) {
-            window.draw(startButton);
-            window.draw(settingsButton);
-            window.draw(quitButton);
+            window.draw(startButton.get_Button_texture());
+            window.draw(settingsButton.get_Button_texture());
+            window.draw(quitButton.get_Button_texture());
         }
         window.display();
     }
