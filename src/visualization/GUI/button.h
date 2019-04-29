@@ -7,7 +7,7 @@
  */
 
 // TODO: - We need 3 textures for each Button: pushed, released, mouse over button
-//       - The call of function() in the constructor dont work for any function yet. (only for void)
+//       - The call of function()  dont work for any function yet. (only for void)
 
 
 class Button {

@@ -2,7 +2,6 @@
 #include <vector>
 #include "button.h"
 
-
 Button::Button(std::vector<sf::Texture>& all_textures, int index, int x_pos, int y_pos, void function()) {    
     Button_texture = loadSprite(all_textures, index, x_pos, y_pos);
     Button_function = function;
