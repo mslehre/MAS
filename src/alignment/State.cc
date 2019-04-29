@@ -51,5 +51,4 @@ bool state::checkConsistency(int i){
         right++;
     }
     return true;
-}
-                                                                                                                                                                
+}                                                                                                                                                            

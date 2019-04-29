@@ -1,10 +1,10 @@
+#include "sequence.h"
+#include "generator.h"
 #include <iostream>
-#include <random>
-#include <fstream>
 #include <string>
 #include <vector>
+#include <fstream>
 #include <stdlib.h>
-#include "sequence.h"
 
 /**
  * \brief This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
@@ -41,10 +41,11 @@ int main(int argc, char *argv[]){
     }
 
     vector<string> DNAsequences(numberOfSequences);
-    string DNA = randomDNA(DNAlength);
+    Generator gen;
+    string DNA = gen.randomDNA(DNAlength);
 
     for (unsigned int i = 0; i < numberOfSequences; i++) {
-        string mutantDNA = mutateDNA(DNA, mutationpProbability);
+        string mutantDNA = gen.mutateDNA(DNA, mutationpProbability);
         DNAsequences[i] = mutantDNA;
     }
 	
