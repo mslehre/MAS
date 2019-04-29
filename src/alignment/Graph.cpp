@@ -86,14 +86,6 @@ void Graph::calcAdjacentEdges(unsigned int index){
                 Node firstNode  = nodeListAll.at(index).at(i);
                 Node secondNode = nodeListAll.at(index + 1).at(j);
 
-                // create edge from sequence i to sequence i+1
-                Edge edge;
-                edge.first = firstNode;
-                edge.second = secondNode;
-
-                //update list of edges
-                edgesVector.push_back(edge);
-
                 // update adjacency list for this node
                 nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
 
@@ -106,6 +98,15 @@ void Graph::calcAdjacentEdges(unsigned int index){
         if (matches == 1)
             nodeList.push_back(nodeListAll.at(index).at(i));
         matches = 0;
+    }
+    // create list of edges
+    for (auto &node1 : nodeList ) {
+        for (auto &node2 : node1.adjNodes) {
+            Edge edge;
+            edge.first = node1;
+            edge.second = node2;
+            edgesVector.push_back(edge);
+        }
     }
 }
 
