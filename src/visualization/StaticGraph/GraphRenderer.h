@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <string>
-#include "Graph.h"
+#include "../../alignment/Graph.h"
 #include <stdlib.h>
 
 class GraphRenderer{
