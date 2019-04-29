@@ -1,124 +1,185 @@
 #include "Graph.h"
-#include <fstream>
-#include<string>
-#include<vector>
-#include<array>
-#include<fstream>
-#include<iostream>
 
 using namespace std;
 
-// constructor , store k-mer
-Graph::Graph(int km){
-	k = km;
-}	
+// constructor
+Graph::Graph(){}
 
 // get StringListSequence
 vector<string>& Graph::getStringListSequence(){
-	return stringListSequence;
+    return stringListSequence;
 }
 
-// get number k of k-mer
-int Graph::getK(){
-	return k;
+// get the length of node (kmer)
+unsigned int Graph::getK(){
+    return k;
 }	
 
-// Method: get list of Edges
-vector<array<int,3>>& Graph::getEdgeList(){
-	return listOfEdges;
+// Method: get vector of edges for all sequences
+vector<Edge>& Graph::getEdgesVector(){
+    return edgesVector;
 }
 
-// Method: reading fasta file
-void Graph::readingFastaFiles(std::string nameFile){
-	ifstream data (nameFile);										// open file			
-																	
-	if (!data.is_open()) {
-		cout << "Can't open file!" << endl;
-	} else {
-		std::string line, name, content;
-		while (std::getline(data, line).good()) {
-			if (line.empty() || line[0] == '>') { 					// Identifier marker
-				if (!name.empty()) { 
-					stringListSequence.push_back(content);			// push sequence into vector
-					name.clear();
-				}
-				if (!line.empty())
-					name = line.substr(1);
-
-					content.clear();
-			} else if (!name.empty()) {
-						if (line.find(' ') != std::string::npos) { 	// Invalid sequence--no spaces allowed
-							name.clear();
-							content.clear();
-						} else {
-							content += line;
-						}
-					}
-		}
-		if (!name.empty())
-			stringListSequence.push_back(content); 					// push sequence into vector		
-	}
-	calcEdgeList();
+// Method: get list of nodes only with matches
+vector<Node>& Graph::getNodeList() {
+    return nodeList;
 }
 
-// Method: get adjacent edges from node
-vector<int> Graph::getAdjacentEdge(int seq, int kNum){
-	vector<string>& stringList = getStringListSequence();			
-	vector<int> adjacentNode;
+// Method: read fasta file
+void Graph::readFastaFiles(std::string nameFile, unsigned int k){
+    this->k = k;
 
-	if (seq == stringList.size()-1) {								// the last sequence has no next sequence
-		cerr << kNum << "It is the last sequence." << endl;
-		return adjacentNode;
-	}
-	
-	int kmer = getK(); 
-	int position = kmer * kNum;										
-
-	if (position + kmer <= stringList.at(seq).size()) {				
-		for (int i=0; i < stringList.at(seq+1).size(); i = i+kmer) {// iteration through the sequence
-			if (i+kmer > stringList.at(seq+1).size())
-				break;                         
-			if (stringList.at(seq).substr(position,kmer) == stringList.at(seq+1).substr(i,kmer))
-				adjacentNode.push_back(i/kmer);		
-		}
-		return adjacentNode;
+    ifstream data (nameFile);                                  			
+	// open file												
+    if (!data.is_open()) {
+        cout << "Can't open file!" << endl;
 	} else {
-		cerr << kNum << ".k-mer don't exists in sequence " << seq  << "." << endl;
-		return adjacentNode; 
-	}	
-	cerr << kNum << ".k-mer don't exists in sequence " << seq  << "." << endl;
-	return adjacentNode;
+        std::string line, name, content;
+        while (std::getline(data, line).good()) {
+            // Identifier marker
+            if (line.empty() || line[0] == '>') {                       
+                if (!name.empty()) {
+                    // push sequence into vector
+                    stringListSequence.push_back(content);              
+                    name.clear();
+                }
+                if (!line.empty()) {
+                    name = line.substr(1);
+                }
+            content.clear();
+            } else if (!name.empty()) {
+                    // Invalid sequence--no spaces allowed
+                if (line.find(' ') != std::string::npos) {          
+                    name.clear();
+                    content.clear();
+                } else {
+                    content += line;
+                }
+            }
+        }
+        if (!name.empty())
+            // push sequence into vector
+            stringListSequence.push_back(content);
+	}
+    calcEdgeList();
 }
-// Method: get Number of k-mer
-const vector<int>& Graph::getAmountOfKmer(){
-	vector<string>& stringList = getStringListSequence();
-	int sizeOfStringList = stringList.size();
 
-	if (!numberOfKmer.empty()) {
-		return numberOfKmer; 		
-	} else {
-		for (int i = 0; i < sizeOfStringList; i++) {
-			numberOfKmer.push_back(stringList.at(i).size() / getK());						
-		}
-	}
-	return numberOfKmer; 
-}					
+// Method: calculate edges and nodes for one sequence
+void Graph::calcAdjacentEdges(unsigned int index){
+    vector<string>& stringList = getStringListSequence();
+
+    // the last sequence has no next sequence
+    if (index == stringList.size()-1) {
+        cerr << "It is the last sequence." << endl;
+        return;
+    }
+    // counter for nodes with matches
+    unsigned int matches = 0;
+    // calculate adjacent edges from all nodes in one sequence
+    // list of nodes for the sequence i
+    for (unsigned int i = 0; i < nodeListAll.at(index).size(); i++) {
+        // list of nodes for the sequence i+1
+        for (unsigned int j = 0; j < nodeListAll.at(index + 1).size(); j++) {
+            // compare strings of nodes
+            if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
+                // store begin (Node) and end (Node) of an edge
+                Node firstNode  = nodeListAll.at(index).at(i);
+                Node secondNode = nodeListAll.at(index + 1).at(j);
+
+                // create edge from sequence i to sequence i+1
+                Edge edge;
+                edge.first = firstNode;
+                edge.second = secondNode;
+
+                //update list of edges
+                edgesVector.push_back(edge);
+
+                // update adjacency list for this node
+                nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
+
+                // pushes only nodes in nodeList with matches
+                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
+                    matches = 1;
+                }                       
+            }                         
+        }
+        if (matches == 1)
+            nodeList.push_back(nodeListAll.at(index).at(i));
+        matches = 0;
+    }
+}
+
+// Method: get number of nodes only with matches
+vector<array<unsigned int,2>>& Graph::getNumberOfKmers(){
+    // counter to count how much nodes are in a sequence
+    unsigned int counter = 0;
+    // temporary array for the number of k-mers
+    array<unsigned int, 2> arrayTemp;
+
+    if (!nodeList.empty()) {
+        // iterate through the list of nodes
+        for (vector<Node>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
+            if (nodeList.size() != 1) {
+                ++counter; 
+                if ((*it).i != (*(it+1)).i) {
+                    arrayTemp = {(*it).i, counter};
+                    numberOfKmers.push_back(arrayTemp);
+                    counter = 1;
+                }   
+            } else {    
+                arrayTemp = {(*it).i, 1};
+                numberOfKmers.push_back(arrayTemp);
+                return numberOfKmers;
+            }
+        }
+    } else {
+        return numberOfKmers;
+    }
+    return numberOfKmers;
+}
 
 // Method: list of edges
 void Graph::calcEdgeList() {
-	vector<string>& stringList = getStringListSequence();
-	const vector<int>& amountKmer = getAmountOfKmer();
-	vector<int> adjEdges;
-	int j;
+    // calculate list of nodes
+    calcNodeList();
 
-	for (int i = 0; i < stringList.size()-1; i++) {
-		for (j = 0; j < amountKmer.at(i); j++) {
-			adjEdges = getAdjacentEdge(i,j);
+    // fill list of edge
+    for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
+        calcAdjacentEdges(i);
+    }
+}
 
-			for (auto &k : adjEdges) {
-			array<int,3> edge = {i,j,k};
-			listOfEdges.push_back(edge);
-			}
-		}	
-	}
+// Method: calculate list of nodes
+void Graph::calcNodeList() {
+    // get list of strings for all sequences
+    vector<string>& stringList = getStringListSequence();
+  
+    // store temporary number of k-mers of nodes for all sequences (isolated nodes as well)
+    vector<unsigned int> numberOfKmersTemp;
+    // the k-mers are tiled (shift=k)
+    // calculate number of nodes for all sequences (isolated nodes as well)
+    for (unsigned int i = 0; i < stringList.size(); i++) {
+         numberOfKmersTemp.push_back(stringList.at(i).size() / getK());		
+    }
+
+    // get length of any k-mer
+    unsigned int stringLength = k;
+    unsigned int j;
+    // empty vector of nodes for the initialization
+    vector<Node> emptyNodeVector;
+  
+    // initialize vector for all nodes
+    for (unsigned int i = 0; i < stringList.size(); i++) {
+        nodeListAll.push_back(emptyNodeVector);
+    }
+
+    // fill nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
+    for (unsigned int i = 0; i < stringList.size(); i++) {
+        for (j = 0; j < numberOfKmersTemp.at(i); j++) {
+            if (stringList.at(i).length() - k >= j * k){
+                // store node in nodeListAll
+                nodeListAll.at(i).push_back(Node(i, j, stringList.at(i).substr(j * k, stringLength)));   
+            }
+        }
+    }
 }
