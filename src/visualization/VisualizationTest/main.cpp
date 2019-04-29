@@ -64,6 +64,7 @@ int main(int argc, char **argv){
     // run the program as long as the window is open
     while (window.isOpen())
     {
+	cout<<"first"<<endl;
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))

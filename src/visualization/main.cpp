@@ -3,7 +3,6 @@
 using namespace std;
 
 int main(int argc, char **argv){
-	cout <<"hello"<<endl;
 
 	// example create object from class Graph
 	Graph g;									
@@ -58,6 +57,7 @@ int main(int argc, char **argv){
 	bool choosed=false;
 
 	//Draw the graph
+	cout<<"hello"<<endl;
 	graphRenderer.drawGraph(window,g,size);
 	window.display();
 		
@@ -65,6 +65,7 @@ int main(int argc, char **argv){
     // run the program as long as the window is open
     while (window.isOpen())
     {
+		
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
