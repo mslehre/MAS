@@ -23,7 +23,7 @@ int main(int argc, char **argv){
 
 
 	//Calculate the maximal number of kmers of every sequence
-	for(uint i=0; i<listOfEdges.size(); i++){	
+	/*for(uint i=0; i<listOfEdges.size(); i++){	
 		for(uint j=0; j<listOfEdges.at(i).size();j++){
 			if(maxLength<listOfEdges.at(i).at(j).size()){
 				maxLength=listOfEdges.at(i).at(j).size();
@@ -32,8 +32,8 @@ int main(int argc, char **argv){
 	}
 	//Calculate the size of the rectangles
 	uint possibleSize1 = 400/maxLength;
-	uint possibleSize2 = 1200/nodeList.size();
-	uint size;
+	uint possibleSize2 = 1200/nodeList.size();*/
+	uint size=100;
 	
 	if(possibleSize1<possibleSize2){
 		size = possibleSize1;

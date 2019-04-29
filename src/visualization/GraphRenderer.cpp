@@ -106,27 +106,17 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	fillColor.clear();
 
 	//get the edges and nodes 
-	vector<vector<vector<Node>>>& listOfEdges=g.getEdgeList();
-	vector<vector<Node>>& nodeList=g.getNodeList();
+	vector<Node>& nodeList=g.getNodeList();
 	
 	//vector to remember wether a node has been draw or not
-	vector<vector<bool>> colored;
-	//Vector to remember which color has been used for which substring
-	vector<string> stringColor;
+	vector<bool> colored;
 	
-	
-
 	//Initialise the color vector
 	vector<bool> initialiseColored;
 	for(uint i=0; i<nodeList.size(); i++){
-		for(uint j=0; j<nodeList.at(i).size(); j++){
-			initialiseColored.push_back(false);
-		}
-		colored.push_back(initialiseColored);
-		initialiseColored.clear();
+		colored.push_back(false);
 	}
 
-	
 	int index;
 	//A variable to save wether we stopped during a search process or not
 	bool stopped = false;
@@ -137,13 +127,12 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 
 	//Visit every node in the nodelist	
 	for(uint i = 0; i<nodeList.size(); i++){
-		for(uint j = 0; j<nodeList.at(i).size(); j++){
 	//if the node has not already been visited, then draw its rectangle
-			if(!colored.at(i).at(j)){
+		if(!colored.at(i)){
 	//Calculate the color of the rectangle
 			for(uint l=0; l<stringColor.size(); l++){
 	//Compare the substring with every substring that already has an explicit color
-				if(nodeList.at(i).at(j).kmer == stringColor.at(l)){
+				if(nodeList.at(i).kmer == stringColor.at(l)){
 	//If the substring matches a substring, then use its color to draw the rectangle
 					colorCounter = l;
 					stopped=true;
@@ -152,18 +141,19 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	
 			if(!stopped){
 	//save the string of the new color
-				stringColor.push_back(nodeList.at(i).at(j).kmer);
+				stringColor.push_back(nodeList.at(i).kmer);
 	//if it doesn't match any substring, then use a new color
 				colorCounter = stringColor.size()-1;
 			}
 
 	//draw the rectangle and the line
-			colored.at(i).at(j) = true;
-			drawRectangle(window, i,j,color.at(colorCounter), nodeList.at(i).at(j).kmer, font, size);
-			if(j+1<nodeList.at(i).size()){
-			drawLine(window, i, j, size);
+			colored.at(i) = true;
+			drawRectangle(window, nodeList.at(i).i, nodeList.at(i).j ,color.at(colorCounter), 
+				nodeList.at(i).kmer, font, size);
+			if(i!=nodeList.size()-1 && nodeList.at(i).i==nodeList.at(i+1).i){
+			drawLine(window, nodeList.at(i).i, nodeList.at(i).j , size);
 			}
-			stopped=false;
+			stopped = false;
 		}
 
 	//Visit every adjacent node and color with the same color
@@ -184,10 +174,16 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	}
 }
 
-Node& GraphRenderer::positionToNode(uint xpos, uint ypos, vector<vector<Node>>& nodeList, uint size){
+Node& GraphRenderer::positionToNode(uint xpos, uint ypos, vector<Node>& nodeList, uint size){
 	uint x = (xpos-size*0.2)/(size*1.8);
 	uint y = (ypos-size*0.2)/((size/2)*1.8);
-	Node& actualNode=nodeList.at(y).at(x);
+	Node& actualNode;
+	for(auto &node : nodeList) {
+		if (node.i == x && node.j == y){
+			actualNode = node;
+			break;
+		}
+	}
 	return actualNode;
 }
 
@@ -203,7 +199,7 @@ bool GraphRenderer::isPositionNode(uint xpos, uint ypos, uint size){
 	}
 }
 
-void GraphRenderer::highlightRectangle(Node node, sf::Color color, sf::RenderWindow& window, uint size){
+void GraphRenderer::highlightRectangle(Node& node, sf::Color color, sf::RenderWindow& window, uint size){
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(size, size/2));
 	rectangle.setFillColor(sf::Color::Transparent);
