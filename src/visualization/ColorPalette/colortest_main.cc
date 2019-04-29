@@ -56,16 +56,16 @@ vector<string> giveKmers(vector<string>& Sequences, int k) {
 
 int main(int argc, char **argv){
     // initalize the Example Graph
-    Graph graphExample(3);
+    Graph graphExample;
 
     // Bug Catching for fasta file
-    if(argc != 2){
-        cerr << "Please start your program with: ./main [fileName.fa]" << endl; 
+    if(argc != 3){
+        cerr << "Please start your program with: ./main [fileName.fa] [length of node] " << endl; 
         return -1;
     }
 
     // declare the Graph in terms of a fasta file
-    graphExample.readingFastaFiles(argv[1]);
+    graphExample.readFastaFiles(argv[1],atoi(argv[2]));
 
     // get Graph information for the Kmerlist and Colorlist
     int k = graphExample.getK(); // integer with size of Kmer
