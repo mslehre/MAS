@@ -1,3 +1,7 @@
+all:main
+	cd scoreTest; make all
+	cd graphTest; make all 
+
 main: main.o State.o Graph.o Node.o Edge.o
 	g++ -std=c++11 main.o State.o Graph.o Node.o Edge.o -o main
 
@@ -17,4 +21,6 @@ Node.o: Node.cpp Node.h
 	g++ -std=c++11 -c Node.cpp
 
 clean:
-	rm *.o main
+	cd scoreTest; make clean
+	cd graphTest; make clean
+	rm -rf *.o main

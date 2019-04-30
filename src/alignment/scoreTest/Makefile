@@ -1,19 +1,19 @@
-all:graphtest 
+all: ScoreTest
 
 CC = g++
-OBJ = graphtest.o Graph.o Node.o Edge.o
-HEADER1 = ../Graph.h
+OBJ = ScoreTest.o Score.o Node.o Edge.o
+HEADER1 = ../Score.h
 HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
 CFLAGS = -c -std=c++11 -Wall -I../
-all: graphtest
-graphtest: $(OBJ) 
+all: ScoreTest
+ScoreTest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 
-graphtest.o: graphtest.cpp $(HEADER1)
+ScoreTest.o: ScoreTest.cc $(HEADER1)
 	$(CC) $(CFLAGS) $< -o $@
 
-Graph.o: ../Graph.cpp $(HEADER1) $(HEADER2) $(HEADER3)
+Score.o: ../Score.cc $(HEADER1) $(HEADER2) $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
 Node.o: ../Node.cpp $(HEADER2)
@@ -23,4 +23,4 @@ Edge.o: ../Edge.cpp $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
-	rm -rf *o graphtest
+	rm -rf *o ScoreTest
