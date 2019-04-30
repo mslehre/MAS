@@ -1,14 +1,47 @@
 #include "GraphRenderer.h"
-
+#include <cmath>
 using namespace std;
+
+//ignore this, this is just a help method, which get solved later
+vector<string> giveKmers(vector<string>& Sequences, int k) {
+    vector<int> SequenceSizes; // A tupel of integers, where the i integer n stands for n Kmers in Sequencs i
+    // initialization of the SequenceSizes
+    for (unsigned int i = 0; i < Sequences.size(); i++)
+        SequenceSizes.push_back((int)floor((Sequences[i].size()) / k));
+    vector<string> allKmers; // The set of all different Kmers
+    bool matched = false; // a boolean for the "Is this Kmer already in my set?"-Chec
+    int index; // a integer, which is index for the k-mers per sequence
+    /*
+     * here we go over the i Sequence and look at the index's Kmer and 
+     * push it into our set, when it is not already in.
+     */
+    for (unsigned int i = 0; i < Sequences.size(); i++) {
+        index = 0;
+        while (index < SequenceSizes[i]) {
+            // comparing all k-mers in our set with the picked one
+            for (unsigned int j = 0; j < allKmers.size(); j++) {
+                if (allKmers[j] == Sequences[i].substr(index * k, k)) {
+                    matched = true;
+                    break;
+                }
+            }
+            // pushing a new Kmer
+            if (!matched)
+                allKmers.push_back(Sequences[i].substr(index * k, k));
+            matched = false;
+            index += 1;
+        }
+    }
+    return allKmers;
+}
 
 GraphRenderer::GraphRenderer(){}
 
-void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, vector<int> col, string kmer,
+void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  sf::Font font, uint size){
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(size, size/2));
-	rectangle.setFillColor(sf::Color(col.at(0), col.at(1), col.at(2)));
+	rectangle.setFillColor(col);
 	rectangle.setPosition(size*0.2+(size*1.8)*j, size*0.2+((size/2)*1.8)*i);
 	window.draw(rectangle);
 
@@ -58,52 +91,20 @@ void GraphRenderer::drawLine(sf::RenderWindow& window, int i, int j, uint size){
 void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	//create a vector of possible fillcolor (later I will get this from Lucas)
 	sf::Font font;
-	vector<vector<int>> color;
-	vector<int> fillColor;
-	fillColor.push_back(255);
-	fillColor.push_back(0);
-	fillColor.push_back(0);
-	color.push_back(fillColor);
-	fillColor.push_back(0);
-	fillColor.push_back(255);
-	fillColor.push_back(0);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(0);
-	fillColor.push_back(0);
-	fillColor.push_back(255);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(0);
-	fillColor.push_back(128);
-	fillColor.push_back(255);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(128);
-	fillColor.push_back(0);
-	fillColor.push_back(255);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(255);
-	fillColor.push_back(128);
-	fillColor.push_back(0);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(255);
-	fillColor.push_back(0);
-	fillColor.push_back(128);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(0);
-	fillColor.push_back(255);
-	fillColor.push_back(128);
-	color.push_back(fillColor);
-	fillColor.clear();
-	fillColor.push_back(128);
-	fillColor.push_back(255);
-	fillColor.push_back(0);
-	color.push_back(fillColor);
-	fillColor.clear();
+    
+    // get Graph information for the Kmerlist and Colorlist
+    int k = g.getK(); // integer with size of Kmer
+    vector<string> Sequences = g.getStringListSequence(); // vector with strings which stand for Sequences
+
+    // calculation of the different Kmers
+    vector<string> Kmers = giveKmers(Sequences, k); // vector of strings which stand for Kmers
+
+    // initialize the colorlist
+    colorlist colorExample(Kmers.size());
+
+    // initialize the colormap
+    vector<sf::Color> colors = colorExample.giveList(); // vector of different colors
+    colormap mapExample(Kmers, colors);
 
 	//get the edges and nodes 
 	vector<Node>& nodeList=g.getNodeList();
@@ -118,15 +119,6 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 		colored.push_back(false);
 	}
 
-	int index;
-	//A variable to save wether we stopped during a search process or not
-	bool stopped = false;
-	//A variable to save the number of the different colors that have been used 
-	int colorCounter;
-	//A vector to safe the strings that already have a color
-	vector<string> stringColor;
-	//To avoid problems with the first color
-	stringColor.push_back("empty");
 
 	//Visit every node in the nodelist	
 	for(uint i = 0; i<nodeList.size(); i++){
@@ -135,46 +127,14 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	//if the node has not already been visited, then draw its rectangle
 		if(!colored.at(i)){
 	//Calculate the color of the rectangle
-			for(uint l=0; l<stringColor.size(); l++){
-	//Compare the substring with every substring that already has an explicit color
-				if(nodeList.at(i).kmer == stringColor.at(l)){
-	//If the substring matches a substring, then use its color to draw the rectangle
-					colorCounter = l;
-					stopped=true;
-				}
-			}
-	
-			if(!stopped){
-	//save the string of the new color
-				stringColor.push_back(nodeList.at(i).kmer);
-	//if it doesn't match any substring, then use a new color
-				colorCounter = stringColor.size()-1;
-			}
-
 	//draw the rectangle and the line
 			colored.at(i) = true;
-			drawRectangle(window, nodeList.at(i).i, nodeList.at(i).j ,color.at(colorCounter), 
+			drawRectangle(window, nodeList.at(i).i, nodeList.at(i).j, mapExample.Map(nodeList.at(i).kmer), 
 				nodeList.at(i).kmer, font, size);
 			if(i!=nodeList.size()-1 && nodeList.at(i).i==nodeList.at(i+1).i){
 			drawLine(window, nodeList.at(i).i, nodeList.at(i).j , size);
 			}
-			stopped = false;
 		}
-
-	//Visit every adjacent node and color with the same color
-	//Here it will also be possible to draw the edges 
-			/*if(i+1<nodeList.size()){
-			for(uint h=0; h<listOfEdges.at(i).at(j).size(); h++){
-				index = listOfEdges.at(i).at(j).at(h).j;
-				cout <<i<< ", "<<j<< ", "<<index<<endl;
-				colored.at(i+1).at(index)=true;
-				drawRectangle(window, i+1,index,color.at(colorCounter), nodeList.at(i).at(j).kmer, font);
-				if(j+1<nodeList.at(i+1).size()){
-				drawLine(window, i+1,index);
-				}
-			}
-		
-		}*/	
 	}
 }
 
