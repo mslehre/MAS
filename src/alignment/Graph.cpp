@@ -60,8 +60,12 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
         if (!name.empty())
             // push sequence into vector
             stringListSequence.push_back(content);
-	}
-    calcEdgeList();
+
+        // calcualte nodeListAll with all possible nodes (isolated nodes as well)
+        calcNodeList();
+        // calculate the list of edges
+        calcEdgeList();
+	}  
 }
 
 // Method: calculate edges and nodes for one sequence
@@ -99,15 +103,6 @@ void Graph::calcAdjacentEdges(unsigned int index){
             nodeList.push_back(nodeListAll.at(index).at(i));
         matches = 0;
     }
-    // create list of edges
-    for (auto &node1 : nodeList ) {
-        for (auto &node2 : node1.adjNodes) {
-            Edge edge;
-            edge.first = node1;
-            edge.second = node2;
-            edgesVector.push_back(edge);
-        }
-    }
 }
 
 // Method: get number of nodes only with matches
@@ -141,12 +136,20 @@ vector<array<unsigned int,2>>& Graph::getNumberOfKmers(){
 
 // Method: list of edges
 void Graph::calcEdgeList() {
-    // calculate list of nodes
-    calcNodeList();
 
-    // fill list of edge
+    // calculate nodeList only with matches
     for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
         calcAdjacentEdges(i);
+    }
+
+    // create list of edges
+    for (auto &node1 : nodeList ) {
+        for (auto &node2 : node1.adjNodes) {
+            Edge edge;
+            edge.first = node1;
+            edge.second = node2;
+            edgesVector.push_back(edge);
+        }
     }
 }
 

@@ -32,6 +32,8 @@ class Graph {
          *  second: function calcAdjacentEdges is called
          */
         void calcEdgeList();
+
+        void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
     public:
         // constructor
         Graph();
@@ -55,8 +57,6 @@ class Graph {
         vector<std::array<unsigned int,2>>& getNumberOfKmers();
 
         vector<Edge>& getEdgesVector();             ///< get vector of edges for all sequences
-
-        void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
 
         /** \brief read a fasta file
          *  \param nameFile name of the fasta file
