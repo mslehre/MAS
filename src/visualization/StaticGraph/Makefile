@@ -5,6 +5,7 @@ HEADER2 = ../../alignment/Node.h
 HEADER3 = GraphRenderer.h
 HEADER4 = ../../alignment/Edge.h
 CFLAGS = -c -std=c++11 -Wall 
+
 all: visualization
 visualization: $(OBJ) 
 	$(CC) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
