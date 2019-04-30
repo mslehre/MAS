@@ -110,6 +110,7 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	
 	//vector to remember wether a node has been draw or not
 	vector<bool> colored;
+
 	
 	//Initialise the color vector
 	vector<bool> initialiseColored;
@@ -122,11 +123,15 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	bool stopped = false;
 	//A variable to save the number of the different colors that have been used 
 	int colorCounter;
+	//A vector to safe the strings that already have a color
+	vector<string> stringColor;
 	//To avoid problems with the first color
 	stringColor.push_back("empty");
 
 	//Visit every node in the nodelist	
 	for(uint i = 0; i<nodeList.size(); i++){
+		cout << nodeList.at(i).kmer << endl;
+		cout << nodeList.at(i).i << ", " << nodeList.at(i).j << endl;
 	//if the node has not already been visited, then draw its rectangle
 		if(!colored.at(i)){
 	//Calculate the color of the rectangle
@@ -169,17 +174,16 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 				}
 			}
 		
-		}*/
-	}	
+		}*/	
 	}
 }
 
-Node& GraphRenderer::positionToNode(uint xpos, uint ypos, vector<Node>& nodeList, uint size){
+Node GraphRenderer::positionToNode(uint xpos, uint ypos, vector<Node>& nodeList, uint size){
 	uint x = (xpos-size*0.2)/(size*1.8);
 	uint y = (ypos-size*0.2)/((size/2)*1.8);
-	Node& actualNode;
+	Node actualNode;
 	for(auto &node : nodeList) {
-		if (node.i == x && node.j == y){
+		if (node.i == y && node.j == x){
 			actualNode = node;
 			break;
 		}

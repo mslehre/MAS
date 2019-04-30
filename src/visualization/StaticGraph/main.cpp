@@ -11,36 +11,41 @@ int main(int argc, char **argv){
 	g.readFastaFiles(argv[1],atoi(argv[2]));				
 	
 	//Get the nodelist
-	vector<vector<Node>>& nodeList=g.getNodeList();
+	vector<Node>& nodeList=g.getNodeList();
 
-	//Get the edgelist
-	vector<vector<vector<Node>>>& listOfEdges=g.getEdgeList();
+	//
+	vector<array<unsigned int,2>>& numbOfKmers=g.getNumberOfKmers();
 
 	//Open the window
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 
-	uint maxLength=0;
+	uint maxLength=1;
 
 
-	//Calculate the maximal number of kmers of every sequence
-	/*for(uint i=0; i<listOfEdges.size(); i++){	
-		for(uint j=0; j<listOfEdges.at(i).size();j++){
-			if(maxLength<listOfEdges.at(i).at(j).size()){
-				maxLength=listOfEdges.at(i).at(j).size();
+	//Calculate the maximal number of nodes of every sequence
+	for(auto &node : nodeList){	
+			if(maxLength<node.adjNodes.size()){
+				maxLength=node.adjNodes.size();	
 			}
-		}
 	}
-	//Calculate the size of the rectangles
-	uint possibleSize1 = 400/maxLength;
-	uint possibleSize2 = 1200/nodeList.size();*/
-	uint size=100;
+	cout<<nodeList.size()<<endl;
+	cout<<numbOfKmers.size()<<endl;
 	
+	//Calculate the size of the rectangles
+	//numbOfKmers.size() is the number of sequences
+	unsigned int possibleSize1 = 300/maxLength;
+	unsigned int possibleSize2 = 1200/numbOfKmers.size();
+
+	
+	uint size;
 	if(possibleSize1<possibleSize2){
 		size = possibleSize1;
 	}
 	else{
 		size = possibleSize2;
 	}
+	
+	//uint size=100;
 
 	//Create a GraphRenderer
 	GraphRenderer graphRenderer;
@@ -48,7 +53,7 @@ int main(int argc, char **argv){
 	window.clear(sf::Color::Blue);
 
 	//Initialise the acutal Node
-	Node& actualNode=nodeList.at(0).at(0);
+	Node actualNode=nodeList.at(0);
 	//Initialise the actual indices 
 	int actual_i = -1;
 	int actual_j = -1;
@@ -64,7 +69,7 @@ int main(int argc, char **argv){
     // run the program as long as the window is open
     while (window.isOpen())
     {
-	cout<<"first"<<endl;
+		
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -94,23 +99,15 @@ int main(int argc, char **argv){
 				choosed = true;
 
 		//Set for all nodes that can be choosen from the node above that has been picked the outline color white
-				for(uint l=0; l<listOfEdges.at(actual_i).at(actual_j).size(); l++){
-					graphRenderer.highlightRectangle(listOfEdges.at(actual_i).at(actual_j).at(l),
-						sf::Color::White, window, size);
-				}
-				
-	
-					
+				for(uint l=0; l<actualNode.adjNodes.size(); l++){
+					graphRenderer.highlightRectangle(actualNode.adjNodes.at(l), sf::Color::White, window, size);
+				}		
 			}
 		window.display();
 			
 										
-        }
-		
-			
+        }		
     }
-		
-
     return 0;
 }
 
