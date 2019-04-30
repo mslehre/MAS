@@ -21,12 +21,12 @@ int main(int argc, char **argv){
 
 	uint maxLength=1;
 
-
 	//Calculate the maximal number of nodes of every sequence
 	for(auto &node : nodeList){	
 			if(maxLength<node.adjNodes.size()){
 				maxLength=node.adjNodes.size();	
-			}
+
+		}
 	}
 	cout<<nodeList.size()<<endl;
 	cout<<numbOfKmers.size()<<endl;
@@ -35,7 +35,6 @@ int main(int argc, char **argv){
 	//numbOfKmers.size() is the number of sequences
 	unsigned int possibleSize1 = 300/maxLength;
 	unsigned int possibleSize2 = 1200/numbOfKmers.size();
-
 	
 	uint size;
 	if(possibleSize1<possibleSize2){
@@ -45,8 +44,6 @@ int main(int argc, char **argv){
 		size = possibleSize2;
 	}
 	
-	//uint size=100;
-
 	//Create a GraphRenderer
 	GraphRenderer graphRenderer;
 	//Set the backcolor
