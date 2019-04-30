@@ -87,11 +87,11 @@ void Graph::calcAdjacentEdges(unsigned int index){
             // compare strings of nodes
             if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
                 // store begin (Node) and end (Node) of an edge
-                Node firstNode  = nodeListAll.at(index).at(i);
-                Node secondNode = nodeListAll.at(index + 1).at(j);
+                //Node firstNode  = nodeListAll.at(index).at(i);
+                //Node secondNode = nodeListAll.at(index + 1).at(j);
 
                 // update adjacency list for this node
-                nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
+                //nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
 
                 // pushes only nodes in nodeList with matches
                 if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
@@ -141,6 +141,30 @@ void Graph::calcEdgeList() {
     for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
         calcAdjacentEdges(i);
     }
+
+    
+
+    // rewrite index i and j for nodeList for drawing
+    if (nodeList.size() != 0) {
+        int gi = nodeList.at(0).i; 
+        nodeList.at(0).i = 0;
+        nodeList.at(0).j = 0;
+        int gj = 0;
+
+        for (int i = 1; i < nodeList.size(); i++) {
+            if (nodeList.at(i).i == gi) {
+                nodeList.at(i).i = nodeList.at(i-1).i;
+                gj = gj + 1;
+                nodeList.at(i).j = gj;
+            } else {
+                gi = nodeList.at(i).i;
+                nodeList.at(i).i = 0;
+                gj = 0;
+            } 
+        }
+    }
+    
+    
 
     // create list of edges
     for (auto &node1 : nodeList ) {
