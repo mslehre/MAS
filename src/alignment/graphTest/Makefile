@@ -1,5 +1,3 @@
-all:graphtest 
-
 CC = g++
 OBJ = graphtest.o Graph.o Node.o Edge.o
 HEADER1 = ../Graph.h

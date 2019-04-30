@@ -1,5 +1,3 @@
-all: ScoreTest
-
 CC = g++
 OBJ = ScoreTest.o Score.o Node.o Edge.o
 HEADER1 = ../Score.h
