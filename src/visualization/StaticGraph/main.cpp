@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 	//Create a GraphRenderer
 	GraphRenderer graphRenderer;
 	//Set the backcolor
-	window.clear(sf::Color::Blue);
+	window.clear(sf::Color::White);
 
 	//Initialise the acutal Node
 	Node actualNode=nodeList.at(0);
@@ -97,7 +97,7 @@ int main(int argc, char **argv){
 
 		//Set for all nodes that can be choosen from the node above that has been picked the outline color white
 				for(uint l=0; l<actualNode.adjNodes.size(); l++){
-					graphRenderer.highlightRectangle(actualNode.adjNodes.at(l), sf::Color::White, window, size);
+					graphRenderer.highlightRectangle(actualNode.adjNodes.at(l), sf::Color::Black, window, size);
 				}		
 			}
 		window.display();

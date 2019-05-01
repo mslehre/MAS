@@ -108,7 +108,10 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 
 	//get the edges and nodes 
 	vector<Node>& nodeList=g.getNodeList();
-	
+
+	//get the edges and nodes
+	vector<vector<Node>> nodeList1=g.nodeListAll;
+
 	//vector to remember wether a node has been draw or not
 	vector<bool> colored;
 
@@ -121,19 +124,16 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 
 
 	//Visit every node in the nodelist	
-	for(uint i = 0; i<nodeList.size(); i++){
-		cout << nodeList.at(i).kmer << endl;
-		cout << nodeList.at(i).i << ", " << nodeList.at(i).j << endl;
-	//if the node has not already been visited, then draw its rectangle
-		if(!colored.at(i)){
-	//Calculate the color of the rectangle
-	//draw the rectangle and the line
-			colored.at(i) = true;
-			drawRectangle(window, nodeList.at(i).i, nodeList.at(i).j, mapExample.Map(nodeList.at(i).kmer), 
-				nodeList.at(i).kmer, font, size);
-			if(i!=nodeList.size()-1 && nodeList.at(i).i==nodeList.at(i+1).i){
-			drawLine(window, nodeList.at(i).i, nodeList.at(i).j , size);
-			}
+	for(uint i = 0; i<nodeList1.size(); i++){
+        for(uint j = 0; j<nodeList1[i].size(); j++) {
+
+		    //cout << nodeList.at(i).kmer << endl;
+		    //cout << nodeList.at(i).i << ", " << nodeList.at(i).j << endl;
+		    drawRectangle(window, nodeList1[i][j].i, nodeList1[i][j].j, mapExample.Map(nodeList1[i][j].kmer), 
+			    nodeList1[i][j].kmer, font, size);
+		    if(j!=nodeList1[i].size()-1){
+		    drawLine(window, nodeList1[i][j].i, nodeList1[i][j].j , size);
+		    }
 		}
 	}
 }

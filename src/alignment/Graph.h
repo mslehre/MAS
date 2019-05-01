@@ -21,8 +21,6 @@ class Graph {
 
         vector<std::array<unsigned int,2>> numberOfKmers;         ///< the numbers of nodes only with matches
 
-        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
-
         vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
 
         vector<Edge> edgesVector;                   ///< vector of edges for all sequences (set of edges)
@@ -35,7 +33,9 @@ class Graph {
     public:
         // constructor
         Graph();
-                                     
+
+        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
+
         unsigned int getK();                        ///< get the length of node (kmer)
 
         vector<string>& getStringListSequence();    ///< get the string for every sequence
