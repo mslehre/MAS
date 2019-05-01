@@ -62,7 +62,6 @@ int main(int argc, char **argv){
 	graphRenderer.drawGraph(window,g,size);
 	window.display();
 		
-	
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -99,11 +98,10 @@ int main(int argc, char **argv){
 				for(uint l=0; l<actualNode.adjNodes.size(); l++){
 					graphRenderer.highlightRectangle(actualNode.adjNodes.at(l), sf::Color::Black, window, size);
 				}		
-			}
-		window.display();
-			
-										
-        }		
+			}			
+        }
+    
+        window.display();
     }
     return 0;
 }

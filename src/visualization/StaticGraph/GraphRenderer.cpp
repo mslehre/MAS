@@ -44,6 +44,11 @@ void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Co
 	rectangle.setFillColor(col);
 	rectangle.setPosition(size*0.2+(size*1.8)*j, size*0.2+((size/2)*1.8)*i);
 	window.draw(rectangle);
+    if(rectangles.size()!=i+1) {
+        vector<sf::RectangleShape> fill;
+        rectangles.push_back(fill);
+    }
+    rectangles[i].push_back(rectangle);
 
 	
 	//Set the text for the kmers in the rectangle 
@@ -126,9 +131,6 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	//Visit every node in the nodelist	
 	for(uint i = 0; i<nodeList1.size(); i++){
         for(uint j = 0; j<nodeList1[i].size(); j++) {
-
-		    //cout << nodeList.at(i).kmer << endl;
-		    //cout << nodeList.at(i).i << ", " << nodeList.at(i).j << endl;
 		    drawRectangle(window, nodeList1[i][j].i, nodeList1[i][j].j, mapExample.Map(nodeList1[i][j].kmer), 
 			    nodeList1[i][j].kmer, font, size);
 		    if(j!=nodeList1[i].size()-1){
@@ -164,13 +166,15 @@ bool GraphRenderer::isPositionNode(uint xpos, uint ypos, uint size){
 }
 
 void GraphRenderer::highlightRectangle(Node& node, sf::Color color, sf::RenderWindow& window, uint size){
-	sf::RectangleShape rectangle;
+	rectangles[node.i][node.j].setOutlineColor(color);
+	rectangles[node.i][node.j].setOutlineThickness(5);
+    /*sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(size, size/2));
 	rectangle.setFillColor(sf::Color::Transparent);
 	rectangle.setOutlineColor(color);
 	rectangle.setOutlineThickness(5);
-	rectangle.setPosition(size*0.2+(size*1.8)*node.j, size*0.2+((size/2)*1.8)*node.i);
-	window.draw(rectangle);
+	rectangle.setPosition(size*0.2+(size*1.8)*node.j, size*0.2+((size/2)*1.8)*node.i);*/
+	window.draw(rectangles[node.i][node.j]);
 }
 
 	

@@ -12,6 +12,7 @@
 
 class GraphRenderer{
 	public:
+        vector<vector<sf::RectangleShape>> rectangles;
 		GraphRenderer();
 		void drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  		sf::Font font, uint size);
