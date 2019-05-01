@@ -69,7 +69,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
 }
 
 // Method: calculate edges and nodes for one sequence
-void Graph::calcAdjacentEdges(unsigned int index){
+void Graph::calcHelpAdjacentEdges(unsigned int index){
     vector<string>& stringList = getStringListSequence();
 
     // the last sequence has no next sequence
@@ -87,18 +87,21 @@ void Graph::calcAdjacentEdges(unsigned int index){
             // compare strings of nodes
             if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
                 // store begin (Node) and end (Node) of an edge
-                //Node firstNode  = nodeListAll.at(index).at(i);
-                //Node secondNode = nodeListAll.at(index + 1).at(j);
+                Node firstNode  = nodeListAll.at(index).at(i);
+                Node secondNode = nodeListAll.at(index + 1).at(j);
 
                 // update adjacency list for this node
-                //nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
+                nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
 
+                //helpList.push_back()
+                
                 // pushes only nodes in nodeList with matches
                 if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
                     matches = 1;
                 }                       
             }                         
         }
+
         if (matches == 1)
             nodeList.push_back(nodeListAll.at(index).at(i));
         matches = 0;
@@ -106,31 +109,7 @@ void Graph::calcAdjacentEdges(unsigned int index){
 }
 
 // Method: get number of nodes only with matches
-vector<array<unsigned int,2>>& Graph::getNumberOfKmers(){
-    // counter to count how much nodes are in a sequence
-    unsigned int counter = 0;
-    // temporary array for the number of k-mers
-    array<unsigned int, 2> arrayTemp;
-
-    if (!nodeList.empty()) {
-        // iterate through the list of nodes
-        for (vector<Node>::iterator it = nodeList.begin(); it != nodeList.end(); ++it) {
-            if (nodeList.size() != 1) {
-                ++counter; 
-                if ((*it).i != (*(it+1)).i) {
-                    arrayTemp = {(*it).i, counter};
-                    numberOfKmers.push_back(arrayTemp);
-                    counter = 1;
-                }   
-            } else {    
-                arrayTemp = {(*it).i, 1};
-                numberOfKmers.push_back(arrayTemp);
-                return numberOfKmers;
-            }
-        }
-    } else {
-        return numberOfKmers;
-    }
+vector<int>& Graph::getNumberOfKmers(){
     return numberOfKmers;
 }
 
@@ -139,12 +118,200 @@ void Graph::calcEdgeList() {
 
     // calculate nodeList only with matches
     for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
-        calcAdjacentEdges(i);
+        calcHelpAdjacentEdges(i);
+    }
+    
+    vector<Edge> edgesVec; 
+    // create list of edges
+    for (auto &node1 : nodeList ) {
+        for (auto &node2 : node1.adjNodes) {
+            Edge edge;
+            edge.first = node1;
+            edge.second = node2;
+            edgesVector.push_back(edge);
+        }
+    }
+    // store temporary nodeList
+    vector<Node> tempNodeList;
+    for(auto edge : edgesVector) {
+        tempNodeList.push_back(edge.first);
+        tempNodeList.push_back(edge.second);
+    }
+    // store only nodes one time
+    unsigned int ma = 0;
+    for (unsigned int i = 0; i < tempNodeList.size(); i++) {
+        unsigned int gi = tempNodeList.at(i).i;
+        unsigned int gj = tempNodeList.at(i).j;
+
+        for (auto &n : helpList) {
+            if (n.i == gi && n.j == gj)
+                ma = 1;
+        }
+        if (ma != 1)
+            helpList.push_back(tempNodeList.at(i));
+        ma = 0;
     }
 
-    
+    // sort index i for row
+    sort(helpList.begin(), helpList.end(),
+			[](const Node& x, const Node& y) {
+					return x.i < y.i;
+			});
 
-    // rewrite index i and j for nodeList for drawing
+    if (helpList.empty())
+        return;
+    
+    unsigned int counter = 0;
+    unsigned int value = helpList.at(0).i;
+
+    for (unsigned int i = 0; i < helpList.size() ; i++) {
+        if (helpList.at(i).i == value) {
+            ++counter;
+            if (i+1 == helpList.size())
+                numberOfKmers.push_back(counter);
+        } else {
+            value = helpList.at(i).i;
+            numberOfKmers.push_back(counter);
+            counter = 1;
+            if (i+1 == helpList.size())
+                numberOfKmers.push_back(counter);
+        }
+    }
+
+    // empty vector of nodes for the initialization
+    vector<Node> emptyNodeVector;
+  
+    nodeListAll.clear();
+
+    // initialize vector for all nodes
+    for (unsigned int i = 0; i < numberOfKmers.size(); i++) {
+        nodeListAll.push_back(emptyNodeVector);
+    }
+
+    counter = 0;
+    for (unsigned int i = 0; i < numberOfKmers.size(); i++) {
+        for (unsigned int j = counter + numberOfKmers.at   ; j != -1 ;  ) {
+            cout << j << endl;
+            nodeListAll.at(i).push_back(helpList.at(j));
+            counter = numberOfKmers.at(i);
+        }
+        
+        cout << numberOfKmers.at(i) << endl;
+    }
+    
+   
+/*
+    // sort index j for row
+    for (auto &vec : nodeListAll) {
+    sort(vec.begin(), vec.end(),
+			[](const Node& x, const Node& y) {
+					return x.j < y.j;
+			});
+    }
+
+    for (auto &n : nodeListAll ) {
+        for (auto &m : n) {
+            cout <<  "  (" << m.i << " , " << m.j << ")  "; 
+
+        }
+        cout << endl;
+
+
+
+    }
+
+*/
+
+    
+/*
+    vector<vector<Node>> tempNodeList;
+    vector<array<unsigned int,2>> numberK = getNumberOfKmers();
+    cout << "Anzahl wieviele Sequenzen nur mit Matches: " << numberK.size()  << endl;
+
+    // empty vector of nodes for the initialization
+    vector<Node> emptyNodeVector;
+  
+    // initialize vector for nodes only with matches
+    for (unsigned int i = 0; i <  numberK.size()+1; i++) {
+        tempNodeList.push_back(emptyNodeVector);
+    }
+
+    if (!edgesVector.empty()) {
+        unsigned int gi = edgesVector.at(0).first.i;
+        int counterI = 0;
+        tempNodeList.at(0).push_back(edgesVector.at(0).first);
+        tempNodeList.at(1).push_back(edgesVector.at(0).second);
+        unsigned matchA;
+        unsigned matchB;
+        
+        for (unsigned int i = 1; i < edgesVector.size() ;i++) {
+            if (edgesVector.at(i).first.i == gi) {
+                for (auto &node: tempNodeList.at(counterI)) {
+                    if (node.j == edgesVector.at(i).first.j) {
+                        matchA = 1;
+                    }
+                }
+
+                for (auto &node: tempNodeList.at(counterI+1)) {
+                    if (node.j == edgesVector.at(i).second.j) {
+                        matchB = 1;
+                    }
+                }
+           
+                if (matchA != 1) {
+                    tempNodeList.at(counterI).push_back(edgesVector.at(i).first);
+                } 
+
+                if (matchB != 1) {
+                    tempNodeList.at(counterI+1).push_back(edgesVector.at(i).second);
+                }
+                matchA = 0;
+                matchB = 0; 
+            }
+                 
+            if (edgesVector.at(i).first.i != gi) {   
+                gi = edgesVector.at(i).first.i;
+                counterI = counterI + 1;
+
+                for (auto &node: tempNodeList.at(counterI)) {
+                    if (node.j == edgesVector.at(i).first.j) {
+                        matchA = 1;
+                    }
+                }
+
+                for (auto &node: tempNodeList.at(counterI+1)) {
+                    if (node.j == edgesVector.at(i).second.j) {
+                        matchB = 1;
+                    }
+                }
+           
+                if (matchA != 1) {
+                    tempNodeList.at(counterI).push_back(edgesVector.at(i).first);
+                } 
+
+                if (matchB != 1) {
+                    tempNodeList.at(counterI+1).push_back(edgesVector.at(i).second);
+                }
+                matchA = 0;
+                matchB = 0; 
+            }
+        }
+    }
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+   /* // rewrite index i and j for nodeList for drawing
     if (nodeList.size() != 0) {
         int gi = nodeList.at(0).i; 
         nodeList.at(0).i = 0;
@@ -162,19 +329,11 @@ void Graph::calcEdgeList() {
                 gj = 0;
             } 
         }
-    }
+    } */
     
     
 
-    // create list of edges
-    for (auto &node1 : nodeList ) {
-        for (auto &node2 : node1.adjNodes) {
-            Edge edge;
-            edge.first = node1;
-            edge.second = node2;
-            edgesVector.push_back(edge);
-        }
-    }
+    
 }
 
 // Method: calculate list of nodes
