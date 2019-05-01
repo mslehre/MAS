@@ -21,7 +21,7 @@ bool is_equal(Node& a, Node& b){
 }
 
 /**
- * This function is recursiv. 
+ * This is a recursiv function that find a path for given nodes and edges. 
  * \param path is the path found so far
  * \param edgesVector is a vector with all edges
  */
@@ -54,8 +54,8 @@ unsigned int calculate_score(vector<Node>& nodeList, vector<Edge>& edgesVector){
             find_path(path, edgesVector);
 /*          
             // print all paths
-            for (unsigned int i = 0; i < path.size(); i++) {
-                cout << "(" << path[i].i << ", " << path[i].j << ") ";
+            for (unsigned int p = 0; p < path.size(); p++) {
+                cout << "(" << path[p].i << ", " << path[p].j << ") ";
             }
             cout << endl;
 */
