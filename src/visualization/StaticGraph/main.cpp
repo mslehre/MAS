@@ -14,7 +14,7 @@ int main(int argc, char **argv){
 	vector<Node>& nodeList=g.getNodeList();
 
 	//
-	vector<array<unsigned int,2>>& numbOfKmers=g.getNumberOfKmers();
+	vector<int>& numbOfKmers=g.getNumberOfKmers();
 
 	//Open the window
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
