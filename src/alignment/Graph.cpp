@@ -104,6 +104,18 @@ void Graph::calcAdjacentEdges(unsigned int index){
             nodeList.push_back(nodeListAll.at(index).at(i));
         matches = 0;
     }
+    // rewrite index
+    unsigned int counter_i = 0;
+    unsigned int counter_j = 0;
+        for (unsigned int i = 0; i < nodeList.size(); i++) {
+            if (nodeList.at(i).i > counter_i) {
+                counter_i++; 
+                counter_j = 0;
+            }
+            nodeList.at(i).i = counter_i;
+            nodeList.at(i).j = counter_j;
+            counter_j++;
+        }
 }
 
 // Method: get number of nodes only with matches
