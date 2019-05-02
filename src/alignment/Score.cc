@@ -53,7 +53,7 @@ unsigned int calculate_score(vector<Node>& nodeList, vector<Edge>& edgesVector){
             path.push_back(nodeList[i]);
             find_path(path, edgesVector);
 /*          
-            // prin path
+            // print path
             for (unsigned int p = 0; p < path.size(); p++) {
                 cout << "(" << path[p].i << ", " << path[p].j << ") ";
             }
