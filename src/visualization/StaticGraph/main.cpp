@@ -28,8 +28,6 @@ int main(int argc, char **argv){
 
 		}
 	}
-	cout<<nodeList.size()<<endl;
-	cout<<numbOfKmers.size()<<endl;
 	
 	//Calculate the size of the rectangles
 	//numbOfKmers.size() is the number of sequences

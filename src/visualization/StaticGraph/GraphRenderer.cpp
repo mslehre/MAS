@@ -39,6 +39,7 @@ GraphRenderer::GraphRenderer(){}
 
 void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  sf::Font font, uint size){
+	
 	sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(size, size/2));
 	rectangle.setFillColor(col);
@@ -47,9 +48,10 @@ void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Co
     if(rectangles.size()!=i+1) {
         vector<sf::RectangleShape> fill;
         rectangles.push_back(fill);
+	cout <<"hello2" <<endl;
     }
-    rectangles[i].push_back(rectangle);
-
+    //rectangles[i].push_back(rectangle);
+	
 	
 	//Set the text for the kmers in the rectangle 
 	sf::Text text;
@@ -113,9 +115,10 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 
 	//get the edges and nodes 
 	vector<Node>& nodeList=g.getNodeList();	
-	cout <<"hello" <<endl;
 	//Visit every node in the nodelist	
+	cout <<nodeList.size() <<endl;
 	for(uint index = 0; index<nodeList.size(); index++){
+			cout <<"hello" <<endl;
 		    drawRectangle(window, nodeList.at(index).i, nodeList.at(index).j, mapExample.Map(nodeList.at(index).kmer), 
 			    nodeList.at(index).kmer, font, size);
 		    if(index != nodeList.size()-1 && nodeList.at(index).i == nodeList.at(index+1).i){
