@@ -2,7 +2,7 @@
 
 using namespace std;
 
-state::state(vector <array<int,3>> e){
+state::state(vector <Edge> e){
         for(int i=0;i<e.size();i++){
             this->selectedSubset.push_back(false);
             this->selectable.push_back(true);
@@ -12,7 +12,7 @@ state::state(vector <array<int,3>> e){
 
 state::state(){
         vector <bool> selectedSubset;
-        vector <array<int,3>> edges;
+        vector <Edge> edges;
         vector <bool> selectable;
 }
 
@@ -22,33 +22,25 @@ void state::select(int i){
     if(this->selectable[i]==true){
         this->selectedSubset[i]=true;
         this->selectable[i]=false;
-        this->updateSelectability();
+        this->updateSelectability(i);
     }
 }
 
-void state::updateSelectability(){
-    for(int i=0;i<this->edges.size();i++){
-        if(this->selectedSubset[i]==true)
-            this->selectable[i]=false;
-        else if(this->checkConsistency(i)!=true)
-            this->selectable[i]=false;
-    }
-}
-
-bool state::checkConsistency(int i){
+void state::updateSelectability(int i){
     int left=i;
     int right=i;
-    while(left!=-1 && edges[left].at(0)==edges[i].at(0)){ 
-        if(this->selectedSubset[left]==true && ((edges[left].at(1)<edges[i].at(1) && edges[left].at(2)>edges[i].at(2)) || (edges[left].at(1)>edges[i].at(1) && edges[left].at(2)<edges[i].at(2)))){
-            return false;
+    while(left!=-1 && edges[left].first.i==edges[i].first.i){ 
+        if((edges[left].first.j<edges[i].first.j && edges[left].second.j>edges[i].second.j) 
+            || (edges[left].first.j>edges[i].first.j && edges[left].second.j<edges[i].second.j)){
+            this->selectable[left]=false;
         }
         left--;
     }
-    while(right<this->edges.size() && edges[right].at(0)==edges[i].at(0)){
-        if(this->selectedSubset[right]==true && ((edges[right].at(1)<edges[i].at(1) && edges[right].at(2)>edges[i].at(2)) || (edges[right].at(1)>edges[i].at(1) && edges[right].at(2)<edges[i].at(2)))){
-            return false;
+    while(right<this->edges.size() && edges[right].first.i==edges[i].first.i){
+        if((edges[right].first.j<edges[i].first.j && edges[right].second.j>edges[i].second.j)
+            || (edges[right].first.j>edges[i].first.j && edges[right].second.j<edges[i].second.j)){
+            this->selectable[right]=false;
         }
         right++;
     }
-    return true;
-}                                                                                                                                                            
+}                                                                                                                                                   

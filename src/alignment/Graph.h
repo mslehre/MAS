@@ -7,6 +7,8 @@
 #include "Node.h"
 #include "Edge.h"
 #include<utility>
+#include<algorithm>
+#include<set>
 
 using std::vector;
 using std::string;
@@ -19,17 +21,27 @@ class Graph {
 
         vector<string> stringListSequence;          ///< vector of strings for the sequences
 
-        vector<std::array<unsigned int,2>> numberOfKmers;         ///< the numbers of nodes only with matches
+        vector<int> numberOfKmers;         ///< the numbers of nodes only with matches
 
         vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
+        
+        vector<Node> helpList;                      ///< use only for calculation
 
         vector<Edge> edgesVector;                   ///< vector of edges for all sequences (set of edges)
+
+        /** \brief vector of adjacent edges from all nodes in one sequence (=index)
+         *  \param index for a sequence
+
+         */
+        void calcAdjacentEdges(unsigned int index);
 
         /** calculate the list of edges <br>
          *  at first: function calcNodeList() is called <br>
          *  second: function calcAdjacentEdges is called
          */
         void calcEdgeList();
+
+        void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
     public:
         // constructor
         Graph();
@@ -39,11 +51,6 @@ class Graph {
         unsigned int getK();                        ///< get the length of node (kmer)
 
         vector<string>& getStringListSequence();    ///< get the string for every sequence
- 
-        /** \brief vector of adjacent edges from all nodes in one sequence (=index)
-         *  \param index for a sequence
-         */
-        void calcAdjacentEdges(unsigned int index);
 
         vector<Node>& getNodeList();                ///< get list of nodes only with matches
 
@@ -52,11 +59,9 @@ class Graph {
          *  second index how many nodes
          *  \return numbers of nodes only with matches
          */
-        vector<std::array<unsigned int,2>>& getNumberOfKmers();
+        vector<int>& getNumberOfKmers();
 
         vector<Edge>& getEdgesVector();             ///< get vector of edges for all sequences
-
-        void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
 
         /** \brief read a fasta file
          *  \param nameFile name of the fasta file
