@@ -2,33 +2,35 @@
 #define RANDOM_AGENT_H
 
 #include "BaseAgent.h"
+#include "State.h"
+#include <stdlib.h>
 
 /** \brief This RandomAgent class selects edges according to a policy.
 *          The policy is to just choose a random edge out of the selectable ones
 */
 class RandomAgent : public BaseAgent {
     public:
-    RandomAgent();
-    ~RandomAgent();
-
+    RandomAgent(){};
+    ~RandomAgent(){};
+    /** This function does not work, enters an endless loop. Help.
+    */
     virtual void policy(state s) const override{
-        bool selectableNotEmpty=true;
-        while (selectableNotEmpty){
+        bool hasEdge=true;
+        while (hasEdge==true){
+            std::vector <int> selectableIndices;
             for(int j=0;j<s.selectable.size();j++){
                 if(s.selectable[j]==true){
-                    selectableNotEmpty=true;
-                    break;
-                }
-                else{
-                selectableNotEmpty=false;
+                    selectableIndices.push_back(j);
                 }
             }
-        std::default_random_engine generator;
-        std::uniform_int_distribution<int> distribution(0,s.edges.size());
-        int i = distribution(generator);
-        if(s.selectable[i]==true){		
-                s.select(i);
+            if(selectableIndices.empty()==true){
+                hasEdge=false;
+            }
+            int d = selectableIndices[std::rand() % selectableIndices.size()-1];
+            if(s.selectable[d]==true){
+                s.select(d);
+            }
         }
     }
-}
+};
 #endif
