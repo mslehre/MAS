@@ -7,6 +7,7 @@ HEADER4 = ../../alignment/Edge.h
 HEADER5 = ../colormap.h
 HEADER6 = ../colorlist.h
 CFLAGS = -c -std=c++11 -Wall 
+
 all: visualization
 visualization: $(OBJ) 
 	$(CC) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
