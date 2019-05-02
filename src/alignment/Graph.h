@@ -35,7 +35,7 @@ class Graph {
          *  \param index for a sequence
 
          */
-        void calcHelpAdjacentEdges(unsigned int index);
+        void calcAdjacentEdges(unsigned int index);
 
         /** calculate the list of edges <br>
          *  at first: function calcNodeList() is called <br>
