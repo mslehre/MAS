@@ -5,13 +5,16 @@
 #include <algorithm>
 #include <array>
 #include <string>
+#include "../colorlist.h"
+#include "../colormap.h"
 #include "../../alignment/Graph.h"
 #include <stdlib.h>
 
 class GraphRenderer{
 	public:
+		vector<vector<sf::RectangleShape>> rectangles;
 		GraphRenderer();
-		void drawRectangle(sf::RenderWindow& window, int i, int j, vector<int> col, string kmer,
+		void drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  		sf::Font font, uint size);
 		void drawLine(sf::RenderWindow& window, int i, int j, uint size);
 		void drawGraph(sf::RenderWindow& window, Graph& g, uint size);

@@ -94,7 +94,7 @@ void GraphRenderer::drawLine(sf::RenderWindow& window, int i, int j, uint size){
 	
 	
 void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
-	
+	//create a vector of possible fillcolor (later I will get this from Lucas)
 	sf::Font font;
     
     // get Graph information for the Kmerlist and Colorlist
@@ -112,15 +112,30 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
     colormap mapExample(Kmers, colors);
 
 	//get the edges and nodes 
-	vector<Node>& nodeList=g.getNodeList();	
-	cout <<"hello" <<endl;
+	vector<Node>& nodeList=g.getNodeList();
+
+	//get the edges and nodes
+	vector<vector<Node>> nodeList1=g.nodeListAll;
+
+	//vector to remember wether a node has been draw or not
+	vector<bool> colored;
+
+	
+	//Initialise the color vector
+	vector<bool> initialiseColored;
+	for(uint i=0; i<nodeList.size(); i++){
+		colored.push_back(false);
+	}
+
+
 	//Visit every node in the nodelist	
-	for(uint index = 0; index<nodeList.size(); index++){
+	for(uint index = 0; i<nodeList.size(); i++){
 		    drawRectangle(window, nodeList.at(index).i, nodeList.at(index).j, mapExample.Map(nodeList.at(index).kmer), 
 			    nodeList.at(index).kmer, font, size);
-		    if(index != nodeList.size()-1 && nodeList.at(index).i == nodeList.at(index+1).i){
+		    if(j!=nodeList.at(index).size()-1 && nodeList.at(index).i==nodeList.at(index+1).i){
 		    drawLine(window, nodeList.at(index).i, nodeList.at(index).j , size);
 		    }
+		}
 	}
 }
 
