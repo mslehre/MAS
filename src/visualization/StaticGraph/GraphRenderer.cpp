@@ -114,28 +114,13 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 	//get the edges and nodes 
 	vector<Node>& nodeList=g.getNodeList();
 
-	//get the edges and nodes
-	vector<vector<Node>> nodeList1=g.nodeListAll;
-
-	//vector to remember wether a node has been draw or not
-	vector<bool> colored;
-
-	
-	//Initialise the color vector
-	vector<bool> initialiseColored;
-	for(uint i=0; i<nodeList.size(); i++){
-		colored.push_back(false);
-	}
-
 
 	//Visit every node in the nodelist	
-	for(uint i = 0; i<nodeList1.size(); i++){
-        for(uint j = 0; j<nodeList1[i].size(); j++) {
-		    drawRectangle(window, nodeList1[i][j].i, nodeList1[i][j].j, mapExample.Map(nodeList1[i][j].kmer), 
-			    nodeList1[i][j].kmer, font, size);
-		    if(j!=nodeList1[i].size()-1){
-		    drawLine(window, nodeList1[i][j].i, nodeList1[i][j].j , size);
-		    }
+	for(uint i = 0; i<nodeList.size(); i++){
+		    drawRectangle(window, nodeList[i].i, nodeList[i].j, mapExample.Map(nodeList[i].kmer), 
+			nodeList[i].kmer, font, size);
+		if(i!=nodeList.size()-1 && nodeList.at(i).i==nodeList.at(i+1).i){
+		    drawLine(window, nodeList[i].i, nodeList[i].j , size);
 		}
 	}
 }
@@ -168,6 +153,8 @@ bool GraphRenderer::isPositionNode(uint xpos, uint ypos, uint size){
 void GraphRenderer::highlightRectangle(Node& node, sf::Color color, sf::RenderWindow& window, uint size){
 	rectangles[node.i][node.j].setOutlineColor(color);
 	rectangles[node.i][node.j].setOutlineThickness(5);
+    
+	rectangles[node.i][node.j].setFillColor(sf::Color::Transparent);
     /*sf::RectangleShape rectangle;
 	rectangle.setSize(sf::Vector2f(size, size/2));
 	rectangle.setFillColor(sf::Color::Transparent);
