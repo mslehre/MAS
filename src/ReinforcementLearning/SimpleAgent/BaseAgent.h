@@ -7,10 +7,10 @@
 */
 class BaseAgent{
     public:
-    BaseAgent();
-    ~BaseAgent();
+    BaseAgent(){};
+    ~BaseAgent(){};
     /** Member policy selects edges in order as long as they are selectable.
     */
     virtual void policy(state s) const = 0; 
-}
+};
 #endif
