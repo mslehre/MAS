@@ -60,7 +60,7 @@ void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Co
 	// select the font
 	text.setFont(font); 
 	text.setColor(sf::Color::Black);
-	text.setPosition(size*0.2+(size*1.8)*j, size*0.2+(size/2)*1.8*i);
+	text.setPosition(size*0.2+(size*1.8)*j+size*0.1, size*0.2+(size/2)*1.8*i+(size/2)*0.1);
 	// set the string to display
 	text.setString(kmer);
 			
