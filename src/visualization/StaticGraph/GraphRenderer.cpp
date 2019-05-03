@@ -32,7 +32,7 @@ void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Co
 	    rectangle.setFillColor(col);
 	    rectangle.setPosition(size*0.2+(size*1.8)*j, size*0.2+((size/2)*1.8)*i);
 	    window.draw(rectangle);
-        while(rectangles.size()!=i+1 && rectangles.size()<10) {
+        while(rectangles.size()!=i+1) {
             vector<sf::RectangleShape> fill;
             rectangles.push_back(fill);
         }
