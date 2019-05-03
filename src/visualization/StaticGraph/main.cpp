@@ -84,15 +84,16 @@ int main(int argc, char **argv){
 		//Save the position of a left mouse click
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 			sf::Vector2i globalPosition = sf::Mouse::getPosition(window);
-			
+			sf::Vector2i positionNow(graphRenderer.direction[0],graphRenderer.direction[1]);
+            globalPosition = globalPosition + positionNow;
 		//If the click has been in the window and on a rectangle
-			if(globalPosition.x<=1600 && 0<=globalPosition.x && globalPosition.y<=900 
-				&& 0<=globalPosition.y && graphRenderer.isPositionNode(globalPosition.x, globalPosition.y, size)){
+			if(graphRenderer.isPositionNode(globalPosition.x, globalPosition.y, size)){
 		//Calculate the node on which has been clicked
 				actualNode = graphRenderer.positionToNode(globalPosition.x, globalPosition.y, nodeList, size);
-		        
+		        cout << "hello" << endl;
 		    //If it's the first node that has been choosen, set the outline color red
 			    if(!choosed && (actual_i!=actualNode.i || actual_j!=actualNode.j) && actualNode.i!=numbOfKmers.size()-1){
+    
 				    graphRenderer.highlightRectangle(actualNode, g, window, sf::Color::Red, size);
 				    actual_i = actualNode.i;
 				    actual_j = actualNode.j;
@@ -116,11 +117,14 @@ int main(int argc, char **argv){
         
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
             window.setView(window.getDefaultView());
+            graphRenderer.direction.at(0) = 0;
+            graphRenderer.direction.at(1) = 0;
 	        window.clear(sf::Color::White);
 	        graphRenderer.drawGraph(window,g,size);
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             sf::View now = window.getView();
+            graphRenderer.direction.at(1) += 10;
             now.move(0,10);
             window.setView(now);
 	        window.clear(sf::Color::White);
@@ -128,6 +132,7 @@ int main(int argc, char **argv){
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             sf::View now = window.getView();
+            graphRenderer.direction.at(0) += -10;
             now.move(-10,0);
             window.setView(now);
 	        window.clear(sf::Color::White);
@@ -135,6 +140,7 @@ int main(int argc, char **argv){
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             sf::View now = window.getView();
+            graphRenderer.direction.at(0) += 10;
             now.move(10,0);
             window.setView(now);
 	        window.clear(sf::Color::White);
@@ -142,6 +148,7 @@ int main(int argc, char **argv){
         }        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             sf::View now = window.getView();
+            graphRenderer.direction.at(1) += -10;
             now.move(0,-10);
             window.setView(now);
 	        window.clear(sf::Color::White);

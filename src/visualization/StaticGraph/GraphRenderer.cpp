@@ -21,7 +21,10 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     return allKmers;
 }
 
-GraphRenderer::GraphRenderer() { loaded = false;
+GraphRenderer::GraphRenderer() { 
+    loaded = false;
+    direction.push_back(0);
+    direction.push_back(0);
 }
 
 void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,

@@ -16,6 +16,7 @@ class GraphRenderer{
         std::vector<std::vector<sf::RectangleShape>> rectangles;
         bool loaded;
 	public:
+        vector<int> direction;
 		GraphRenderer();
 		void drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  		sf::Font font, uint size);
