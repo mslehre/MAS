@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 #include <array>
 #include <string>
 #include "../colorlist.h"
@@ -11,8 +12,11 @@
 #include <stdlib.h>
 
 class GraphRenderer{
+    private:        
+        std::vector<std::vector<sf::RectangleShape>> rectangles;
+        bool loaded;
 	public:
-		vector<vector<sf::RectangleShape>> rectangles;
+        vector<int> direction;
 		GraphRenderer();
 		void drawRectangle(sf::RenderWindow& window, int i, int j, sf::Color col, string kmer,
  		sf::Font font, uint size);
@@ -20,5 +24,6 @@ class GraphRenderer{
 		void drawGraph(sf::RenderWindow& window, Graph& g, uint size);
 		Node positionToNode(uint xpos, uint ypos, vector<Node>& nodeList, uint size);
 		bool isPositionNode(uint xpos, uint ypos, uint size);
-		void highlightRectangle(Node& node, sf::Color color, sf::RenderWindow& window, uint size);
+		void highlightRectangle(Node& node, Graph& g, sf::RenderWindow& window, sf::Color color, uint size);
+        void removeRectangle();
 };
