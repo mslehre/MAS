@@ -10,6 +10,7 @@
 #include "../colormap.h"
 #include "../../alignment/Graph.h"
 #include <stdlib.h>
+#include "edgeShape.h"
 
 class GraphRenderer{
     private:        

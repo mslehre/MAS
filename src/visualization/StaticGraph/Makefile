@@ -1,12 +1,14 @@
 CC = g++
-OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o colormap.o colorlist.o
+OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o colormap.o colorlist.o edgeShape.o
 HEADER1 = ../../alignment/Graph.h
 HEADER2 = ../../alignment/Node.h 
 HEADER3 = GraphRenderer.h
 HEADER4 = ../../alignment/Edge.h
 HEADER5 = ../colormap.h
 HEADER6 = ../colorlist.h
+HEADER7 = edgeShape.h
 CFLAGS = -c -std=c++11 -Wall 
+
 all: visualization
 visualization: $(OBJ) 
 	$(CC) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
@@ -14,7 +16,7 @@ visualization: $(OBJ)
 main.o: main.cpp $(HEADER1)
 	$(CC) $(CFLAGS) $< -o  $@
 
-GraphRenderer.o: GraphRenderer.cpp $(HEADER3) $(HEADER1)
+GraphRenderer.o: GraphRenderer.cpp $(HEADER3) $(HEADER1) $(HEADER7)
 	$(CC) $(CFLAGS) $< -o $@
 
 Graph.o: ../../alignment/Graph.cpp $(HEADER1) $(HEADER2) $(HEADER4)
@@ -32,8 +34,8 @@ colorlist.o: ../colorlist.cc $(HEADER6)
 colormap.o: ../colormap.cc $(HEADER5)
 	$(CC) $(CFLAGS) $< -o $@
 
+edgeShape.o: edgeShape.cpp $(HEADER7)
+	$(CC) $(CFLAGS) $< -o $@
+
 clean: 
-	rm -rf *o visualization
-
-
-
+	rm -rf *o visualization	

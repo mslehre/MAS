@@ -21,6 +21,7 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     return allKmers;
 }
 
+
 GraphRenderer::GraphRenderer() { 
     loaded = false;
     direction.push_back(0);
@@ -87,20 +88,19 @@ void GraphRenderer::drawLine(sf::RenderWindow& window, int i, int j, uint size){
 	
 	
 void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
-	//create a vector of possible fillcolor (later I will get this from Lucas)
+	
 	sf::Font font;
     
     // get Graph information for the Kmerlist and Colorlist
+
 	vector<Node>& nodeList=g.getNodeList();
     
     vector<string> Kmers = giveKmers(nodeList);
     // initialize the colorlist
     colorlist colorExample(Kmers.size());
-
     // initialize the colormap
     vector<sf::Color> colors = colorExample.giveList(); // vector of different colors
     colormap mapExample(Kmers, colors);
-
 
 	//Visit every node in the nodelist
 	    for(uint i = 0; i<nodeList.size(); i++){
@@ -137,6 +137,7 @@ bool GraphRenderer::isPositionNode(uint xpos, uint ypos, uint size){
 	}
 }
 
+
 void GraphRenderer::highlightRectangle(Node& node, Graph& g, sf::RenderWindow& window, sf::Color color, uint size){
 	rectangles.at(node.i).at(node.j).setOutlineColor(color);
 	rectangles.at(node.i).at(node.j).setOutlineThickness(5);
@@ -146,7 +147,5 @@ void GraphRenderer::highlightRectangle(Node& node, Graph& g, sf::RenderWindow& w
 void GraphRenderer::removeRectangle(){
     rectangles.clear();
     loaded = false;
+
 }
-
-	
-
