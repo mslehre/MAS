@@ -9,13 +9,13 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     for (uint i = 0; i<Sequences.size(); i++) {
         index = 0;
         for (uint j = 0; j<i; j++) {
-            if(Sequences[i].kmer == Sequences[j].kmer){
+            if(Sequences.at(i).kmer == Sequences.at(j).kmer){
                 index = 1;
                 break;            
             }
         }
         if(index == 0) {
-            allKmers.push_back(Sequences[i].kmer);
+            allKmers.push_back(Sequences.at(i).kmer);
         }
     }
     return allKmers;
@@ -36,10 +36,10 @@ void GraphRenderer::drawRectangle(sf::RenderWindow& window, int i, int j, sf::Co
             vector<sf::RectangleShape> fill;
             rectangles.push_back(fill);
         }
-        rectangles[i].push_back(rectangle);
+        rectangles.at(i).push_back(rectangle);
     } else {
         
-        window.draw(rectangles[i][j]);
+        window.draw(rectangles.at(i).at(j));
     }
 	
 	sf::Text text;
@@ -101,9 +101,9 @@ void GraphRenderer::drawGraph(sf::RenderWindow& window, Graph& g, uint size){
 
 	//Visit every node in the nodelist
 	    for(uint i = 0; i<nodeList.size(); i++){
-		    drawRectangle(window, nodeList[i].i, nodeList[i].j, mapExample.Map(nodeList[i].kmer), nodeList[i].kmer, font, size);
+		    drawRectangle(window, nodeList.at(i).i, nodeList.at(i).j, mapExample.Map(nodeList.at(i).kmer), nodeList.at(i).kmer, font, size);
 		    if(i!=nodeList.size()-1 && nodeList.at(i).i==nodeList.at(i+1).i){
-                drawLine(window, nodeList[i].i, nodeList[i].j , size);
+                drawLine(window, nodeList.at(i).i, nodeList.at(i).j , size);
 		    }
 	    }
     loaded = true;
@@ -135,8 +135,8 @@ bool GraphRenderer::isPositionNode(uint xpos, uint ypos, uint size){
 }
 
 void GraphRenderer::highlightRectangle(Node& node, Graph& g, sf::RenderWindow& window, sf::Color color, uint size){
-	rectangles[node.i][node.j].setOutlineColor(color);
-	rectangles[node.i][node.j].setOutlineThickness(5);
+	rectangles.at(node.i).at(node.j).setOutlineColor(color);
+	rectangles.at(node.i).at(node.j).setOutlineThickness(5);
     drawGraph(window,g,size);
 }
 

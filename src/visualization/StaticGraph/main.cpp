@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 	    //Draw the graph
 	    graphRenderer.drawGraph(window,g,size);
     } else {
-        actualNode = g.nodeListAll[0][0];
+        actualNode = g.nodeListAll.at(0).at(0);
         size = 10;
     }
     
