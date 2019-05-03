@@ -72,46 +72,44 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
 void Graph::calcAdjacentEdges(unsigned int index){
     vector<string>& stringList = getStringListSequence();
 
-    // the last sequence has no next sequence
-    if (index == stringList.size()-1) {
-        cerr << "It is the last sequence." << endl;
-        return;
-    }
     // counter for nodes with matches
-    unsigned int matches = 0;
+    bool matches = false;   
     // calculate adjacent edges from all nodes in one sequence
     // list of nodes for the sequence i
     for (unsigned int i = 0; i < nodeListAll.at(index).size(); i++) {
         // list of nodes for the sequence i+1
-        for (unsigned int j = 0; j < nodeListAll.at(index + 1).size(); j++) {
-            // compare strings of nodes
-            if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
-                // store begin (Node) and end (Node) of an edge
-                Node firstNode  = nodeListAll.at(index).at(i);
-                Node secondNode = nodeListAll.at(index + 1).at(j);
+        // the last sequence has no next sequence
+        if (index != stringList.size()-1) {
+            for (unsigned int j = 0; j < nodeListAll.at(index + 1).size(); j++) {
+                // compare strings of nodes
+                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
+                    // store begin (Node) and end (Node) of an edge
+                    Node firstNode  = nodeListAll.at(index).at(i);
+                    Node secondNode = nodeListAll.at(index + 1).at(j);
 
-                // update adjacency list for this node
-                nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
-                
-                // pushes only nodes in nodeList with matches
-                   matches = 1;                               
-            }                         
+                    // update adjacency list for this node
+                    nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
+                    // pushes only nodes in nodeList with matches
+                    matches = true;
+                }        
+            }
         }
         if (index != 0) {
             for (unsigned int j = 0; j < nodeListAll.at(index-1).size(); j++) {
                 if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index - 1).at(j).kmer)
-                    matches = 1;
+                    matches = true;
             }
         }
-        if (matches == 1)
+        if (matches)
             nodeList.push_back(nodeListAll.at(index).at(i));
-        matches = 0;
+        matches = false;
     }
     // rewrite index
     unsigned int counter_i = 0;
     unsigned int counter_j = 0;
         for (unsigned int i = 0; i < nodeList.size(); i++) {
             if (nodeList.at(i).i > counter_i) {
+                
                 counter_i++; 
                 counter_j = 0;
             }
