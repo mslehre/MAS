@@ -56,6 +56,13 @@ int main(int argc, char **argv){
 	    
 	    //Draw the graph
 	    graphRenderer.drawGraph(window,g,size);
+		
+
+		//Edgeshape test
+		/*pair <int, int> firstCoord = make_pair(10,10);
+		pair <int, int> secondCoord = make_pair(100,100);
+		edgeShape test(firstCoord, secondCoord, sf::Color::Red);
+		test.draw(window);*/
     } else {
         actualNode = g.nodeListAll.at(0).at(0);
         size = 10;
@@ -88,7 +95,6 @@ int main(int argc, char **argv){
 			if(graphRenderer.isPositionNode(globalPosition.x, globalPosition.y, size)){
 		//Calculate the node on which has been clicked
 				actualNode = graphRenderer.positionToNode(globalPosition.x, globalPosition.y, nodeList, size);
-		        cout << "hello" << endl;
 		    //If it's the first node that has been choosen, set the outline color red
 			    if(!choosed && (actual_i!=actualNode.i || actual_j!=actualNode.j) && actualNode.i!=numbOfKmers.size()-1){
     
