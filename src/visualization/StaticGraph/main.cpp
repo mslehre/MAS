@@ -54,8 +54,6 @@ int main(int argc, char **argv){
 	    //Initialise the acutal Node
 	    actualNode=nodeList.at(0);
 	    
-	    //Draw the graph
-	    graphRenderer.drawGraph(window,g,size);
 		
 
 		//Edgeshape test
@@ -67,9 +65,14 @@ int main(int argc, char **argv){
         actualNode = g.nodeListAll.at(0).at(0);
         size = 10;
     }
-    
+    if (size<100){
+        size = 100;
+    }
 	//Initialise choosed
     bool choosed=false;
+    
+	//Draw the graph
+	graphRenderer.drawGraph(window,g,size);
 	window.display();
     sf::View view;
     // run the program as long as the window is open
