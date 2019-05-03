@@ -94,12 +94,15 @@ void Graph::calcAdjacentEdges(unsigned int index){
                 nodeListAll.at(index).at(i).adjNodes.push_back(secondNode); 
                 
                 // pushes only nodes in nodeList with matches
-                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index + 1).at(j).kmer) {
-                    matches = 1;
-                }                       
+                   matches = 1;                               
             }                         
         }
-
+        if (index != 0) {
+            for (unsigned int j = 0; j < nodeListAll.at(index-1).size(); j++) {
+                if (nodeListAll.at(index).at(i).kmer == nodeListAll.at(index - 1).at(j).kmer)
+                    matches = 1;
+            }
+        }
         if (matches == 1)
             nodeList.push_back(nodeListAll.at(index).at(i));
         matches = 0;
