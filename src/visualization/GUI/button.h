@@ -9,7 +9,7 @@
  *
  */
 
-// TODO: - We need 3 textures for each Button: pushed, mouse over button, normal
+// TODO: 
 //       - The call of function()  dont work for any function yet. (only for void)
 //       - the button class could have a general "setFunction" method that assignes 
 //         a method that is invoked on button click. 
@@ -17,8 +17,8 @@
 
 class Button {
     private:
-        sf::Sprite Button_Sprite;
-        sf::Texture Button_Texture; 
+        sf::Sprite Button_Sprite;   ///< Sprite of the Button
+        sf::Texture Button_Texture; ///< Texture of the Button
 
     public:
         void (*Button_function) ();
