@@ -26,15 +26,36 @@ int main() {
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
+
+            auto mouse_pos = sf::Mouse::getPosition(window); ///< local mouse position in the window
+            auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); ///< mouse position in world coordinates
+
             ///< "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            ///< hover with mouse over Button                                            
+            if (!clicked_startButton) {
+                if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
+                    startButton.load_Texture("../../../fig/startButton_hover.png");
+                } else {
+                    startButton.load_Texture("../../../fig/startButton.png");
+                }
+                if (settingsButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
+                    settingsButton.load_Texture("../../../fig/settingsButton_hover.png");
+                } else {
+                    settingsButton.load_Texture("../../../fig/settingsButton.png");
+                }
+                if (quitButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
+                    quitButton.load_Texture("../../../fig/quitButton_hover.png");
+                } else {
+                    quitButton.load_Texture("../../../fig/quitButton.png");
+                }
+            }
+
             ///< "mouseButton clicked" events
-            if (event.type == sf::Event::MouseButtonPressed) {
-
-                auto mouse_pos = sf::Mouse::getPosition(window); ///< local mouse position in the window
-                auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); ///< mouse position in world coordinates
-
+            if (event.type == sf::Event::MouseButtonPressed) { 
+            // left mouseButton               
                 if (event.mouseButton.button == sf::Mouse::Left) {
                     std::cout << "the left button was pressed" << std::endl;
                     std::cout << "mouse x: " << mouse_pos.x << std::endl;
@@ -44,20 +65,24 @@ int main() {
                         if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             clicked_startButton = true;
                             std::cout << "startButton clicked" << std::endl;
+                            //startButton.load_Texture("../../../fig/startButton_clicked.png");
                             startButton.Button_function();
                         }
                         if (settingsButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             //clicked_settingsButton = true;
                             std::cout << "settingsButton clicked" << std::endl;
+                            //settingsButton.load_Texture("../../../fig/settingsButton_clicked.png");
                             settingsButton.Button_function();
                         }
                         if (quitButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             std::cout << "quitButton clicked" << std::endl;
+                            //quitButton.load_Texture("../../../fig/quitButton_clicked.png");
                             quitButton.Button_function();
                             window.close();
                         }
                     }
                 }
+            // right mouseButton 
                 if (event.mouseButton.button == sf::Mouse::Right) {
                     std::cout << "the right button was pressed" << std::endl;
                     std::cout << "mouse x: " << mouse_pos.x << std::endl;
