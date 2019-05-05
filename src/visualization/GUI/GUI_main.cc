@@ -9,10 +9,6 @@ void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;
 } 
 
-/**
- * \brief This is the main function for the GUI.
- */
-
 int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 
