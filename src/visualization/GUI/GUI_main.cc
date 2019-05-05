@@ -27,14 +27,14 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event)) {
 
-            auto mouse_pos = sf::Mouse::getPosition(window); ///< local mouse position in the window
-            auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); ///< mouse position in world coordinates
+            auto mouse_pos = sf::Mouse::getPosition(window); // local mouse position in the window
+            auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
 
-            ///< "close requested" event: we close the window
+            // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            ///< hover with mouse over Button                                            
+            // hover with mouse over Button                                            
             if (!clicked_startButton) {
                 if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                     startButton.load_Texture("../../../fig/startButton_hover.png");
@@ -53,7 +53,7 @@ int main() {
                 }
             }
 
-            ///< "mouseButton clicked" events
+            // "mouseButton clicked" events
             if (event.type == sf::Event::MouseButtonPressed) { 
             // left mouseButton               
                 if (event.mouseButton.button == sf::Mouse::Left) {
