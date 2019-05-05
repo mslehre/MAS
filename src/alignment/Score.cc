@@ -62,7 +62,7 @@ unsigned int calculate_score(vector<Node>& nodeList, vector<Edge>& edgesVector){
             // update visited
             for (unsigned int j = 0; j < path.size(); j++) {
                 for (unsigned int k = 0; k < nodeList.size(); k++) {
-                    if (is_equal(path[j], nodeList[k])){
+                    if (is_equal(path[j], nodeList[k])) {
                         visited[k] = true;
                         break;
                     }
