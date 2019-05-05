@@ -12,7 +12,7 @@
 #include <string>
 #include <cmath>
 #include <utility>
-#include "../../alignment/Edge.h"
+#include "../alignment/Edge.h"
 
 using namespace std;
 
@@ -26,9 +26,10 @@ class ArrowShape {
         sf::CircleShape tri;
     public:
         ArrowShape();
-        ArrowShape(sf::Vector2f s, sf::Vector2f e);
-        void initArrow(sf::Vector2f start, sf::Vector2f end);
+        ArrowShape(sf::Vector2f s, sf::Vector2f e,sf::Color col);
+        void initArrow(sf::Vector2f start, sf::Vector2f end,sf::Color col);
 		void Draw(sf::RenderWindow& window);
+        sf::CircleShape getShape();
 };
 
 #endif //ArrowShape_H_

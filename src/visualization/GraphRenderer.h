@@ -10,10 +10,10 @@
 #include <vector>
 #include <array>
 #include <string>
-#include "../colorlist.h"
-#include "../colormap.h"
-#include "../../alignment/Graph.h"
-#include "../../alignment/Edge.h"
+#include "colorlist.h"
+#include "colormap.h"
+#include "../alignment/Graph.h"
+#include "../alignment/Edge.h"
 #include <stdlib.h>
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
@@ -35,6 +35,7 @@ class GraphRenderer{
         std::vector<SimpleArrow> arrows;
         std::vector<std::vector<sf::RectangleShape>> rects;
         std::vector<TextProps> txt;
+        int index;
         sf::Vector2i highlight;
         sf::Color highlightCol;
         sf::View bild;
@@ -42,6 +43,7 @@ class GraphRenderer{
 	public:
         bool hovered;
         bool clicked;
+        bool st_hovered;
         vector<int> direction;
 
         GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, int s);
@@ -51,12 +53,17 @@ class GraphRenderer{
         void drawShape(sf::RenderWindow& window);
         void drawText(sf::RenderWindow& window);
         void moveWindow(int dir, sf::RenderWindow& window);
+        void addToGame(sf::RenderWindow& window, sf::Vector2f pos);
         void highlightHover(sf::Vector2f pos, sf::RenderWindow& window);
         void deHighlightHover(sf::RenderWindow& window);
+        void edgeHover(sf::Vector2f pos, sf::RenderWindow& window);
+        void deEdgeHover(sf::RenderWindow& window);
         void clickKmer();
-        void deClickKmer(sf::RenderWindow& window);
+        void deClickKmer(sf::RenderWindow& window, sf::Vector2f pos);
         void showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window);
 		Node positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
+        bool isArrowValid(Edge temp); 
+        bool isPositionEdge(sf::Vector2f pos);
 		bool isPositionNode(sf::Vector2f pos);
 };
 

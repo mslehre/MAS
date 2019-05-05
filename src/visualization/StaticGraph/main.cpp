@@ -1,4 +1,4 @@
-#include "GraphRenderer.h"
+#include "../GraphRenderer.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -18,7 +18,7 @@ int main(int argc, char **argv){
 	//Open the window with white Background
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
-    window.setFramerateLimit(40);
+    window.setFramerateLimit(120);
 	window.display();
 
 	//Create a GraphRenderer
@@ -52,8 +52,16 @@ int main(int argc, char **argv){
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
             GrRend.clickKmer();
             GrRend.showEdges(nodeList, global_mouse_pos, window);
-        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !GrRend.hovered && GrRend.clicked) {
-            GrRend.deClickKmer(window);
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && GrRend.clicked) {
+            GrRend.deClickKmer(window, global_mouse_pos);
+        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.clicked && GrRend.st_hovered) {
+            GrRend.addToGame(window, global_mouse_pos);
+        }
+        if (GrRend.clicked && !GrRend.st_hovered && GrRend.isPositionEdge(global_mouse_pos)) {
+            GrRend.edgeHover(global_mouse_pos, window);
+        } else if (GrRend.clicked && GrRend.st_hovered && !GrRend.isPositionEdge(global_mouse_pos)) {
+            GrRend.deEdgeHover(window);
         }
         if (!GrRend.hovered && GrRend.isPositionNode(global_mouse_pos)) {
             GrRend.highlightHover(global_mouse_pos, window);

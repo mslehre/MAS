@@ -32,6 +32,7 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, i
     size = s;
     hovered = false;
     clicked = false;
+    st_hovered = false;
     initShapes(nodeList);
     drawShape(window);
     drawText(window);
@@ -70,6 +71,7 @@ void GraphRenderer::moveWindow(int dir, sf::RenderWindow& window) {
 	            window.clear(sf::Color::White);
                 direction.at(0) = 0;
                 direction.at(1) = 0;
+                arrowList.clear();
                 break;
         }
     drawShape(window);
@@ -98,6 +100,7 @@ void GraphRenderer::drawShape(sf::RenderWindow& window) {
     int size_seq;
     int size_Arrow = arrows.size();
     int size_tempArr = tempArr.size();
+    int size_arrowList = arrowList.size();
 
     for (int i = 0; i < size_Arrow; i++) {
         window.draw(arrows.at(i).line);
@@ -112,10 +115,10 @@ void GraphRenderer::drawShape(sf::RenderWindow& window) {
     for (int i = 0; i < size_tempArr; i++) {
         tempArr.at(i).Draw(window);
     }
-    /*
-    for (int i = 0; i < size_Arrow2; i++) {
-        arrows2.at(i).Draw(window);
-    }*/
+    
+    for (int i = 0; i < size_arrowList; i++) {
+        arrowList.at(i).Draw(window);
+    }
 }
 
 
@@ -199,6 +202,21 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 	}
 }
 
+void GraphRenderer::addToGame(sf::RenderWindow& window, sf::Vector2f pos) {
+    Edge temp = tempArr.at(index).getEdge();
+    FuncArrowShape fill(temp, size, sf::Color::Black);
+    arrowList.push_back(fill);
+	window.clear(sf::Color::White);
+    tempArr.clear();
+    clicked = false;
+    st_hovered = false;
+    deClickKmer(window, pos);
+    drawShape(window);
+    drawText(window);
+}
+
+
+
 Node GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
     uint x = (pos.x-size*0.2)/(size*1.8);
 	uint y = (pos.y-size*0.2)/((size/2)*3);
@@ -236,6 +254,28 @@ void GraphRenderer::deHighlightHover(sf::RenderWindow& window) {
     hovered = false;
 }
 
+void GraphRenderer::deEdgeHover(sf::RenderWindow& window) {
+    tempArr.at(index).deHoverFunc();
+	window.clear(sf::Color::White);
+    drawShape(window);
+    drawText(window);
+    st_hovered = false;
+}
+
+void GraphRenderer::edgeHover(sf::Vector2f pos, sf::RenderWindow& window) {
+    for(int i = 0; i<tempArr.size(); i++) {
+        if (tempArr.at(i).getShape().getGlobalBounds().contains(pos)) {
+            tempArr.at(i).hoverFunc();
+            index = i;
+            break;
+        }
+    }
+	window.clear(sf::Color::White);
+    drawShape(window);
+    drawText(window);
+    st_hovered = true;
+}
+
 void GraphRenderer::clickKmer() {
     highlightCol = rects.at(highlight.x).at(highlight.y).getFillColor();
     rects.at(highlight.x).at(highlight.y).setFillColor(sf::Color(128,128,128));
@@ -245,7 +285,7 @@ void GraphRenderer::clickKmer() {
     
 }
 
-void GraphRenderer::deClickKmer(sf::RenderWindow& window) {
+void GraphRenderer::deClickKmer(sf::RenderWindow& window, sf::Vector2f pos) {
     rects.at(highlight.x).at(highlight.y).setFillColor(highlightCol);
     rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Transparent);
     rects.at(highlight.x).at(highlight.y).setOutlineThickness(0);
@@ -254,6 +294,9 @@ void GraphRenderer::deClickKmer(sf::RenderWindow& window) {
     drawShape(window);
     drawText(window);
     clicked = false;
+    int j = (pos.x-size*0.2)/(size*1.8);
+	int i = (pos.y-size*0.2)/((size/2)*3);
+    highlight = sf::Vector2i(i,j);
 }
 
 void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window) {
@@ -263,19 +306,48 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::Rende
     ph.first = recent;
     for (int i = 0; i<size_Edges; i++) {
         ph.second = recent.adjNodes.at(i);
-        FuncArrowShape temp(ph, size);
-        tempArr.push_back(temp);
+        FuncArrowShape temp(ph, size, sf::Color(200,200,200));
+        if(isArrowValid(ph)) {
+            tempArr.push_back(temp);
+        }
     }
 	window.clear(sf::Color::White);
     drawShape(window);
     drawText(window);
 }
 
+bool GraphRenderer::isArrowValid(Edge temp) {
+    Edge ph;
+    for(auto &arr : arrowList) {
+        ph = arr.getEdge();
+        if (ph.first.i == temp.first.i) { //gleiche Zeile
+            if (ph.second.j == temp.second.j && ph.first.j == temp.first.j) { //gleiches Ziel
+                return false;
+            } else if (ph.first.j < temp.first.j) { //Sich kreuzende Ziele
+                if (ph.second.j > temp.second.j)
+                    return false;
+            } else if (ph.first.j > temp.first.j) {
+                if (ph.second.j < temp.second.j)
+                    return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
+    for(auto &arr : tempArr) {
+        if (arr.getShape().getGlobalBounds().contains(pos))
+            return true;
+    }
+}
+
 bool GraphRenderer::isPositionNode(sf::Vector2f pos){
 	int x = (pos.x-size*0.2)/(size*1.8);
 	int y = (pos.y-size*0.2)/((size/2)*3);
     if(y<rects.size() && y>=0 && x>=0 && x<rects.at(y).size()) {
-        return rects.at(y).at(x).getGlobalBounds().contains(pos);
+        bool s = rects.at(y).at(x).getGlobalBounds().contains(pos);
+        return s;
     } else {
         return false;
     }

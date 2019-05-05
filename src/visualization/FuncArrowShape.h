@@ -13,20 +13,23 @@
 #include <string>
 #include <cmath>
 #include <utility>
-#include "../../alignment/Edge.h"
+#include "../alignment/Edge.h"
 
 using namespace std;
 
 class FuncArrowShape : public ArrowShape {
     protected:
         Edge edge;
+        sf::Color hovCol;
         bool clicked;
         bool hovered;
     public:        
         FuncArrowShape();
-        FuncArrowShape(sf::Vector2f s, sf::Vector2f e);
-        FuncArrowShape(Edge Arr, int size);
+        FuncArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col);
+        FuncArrowShape(Edge Arr, int size, sf::Color col);
         Edge getEdge();
+        void hoverFunc();
+        void deHoverFunc();
 };
 
 #endif //FuncArrowShape_H_
