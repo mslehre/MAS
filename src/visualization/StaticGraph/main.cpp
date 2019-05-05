@@ -18,20 +18,21 @@ int main(int argc, char **argv){
 	//Open the window with white Background
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
+    window.setFramerateLimit(40);
 	window.display();
 
 	//Create a GraphRenderer
 	GraphRenderer GrRend(window, nodeList, 100);
     
-    while (window.isOpen())
-    {
-        // check all the window's events that were triggered since the last iteration of the loop
+    while (window.isOpen()) {
+        
+        auto mouse_pos = sf::Mouse::getPosition(window); // local mouse position in the window
+        auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
         sf::Event event;
-        while (window.pollEvent(event))
-        {
+        while (window.pollEvent(event)) {
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
-                window.close();	
+                window.close();
 		}
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
 	        GrRend.moveWindow(4,window);
@@ -47,6 +48,17 @@ int main(int argc, char **argv){
         }        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
 	        GrRend.moveWindow(3,window);
+        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
+            GrRend.clickKmer();
+            GrRend.showEdges(nodeList, global_mouse_pos, window);
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !GrRend.hovered && GrRend.clicked) {
+            GrRend.deClickKmer(window);
+        }
+        if (!GrRend.hovered && GrRend.isPositionNode(global_mouse_pos)) {
+            GrRend.highlightHover(global_mouse_pos, window);
+        } else if (GrRend.hovered && !GrRend.isPositionNode(global_mouse_pos)) {
+            GrRend.deHighlightHover(window);
         }
     
         window.display();

@@ -16,6 +16,10 @@
 
 using namespace std;
 
+const double PI = 3.14159265359;
+double norm(sf::Vector2f vec);
+double innerPr(sf::Vector2f vec1, sf::Vector2f vec2);
+
 class ArrowShape {
     protected:
         sf::RectangleShape line;
@@ -23,7 +27,6 @@ class ArrowShape {
     public:
         ArrowShape();
         ArrowShape(sf::Vector2f s, sf::Vector2f e);
-        ArrowShape(Edge Arr, int size);
         void initArrow(sf::Vector2f start, sf::Vector2f end);
 		void Draw(sf::RenderWindow& window);
 };
