@@ -145,13 +145,13 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     sf::CircleShape tri;
     tri.setRadius(size*0.1);
     tri.setPointCount(3);
-    tri.setFillColor(sf::Color::Cyan);
+    tri.setFillColor(sf::Color::Black);
     tri.setOutlineThickness(2.f);
     tri.setOutlineColor(sf::Color::Black);
     tri.setRotation(90.f);
 
     sf::RectangleShape line;
-    line.setSize(sf::Vector2f(size, 0));
+    line.setSize(sf::Vector2f(3*size, 0));
 	line.setOutlineColor(sf::Color::Black);
 	line.setOutlineThickness(2);
 	//calculate our Graph in visuals
@@ -160,17 +160,17 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
         i = nodeList.at(k).i;
         j = nodeList.at(k).j;
 	    rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
-	    rect.setPosition(size*0.2+(size*1.8)*j, size*0.2+((size/2)*5)*i);
+	    rect.setPosition(size*0.2+(size*3)*j, size*0.2+((size/2)*5)*i);
         rects.push_back(rect);
-	    tx.pos.push_back(size*0.2+(size*1.8)*j+size*0.1);
+	    tx.pos.push_back(size*0.2+(size*3)*j+size*0.1);
         tx.pos.push_back(size*0.2+(size/2)*5*i+(size/2)*0.1);
 	    tx.kmer = nodeList.at(k).kmer;
 	    tx.charSize = size*0.25;
         txt.push_back(tx);
         tx.pos.clear();
 		if(k!=nodeList.size()-1 && i==nodeList.at(k+1).i){
-	        line.setPosition(size*1.2+(size*1.8)*j, size*0.45+(size/2)*5*i);
-	        tri.setPosition(size*1.7 +(size*1.8)*j, size*0.35+(size/2)*5*i);
+	        line.setPosition(size*1.2+(size*3)*j, size*0.45+(size/2)*5*i);
+	        tri.setPosition(size*3.185 +(size*3)*j, size*0.35+(size/2)*5*i);
             arr.line = line;
             arr.triangle = tri;
             arrows.push_back(arr);

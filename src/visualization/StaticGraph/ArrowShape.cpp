@@ -16,8 +16,8 @@ ArrowShape::ArrowShape() {
 
 ArrowShape::ArrowShape(Edge Arr, int size) {
     int arr[4] = {Arr.first.i,Arr.first.j,Arr.second.i,Arr.second.j};
-    sf::Vector2f start(size*0.2+(size*1.8)*arr[1]+(size/2),size*0.2+((size/2)*5)*arr[0]+(size/2));
-    sf::Vector2f End(size*0.2+(size*1.8)*arr[3]+(size/2),size*0.2+((size/2)*5)*arr[2]);
+    sf::Vector2f start(size*0.2+(size*3)*arr[1]+(size/2),size*0.2+((size/2)*5)*arr[0]+(size/2));
+    sf::Vector2f End(size*0.2+(size*3)*arr[3]+(size/2),size*0.2+((size/2)*5)*arr[2]);
     initArrow(start,End);
 
 }
@@ -42,7 +42,7 @@ void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end) {
     */
     line.setSize(sf::Vector2f(norm_diag, 0));
 	line.setOutlineColor(sf::Color::Black);
-	line.setOutlineThickness(2);
+	line.setOutlineThickness(0.5);
     line.setPosition(start);
     line.setRotation(angle_diag);
 }
