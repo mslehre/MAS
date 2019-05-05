@@ -6,12 +6,10 @@
 #include <fstream>
 #include <stdlib.h>
 
-/**
- * \brief This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
- * If there is more then one sequence then we have mutations with mutation probability P. 
- * Call script with: ./simulation_main S L P
- * Example: ./simulation_main 5 100 0.3
- */
+// This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
+// If there is more then one sequence then we have mutations with mutation probability P. 
+// Call script with: ./simulation_main S L P
+// Example: ./simulation_main 5 100 0.3
 
 using namespace std;
 
