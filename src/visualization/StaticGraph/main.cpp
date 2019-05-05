@@ -1,84 +1,30 @@
 #include "GraphRenderer.h"
 
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 using namespace std;
+
+
 
 int main(int argc, char **argv){
 
-	// example create object from class Graph
-	Graph g;									
-	
-	// read fasta file
-	g.readFastaFiles(argv[1],atoi(argv[2]));				
-	
-	//Get the nodelist
+	// Get Graph Infos
+	Graph g;
+	g.readFastaFiles(argv[1],atoi(argv[2]));
 	vector<Node>& nodeList=g.getNodeList();
-
-	//
-	vector<int>& numbOfKmers=g.getNumberOfKmers();
+    vector<int>& numbOfKmers=g.getNumberOfKmers();
+    
+	//Open the window with white Background
+    sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
+	window.clear(sf::Color::White);    
+	window.display();
 
 	//Create a GraphRenderer
-	GraphRenderer graphRenderer;
-
-	//Open the window
-    sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
-	//Set the backcolor
-	window.clear(sf::Color::White);
-
-	uint maxLength=1;
-
-	//Calculate the maximal number of nodes of every sequence
-	for(auto &node : nodeList){	
-			if(maxLength<node.adjNodes.size()){
-				maxLength=node.adjNodes.size();	
-		}
-	}
-
-	uint size;
-	Node actualNode;
-	//Initialise the actual indices 
-	int actual_i = -1;
-	int actual_j = -1;
-	//Calculate the size of the rectangles
-    if (numbOfKmers.size()!=0) {
-	    //numbOfKmers.size() is the number of sequences
-	    unsigned int possibleSize1 = 300/maxLength;
-	    unsigned int possibleSize2 = 1200/numbOfKmers.size();
-
-	    if(possibleSize1<possibleSize2){
-		    size = possibleSize1;
-	    }
-	    else{
-		    size = possibleSize2;
-	    }
-
-	    //Initialise the acutal Node
-	    actualNode=nodeList.at(0);
-	    
-		
-
-		//Edgeshape test
-		/*pair <int, int> firstCoord = make_pair(10,10);
-		pair <int, int> secondCoord = make_pair(100,100);
-		edgeShape test(firstCoord, secondCoord, sf::Color::Red);
-		test.draw(window);*/
-    } else {
-        actualNode = g.nodeListAll.at(0).at(0);
-        size = 10;
-    }
-    if (size<100){
-        size = 100;
-    }
-	//Initialise choosed
-    bool choosed=false;
+	GraphRenderer GrRend(window, nodeList, 100);
     
-	//Draw the graph
-	graphRenderer.drawGraph(window,g,size);
-	window.display();
-    sf::View view;
-    // run the program as long as the window is open
     while (window.isOpen())
     {
-		
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
@@ -86,80 +32,21 @@ int main(int argc, char **argv){
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
                 window.close();	
-					
 		}
-			
-		//Save the position of a left mouse click
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-			sf::Vector2i globalPosition = sf::Mouse::getPosition(window);
-			sf::Vector2i positionNow(graphRenderer.direction[0],graphRenderer.direction[1]);
-            globalPosition = globalPosition + positionNow;
-		//If the click has been in the window and on a rectangle
-			if(graphRenderer.isPositionNode(globalPosition.x, globalPosition.y, size)){
-		//Calculate the node on which has been clicked
-				actualNode = graphRenderer.positionToNode(globalPosition.x, globalPosition.y, nodeList, size);
-		    //If it's the first node that has been choosen, set the outline color red
-			    if(!choosed && (actual_i!=actualNode.i || actual_j!=actualNode.j) && actualNode.i!=numbOfKmers.size()-1){
-    
-				    graphRenderer.highlightRectangle(actualNode, g, window, sf::Color::Red, size);
-				    actual_i = actualNode.i;
-				    actual_j = actualNode.j;
-				    choosed = true;
-
-		    //Set for all nodes that can be choosen from the node above that has been picked the outline color white
-				    for(uint l=0; l<actualNode.adjNodes.size(); l++){
-					    graphRenderer.highlightRectangle(actualNode.adjNodes.at(l), g, window, sf::Color::Black, size);
-				    }		
-			    }	
-			}		
-        }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right)){
-            if(choosed) {
-                    graphRenderer.removeRectangle();
-                    window.clear(sf::Color::White);
-	                graphRenderer.drawGraph(window,g,size);
-                    choosed = false;
-            }
-        }
-        
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            window.setView(window.getDefaultView());
-            graphRenderer.direction.at(0) = 0;
-            graphRenderer.direction.at(1) = 0;
-	        window.clear(sf::Color::White);
-	        graphRenderer.drawGraph(window,g,size);
+	        GrRend.moveWindow(4,window);
         }
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            sf::View now = window.getView();
-            graphRenderer.direction.at(1) += 10;
-            now.move(0,10);
-            window.setView(now);
-	        window.clear(sf::Color::White);
-	        graphRenderer.drawGraph(window,g,size);
+	        GrRend.moveWindow(0,window);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            sf::View now = window.getView();
-            graphRenderer.direction.at(0) += -10;
-            now.move(-10,0);
-            window.setView(now);
-	        window.clear(sf::Color::White);
-	        graphRenderer.drawGraph(window,g,size);
+	        GrRend.moveWindow(1,window);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            sf::View now = window.getView();
-            graphRenderer.direction.at(0) += 10;
-            now.move(10,0);
-            window.setView(now);
-	        window.clear(sf::Color::White);
-	        graphRenderer.drawGraph(window,g,size);
+	        GrRend.moveWindow(2,window);
         }        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            sf::View now = window.getView();
-            graphRenderer.direction.at(1) += -10;
-            now.move(0,-10);
-            window.setView(now);
-	        window.clear(sf::Color::White);
-	        graphRenderer.drawGraph(window,g,size);
+	        GrRend.moveWindow(3,window);
         }
     
         window.display();
