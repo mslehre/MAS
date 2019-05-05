@@ -4,9 +4,8 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-/** \brief This class generate a Button. 
- *  TODO... 
- *
+/** 
+ * \brief This class generate button for the GUI.
  */
 
 // TODO: 
@@ -24,8 +23,7 @@ class Button {
         void (*Button_function) ();
          
          /** 
-         * \param all_textures is a vector with all textures
-         * \param index is the index of the texture you want to load from all_textures
+         * \param texturename is the name of the texture of the button
          * \param x_pos is the x coordinate of the sprite in the window
          * \param y_pos is the y coordinate of the sprite in the window
          * \param function is the function that will executed if the button is pushed
