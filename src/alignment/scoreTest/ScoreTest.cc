@@ -74,7 +74,7 @@ int main(){
     unsigned int score = calculate_score(nodeList, edgeList);
 
     if (score == 17) {
-        cout << "passed scoreTest successfully" << endl;
+        cout << "passed ScoreTest successfully" << endl;
         return 0;
     } else {
         cout << "ScoreTest failed" << endl;
