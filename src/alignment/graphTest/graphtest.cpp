@@ -35,9 +35,9 @@ int main(int argc, char **argv){
     vector<Edge> edgeVec = g.getEdgesVector();
     cout << "Output all edges:" << endl;
     for (auto a : edgeVec) {
-        cout << "(" << a.first.i << " ," << a.second.j << ")" << endl;
+        cout << "Edge: " << "(" << a.first.i << " ," << a.first.j << ")" << "---" << "(" << a.second.i << " ," << a.second.j << ")"<< endl;
     }
-    //#####################################################################
+    //#####################################################################*/
 
     return 0;
 }
