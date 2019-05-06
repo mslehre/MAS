@@ -69,7 +69,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
 }
 
 // Method: calculate edges and nodes for one sequence
-void Graph::calcAdjacentEdges(unsigned int index){
+void Graph::calcAdjacentEdges(unsigned int index){//sequence
     vector<string>& stringList = getStringListSequence();
 
     // counter for nodes with matches
@@ -128,6 +128,7 @@ vector<int>& Graph::getNumberOfKmers(){
 void Graph::calcEdgeList() {
 
     // calculate nodeList only with matches
+  
     for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
         calcAdjacentEdges(i);
     }

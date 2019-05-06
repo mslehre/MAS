@@ -46,7 +46,9 @@ class Graph {
     public:
         // constructor
         Graph();
-                                     
+
+        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
+
         unsigned int getK();                        ///< get the length of node (kmer)
 
         vector<string>& getStringListSequence();    ///< get the string for every sequence
