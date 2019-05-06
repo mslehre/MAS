@@ -23,8 +23,6 @@ class Graph {
 
         vector<int> numberOfKmers;         ///< the numbers of nodes only with matches
 
-        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
-
         vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
         
         vector<Node> helpList;                      ///< use only for calculation
