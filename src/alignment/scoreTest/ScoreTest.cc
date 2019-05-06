@@ -76,7 +76,7 @@ int main(){
 
 
 // need a correct graph, dont work yet 
-/*
+
     graph.readFastaFiles("score_test_fasta.fa", 2);
     state s(graph);
     for( unsigned int i = 0; i < graph.getEdgesVector().size(); i++) {
@@ -92,7 +92,4 @@ int main(){
         cout << "ScoreTest failed. Score is "<< score <<" not 16." << endl;
         return -1;
     }  
-*/
-return 0; // TODO if the graph works delete this return 
-
 }
