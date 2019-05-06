@@ -15,6 +15,15 @@ state::state(Graph& graph){
     this->score = 0;
 }
 
+state::state(vector <Edge> e){
+    for(int i=0;i<e.size();i++){
+        this->selectedSubset.push_back(false);
+        this->selectable.push_back(true);
+    }
+    this->edges=e;
+    this->score = 0;
+}
+
 state::state(){
     vector <bool> selectedSubset;
     vector <Edge> edges;

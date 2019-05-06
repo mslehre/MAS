@@ -16,6 +16,7 @@
 class state{
     public:
     state(Graph& graph); ///< Constructor with a Graph
+    state(std::vector <Edge> e); ///< Constructor with an Edge vector
     state();
     ~state();
 
@@ -47,17 +48,18 @@ class state{
 
     void updateSelectability(int i); 
 
-    /** 
-     * \param a is a Node
-     * \param b is a Node
-     * \return TRUE if a and b have the same indices
+    /**
+     * This function is recursive and find a path for a given set of edges and nodes
+     * \param path is the path found so far
+     * \param edgesVector are all possible edges
+     * \param graph is the graph (contains all nodes)
      */
 
     void find_path(std::vector<unsigned int>& path, std::vector<Edge>& edgesVector, Graph& graph);
 
     /** 
-     * \param nodeList is the vector with all nodes
-     * \param edgesVector is a vector with all edges
+     * \param graph is a graph
+     * calculate the score for a given graph
      */
 
     void calculate_score(Graph& graph);
