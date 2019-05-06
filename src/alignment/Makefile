@@ -8,7 +8,7 @@ main: main.o State.o Graph.o Node.o Edge.o
 main.o: main.cc State.h Graph.h Node.h Edge.h
 	g++ -std=c++11 -c main.cc
 
-State.o: State.cc State.h Edge.h Node.h
+State.o: State.cc State.h Edge.h Node.h Graph.h
 	g++ -std=c++11 -c State.cc 
 
 Graph.o: Graph.cpp Graph.h Edge.h Node.h

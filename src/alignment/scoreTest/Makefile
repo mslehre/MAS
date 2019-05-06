@@ -1,23 +1,27 @@
 CC = g++
-OBJ = ScoreTest.o Score.o Node.o Edge.o
-HEADER1 = ../Score.h
+OBJ = ScoreTest.o State.o Node.o Edge.o Graph.o
+HEADER1 = ../State.h
 HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
+HEADER4 = ../Graph.h
 CFLAGS = -c -std=c++11 -Wall -I../
 all: ScoreTest
 ScoreTest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 
-ScoreTest.o: ScoreTest.cc $(HEADER1)
+ScoreTest.o: ScoreTest.cc $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
-Score.o: ../Score.cc $(HEADER1) $(HEADER2) $(HEADER3)
+State.o: ../State.cc $(HEADER2) $(HEADER3) $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
 Node.o: ../Node.cpp $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
 Edge.o: ../Edge.cpp $(HEADER3)
+	$(CC) $(CFLAGS) $< -o $@
+
+Graph.o: ../Graph.cpp $(HEADER4) 
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
