@@ -23,7 +23,7 @@ class Graph {
 
         vector<int> numberOfKmers;         ///< the numbers of nodes only with matches
 
-        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
+
 
         vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
         
@@ -45,11 +45,13 @@ class Graph {
         void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
     public:
         // constructor
-        Graph();
+        Graph();        
                                      
         unsigned int getK();                        ///< get the length of node (kmer)
 
         vector<string>& getStringListSequence();    ///< get the string for every sequence
+
+        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
 
         vector<Node>& getNodeList();                ///< get list of nodes only with matches
 
