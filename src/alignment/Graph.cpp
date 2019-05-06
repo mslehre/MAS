@@ -288,7 +288,7 @@ void Graph::calcNodeList() {
         for (j = 0; j < numberOfKmersTemp.at(i); j++) {
             if (stringList.at(i).length() - k >= j * k){
                 // store node in nodeListAll
-                nodeListAll.at(i).push_back(Node(i, j, index, stringList.at(i).substr(j * k, stringLength)));
+                nodeListAll.at(i).push_back(Node(i, j, indexN, stringList.at(i).substr(j * k, stringLength)));
                 indexN++;   
             }
         }
