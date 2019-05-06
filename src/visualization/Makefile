@@ -6,4 +6,4 @@ all:
 clean:
 	cd GUI; make clean
 	cd ColorPalette; make clean
-	cd StaticGraph; make all
+	cd StaticGraph; make clean
