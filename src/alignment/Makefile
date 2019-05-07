@@ -1,14 +1,14 @@
 include ../common.mk
 
-all: main
+all: State_test
 
-main: main.o State.o Graph.o Node.o Edge.o
-	g++ $(CXXFLAGS) main.o State.o Graph.o Node.o Edge.o -o main
+State_test: State_test.o State.o Graph.o Node.o Edge.o
+	g++ $(CXXFLAGS) State_test.o State.o Graph.o Node.o Edge.o -o State_test
 
-main.o: main.cc State.h Graph.h Node.h Edge.h
-	g++ $(CXXFLAGS) -c main.cc
+State_test.o: State_test.cc State.h Graph.h Node.h Edge.h
+	g++ $(CXXFLAGS) -c State_test.cc
 
-State.o: State.cc State.h Edge.h Node.h
+State.o: State.cc State.h Edge.h Node.h Graph.h
 	g++ $(CXXFLAGS) -c State.cc 
 
 Graph.o: Graph.cpp Graph.h Edge.h Node.h
@@ -21,4 +21,4 @@ Node.o: Node.cpp Node.h
 	g++ $(CXXFLAGS) -c Node.cpp
 
 clean:
-	rm -f *.o main
+	rm -rf *.o State_test

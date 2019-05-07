@@ -128,7 +128,7 @@ vector<int>& Graph::getNumberOfKmers(){
 void Graph::calcEdgeList() {
 
     // calculate nodeList only with matches
-    for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
+    for (unsigned int i = 0; i < nodeListAll.size(); i++) {      
         calcAdjacentEdges(i);
     }
     // temporary vector of edges for calculation
@@ -243,7 +243,7 @@ void Graph::calcEdgeList() {
     }
 
     // calculate nodeList only with matches with new i and j
-    for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
+    for (unsigned int i = 0; i < nodeListAll.size(); i++) {      
         calcAdjacentEdges(i);
     }
 

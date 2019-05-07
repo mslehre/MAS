@@ -3,7 +3,7 @@ OBJ = graphtest.o Graph.o Node.o Edge.o
 HEADER1 = ../Graph.h
 HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
-CFLAGS = -c -Wall -I../
+CFLAGS = -c -std=c++11 -Wall -I../
 all: graphtest
 graphtest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
