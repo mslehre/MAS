@@ -31,7 +31,6 @@ class Graph {
 
         /** \brief vector of adjacent edges from all nodes in one sequence (=index)
          *  \param index for a sequence
-         
          */
         void calcAdjacentEdges(unsigned int index);
 
