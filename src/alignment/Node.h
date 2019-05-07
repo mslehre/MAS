@@ -16,6 +16,6 @@ class Node {
         unsigned int j;         ///< the index of the node
         string kmer;            ///< the string of the node
 
-        vector<Node> adjNodes;     ///< the nodes that match with this node in the following sequence
+        vector<Node*> adjNodes;     ///< the nodes that match with this node in the following sequence
 };
 

@@ -17,50 +17,30 @@ using std::pair;
 class Graph {
     private:
 
-        unsigned int k;                                      ///< length of any node (kmer)
+        unsigned int k;                         ///< length of any node (kmer)
 
-        vector<string> stringListSequence;          ///< vector of strings for the sequences
+        vector<Node> nodes;                     ///< nodes only with matches
 
-        vector<int> numberOfKmers;         ///< the numbers of nodes only with matches
+        vector<Edge> edges;                     ///< vector of edges for all sequences (set of edges)
 
-        vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
-        
-        vector<Node> helpList;                      ///< use only for calculation
-
-        vector<Edge> edgesVector;                   ///< vector of edges for all sequences (set of edges)
-
-        /** \brief vector of adjacent edges from all nodes in one sequence (=index)
-         *  \param index for a sequence
+        /** \brief calculate vector of nodes and implicit edges
+         *  \param stringListSequence vector of strings (sequences)  
          */
-        void calcAdjacentEdges(unsigned int index);
-
-        /** calculate the list of edges <br>
-         *  at first: function calcNodeList() is called <br>
-         *  second: function calcAdjacentEdges is called
-         */
-        void calcEdgeList();
-
-        void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
+        void calcNodeList(vector<string>& stringListSequence); 
     public:
         // constructor
         Graph();
 
-        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
+        vector<Node>& getNodes();               ///< get vector of nodes with matches
+                              
+        unsigned int getNumberOfSequences();    ///< get number of sequences
 
-        unsigned int getK();                        ///< get the length of node (kmer)
-
-        vector<string>& getStringListSequence();    ///< get the string for every sequence
-
-        vector<Node>& getNodeList();                ///< get list of nodes only with matches
-
-        /** \brief the k-mers are tiled (shift=k) <br>
-         *  first index which sequence <br>
-         *  second index how many nodes
-         *  \return numbers of nodes only with matches
+        /** \brief get number of nodes for a sequence
+         *  \param sequence index for sequence 
          */
-        vector<int>& getNumberOfKmers();
+        unsigned int getNumberOfNodes(unsigned int sequence); 
 
-        vector<Edge>& getEdgesVector();             ///< get vector of edges for all sequences
+        vector<Edge>& getEdges();               ///< get vector of edges for all sequences
 
         /** \brief read a fasta file
          *  \param nameFile name of the fasta file
