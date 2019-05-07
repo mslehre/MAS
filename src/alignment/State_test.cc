@@ -98,14 +98,29 @@ int main(){
             s.select(i);
         }
     }
-    for(int j=0;j<s.selectable.size();j++){
-        if(s.selectedSubset[j]==true){ cout<< "true" << endl;}
-        else if(s.selectedSubset[j]==false){cout<< "false" << endl;}
+    for (int j=0;j<s.selectable.size();j++) {
+        if (s.selectedSubset[j] == true) { cout<< "true" << endl;}
+        else if (s.selectedSubset[j] == false) {cout<< "false" << endl;}
     }
     cout << endl;
-        for(int j=0;j<s.selectable.size();j++){
-            if(s.selectable[j]==true){ cout<< "true" << endl;}
-            else if(s.selectable[j]==false){cout<< "false" << endl;}
+    for (int j=0;j<s.selectable.size();j++) {
+        if (s.selectable[j] == true) { cout<< "true" << endl;}
+        else if (s.selectable[j] == false) {cout<< "false" << endl;}
     }
+    
+    state con(edgeList);
+    if(con.consistent(e1,e2))
+        cout << "yeah1" << endl;
+    else
+        cout << "nah1" << endl;
+    if(con.consistent(e2,e3))
+        cout << "yeah2" << endl;
+    else
+        cout << "nah2" << endl;
+    if(con.consistent(e1,e3))
+        cout << "yeah3" << endl;
+    else
+        cout << "nah3" << endl;    
     return 0;
+
 }

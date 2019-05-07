@@ -8,6 +8,8 @@
 #include "Edge.h"
 #include "Graph.h"
 
+//TODO: Rename getEdgesVector() to getEdges() and vector edgesVector to edges as soon as graph is done.
+
 /** 
  * \brief This state class encapsulates the current game state.
  * It can output possible actions and select them.      
@@ -52,7 +54,7 @@ class state{
     
     /**
      * Selects edge i if selectable (does nothing otherwise)
-     * \parm i is the index of the edge
+     * \param i is the index of the edge
      */
 
     void select(int i);
@@ -63,10 +65,19 @@ class state{
      * It checks edges on the same sequence as edge i for crossings from right or left.
      * The second loop goes 'forwards' through edge vector doing exactly the same.
      * If it finds any edge crossing our selected ones, it sets selectable for that edge to false.
-     * \parm i is the index of the edge
+     * \param i is the index of the edge
      */
 
-    void updateSelectability(int i); 
+    void updateSelectability(int i);
+
+    /**
+     * If edges would can both be selected while mainaining consistency, return true.
+     * Otherwise return false.
+     * \param e is an Edge
+     * \param f is an Edge
+     */
+
+    bool consistent(Edge& e, Edge& f);
    
     /** 
      * \param graph is a graph

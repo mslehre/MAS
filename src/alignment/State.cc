@@ -3,23 +3,24 @@
 #include "Node.h"
 #include "Graph.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
 state::state(Graph& graph){
-    for (unsigned int i = 0; i < graph.getEdgesVector().size(); i++) {
-        this->selectedSubset.push_back(false);
-        this->selectable.push_back(true);
-    }
+    vector<bool> tempSelectedSubset(graph.getEdgesVector().size(), false);
+    vector<bool> tempSelectable(graph.getEdgesVector().size(), true);
+    this->selectedSubset = tempSelectedSubset;
+    this->selectable = tempSelectable;
     this->edges = graph.getEdgesVector();
     this->score = 0;
 }
 
 state::state(vector <Edge> e){
-    for(unsigned int i = 0; i < e.size(); i++){
-        this->selectedSubset.push_back(false);
-        this->selectable.push_back(true);
-    }
+    vector<bool> tempSelectedSubset(e.size(), false);
+    vector<bool> tempSelectable(e.size(), true);
+    this->selectedSubset = tempSelectedSubset;
+    this->selectable = tempSelectable;
     this->edges = e;
     this->score = 0;
 }
@@ -51,8 +52,8 @@ void state::updateSelectability(int i){
         left--;
     }
     while (right<this->edges.size() && edges[right].first.i == edges[i].first.i) {
-        if((edges[right].first.j <= edges[i].first.j && edges[right].second.j >= edges[i].second.j)
-            || (edges[right].first.j >= edges[i].first.j && edges[right].second.j <= edges[i].second.j)){
+        if ((edges[right].first.j <= edges[i].first.j && edges[right].second.j >= edges[i].second.j)
+            || (edges[right].first.j >= edges[i].first.j && edges[right].second.j <= edges[i].second.j)) {
             this->selectable[right] = false;
         }
         right++;
@@ -113,4 +114,14 @@ void state::calculate_score(Graph& graph){
             }
         }        
     }
-}                                                                                                                                                 
+}
+
+bool state::consistent(Edge& e, Edge& f){
+    if ((e.first.j <= f.first.j && e.second.j >= f.second.j)
+        || (e.first.j >= f.first.j && e.second.j <= f.second.j)) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
