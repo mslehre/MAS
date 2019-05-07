@@ -23,8 +23,6 @@ class Graph {
 
         vector<int> numberOfKmers;         ///< the numbers of nodes only with matches
 
-        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
-
         vector<Node> nodeList;                      ///< list of nodes only with matches (the right set of nodes)
         
         vector<Node> helpList;                      ///< use only for calculation
@@ -33,7 +31,6 @@ class Graph {
 
         /** \brief vector of adjacent edges from all nodes in one sequence (=index)
          *  \param index for a sequence
-
          */
         void calcAdjacentEdges(unsigned int index);
 
@@ -47,7 +44,9 @@ class Graph {
     public:
         // constructor
         Graph();
-                                     
+
+        vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
+
         unsigned int getK();                        ///< get the length of node (kmer)
 
         vector<string>& getStringListSequence();    ///< get the string for every sequence

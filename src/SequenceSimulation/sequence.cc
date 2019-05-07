@@ -3,10 +3,6 @@
 
 using namespace std;
 
-/**
- * prints the usage of this program in the console
- */
-
 void printHelp(){
     cout << "\t Call skript with:\t./simulation_main S L P \n" << endl;
     cout << "\t Example: ./simulation_main 5 100 0.3 \n" << endl;
