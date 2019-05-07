@@ -16,11 +16,11 @@ state::state(Graph& graph){
 }
 
 state::state(vector <Edge> e){
-    for(int i=0;i<e.size();i++){
+    for(unsigned int i = 0; i < e.size(); i++){
         this->selectedSubset.push_back(false);
         this->selectable.push_back(true);
     }
-    this->edges=e;
+    this->edges = e;
     this->score = 0;
 }
 
@@ -42,7 +42,7 @@ void state::select(int i){
 
 void state::updateSelectability(int i){
     int left = i;
-    int right = i;
+    unsigned int right = i;
     while (left != -1 && edges[left].first.i == edges[i].first.i) { 
         if ((edges[left].first.j < edges[i].first.j && edges[left].second.j > edges[i].second.j) 
             || (edges[left].first.j > edges[i].first.j && edges[left].second.j < edges[i].second.j)) {
@@ -61,10 +61,23 @@ void state::updateSelectability(int i){
 
 // functions for scoring
 
+bool state::is_equal(Node& a, Node& b){
+    if (a.i == b.i && a.j == b.j) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void state::find_path(vector<unsigned int>& path, vector<Edge>& scoring_edges, Graph& graph){
     for (unsigned int i = 0; i < scoring_edges.size(); i++) {
-        if (graph.getNodeList()[path.back()].index == scoring_edges[i].first.index) { 
-            path.push_back(scoring_edges[i].second.index);
+        if (is_equal(graph.getNodeList()[path.back()], scoring_edges[i].first)) { 
+            for (unsigned int j = path.back() + 1; j < graph.getNodeList().size(); j++) {
+                if(is_equal(scoring_edges[i].second, graph.getNodeList()[j])) {
+                    path.push_back(j);
+                    break;
+                }                 
+            }
             find_path(path, scoring_edges, graph);         
             break;
         }      
@@ -72,7 +85,7 @@ void state::find_path(vector<unsigned int>& path, vector<Edge>& scoring_edges, G
 }
 
 void state::calculate_score(Graph& graph){ 
-
+    score = 0;
     vector<Edge> scoring_edges; // all selected edges
 
     for (unsigned int i = 0; i < graph.getEdgesVector().size(); i++) {
@@ -84,7 +97,7 @@ void state::calculate_score(Graph& graph){
     for (unsigned int i = 0; i < graph.getNodeList().size(); i++) {
         if (visited[i] == false) {       
             vector<unsigned int> path;
-            path.push_back(graph.getNodeList()[i].index); // push_back the startnode
+            path.push_back(i); // push_back the startnode
             find_path(path, scoring_edges, graph);   
 /*       
             // print path

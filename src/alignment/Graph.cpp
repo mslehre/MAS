@@ -282,14 +282,13 @@ void Graph::calcNodeList() {
     for (unsigned int i = 0; i < stringList.size(); i++) {
         nodeListAll.push_back(emptyNodeVector);
     }
-    int indexN = 0;
+
     // fill nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
     for (unsigned int i = 0; i < stringList.size(); i++) {
         for (j = 0; j < numberOfKmersTemp.at(i); j++) {
             if (stringList.at(i).length() - k >= j * k){
                 // store node in nodeListAll
-                nodeListAll.at(i).push_back(Node(i, j, indexN, stringList.at(i).substr(j * k, stringLength)));
-                indexN++;   
+                nodeListAll.at(i).push_back(Node(i, j, stringList.at(i).substr(j * k, stringLength)));
             }
         }
     }

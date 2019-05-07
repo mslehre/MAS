@@ -8,10 +8,9 @@ Node::Node() {
     this->kmer = "";
 }
 
-Node::Node(unsigned int i, unsigned int j, unsigned int index, string kmer) {
+Node::Node(unsigned int i, unsigned int j, string kmer) {
     this->i = i;
     this->j = j;
-    this->index = index;
     this->kmer = kmer;
 }
 

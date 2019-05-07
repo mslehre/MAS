@@ -63,6 +63,14 @@ class state{
      */
 
     void calculate_score(Graph& graph);
+
+    /** 
+     * \param a is a Node
+     * \param b is a Node
+     * \return TRUE if a and b have the same indices
+     */
+
+    bool is_equal(Node& a, Node& b);
 };
 
 #endif
