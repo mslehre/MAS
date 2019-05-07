@@ -31,6 +31,7 @@ class Graph {
 
         /** \brief vector of adjacent edges from all nodes in one sequence (=index)
          *  \param index for a sequence
+         
          */
         void calcAdjacentEdges(unsigned int index);
 
@@ -43,7 +44,6 @@ class Graph {
         void calcNodeList(); ///< calcualte nodeListAll with all possible nodes (isolated nodes as well) with properties i,j,kmer
     public:
         // constructor
-
         Graph();
 
         vector<vector<Node>> nodeListAll;           ///< list of all nodes for each sequence
