@@ -27,3 +27,4 @@ Node.o: ../../alignment/Node.cpp $(H3)
 
 clean:
 	rm -f *.o RandomAgent_main
+
