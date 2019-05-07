@@ -73,7 +73,7 @@ void state::find_path(vector<unsigned int>& path, vector<Edge>& scoring_edges, G
     for (unsigned int i = 0; i < scoring_edges.size(); i++) {
         if (is_equal(graph.getNodeList()[path.back()], scoring_edges[i].first)) { 
             for (unsigned int j = path.back() + 1; j < graph.getNodeList().size(); j++) {
-                if(is_equal(scoring_edges[i].second, graph.getNodeList()[j])) {
+                if (is_equal(scoring_edges[i].second, graph.getNodeList()[j])) {
                     path.push_back(j);
                     break;
                 }                 
