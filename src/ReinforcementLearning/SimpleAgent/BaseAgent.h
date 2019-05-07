@@ -1,7 +1,7 @@
 #ifndef BASE_AGENT_H
 #define BASE_AGENT_H
 
-#include "State.h"
+#include "../../alignment/State.h"
 
 /** \brief This BaseAgent class simply selects edges according to a policy.
 */

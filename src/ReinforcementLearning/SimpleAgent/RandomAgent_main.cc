@@ -1,7 +1,7 @@
-#include "State.h"
-#include "Graph.h"
-#include "Node.h"
-#include "Edge.h"
+#include "../../alignment/State.h"
+#include "../../alignment/Graph.h"
+#include "../../alignment/Node.h"
+#include "../../alignment/Edge.h"
 #include "BaseAgent.h"
 #include "RandomAgent.h"
 using namespace std;

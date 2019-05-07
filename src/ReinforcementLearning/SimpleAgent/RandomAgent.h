@@ -2,7 +2,7 @@
 #define RANDOM_AGENT_H
 
 #include "BaseAgent.h"
-#include "State.h"
+#include "../../alignment/State.h"
 #include <stdlib.h>
 #include <random>
 #include <chrono>
