@@ -71,17 +71,12 @@ int main(){
     
     Graph graph;
 
-    //graph.edgesVector = edgeList;      // works only if edgesVector and nodeList are public in Graph.h  
-    //graph.nodeList = nodeListe;        // calculate the right score
-
-// need a correct graph, dont work yet 
-
-    //graph.readFastaFiles("score_test_fasta.fa", 2);
+    graph.readFastaFiles("score_test_fasta.fa", 2);
     state s(graph);
     for( unsigned int i = 0; i < graph.getEdgesVector().size(); i++) {
         s.select(i); //select all edges
     }  
-/*    s.calculate_score(graph); 
+    s.calculate_score(graph); 
     unsigned int score = s.score;
 
     if (score == 16) {
@@ -91,5 +86,4 @@ int main(){
         cout << "ScoreTest failed. Score is "<< score <<" not 16." << endl;
         return -1;
     }
-*/return 0; //TODO delete this return if readFastaFiles is fixed
 }

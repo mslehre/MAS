@@ -52,7 +52,7 @@ class state{
     
     /**
      * Selects edge i if selectable (does nothing otherwise)
-     * \parm i is the index of the edge
+     * \param i is the index of the edge
      */
 
     void select(int i);
@@ -63,7 +63,7 @@ class state{
      * It checks edges on the same sequence as edge i for crossings from right or left.
      * The second loop goes 'forwards' through edge vector doing exactly the same.
      * If it finds any edge crossing our selected ones, it sets selectable for that edge to false.
-     * \parm i is the index of the edge
+     * \param i is the index of the edge
      */
 
     void updateSelectability(int i); 
