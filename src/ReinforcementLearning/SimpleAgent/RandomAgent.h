@@ -4,6 +4,8 @@
 #include "BaseAgent.h"
 #include "State.h"
 #include <stdlib.h>
+#include <random>
+#include <chrono>
 
 /** \brief This RandomAgent class selects edges according to a policy.
 *          The policy is to just choose a random edge out of the selectable ones
@@ -12,23 +14,24 @@ class RandomAgent : public BaseAgent {
     public:
     RandomAgent(){};
     ~RandomAgent(){};
-    /** This function does not work, enters an endless loop. Help.
+    /** The member policy selects selectable edges at random.
     */
-    virtual void policy(state s) const override{
-        bool hasEdge=true;
-        while (hasEdge==true){
+    virtual void policy(state* s) const override {
+        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        bool hasEdge = true;
+        while (hasEdge) {
+            hasEdge = false;
             std::vector <int> selectableIndices;
-            for(int j=0;j<s.selectable.size();j++){
-                if(s.selectable[j]==true){
+            for (int j = 0; j < s->selectable.size(); j++) {
+                if (s->selectable[j] == true) {
                     selectableIndices.push_back(j);
+                    hasEdge = true;
                 }
             }
-            if(selectableIndices.empty()==true){
-                hasEdge=false;
-            }
-            int d = selectableIndices[std::rand() % selectableIndices.size()-1];
-            if(s.selectable[d]==true){
-                s.select(d);
+            if (hasEdge == true) {
+                std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
+                int d = selectableIndices[dis(gen)];
+                s->select(d);
             }
         }
     }

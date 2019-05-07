@@ -95,33 +95,33 @@ int main(){
     edgeList.push_back(e14);
     state s(edgeList);
     s.select(0);
-    for(int i=0;i<s.edges.size();i++){
-        if(s.selectable[i]==true){		
+    for(int i = 0; i < s.edges.size(); i++){
+        if(s.selectable[i] == true){		
             s.select(i);
         }
     }
-    for(int j=0;j<s.selectable.size();j++){
-        if(s.selectedSubset[j]==true){ cout<< "true" << endl;}
-        else if(s.selectedSubset[j]==false){cout<< "false" << endl;}
+    for(int j = 0; j < s.selectable.size(); j++){
+        if (s.selectedSubset[j] == true) {cout<< "true" << endl;}
+        else if (s.selectedSubset[j] == false) {cout<< "false" << endl;}
     }
     cout << endl;
-        for(int j=0;j<s.selectable.size();j++){
-            if(s.selectable[j]==true){ cout<< "true" << endl;}
-            else if(s.selectable[j]==false){cout<< "false" << endl;}
+        for(int j = 0; j < s.selectable.size(); j++){
+            if (s.selectable[j] == true) {cout<< "true" << endl;}
+            else if (s.selectable[j] == false) {cout<< "false" << endl;}
     }
 
 	cout << endl<< "Next Test" << endl << endl;
     state z(edgeList);
     RandomAgent rAgent;
-    rAgent.policy(z);
-    for(int j=0;j<z.selectable.size();j++){
-        if(z.selectedSubset[j]==true){ cout<< "true" << endl;}
-        else if(z.selectedSubset[j]==false){cout<< "false" << endl;}
+    rAgent.policy(&z);
+    for(int j = 0; j < z.selectable.size(); j++){
+        if (z.selectedSubset[j] == true) {cout<< "true" << endl;}
+        else if (z.selectedSubset[j] == false) {cout<< "false" << endl;}
     }
     cout << endl;
-        for(int j=0;j<z.selectable.size();j++){
-            if(z.selectable[j]==true){ cout<< "true" << endl;}
-            else if(z.selectable[j]==false){cout<< "false" << endl;}
+        for (int j = 0; j < z.selectable.size(); j++){
+            if (z.selectable[j] == true) {cout<< "true" << endl;}
+            else if (z.selectable[j] == false) {cout<< "false" << endl;}
     }
     return 0;
 }
