@@ -33,7 +33,7 @@ state::state(){
 state::~state(){}; 
 
 void state::select(int i){
-    if(this->selectable[i] == true){
+    if (this->selectable[i] == true) {
         this->selectedSubset[i] = true;
         this->selectable[i] = false;
         this->updateSelectability(i);
