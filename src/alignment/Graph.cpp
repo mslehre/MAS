@@ -127,7 +127,7 @@ vector<int>& Graph::getNumberOfKmers(){
 // Method: list of edges
 void Graph::calcEdgeList() {
 
-    // calculate nodeList only with matches 
+    // calculate nodeList only with matches
     for (unsigned int i = 0; i < nodeListAll.size() - 1; i++) {      
         calcAdjacentEdges(i);
     }
@@ -287,6 +287,8 @@ void Graph::calcNodeList() {
         for (j = 0; j < numberOfKmersTemp.at(i); j++) {
             if (stringList.at(i).length() - k >= j * k){
                 // store node in nodeListAll
-                 nodeListAll.at(i).push_back(Node(i, j, stringList.at(i).substr(j * k, stringLength)));           }
+                nodeListAll.at(i).push_back(Node(i, j, stringList.at(i).substr(j * k, stringLength)));   
+            }
+        }
     }
 }
