@@ -44,15 +44,15 @@ void state::updateSelectability(int i){
     int left = i;
     unsigned int right = i;
     while (left != -1 && edges[left].first.i == edges[i].first.i) { 
-        if ((edges[left].first.j < edges[i].first.j && edges[left].second.j > edges[i].second.j) 
-            || (edges[left].first.j > edges[i].first.j && edges[left].second.j < edges[i].second.j)) {
+        if ((edges[left].first.j <= edges[i].first.j && edges[left].second.j >= edges[i].second.j) 
+            || (edges[left].first.j >= edges[i].first.j && edges[left].second.j <= edges[i].second.j)) {
             this->selectable[left] = false;
         }
         left--;
     }
     while (right<this->edges.size() && edges[right].first.i == edges[i].first.i) {
-        if((edges[right].first.j < edges[i].first.j && edges[right].second.j > edges[i].second.j)
-            || (edges[right].first.j > edges[i].first.j && edges[right].second.j < edges[i].second.j)){
+        if((edges[right].first.j <= edges[i].first.j && edges[right].second.j >= edges[i].second.j)
+            || (edges[right].first.j >= edges[i].first.j && edges[right].second.j <= edges[i].second.j)){
             this->selectable[right] = false;
         }
         right++;
