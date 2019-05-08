@@ -14,6 +14,16 @@ vector<Node>& Graph::getNodes() {
     return nodes;
 }
 
+// get StringListSequence
+vector<string>& Graph::getStringListSequence(){
+    return stringListSequence;
+}
+
+// Method: get the length of node (kmer)
+unsigned int Graph::getK(){
+    return k;
+} 
+
 // Method: get number of nodes
 unsigned int Graph::getNumberOfNodes(unsigned int sequence){
     unsigned int numberOfNodes;
@@ -33,8 +43,6 @@ vector<Edge>& Graph::getEdges(){
 void Graph::readFastaFiles(std::string nameFile, unsigned int k){
     // store length of k-mer
     this->k = k;
-    // vector of strings for sequences
-    vector<string> stringListSequence;
 
     ifstream data (nameFile);                                  			
 	// open file												

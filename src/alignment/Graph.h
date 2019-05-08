@@ -21,6 +21,8 @@ class Graph {
 
         vector<Node> nodes;                     ///< nodes only with matches
 
+        vector<string> stringListSequence;      ///< vector of strings for the sequences
+
         vector<Edge> edges;                     ///< vector of edges for all sequences (set of edges)
 
         /** \brief calculate vector of nodes and implicit edges
@@ -30,6 +32,10 @@ class Graph {
     public:
         // constructor
         Graph();
+
+        unsigned int getK();                    ///< get the length of node (kmer)
+
+        vector<string>& getStringListSequence(); ///< get the string for every sequence
 
         vector<Node>& getNodes();               ///< get vector of nodes with matches
                               
