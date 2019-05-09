@@ -67,5 +67,5 @@ class GraphRenderer{
 		bool isPositionNode(sf::Vector2f pos);
 };
 
-#endif //_H_
+#endif //GraphRenderer_H_
 
