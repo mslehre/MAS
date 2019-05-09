@@ -94,7 +94,7 @@ void state::calculate_score(Graph& graph){
     }
     vector<bool> visited(graph.getNodeList().size(), false);
 
-    for (unsigned int i = 0; i < graph.getNodeList().size(); i++) {
+    for (unsigned int i = 0; i < graph.getNodes().size(); i++) {
         if (visited[i] == false) {       
             vector<unsigned int> path;
             path.push_back(i); // push_back the startnode
