@@ -12,7 +12,11 @@ int main(int argc, char **argv){
 	// Get Graph Infos
 	Graph g;
 	g.readFastaFiles(argv[1],atoi(argv[2]));
+
+    //Vektor mit Nodes die matches besitzen
 	vector<Node>& nodeList=g.getNodes();
+
+    //Auskommentiert weil Baum
     //vector<int>& numbOfKmers=g.getNumberOfKmers();
     
 	//Open the window with white Background

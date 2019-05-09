@@ -190,15 +190,6 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
             arr.triangle = tri;
             arrows.push_back(arr);
 		}
-        //size_adjnodes = nodeList.at(k).adjNodes.size();
-        /*for(int l = 0; l < size_adjnodes; l++){
-            place.first = nodeList.at(k);
-            place.second = nodeList.at(k).adjNodes.at(l);
-            if (place.first.i == place.second.i - 1) {
-                FuncArrowShape hold(place, size);
-                arrows2.push_back(hold);
-            }
-        }*/
 	}
 }
 
@@ -217,13 +208,13 @@ void GraphRenderer::addToGame(sf::RenderWindow& window, sf::Vector2f pos) {
 
 
 
-Node GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
+Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
     uint x = (pos.x-size*0.2)/(size*1.8);
 	uint y = (pos.y-size*0.2)/((size/2)*3);
-	Node actualNode;
+	Node *actualNode;
 	for(auto &node : nodeList) {
 		if (node.i == y && node.j == x){
-			actualNode = node;
+			actualNode = &node;
 			break;
 		}
 	}
@@ -300,12 +291,12 @@ void GraphRenderer::deClickKmer(sf::RenderWindow& window, sf::Vector2f pos) {
 }
 
 void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window) {
-    Node recent = positionToNode(pos, nodeList);
-    int size_Edges = recent.adjNodes.size();
+    Node *recent = positionToNode(pos, nodeList);
+    int size_Edges = recent->adjNodes.size();
     Edge ph;
     ph.first = recent;
     for (int i = 0; i<size_Edges; i++) {
-        ph.second = recent.adjNodes.at(i);
+        ph.second = recent->adjNodes.at(i);
         FuncArrowShape temp(ph, size, sf::Color(200,200,200));
         if(isArrowValid(ph)) {
             tempArr.push_back(temp);
@@ -321,14 +312,14 @@ bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
     Edge ph;
     for(auto &arr : arrowList) {
         ph = arr.getEdge();
-        if (ph.first.i == temp.first.i) { //gleiche Zeile
-            if (ph.second.j == temp.second.j && ph.first.j == temp.first.j) { //gleiches Ziel
+        if (ph.first->i == temp.first->i) { //gleiche Zeile
+            if (ph.second->j == temp.second->j || ph.first->j == temp.first->j) { //gleiches Ziel
                 return false;
-            } else if (ph.first.j < temp.first.j) { //Sich kreuzende Ziele
-                if (ph.second.j > temp.second.j)
+            } else if (ph.first->j < temp.first->j) { //Sich kreuzende Ziele
+                if (ph.second->j > temp.second->j)
                     return false;
-            } else if (ph.first.j > temp.first.j) {
-                if (ph.second.j < temp.second.j)
+            } else if (ph.first->j > temp.first->j) {
+                if (ph.second->j < temp.second->j)
                     return false;
             }
         }

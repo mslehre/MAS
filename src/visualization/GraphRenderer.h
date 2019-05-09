@@ -61,7 +61,7 @@ class GraphRenderer{
         void clickKmer();
         void deClickKmer(sf::RenderWindow& window, sf::Vector2f pos);
         void showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window);
-		Node positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
+		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
         bool isArrowValid(Edge temp); 
         bool isPositionEdge(sf::Vector2f pos);
 		bool isPositionNode(sf::Vector2f pos);
