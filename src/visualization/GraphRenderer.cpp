@@ -316,6 +316,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::Rende
     drawText(window);
 }
 
+
 bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
     Edge ph;
     for(auto &arr : arrowList) {
@@ -335,12 +336,14 @@ bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
     return true;
 }
 
+
 bool GraphRenderer::isPositionEdge(sf::Vector2f pos) { //PASST
     for(auto &arr : tempArr) {
         if (arr.getShape().getGlobalBounds().contains(pos))
             return true;
     }
 }
+
 
 bool GraphRenderer::isPositionNode(sf::Vector2f pos){ //PASST
 	int x = (pos.x-size*0.2)/(size*1.8);

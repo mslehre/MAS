@@ -20,24 +20,24 @@ int main(int argc, char **argv){
     // test
     cout << "TestProgramm: k-mer with length the of " << atoi(argv[2]) << endl; 
 
-    // get list of nodes only with matches 
-    vector<Node> nodes = g.getNodeList();
-    cout << "All nodes only with matches:" << endl;
+    // get nodes 
+    vector<Node> nodes = g.getNodes();
+
     for (auto &node : nodes) {
-        cout << "("<< node.i << "  ," << node.j << ")" << endl;
+        cout << "("<< node.i << "," << node.j << ")" << " with " << node.kmer << " has match with: " << endl;
         for (auto &element : node.adjNodes) {
-             cout << "Match with: ("<< element.i << "  ," << element.j << ")" << "  ";
+             cout << "("<< element->i << "," << element->j << ")" << " " << node.kmer << " ";
         }
         cout << endl;
         cout << "###################################################" << endl;
     }
-    // get list of edges
-    vector<Edge> edgeVec = g.getEdgesVector();
+    
+    // get edges
+    vector<Edge> edges = g.getEdges();
     cout << "Output all edges:" << endl;
-    for (auto a : edgeVec) {
-        cout << "Edge: " << "(" << a.first.i << " ," << a.first.j << ")" << "---" << "(" << a.second.i << " ," << a.second.j << ")"<< endl;
+    for (auto a : edges) {
+        cout << "Edge: " << "(" << a.first->i << " ," << a.first->j << ")" << "---" << "(" << a.second->i << " ," << a.second->j << ")"<< endl;
     }
-    //#####################################################################*/
-
+    //#####################################################################
     return 0;
 }

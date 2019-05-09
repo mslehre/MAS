@@ -12,8 +12,8 @@ int main(int argc, char **argv){
 	// Get Graph Infos
 	Graph g;
 	g.readFastaFiles(argv[1],atoi(argv[2]));
-	vector<Node>& nodeList=g.getNodeList();
-    vector<int>& numbOfKmers=g.getNumberOfKmers();
+	vector<Node>& nodeList=g.getNodes();
+    //vector<int>& numbOfKmers=g.getNumberOfKmers();
     
 	//Open the window with white Background
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
