@@ -6,33 +6,23 @@ using namespace std;
 Graph::Graph(){}
 
 // Method: get number of secquences
-unsigned int Graph::getNumberOfSequences() {
-    return nodes.at(nodes.size()-1).i;
+unsigned int Graph::getNumberOfSequences(){
+    return nodes.at(nodes.size() - 1).i;
 }
 // Method: get vector of nodes with matches
-vector<Node>& Graph::getNodes() {
+vector<Node>& Graph::getNodes(){
     return nodes;
 }
 
-// get StringListSequence
-vector<string>& Graph::getStringListSequence(){
-    return stringListSequence;
-}
-
-// Method: get the length of node (kmer)
-unsigned int Graph::getK(){
-    return k;
-} 
-
 // Method: get number of nodes
 unsigned int Graph::getNumberOfNodes(unsigned int sequence){
-    unsigned int numberOfNodes;
-    for (unsigned int i = 0; i < nodes.size(); i++){
+    unsigned int numberOfNodes = 0;
+    for (unsigned int i = 0; i < nodes.size(); i++) {
         if (nodes.at(i).i == sequence)
             numberOfNodes++;
     }
     return numberOfNodes;
-} 
+}
 
 // Method: get vector of edges for all sequences
 vector<Edge>& Graph::getEdges(){
@@ -43,6 +33,8 @@ vector<Edge>& Graph::getEdges(){
 void Graph::readFastaFiles(std::string nameFile, unsigned int k){
     // store length of k-mer
     this->k = k;
+
+    vector<string> stringListSequence;
 
     ifstream data (nameFile);                                  			
 	// open file												
@@ -81,8 +73,6 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
 	}  
 }
 
-
-
 // Method: calculate list of nodes
 void Graph::calcNodeList(vector<string>& stringList) {
     // temporary vector of nodes
@@ -117,11 +107,8 @@ void Graph::calcNodeList(vector<string>& stringList) {
     for (unsigned int m = 0; m < nodeListAll.size(); m++) {
         matched = false;
         for (unsigned int n = 0; n < nodeListAll.size(); n++) {
-                if (nodeListAll.at(m).kmer == nodeListAll.at(n).kmer && nodeListAll.at(m).i != nodeListAll.at(n).i) {
-                    if (nodeListAll.at(n).i == nodeListAll.at(m).i + 1 || nodeListAll.at(n).i == nodeListAll.at(m).i - 1 ) {
-                        matched = true;
-                    }
-                }
+                if (nodeListAll.at(m).kmer == nodeListAll.at(n).kmer && nodeListAll.at(m).i != nodeListAll.at(n).i)
+                    matched = true;             
         }
         matches.push_back(matched); 
     }

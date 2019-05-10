@@ -36,7 +36,6 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             
-
             GrRend.eventHandler(event,window,nodeList);
 		}
         GrRend.render(window);
