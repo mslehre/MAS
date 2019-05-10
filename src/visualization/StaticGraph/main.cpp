@@ -27,11 +27,9 @@ int main(int argc, char **argv){
 
 	//Create a GraphRenderer
 	GraphRenderer GrRend(window, nodeList, 100);
-    
+    //create clock
+    sf::Clock clock;
     while (window.isOpen()) {
-        
-        auto mouse_pos = sf::Mouse::getPosition(window); // local mouse position in the window
-        auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
         sf::Event event;
         while (window.pollEvent(event)) {
             // "close requested" event: we close the window
@@ -39,29 +37,12 @@ int main(int argc, char **argv){
                 window.close();
             
 
-            GrRend.eventHandler(event);
+            GrRend.eventHandler(event,window,nodeList);
 		}
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
-            GrRend.clickKmer();
-            GrRend.showEdges(nodeList, global_mouse_pos, window);
-        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && GrRend.clicked) {
-            GrRend.deClickKmer(window, global_mouse_pos);
-        }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.clicked && GrRend.st_hovered) {
-            GrRend.addToGame(window, global_mouse_pos);
-        }
-        if (GrRend.clicked && !GrRend.st_hovered && GrRend.isPositionEdge(global_mouse_pos)) {
-            GrRend.edgeHover(global_mouse_pos, window);
-        } else if (GrRend.clicked && GrRend.st_hovered && !GrRend.isPositionEdge(global_mouse_pos)) {
-            GrRend.deEdgeHover(window);
-        }
-        if (!GrRend.hovered && GrRend.isPositionNode(global_mouse_pos)) {
-            GrRend.highlightHover(global_mouse_pos, window);
-        } else if (GrRend.hovered && !GrRend.isPositionNode(global_mouse_pos)) {
-            GrRend.deHighlightHover(window);
-        }
         GrRend.render(window);
         window.display();
+        sf::Time elapsed = clock.restart();
+        GrRend.update(elapsed.asSeconds());
     }
     return 0;
 }

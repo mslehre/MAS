@@ -41,6 +41,7 @@ class GraphRenderer{
         sf::View actualView;
         sf::View defaultView;
         int size;
+        float moveSize;
 	public:
         bool hovered;
         bool clicked;
@@ -51,20 +52,21 @@ class GraphRenderer{
 		GraphRenderer();
         
         void render(sf::RenderWindow& window);
-        void eventHandler(sf::Event event);
+        void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList);
+        void update(float delta);
 
         void initShapes(vector<Node>& nodeList);
         void drawShape(sf::RenderWindow& window);
         void drawText(sf::RenderWindow& window);
         void moveWindow(int dir);
-        void addToGame(sf::RenderWindow& window, sf::Vector2f pos);
-        void highlightHover(sf::Vector2f pos, sf::RenderWindow& window);
-        void deHighlightHover(sf::RenderWindow& window);
-        void edgeHover(sf::Vector2f pos, sf::RenderWindow& window);
-        void deEdgeHover(sf::RenderWindow& window);
+        void addToGame(sf::Vector2f pos);
+        void highlightHover(sf::Vector2f pos);
+        void deHighlightHover();
+        void edgeHover(sf::Vector2f pos);
+        void deEdgeHover();
         void clickKmer();
-        void deClickKmer(sf::RenderWindow& window, sf::Vector2f pos);
-        void showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window);
+        void deClickKmer(sf::Vector2f pos);
+        void showEdges(vector<Node>& nodeList, sf::Vector2f pos);
 		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
         bool isArrowValid(Edge temp); 
         bool isPositionEdge(sf::Vector2f pos);

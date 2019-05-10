@@ -35,41 +35,58 @@ void GraphRenderer::render(sf::RenderWindow& window) {
     drawText(window);
 }
 
-void GraphRenderer::eventHandler(sf::Event event) {
-    if (event.type == sf::Event::EventType::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Right) {
-	        moveWindow(2);
-        } else if (event.key.code == sf::Keyboard::Left) {
-            moveWindow(1);
-        } else if (event.key.code == sf::Keyboard::Up) {
-            moveWindow(3);
-        } else if (event.key.code == sf::Keyboard::Down) {
-            moveWindow(0);
-        } else if (event.key.code == sf::Keyboard::Space) {
-            moveWindow(4);
-        } 
-    
+void GraphRenderer::update(float delta) {
+    if (delta > moveSize) {
+        moveSize = delta*10000;
     }
 }
 
-/*
+void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList) {
+    if (event.type == sf::Event::EventType::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Right)
+	        moveWindow(2);
+        if (event.key.code == sf::Keyboard::Left)
+            moveWindow(1);
+        if (event.key.code == sf::Keyboard::Up)
+            moveWindow(3);
+        if (event.key.code == sf::Keyboard::Down)
+            moveWindow(0);
+        if (event.key.code == sf::Keyboard::Space)
+            moveWindow(4);
+    }
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-	        GrRend.moveWindow(4,window);
+    sf::Vector2i Pix1(event.mouseMove.x,event.mouseMove.y);
+    auto movePos = window.mapPixelToCoords(Pix1);
+
+    if (event.type == sf::Event::EventType::MouseMoved) {
+        if(!hovered && isPositionNode(movePos)) {
+            highlightHover(movePos);
+        } else if (hovered && !isPositionNode(movePos)) {
+            deHighlightHover();
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-	        GrRend.moveWindow(0,window);
+        if (clicked && !st_hovered && isPositionEdge(movePos)) {
+            edgeHover(movePos);
+        } else if (clicked && st_hovered && !isPositionEdge(movePos)) {
+            deEdgeHover();
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-	        GrRend.moveWindow(1,window);
+    }
+    
+    sf::Vector2i Pix2(event.mouseButton.x,event.mouseButton.y);
+    auto clickPos = window.mapPixelToCoords(Pix2);
+
+    if (event.type == sf::Event::EventType::MouseButtonPressed) {
+        
+        if (event.mouseButton.button == sf::Mouse::Left && hovered && !clicked) {
+            clickKmer();
+            showEdges(nodeList, clickPos);
+        } else if (event.mouseButton.button == sf::Mouse::Right && clicked) {
+            deClickKmer(clickPos);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-	        GrRend.moveWindow(2,window);
-        }        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-	        GrRend.moveWindow(3,window);
-        }
-*/
+        if (event.mouseButton.button == sf::Mouse::Left && clicked && st_hovered)
+            addToGame(clickPos);
+    }
+
+}
 
 GraphRenderer::GraphRenderer() {
 }
@@ -89,16 +106,16 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, i
 void GraphRenderer::moveWindow(int dir) {
     switch (dir) {
         case 0:
-            actualView.move(0,100);
+            actualView.move(0,moveSize);
             break;
         case 1:
-            actualView.move(-100,0);
+            actualView.move(-moveSize,0);
             break;
         case 2:
-            actualView.move(100,0);
+            actualView.move(moveSize,0);
             break;
         case 3:    
-            actualView.move(0,-100);
+            actualView.move(0,-moveSize);
             break;
         case 4:
             actualView = defaultView;
@@ -223,17 +240,14 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 	}
 }
 
-void GraphRenderer::addToGame(sf::RenderWindow& window, sf::Vector2f pos) {
+void GraphRenderer::addToGame(sf::Vector2f pos) {
     Edge temp = tempArr.at(index).getEdge();
     FuncArrowShape fill(temp, size, sf::Color::Black);
     arrowList.push_back(fill);
-	window.clear(sf::Color::White);
     tempArr.clear();
     clicked = false;
     st_hovered = false;
-    deClickKmer(window, pos);
-    drawShape(window);
-    drawText(window);
+    deClickKmer(pos);
 }
 
 
@@ -251,39 +265,30 @@ Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
 	return actualNode;
 }
 
-void GraphRenderer::highlightHover(sf::Vector2f pos, sf::RenderWindow& window) {
+void GraphRenderer::highlightHover(sf::Vector2f pos) {
     if (!clicked) {        
         int j = (pos.x-size*0.2)/(size*1.8);
 	    int i = (pos.y-size*0.2)/((size/2)*3);
         highlight = sf::Vector2i(i,j);
         rects.at(i).at(j).setOutlineColor(sf::Color::Black);
         rects.at(i).at(j).setOutlineThickness(5);
-	    window.clear(sf::Color::White);
-        drawShape(window);
-        drawText(window);
     }
     hovered = true;
 }
-void GraphRenderer::deHighlightHover(sf::RenderWindow& window) {
+void GraphRenderer::deHighlightHover() {
     if (!clicked) {
         rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Transparent);
         rects.at(highlight.x).at(highlight.y).setOutlineThickness(0);
-	    window.clear(sf::Color::White);
-        drawShape(window);
-        drawText(window);
     }
     hovered = false;
 }
 
-void GraphRenderer::deEdgeHover(sf::RenderWindow& window) {
+void GraphRenderer::deEdgeHover() {
     tempArr.at(index).deHoverFunc();
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
     st_hovered = false;
 }
 
-void GraphRenderer::edgeHover(sf::Vector2f pos, sf::RenderWindow& window) {
+void GraphRenderer::edgeHover(sf::Vector2f pos) {
     for(int i = 0; i<tempArr.size(); i++) {
         if (tempArr.at(i).getShape().getGlobalBounds().contains(pos)) {
             tempArr.at(i).hoverFunc();
@@ -291,9 +296,6 @@ void GraphRenderer::edgeHover(sf::Vector2f pos, sf::RenderWindow& window) {
             break;
         }
     }
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
     st_hovered = true;
 }
 
@@ -306,21 +308,18 @@ void GraphRenderer::clickKmer() {
     
 }
 
-void GraphRenderer::deClickKmer(sf::RenderWindow& window, sf::Vector2f pos) {
+void GraphRenderer::deClickKmer(sf::Vector2f pos) {
     rects.at(highlight.x).at(highlight.y).setFillColor(highlightCol);
     rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Transparent);
     rects.at(highlight.x).at(highlight.y).setOutlineThickness(0);
     tempArr.clear();
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
     clicked = false;
     int j = (pos.x-size*0.2)/(size*1.8);
 	int i = (pos.y-size*0.2)/((size/2)*3);
     highlight = sf::Vector2i(i,j);
 }
 
-void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window) {
+void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos) {
     Node *recent = positionToNode(pos, nodeList);
     int size_Edges = recent->adjNodes.size();
     Edge ph;
@@ -332,9 +331,6 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::Rende
             tempArr.push_back(temp);
         }
     }
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
 }
 
 
