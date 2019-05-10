@@ -113,7 +113,11 @@ int main(){
 	cout << endl<< "Next Test" << endl << endl;
     state z(edgeList);
     RandomAgent rAgent;
-    rAgent.policy(&z);
+    int testInt;
+    while(testInt != -1){
+        testInt = rAgent.act(&z);
+    }
+    //cout << endl << rAgent.history[3].second << endl;
     for(int j = 0; j < z.selectable.size(); j++){
         if (z.selectedSubset[j] == true) {cout<< "true" << endl;}
         else if (z.selectedSubset[j] == false) {cout<< "false" << endl;}
