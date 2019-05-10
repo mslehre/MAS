@@ -25,6 +25,52 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     return allKmers;
 }
 
+
+void GraphRenderer::render(sf::RenderWindow& window) {
+    if (actualView.getCenter() != window.getView().getCenter()) {
+        window.setView(actualView);
+    }
+	window.clear(sf::Color::White);
+    drawShape(window);
+    drawText(window);
+}
+
+void GraphRenderer::eventHandler(sf::Event event) {
+    if (event.type == sf::Event::EventType::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Right) {
+	        moveWindow(2);
+        } else if (event.key.code == sf::Keyboard::Left) {
+            moveWindow(1);
+        } else if (event.key.code == sf::Keyboard::Up) {
+            moveWindow(3);
+        } else if (event.key.code == sf::Keyboard::Down) {
+            moveWindow(0);
+        } else if (event.key.code == sf::Keyboard::Space) {
+            moveWindow(4);
+        } 
+    
+    }
+}
+
+/*
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	        GrRend.moveWindow(4,window);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+	        GrRend.moveWindow(0,window);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+	        GrRend.moveWindow(1,window);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+	        GrRend.moveWindow(2,window);
+        }        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+	        GrRend.moveWindow(3,window);
+        }
+*/
+
 GraphRenderer::GraphRenderer() {
 }
 
@@ -33,50 +79,34 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, i
     hovered = false;
     clicked = false;
     st_hovered = false;
+    defaultView = window.getDefaultView();
+    actualView = defaultView;
     initShapes(nodeList);
     drawShape(window);
     drawText(window);
 }
 
-void GraphRenderer::moveWindow(int dir, sf::RenderWindow& window) {
-    bild = window.getView();
-        switch (dir) {
-            case 0:
-                bild.move(0,10);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(1) += 10;
-                break;
-            case 1:
-                bild.move(-10,0);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) += -10;
-                break;
-            case 2:
-                bild.move(10,0);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) += 10;
-                break;
-            case 3:    
-                bild.move(0,-10);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(1) += -10;
-                break;
-            case 4:
-                bild = window.getDefaultView();
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) = 0;
-                direction.at(1) = 0;
-                arrowList.clear();
-                break;
-        }
-    drawShape(window);
-    drawText(window);
+void GraphRenderer::moveWindow(int dir) {
+    switch (dir) {
+        case 0:
+            actualView.move(0,100);
+            break;
+        case 1:
+            actualView.move(-100,0);
+            break;
+        case 2:
+            actualView.move(100,0);
+            break;
+        case 3:    
+            actualView.move(0,-100);
+            break;
+        case 4:
+            actualView = defaultView;
+            arrowList.clear();
+            break;
+    }
 }
+
 
 void GraphRenderer::drawText(sf::RenderWindow& window) {
     int size_text = txt.size();  
