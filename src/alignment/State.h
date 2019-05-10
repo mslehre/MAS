@@ -8,6 +8,8 @@
 #include "Edge.h"
 #include "Graph.h"
 
+//TODO: Rename getEdgesVector() to getEdges() and vector edgesVector to edges as soon as graph is done.
+
 /** 
  * \brief This state class encapsulates the current game state.
  * It can output possible actions and select them.      
@@ -22,7 +24,7 @@ class state{
      * \return TRUE if a and b have the same indices
      */
 
-    bool is_equal(Node& a, Node& b);
+    bool is_equal(Node& a, Node* b);
 
      /**
      * This function is recursive and find a path for a given set of edges and nodes
@@ -66,7 +68,16 @@ class state{
      * \param i is the index of the edge
      */
 
-    void updateSelectability(int i); 
+    void updateSelectability(int i);
+
+    /**
+     * If edges would can both be selected while mainaining consistency, return true.
+     * Otherwise return false.
+     * \param e is an Edge
+     * \param f is an Edge
+     */
+
+    bool consistent(Edge& e, Edge& f);
    
     /** 
      * \param graph is a graph

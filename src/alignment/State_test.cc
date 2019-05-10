@@ -93,19 +93,25 @@ int main(){
     edgeList.push_back(e14);
     state s(edgeList);
     s.select(0);
-    for(int i=0;i<s.edges.size();i++){
-        if(s.selectable[i]==true){		
+    for (unsigned int i = 0; i < s.edges.size(); i++) {
+        if (s.selectable[i] == true)		
             s.select(i);
+    }
+    for (unsigned int j = 0; j < s.selectable.size(); j++) {
+        if (s.selectedSubset[j] == true) {
+            cout<< "true" << endl;
+        } else if (s.selectedSubset[j] == false) {
+            cout<< "false" << endl;
         }
     }
-    for(int j=0;j<s.selectable.size();j++){
-        if(s.selectedSubset[j]==true){ cout<< "true" << endl;}
-        else if(s.selectedSubset[j]==false){cout<< "false" << endl;}
-    }
     cout << endl;
-        for(int j=0;j<s.selectable.size();j++){
-            if(s.selectable[j]==true){ cout<< "true" << endl;}
-            else if(s.selectable[j]==false){cout<< "false" << endl;}
+        for (unsigned int j = 0; j < s.selectable.size(); j++) {
+            if (s.selectable[j] == true) {
+                cout<< "true" << endl;
+            }
+            else if (s.selectable[j] == false) {
+                cout<< "false" << endl;
+            }
     }
     return 0;
 }

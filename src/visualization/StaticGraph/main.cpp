@@ -13,7 +13,10 @@ int main(int argc, char **argv){
 	Graph g;
 	g.readFastaFiles(argv[1],atoi(argv[2]));
 
+    //Vektor mit Nodes die matches besitzen
 	vector<Node>& nodeList=g.getNodes();
+
+    //Auskommentiert weil Baum
     //vector<int>& numbOfKmers=g.getNumberOfKmers();
     
 	//Open the window with white Background
@@ -34,22 +37,10 @@ int main(int argc, char **argv){
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
+            
+
+            GrRend.eventHandler(event);
 		}
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-	        GrRend.moveWindow(4,window);
-        }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-	        GrRend.moveWindow(0,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-	        GrRend.moveWindow(1,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-	        GrRend.moveWindow(2,window);
-        }        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-	        GrRend.moveWindow(3,window);
-        }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
             GrRend.clickKmer();
             GrRend.showEdges(nodeList, global_mouse_pos, window);
@@ -69,7 +60,7 @@ int main(int argc, char **argv){
         } else if (GrRend.hovered && !GrRend.isPositionNode(global_mouse_pos)) {
             GrRend.deHighlightHover(window);
         }
-    
+        GrRend.render(window);
         window.display();
     }
     return 0;
