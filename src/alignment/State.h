@@ -8,8 +8,6 @@
 #include "Edge.h"
 #include "Graph.h"
 
-//TODO: Rename getEdgesVector() to getEdges() and vector edgesVector to edges as soon as graph is done.
-
 /** 
  * \brief This state class encapsulates the current game state.
  * It can output possible actions and select them.      
@@ -34,7 +32,6 @@ class state{
      */
 
     void find_path(std::vector<unsigned int>& path, std::vector<Edge>& edgesVector, Graph& graph);
-
 
     public:
     state(Graph& graph); ///< Constructor with a Graph

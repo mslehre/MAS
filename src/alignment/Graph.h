@@ -17,31 +17,35 @@ using std::pair;
 class Graph {
     private:
 
-        unsigned int k;                         ///< length of any node (kmer)
+        unsigned int k;                         ///< length of k-mer
 
-        vector<Node> nodes;                     ///< nodes only with matches
+        vector<Node> nodes;                     ///< nodes only with matches in other sequences
 
         vector<Edge> edges;                     ///< vector of edges for all sequences (set of edges)
 
         void calcNodeList(vector<string>& stringListSequence); 
     public:
-        // constructor
+
         Graph();
 
-        vector<Node>& getNodes();               ///< get vector of nodes with matches
+        vector<Node>& getNodes();               ///< get vector of nodes with matches in other sequences
                               
         unsigned int getNumberOfSequences();    ///< get number of sequences
 
-        /** \brief get number of nodes for a sequence
-         *  \param sequence index for sequence 
+        /** 
+         * \brief get number of nodes for a sequence
+         * \param sequence index for sequence 
          */
+
         unsigned int getNumberOfNodes(unsigned int sequence); 
 
         vector<Edge>& getEdges();               ///< get vector of edges for all sequences
 
-        /** \brief read a fasta file
-         *  \param nameFile name of the fasta file
-         *  \param k length of any node (kmer)
+        /** 
+         * \brief read a fasta file
+         * \param nameFile name of the fasta file
+         * \param k length of any node (kmer)
          */
+
         void readFastaFiles(string nameFile, unsigned int k);
 };
