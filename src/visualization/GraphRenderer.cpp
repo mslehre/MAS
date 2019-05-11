@@ -91,8 +91,9 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
 GraphRenderer::GraphRenderer() {
 }
 
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, int s) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int s) {
     size = s;
+    state gameState = new state(edgeList);
     hovered = false;
     clicked = false;
     st_hovered = false;
@@ -241,8 +242,9 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 }
 
 void GraphRenderer::addToGame(sf::Vector2f pos) {
-    Edge temp = tempArr.at(index).getEdge();
-    FuncArrowShape fill(temp, size, sf::Color::Black);
+    int ind = tempArr.at(index).getIndex();
+    gameState->select(ind);
+    FuncArrowShape fill(gameState->edges.at(ind), size, sf::Color::Black, ind);
     arrowList.push_back(fill);
     tempArr.clear();
     clicked = false;
@@ -321,36 +323,14 @@ void GraphRenderer::deClickKmer(sf::Vector2f pos) {
 
 void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos) {
     Node *recent = positionToNode(pos, nodeList);
-    int size_Edges = recent->adjNodes.size();
-    Edge ph;
-    ph.first = recent;
+    int size_Edges = gameState->edges.size();
     for (int i = 0; i<size_Edges; i++) {
-        ph.second = recent->adjNodes.at(i);
-        FuncArrowShape temp(ph, size, sf::Color(200,200,200));
-        if(isArrowValid(ph)) {
+        if( tempArr.size() != 2&& gameState->selectable.at(i) && recent->i == gameState->edges.at(i).first->i && recent->j == gameState->edges.at(i).first->j) {
+            cout << "we got it!" << endl;
+            FuncArrowShape temp(gameState->edges[i], size, sf::Color(200,200,200),i);
             tempArr.push_back(temp);
         }
     }
-}
-
-
-bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
-    Edge ph;
-    for(auto &arr : arrowList) {
-        ph = arr.getEdge();
-        if (ph.first->i == temp.first->i) { //gleiche Zeile
-            if (ph.second->j == temp.second->j || ph.first->j == temp.first->j) { //gleiches Ziel
-                return false;
-            } else if (ph.first->j < temp.first->j) { //Sich kreuzende Ziele
-                if (ph.second->j > temp.second->j)
-                    return false;
-            } else if (ph.first->j > temp.first->j) {
-                if (ph.second->j < temp.second->j)
-                    return false;
-            }
-        }
-    }
-    return true;
 }
 
 

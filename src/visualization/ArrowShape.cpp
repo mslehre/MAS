@@ -18,8 +18,8 @@ ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col) {
 
 void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, sf::Color col) {
     sf::Vector2f diagVec = end - start;
-    float a = 0.02;
-    float b = 0.98;
+    float a = 0.01;
+    float b = 0.99;
     sf::Vector2f softStart = end - (diagVec*b);
     sf::Vector2f softEnd = end - (diagVec*a);
     sf::Vector2f movement(0,5);

@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
+#include "../alignment/State.h"
 
 class GraphRenderer{
     struct SimpleArrow {
@@ -42,13 +43,14 @@ class GraphRenderer{
         sf::View defaultView;
         int size;
         float moveSize;
+        state *gameState;
 	public:
         bool hovered;
         bool clicked;
         bool st_hovered;
         vector<int> direction;
 
-        GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, int s);
+        GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int s);
 		GraphRenderer();
         
         void render(sf::RenderWindow& window);
@@ -68,7 +70,6 @@ class GraphRenderer{
         void deClickKmer(sf::Vector2f pos);
         void showEdges(vector<Node>& nodeList, sf::Vector2f pos);
 		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
-        bool isArrowValid(Edge temp); 
         bool isPositionEdge(sf::Vector2f pos);
 		bool isPositionNode(sf::Vector2f pos);
 };

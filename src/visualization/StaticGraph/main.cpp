@@ -15,6 +15,7 @@ int main(int argc, char **argv){
 
     //Vektor mit Nodes die matches besitzen
 	vector<Node>& nodeList=g.getNodes();
+    vector<Edge>& edgeList=g.getEdges();
 
     //Auskommentiert weil Baum
     //vector<int>& numbOfKmers=g.getNumberOfKmers();
@@ -26,7 +27,7 @@ int main(int argc, char **argv){
 	window.display();
 
 	//Create a GraphRenderer
-	GraphRenderer GrRend(window, nodeList, 100);
+	GraphRenderer GrRend(window, nodeList, edgeList, 100);
     //create clock
     sf::Clock clock;
     while (window.isOpen()) {

@@ -19,15 +19,13 @@ using namespace std;
 
 class FuncArrowShape : public ArrowShape {
     protected:
-        Edge edge;
         sf::Color hovCol;
-        bool clicked;
-        bool hovered;
+        int index;
     public:        
         FuncArrowShape();
         FuncArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col);
-        FuncArrowShape(Edge Arr, int size, sf::Color col);
-        Edge getEdge();
+        FuncArrowShape(Edge Arr, int size, sf::Color col, int ind);
+        int getIndex();
         void hoverFunc();
         void deHoverFunc();
 };
