@@ -33,26 +33,26 @@ class GraphRenderer{
         int charSize;
     };
     private:
-        std::vector<FuncArrowShape> tempArr;
-        std::vector<FuncArrowShape> arrowList;
+        std::vector<FuncArrowShape> consistentEdges;
+        std::vector<FuncArrowShape> selectedEdges;
         std::vector<SimpleArrow> arrows;
         std::vector<std::vector<sf::RectangleShape>> rects;
         std::vector<TextProps> txt;
-        int index;
-        sf::Vector2i highlight;
-        sf::Color highlightCol;
+        int hoveredEdgeIndex;
+        sf::Vector2i hoverPosition;
+        sf::Color colorOfHoveredNode;
         sf::View actualView;
         sf::View defaultView;
-        int length;
-        int width;
-        int size;
-        float moveSize;
+        int maxNodesPerRow;
+        int maxSequences;
+        int sizeConstant;
+        float moveConstant;
         vector<float> direction;
         state gameState;
 	public:
-        bool hovered;
-        bool clicked;
-        bool st_hovered;
+        bool nodeHovered;
+        bool nodeClicked;
+        bool edgeHovered;
 
         GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int s);
 		GraphRenderer();
@@ -65,13 +65,13 @@ class GraphRenderer{
         void drawShape(sf::RenderWindow& window);
         void drawText(sf::RenderWindow& window);
         void moveWindow(int dir);
-        void addToGame(sf::Vector2f pos);
-        void highlightHover(sf::Vector2f pos);
-        void deHighlightHover();
+        void selectEdge(sf::Vector2f pos);
+        void nodeHover(sf::Vector2f pos);
+        void deNodeHover();
         void edgeHover(sf::Vector2f pos);
         void deEdgeHover();
-        void clickKmer();
-        void deClickKmer(sf::Vector2f pos);
+        void nodeClick();
+        void deNodeClick(sf::Vector2f pos);
         void showEdges(vector<Node>& nodeList, sf::Vector2f pos);
 		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
         bool isPositionEdge(sf::Vector2f pos);
