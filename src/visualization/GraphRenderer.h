@@ -5,19 +5,17 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <iostream>
-#include <algorithm>
 #include <vector>
-#include <array>
 #include <string>
+#include <stdlib.h>
+#include <cmath>
 #include "colorlist.h"
 #include "colormap.h"
 #include "../alignment/Graph.h"
 #include "../alignment/Edge.h"
-#include <stdlib.h>
+#include "../alignment/State.h"
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
-#include "../alignment/State.h"
 
 void printHelp();
 

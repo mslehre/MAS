@@ -1,8 +1,8 @@
 #include "../GraphRenderer.h"
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+
 using namespace std;
 
 int main(int argc, char **argv){
@@ -43,7 +43,7 @@ int main(int argc, char **argv){
 	window.display();
 
 	//Create a GraphRenderer
-	GraphRenderer GrRend(window, nodeList, edgeList,(int)size);
+	GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
     //create clock to compute a scroll speed
     sf::Clock clock;
     while (window.isOpen()) {
@@ -53,7 +53,7 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             //eventhandler for graphical interaction
-            GrRend.eventHandler(event,window,nodeList);
+            GrRend.eventHandler(event, window, nodeList);
 		}
         //Render method for update window
         GrRend.render(window);

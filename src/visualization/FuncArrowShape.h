@@ -2,17 +2,12 @@
 #ifndef FuncArrowShape_H_
 #define FuncArrowShape_H_
 
-#include "ArrowShape.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <iostream>
-#include <algorithm>
 #include <vector>
-#include <array>
-#include <string>
 #include <cmath>
-#include <utility>
+#include "ArrowShape.h"
 #include "../alignment/Edge.h"
 
 using namespace std;
