@@ -19,7 +19,13 @@ class Graph {
 
         unsigned int k;                         ///< length of k-mer
 
-        vector<Node> nodes;                     ///< nodes only with matches in other sequences
+        /** 
+         * \brief nodes only with matches in other sequences <br>
+         * Nodes in a row i are sorted in ascending order relative to the column number j. <br>
+         * The rows are also in ascending order.
+         */
+
+        vector<Node> nodes;  
 
         vector<Edge> edges;                     ///< vector of edges for all sequences (set of edges)
 
@@ -30,7 +36,7 @@ class Graph {
 
         vector<Node>& getNodes();               ///< get vector of nodes with matches in other sequences
                               
-        unsigned int getNumberOfSequences();    ///< get number of sequences
+        unsigned int getNumberOfSequences();    ///< return the number of sequences for an ascending sorted nodes with respect to the rows
 
         /** 
          * \brief get number of nodes for a sequence

@@ -13,19 +13,19 @@ int main(int argc, char **argv){
 	Graph g;
 	g.readFastaFiles(argv[1],atoi(argv[2]));
 
-    //Vektor mit Nodes die matches besitzen
+    // vector of nodes only with matches
 	vector<Node>& nodeList=g.getNodes();
 
-    //Auskommentiert weil Baum
-    //vector<int>& numbOfKmers=g.getNumberOfKmers();
+    // commented out because of tree
+    // vector<int>& numbOfKmers=g.getNumberOfKmers();
     
-	//Open the window with white Background
+    // Open the window with white Background
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
     window.setFramerateLimit(120);
 	window.display();
 
-	//Create a GraphRenderer
+	// Create a GraphRenderer
 	GraphRenderer GrRend(window, nodeList, 100);
     
     while (window.isOpen()) {
@@ -36,11 +36,10 @@ int main(int argc, char **argv){
         while (window.pollEvent(event)) {
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
-                window.close();
-            
+                window.close(); 
 
             GrRend.eventHandler(event);
-		}
+        }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
             GrRend.clickKmer();
             GrRend.showEdges(nodeList, global_mouse_pos, window);
@@ -65,7 +64,3 @@ int main(int argc, char **argv){
     }
     return 0;
 }
-
-
-			
-	
