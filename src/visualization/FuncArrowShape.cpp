@@ -11,11 +11,11 @@ FuncArrowShape::FuncArrowShape(Edge Arr, int size,sf::Color col, int ind) {
     sf::Vector2f End(size*0.2+(size*1.8)*arr[3]+(size/2),size*0.2+((size/2)*3)*arr[2]);
     hovCol = col;
     index = ind;
-    initArrow(start,End,col);
+    initArrow(start,End,size,col);
 }
 
-FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col) {
-    initArrow(s,e,col);
+FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col) {
+    initArrow(s,e,size,col);
 }
 
 

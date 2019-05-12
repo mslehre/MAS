@@ -12,11 +12,11 @@ double innerPr(sf::Vector2f vec1, sf::Vector2f vec2) {
 ArrowShape::ArrowShape() { 
 }
 
-ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col) {
-    initArrow(s,e,col);
+ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col) {
+    initArrow(s,e,size,col);
 }
 
-void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, sf::Color col) {
+void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int size, sf::Color col) {
     sf::Vector2f diagVec = end - start;
     float a = 0.01;
     float b = 0.99;
@@ -29,12 +29,12 @@ void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, sf::Color col) 
     double angle_diag = (360/(2*PI))*acos(innerPr(right,diagVec)/(norm_diag*norm(right)));
     line.setSize(sf::Vector2f(norm_diag, 0));
 	line.setOutlineColor(col);
-	line.setOutlineThickness(2);
+	line.setOutlineThickness(size/50);
     line.setPosition(softStart);
     line.setRotation(angle_diag);
-    tri.setRadius(10);
+    tri.setRadius(size/10);
     tri.setPointCount(3);
-    tri.setOrigin(10,10);
+    tri.setOrigin(size/10,size/10);
     tri.setFillColor(col);
     tri.setOutlineThickness(2.f);
     tri.setOutlineColor(col);

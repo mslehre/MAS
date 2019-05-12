@@ -24,13 +24,31 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     }
     return allKmers;
 }
-
+void printHelp(){
+    cout << "\t Call skript with:\t./visualization [fasta file] [k] \n" << endl;
+    cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
+    cout << "\t fasta file: Must be a file with the ending .fa" << endl;
+    cout << "\t\t fasta files are there to save the information of multiple sequences.\n" << endl;
+    cout << "\t k: Must be an integer greater than zero." << endl;
+    cout << "\t\t k is the length of the Kmers we observe.\n" << endl;
+}
 
 void GraphRenderer::render(sf::RenderWindow& window) {
     if (actualView.getCenter() != window.getView().getCenter()) {
         window.setView(actualView);
+    } 
+    auto holder = window.getSize();
+    if (window.getSize().x != window.getView().getSize().x || window.getSize().y != window.getView().getSize().y) {
+        sf::Vector2f wSize(window.getSize().x,window.getSize().y);
+        sf::Vector2f vSize(window.getView().getSize().x,window.getView().getSize().y);
+        sf::Vector2f newCenter = window.getView().getCenter();
+        sf::Vector2f temp = wSize - vSize;
+        float vec = 0.5;
+        temp = temp * vec;
+        newCenter = newCenter + temp;
+        window.setView(sf::View(newCenter,wSize));
     }
-	window.clear(sf::Color::White);
+  	window.clear(sf::Color::White);
     drawShape(window);
     drawText(window);
 }
@@ -38,6 +56,7 @@ void GraphRenderer::render(sf::RenderWindow& window) {
 void GraphRenderer::update(float delta) {
     if (delta > moveSize) {
         moveSize = delta*10000;
+        cout << moveSize << endl;
     }
 }
 
@@ -92,8 +111,19 @@ GraphRenderer::GraphRenderer() {
 }
 
 GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int s) {
+    length = 0;
+    width = 0;
+    for (uint i = 0; i < nodeList.size(); i++) {
+        if (length < nodeList.at(i).j)
+            length = nodeList.at(i).j;
+        if (width < nodeList.at(i).i)
+            width = nodeList.at(i).i;
+    }
+    direction.push_back(0);
+    direction.push_back(0);
     size = s;
-    state gameState = new state(edgeList);
+    state place(edgeList);
+    gameState = place;
     hovered = false;
     clicked = false;
     st_hovered = false;
@@ -107,20 +137,38 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, v
 void GraphRenderer::moveWindow(int dir) {
     switch (dir) {
         case 0:
-            actualView.move(0,moveSize);
+            if (direction.at(1)+moveSize <= size*0.9+(size*1.5)*width) {
+                actualView.move(0,moveSize);
+                direction.at(1) += moveSize;
+            }
             break;
         case 1:
-            actualView.move(-moveSize,0);
+            if (direction.at(0) > 0) {
+                actualView.move(-moveSize,0);
+                direction.at(0) -= moveSize;
+            }            
             break;
         case 2:
-            actualView.move(moveSize,0);
+            if (direction.at(0)+moveSize <= size*1.4+(size*1.8)*length) {
+                actualView.move(moveSize,0);
+                direction.at(0) += moveSize;
+            }
             break;
-        case 3:    
-            actualView.move(0,-moveSize);
+        case 3:
+            if (direction.at(1) > 0) {
+                actualView.move(0,-moveSize);
+                direction.at(1) -= moveSize;
+            }
             break;
         case 4:
             actualView = defaultView;
             arrowList.clear();
+            for (uint i = 0; i<gameState.edges.size(); i++) {
+                gameState.selectedSubset.at(i) = false;
+                gameState.selectable.at(i) = true;
+            }   
+            direction.at(0) = 0;
+            direction.at(1) = 0;
             break;
     }
 }
@@ -243,8 +291,8 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 
 void GraphRenderer::addToGame(sf::Vector2f pos) {
     int ind = tempArr.at(index).getIndex();
-    gameState->select(ind);
-    FuncArrowShape fill(gameState->edges.at(ind), size, sf::Color::Black, ind);
+    gameState.select(ind);
+    FuncArrowShape fill(gameState.edges.at(ind), size, sf::Color::Black, ind);
     arrowList.push_back(fill);
     tempArr.clear();
     clicked = false;
@@ -323,11 +371,11 @@ void GraphRenderer::deClickKmer(sf::Vector2f pos) {
 
 void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos) {
     Node *recent = positionToNode(pos, nodeList);
-    int size_Edges = gameState->edges.size();
+    int size_Edges = gameState.edges.size();
     for (int i = 0; i<size_Edges; i++) {
-        if( tempArr.size() != 2&& gameState->selectable.at(i) && recent->i == gameState->edges.at(i).first->i && recent->j == gameState->edges.at(i).first->j) {
+        if(gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i && recent->j == gameState.edges.at(i).first->j) {
             cout << "we got it!" << endl;
-            FuncArrowShape temp(gameState->edges[i], size, sf::Color(200,200,200),i);
+            FuncArrowShape temp(gameState.edges[i], size, sf::Color(200,200,200),i);
             tempArr.push_back(temp);
         }
     }

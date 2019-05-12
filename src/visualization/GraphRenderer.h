@@ -19,6 +19,8 @@
 #include "FuncArrowShape.h"
 #include "../alignment/State.h"
 
+void printHelp();
+
 class GraphRenderer{
     struct SimpleArrow {
         sf::RectangleShape line;
@@ -41,14 +43,16 @@ class GraphRenderer{
         sf::Color highlightCol;
         sf::View actualView;
         sf::View defaultView;
+        int length;
+        int width;
         int size;
         float moveSize;
-        state *gameState;
+        vector<float> direction;
+        state gameState;
 	public:
         bool hovered;
         bool clicked;
         bool st_hovered;
-        vector<int> direction;
 
         GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int s);
 		GraphRenderer();
