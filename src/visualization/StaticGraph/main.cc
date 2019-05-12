@@ -6,6 +6,7 @@
 using namespace std;
 
 int main(int argc, char **argv){
+    //Troubleshooting bad arguments
     if (argc != 3) {
         cerr << "\nMissing arguments or too mutch arguments.\n" << endl;
         printHelp();
@@ -18,14 +19,13 @@ int main(int argc, char **argv){
         return -1;
     }
 
-    
-	// Get Graph Infos
+	// Get Graph by file
 	Graph g;
-	g.readFastaFiles(argv[1],atoi(argv[2]));
-
-    //Vektor mit Nodes die matches besitzen
-	vector<Node> nodeList=g.getNodes();
-    vector<Edge> edgeList=g.getEdges();
+	g.readFastaFiles(argv[1], atoi(argv[2]));
+    //get some graph components to compute sth
+	vector<Node> nodeList = g.getNodes();
+    vector<Edge> edgeList = g.getEdges();
+    //initialize width and length of the sequences to compute a sizeConstant for the visuals
     float length = 0;
     float width = 0;
     for (uint i = 0; i < nodeList.size(); i++) {
@@ -34,11 +34,9 @@ int main(int argc, char **argv){
         if (width < nodeList.at(i).i)
             width = nodeList.at(i).i;
     }
-    float size = 50 + 80.0*(1.0/((length/50.0)*(width/5)));
-    //Auskommentiert weil Baum
-    //vector<int>& numbOfKmers=g.getNumberOfKmers();
+    float size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
     
-	//Open the window with white Background
+	//Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
     window.setFramerateLimit(120);
@@ -46,7 +44,7 @@ int main(int argc, char **argv){
 
 	//Create a GraphRenderer
 	GraphRenderer GrRend(window, nodeList, edgeList,(int)size);
-    //create clock
+    //create clock to compute a scroll speed
     sf::Clock clock;
     while (window.isOpen()) {
         sf::Event event;
@@ -54,12 +52,14 @@ int main(int argc, char **argv){
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
-            
+            //eventhandler for graphical interaction
             GrRend.eventHandler(event,window,nodeList);
 		}
+        //Render method for update window
         GrRend.render(window);
         window.display();
         sf::Time elapsed = clock.restart();
+        //scroll speed computation
         GrRend.update(elapsed.asSeconds());
     }
     return 0;
