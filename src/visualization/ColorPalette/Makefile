@@ -17,11 +17,11 @@ colormap.o: ../colormap.cc $(HEADER1) $(HEADER2) $(HEADER3)
 	$(CC) $(CFLAGS) ../colormap.cc
 colorlist.o: ../colorlist.cc $(HEADER1) $(HEADER2) $(HEADER3)
 	$(CC) $(CFLAGS) ../colorlist.cc
-Graph.o: ../../alignment/Graph.cpp $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
-	$(CC) $(CFLAGS) ../../alignment/Graph.cpp
-Edge.o: ../../alignment/Edge.cpp $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
-	$(CC) $(CFLAGS) ../../alignment/Edge.cpp
-Node.o: ../../alignment/Node.cpp $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
-	$(CC) $(CFLAGS) ../../alignment/Node.cpp
+Graph.o: ../../alignment/Graph.cc $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
+	$(CC) $(CFLAGS) ../../alignment/Graph.cc
+Edge.o: ../../alignment/Edge.cc $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
+	$(CC) $(CFLAGS) ../../alignment/Edge.cc
+Node.o: ../../alignment/Node.cc $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4) $(HEADER5)
+	$(CC) $(CFLAGS) ../../alignment/Node.cc
 clean:
 	rm -f *.o colortest_main
