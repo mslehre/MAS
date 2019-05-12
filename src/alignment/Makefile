@@ -11,14 +11,14 @@ State_test.o: State_test.cc State.h Graph.h Node.h Edge.h
 State.o: State.cc State.h Edge.h Node.h Graph.h
 	g++ $(CXXFLAGS) -c State.cc 
 
-Graph.o: Graph.cpp Graph.h Edge.h Node.h
-	g++ $(CXXFLAGS) -c Graph.cpp
+Graph.o: Graph.cc Graph.h Edge.h Node.h
+	g++ $(CXXFLAGS) -c Graph.cc
 
-Edge.o: Edge.cpp Edge.h Node.h
-	g++ $(CXXFLAGS) -c Edge.cpp
+Edge.o: Edge.cc Edge.h Node.h
+	g++ $(CXXFLAGS) -c Edge.cc
 
-Node.o: Node.cpp Node.h
-	g++ $(CXXFLAGS) -c Node.cpp
+Node.o: Node.cc Node.h
+	g++ $(CXXFLAGS) -c Node.cc
 
 clean:
 	rm -rf *.o State_test
