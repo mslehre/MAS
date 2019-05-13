@@ -229,11 +229,8 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     direction.push_back(0);
     direction.push_back(0);
 
-    //Get k
-    int k = nodeList.at(0).kmer.size();
     //Get all nodes we need
-    int size_nodes = nodeList.size(); 
-    int size_adjnodes;
+    uint size_nodes = nodeList.size();
 
     //Initialize colormap
     vector<string> Kmers = giveKmers(nodeList);
@@ -242,8 +239,8 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     colormap mapExample(Kmers, colors);
 
     //Placeholder for readablity OF THE NODES
-    int i;
-    int j;
+    uint i;
+    uint j;
     //Placeholder for the Text
     TextProps tx;
 	tx.col = sf::Color::Black;
@@ -267,7 +264,7 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 	line.setOutlineThickness(2);
 	//calculate our Graph in visuals
 
-	for (int k = 0; k < size_nodes; k++){
+	for (uint k = 0; k < size_nodes; k++){
         i = nodeList.at(k).i;
         j = nodeList.at(k).j;
 	    rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
@@ -343,7 +340,7 @@ void GraphRenderer::deHoverEdge() {
 }
 
 void GraphRenderer::hoverEdge(sf::Vector2f pos) {
-    for (int i = 0; i < consistentEdges.size(); i++) {
+    for (uint i = 0; i < consistentEdges.size(); i++) {
         if (consistentEdges.at(i).getShape().getGlobalBounds().contains(pos)) {
             consistentEdges.at(i).hoverFunc();
             hoveredEdgeIndex = i;
@@ -390,12 +387,13 @@ bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
         if (arr.getShape().getGlobalBounds().contains(pos))
             return true;
     }
+    return false;
 }
 
 
 bool GraphRenderer::isPositionNode(sf::Vector2f pos) {
-	int x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-	int y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
+	uint x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
+	uint y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
     if(y < rects.size() && y >= 0 && x >= 0 && x < rects.at(y).size()) {
         bool s = rects.at(y).at(x).getGlobalBounds().contains(pos);
         return s;

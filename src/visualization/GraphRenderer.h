@@ -40,8 +40,8 @@ class GraphRenderer{
         sf::Color colorOfHoveredNode;
         sf::View actualView;
         sf::View defaultView;
-        int maxNodesPerRow;
-        int maxSequences;
+        uint maxNodesPerRow;
+        uint maxSequences;
         int sizeConstant;
         float moveConstant;
         vector<float> direction;
