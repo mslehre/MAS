@@ -6,3 +6,6 @@
 .project
 .settings
 doxygen
+src/SequenceSimulation/simulation_main
+src/alignment/State_test
+src/visualization/GUI/GUI_main
