@@ -28,14 +28,19 @@ int main(int argc, char **argv){
     //initialize width and length of the sequences to compute a sizeConstant for the visuals
     float length = 0;
     float width = 0;
+    float size;
     for (uint i = 0; i < nodeList.size(); i++) {
         if (length < nodeList.at(i).j)
             length = nodeList.at(i).j;
         if (width < nodeList.at(i).i)
             width = nodeList.at(i).i;
     }
-    float size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
-    
+    if (length > 50 && width > 5) {
+        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
+    } else {
+        size = 130;
+    }
+    cout << size << endl;
 	//Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
