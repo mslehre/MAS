@@ -17,9 +17,8 @@ FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Col
     initArrow(s, e, size, col);
 }
 
-
 void FuncArrowShape::hoverFunc() {
-	line.setOutlineColor(sf::Color::Black);
+    line.setOutlineColor(sf::Color::Black);
     tri.setOutlineColor(sf::Color::Black);
 }
 

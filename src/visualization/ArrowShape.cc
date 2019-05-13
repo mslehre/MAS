@@ -4,6 +4,7 @@ using namespace std;
 double norm(sf::Vector2f vec) {
     return sqrt(pow(vec.x, 2) + pow(vec.y, 2));
 }
+
 double innerPr(sf::Vector2f vec1, sf::Vector2f vec2) {
     return vec1.x * vec2.x + vec1.y * vec2.y;
 }
@@ -27,17 +28,17 @@ void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int size, sf::C
     double norm_diag = norm(diagVec);
     double angle_diag = (360 / (2 * PI)) * acos(innerPr(right, diagVec) / (norm_diag * norm(right)));
     line.setSize(sf::Vector2f(norm_diag, 0));
-	line.setOutlineColor(col);
-	line.setOutlineThickness(size / 50);
+    line.setOutlineColor(col);
+    line.setOutlineThickness(size / 50);
     line.setPosition(softStart);
     line.setRotation(angle_diag);
     tri.setRadius(size / 10);
     tri.setPointCount(3);
-    tri.setOrigin(size / 10,size / 10);
+    tri.setOrigin(size / 10, size / 10);
     tri.setFillColor(col);
     tri.setOutlineThickness(2.f);
     tri.setOutlineColor(col);
-	tri.setPosition(softEnd);
+    tri.setPosition(softEnd);
     tri.setRotation(angle_diag + 90);
 }
 

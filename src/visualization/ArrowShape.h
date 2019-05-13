@@ -24,7 +24,7 @@ class ArrowShape {
         ArrowShape();
         ArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col);
         void initArrow(sf::Vector2f start, sf::Vector2f end, int size, sf::Color col);
-		void Draw(sf::RenderWindow& window);
+        void Draw(sf::RenderWindow& window);
         sf::CircleShape getShape();
 };
 

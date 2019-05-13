@@ -16,7 +16,7 @@ class FuncArrowShape : public ArrowShape {
     protected:
         sf::Color hovCol;
         int index;
-    public:        
+    public:
         FuncArrowShape();
         FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col);
         FuncArrowShape(Edge Arr, int size, sf::Color col, int ind);
