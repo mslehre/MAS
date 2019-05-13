@@ -1,7 +1,7 @@
 #include "FuncArrowShape.h"
 using namespace std;
 
-FuncArrowShape::FuncArrowShape() { 
+FuncArrowShape::FuncArrowShape() {
 }
 
 FuncArrowShape::FuncArrowShape(Edge Arr, int size, sf::Color col, int ind) {

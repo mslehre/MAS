@@ -51,7 +51,7 @@ void GraphRenderer::render(sf::RenderWindow& window) {
         window.setView(sf::View(newCenter, wSize));
     }
     //reset window
-  	window.clear(sf::Color::White);
+    window.clear(sf::Color::White);
     drawShape(window);
     drawText(window);
 }
@@ -159,7 +159,7 @@ void GraphRenderer::moveWindow(int dir) {
             if (direction.at(0) > 0) {
                 actualView.move(- moveConstant, 0);
                 direction.at(0) -= moveConstant;
-            }            
+            }
             break;
         case 2:
             if (direction.at(0) + moveConstant <= sizeConstant * 1.4 + (sizeConstant * 1.8) * maxNodesPerRow) {
@@ -179,7 +179,7 @@ void GraphRenderer::moveWindow(int dir) {
             for (uint i = 0; i < gameState.edges.size(); i++) {
                 gameState.selectedSubset.at(i) = false;
                 gameState.selectable.at(i) = true;
-            }   
+            }
             direction.at(0) = 0;
             direction.at(1) = 0;
             break;
@@ -188,17 +188,17 @@ void GraphRenderer::moveWindow(int dir) {
 
 //This Method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
-    int size_text = txt.size();  
+    int size_text = txt.size();
     sf::Text text;
     sf::Font font;
-	if (!font.loadFromFile("Amiko-Regular.ttf"))
-		std::cout << "Can't find the font file" << std::endl;
+    if (!font.loadFromFile("Amiko-Regular.ttf"))
+        std::cout << "Can't find the font file" << std::endl;
     for (int i = 0; i < size_text; i++) {
         text.setFont(font);
-	    text.setColor(txt[i].col);
-	    text.setPosition(txt[i].pos[0], txt[i].pos[1]);
-	    text.setString(txt[i].kmer);
-	    text.setCharacterSize(txt[i].charSize);
+        text.setFillColor(txt[i].col);
+        text.setPosition(txt[i].pos[0], txt[i].pos[1]);
+        text.setString(txt[i].kmer);
+        text.setCharacterSize(txt[i].charSize);
         window.draw(text);
     }
 }
@@ -243,12 +243,12 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     uint j;
     //Placeholder for the Text
     TextProps tx;
-	tx.col = sf::Color::Black;
+    tx.col = sf::Color::Black;
     //Placeholder for the Shapes
     SimpleArrow arr;
 
     sf::RectangleShape rect;
-	rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
+    rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
 
     sf::CircleShape tri;
     tri.setRadius(sizeConstant * 0.1);
@@ -260,33 +260,33 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
 
     sf::RectangleShape line;
     line.setSize(sf::Vector2f(sizeConstant, 0));
-	line.setOutlineColor(sf::Color::Black);
-	line.setOutlineThickness(2);
+    line.setOutlineColor(sf::Color::Black);
+    line.setOutlineThickness(2);
 
-	for (uint k = 0; k < size_nodes; k++){
+    for (uint k = 0; k < size_nodes; k++){
         i = nodeList.at(k).i;
         j = nodeList.at(k).j;
-	    rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
-	    rect.setPosition(sizeConstant * 0.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.2 + ((sizeConstant / 2) * 3) * i);
+        rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
+        rect.setPosition(sizeConstant * 0.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.2 + ((sizeConstant / 2) * 3) * i);
         while (rects.size() != i + 1) {
             vector<sf::RectangleShape> fill;
             rects.push_back(fill);
         }
         rects.at(i).push_back(rect);
-	    tx.pos.push_back(sizeConstant * 0.2 + (sizeConstant * 1.8) * j + sizeConstant * 0.1);
+        tx.pos.push_back(sizeConstant * 0.2 + (sizeConstant * 1.8) * j + sizeConstant * 0.1);
         tx.pos.push_back(sizeConstant * 0.2 + (sizeConstant / 2) * 3 * i + (sizeConstant / 2) * 0.1);
-	    tx.kmer = nodeList.at(k).kmer;
-	    tx.charSize = sizeConstant * 0.25;
+        tx.kmer = nodeList.at(k).kmer;
+        tx.charSize = sizeConstant * 0.25;
         txt.push_back(tx);
         tx.pos.clear();
-		if (k != nodeList.size() - 1 && i == nodeList.at(k + 1).i) {
-	        line.setPosition(sizeConstant * 1.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.45 + (sizeConstant / 2) * 3 * i);
-	        tri.setPosition(sizeConstant * 1.7 + (sizeConstant * 1.8) * j, sizeConstant * 0.35 + (sizeConstant / 2) * 3 * i);
+        if (k != nodeList.size() - 1 && i == nodeList.at(k + 1).i) {
+            line.setPosition(sizeConstant * 1.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.45 + (sizeConstant / 2) * 3 * i);
+            tri.setPosition(sizeConstant * 1.7 + (sizeConstant * 1.8) * j, sizeConstant * 0.35 + (sizeConstant / 2) * 3 * i);
             arr.line = line;
             arr.triangle = tri;
             arrows.push_back(arr);
-		}
-	}
+        }
+    }
 }
 
 //This method select an edge which got hovered
@@ -304,22 +304,22 @@ void GraphRenderer::selectEdge(sf::Vector2f pos) {
 //This method calculates Nodes in terms of positions
 Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList) {
     uint x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-	uint y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
-	Node *actualNode;
-	for (auto &node : nodeList) {
-		if (node.i == y && node.j == x) {
-			actualNode = &node;
-			break;
-		}
-	}
-	return actualNode;
+    uint y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
+    Node *actualNode;
+    for (auto &node : nodeList) {
+        if (node.i == y && node.j == x) {
+            actualNode = &node;
+            break;
+        }
+    }
+    return actualNode;
 }
 
 //this method will highlight a node which we hover
 void GraphRenderer::hoverNode(sf::Vector2f pos) {
-    if (!nodeClicked) {        
+    if (!nodeClicked) {
         int j = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-	    int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
+        int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
         hoverPosition = sf::Vector2i(i, j);
         rects.at(i).at(j).setOutlineColor(sf::Color::Black);
         rects.at(i).at(j).setOutlineThickness(5);
@@ -371,7 +371,7 @@ void GraphRenderer::deClickNode(sf::Vector2f pos) {
     consistentEdges.clear();
     nodeClicked = false;
     int j = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-	int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
+    int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
     hoverPosition = sf::Vector2i(i, j);
 }
 

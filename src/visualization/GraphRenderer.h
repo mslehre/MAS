@@ -53,8 +53,8 @@ class GraphRenderer{
         int hoveredEdgeIndex;
 
         GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int sizeConst);
-		GraphRenderer();
-        
+        GraphRenderer();
+
         void render(sf::RenderWindow& window);
         void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList);
         void update(float delta);
@@ -71,9 +71,9 @@ class GraphRenderer{
         void deHoverEdge();
         void clickNode();
         void deClickNode(sf::Vector2f pos);
-		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
+        Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
         bool isPositionEdge(sf::Vector2f pos);
-		bool isPositionNode(sf::Vector2f pos);
+        bool isPositionNode(sf::Vector2f pos);
 };
 
 #endif //GraphRenderer_H_

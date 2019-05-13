@@ -19,11 +19,11 @@ int main(int argc, char **argv){
         return -1;
     }
 
-	// Get Graph by file
-	Graph g;
-	g.readFastaFiles(argv[1], atoi(argv[2]));
+    // Get Graph by file
+    Graph g;
+    g.readFastaFiles(argv[1], atoi(argv[2]));
     //get some graph components to compute sth
-	vector<Node> nodeList = g.getNodes();
+    vector<Node> nodeList = g.getNodes();
     vector<Edge> edgeList = g.getEdges();
     //initialize width and length of the sequences to compute a sizeConstant for the visuals
     float length = 0;
@@ -41,14 +41,14 @@ int main(int argc, char **argv){
         size = 130;
     }
     cout << size << endl;
-	//Open the window with white Background and restrict framerate
+    //Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
-	window.clear(sf::Color::White);    
+    window.clear(sf::Color::White);
     window.setFramerateLimit(120);
-	window.display();
+    window.display();
 
-	//Create a GraphRenderer
-	GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
+    //Create a GraphRenderer
+    GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
     //create clock to compute a scroll speed
     sf::Clock clock;
     while (window.isOpen()) {
@@ -59,7 +59,7 @@ int main(int argc, char **argv){
                 window.close();
             //eventhandler for graphical interaction
             GrRend.eventHandler(event, window, nodeList);
-		}
+        }
         //Render method for update window
         GrRend.render(window);
         window.display();
@@ -71,5 +71,3 @@ int main(int argc, char **argv){
 }
 
 
-			
-	

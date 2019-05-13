@@ -9,7 +9,7 @@ double innerPr(sf::Vector2f vec1, sf::Vector2f vec2) {
     return vec1.x * vec2.x + vec1.y * vec2.y;
 }
 
-ArrowShape::ArrowShape() { 
+ArrowShape::ArrowShape() {
 }
 
 ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col) {
