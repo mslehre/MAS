@@ -12,16 +12,17 @@ double innerPr(sf::Vector2f vec1, sf::Vector2f vec2) {
 ArrowShape::ArrowShape() {
 }
 
-ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, int size, sf::Color col) {
-    initArrow(s, e, size, col);
+ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant, sf::Color col) {
+    initArrow(s, e, sizeConstant, col);
 }
 
-void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int size, sf::Color col) {
+// the main initialization of the arrows
+void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int sizeConstant, sf::Color col) {
     sf::Vector2f diagVec = end - start;
-    float a = 0.01;
-    float b = 0.99;
-    sf::Vector2f softStart = end - (diagVec*b);
-    sf::Vector2f softEnd = end - (diagVec*a);
+    float scalar1 = 0.001;
+    float scalar2 = 0.999;
+    sf::Vector2f softStart = end - (diagVec*scalar2);
+    sf::Vector2f softEnd = end - (diagVec*scalar1);
     sf::Vector2f movement(0, 5);
     diagVec = softEnd - softStart;
     sf::Vector2f right(1, 0);
@@ -29,12 +30,12 @@ void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int size, sf::C
     double angle_diag = (360 / (2 * PI)) * acos(innerPr(right, diagVec) / (norm_diag * norm(right)));
     line.setSize(sf::Vector2f(norm_diag, 0));
     line.setOutlineColor(col);
-    line.setOutlineThickness(size / 50);
+    line.setOutlineThickness(sizeConstant / 50);
     line.setPosition(softStart);
     line.setRotation(angle_diag);
-    tri.setRadius(size / 10);
+    tri.setRadius(sizeConstant / 10);
     tri.setPointCount(3);
-    tri.setOrigin(size / 10, size / 10);
+    tri.setOrigin(sizeConstant / 10, sizeConstant / 10);
     tri.setFillColor(col);
     tri.setOutlineThickness(2.f);
     tri.setOutlineColor(col);

@@ -78,7 +78,7 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     //Now check what gets hovered
     if (event.type == sf::Event::EventType::MouseMoved) {
         //highlight the hovered Node
-        if (!nodeHovered && isPositionNode(movePos)) {
+        if (!nodeHovered && !nodeClicked && isPositionNode(movePos)) {
             hoverNode(movePos);
         //remove the highlight of the Node
         } else if (nodeHovered && !isPositionNode(movePos)) {
@@ -99,15 +99,15 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     if (event.type == sf::Event::EventType::MouseButtonPressed) {
         //select the Node you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeHovered && !nodeClicked) {
-            clickNode();
+            clickNode(clickPos);
             showEdges(nodeList, clickPos);
         //remove the selected Node
         } else if (event.mouseButton.button == sf::Mouse::Right && nodeClicked) {
-            deClickNode(clickPos);
+            deClickNode();
         }
         //select a Edge you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeClicked && edgeHovered)
-            selectEdge(clickPos);
+            selectEdge();
     }
 }
 
@@ -149,31 +149,31 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, v
 //Method which will move the window in a choosed direction or resets it
 void GraphRenderer::moveWindow(int dir) {
     switch (dir) {
-        case 0:
-            if (direction.at(1) + moveConstant <= sizeConstant * 0.9 + (sizeConstant * 1.5) * maxSequences) {
+        case 0: //to the down
+            if (direction.at(1) + moveConstant <= sizeConstant * (0.9 + 1.5 * maxSequences)) {
                 actualView.move(0, moveConstant);
                 direction.at(1) += moveConstant;
             }
             break;
-        case 1:
+        case 1: //to the left
             if (direction.at(0) > 0) {
                 actualView.move(- moveConstant, 0);
                 direction.at(0) -= moveConstant;
             }
             break;
-        case 2:
-            if (direction.at(0) + moveConstant <= sizeConstant * 1.4 + (sizeConstant * 1.8) * maxNodesPerRow) {
+        case 2: //to the right
+            if (direction.at(0) + moveConstant <= sizeConstant * (1.4 + 1.8 * maxNodesPerRow)) {
                 actualView.move(moveConstant, 0);
                 direction.at(0) += moveConstant;
             }
             break;
-        case 3:
+        case 3: //to the up
             if (direction.at(1) > 0) {
                 actualView.move(0,- moveConstant);
                 direction.at(1) -= moveConstant;
             }
             break;
-        case 4:
+        case 4: //resets all
             actualView = defaultView;
             selectedEdges.clear();
             for (uint i = 0; i < gameState.edges.size(); i++) {
@@ -191,6 +191,7 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
     int size_text = txt.size();
     sf::Text text;
     sf::Font font;
+    //load font out of file
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
     for (int i = 0; i < size_text; i++) {
@@ -207,13 +208,12 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
 void GraphRenderer::drawShape(sf::RenderWindow& window) {
     int size_Rect = rects.size();
     int size_seq;
-    int size_Arrow = arrows.size();
+    int size_rowArrows = rowArrows.size();
     int size_tempArr = consistentEdges.size();
     int size_arrowList = selectedEdges.size();
-
-    for (int i = 0; i < size_Arrow; i++) {
-        window.draw(arrows.at(i).line);
-        window.draw(arrows.at(i).triangle);
+    //iterate through vectors to draw all
+    for (int i = 0; i < size_rowArrows; i++) {
+        rowArrows.at(i).Draw(window);
     }
     for (int i = 0; i < size_Rect; i++) {
         size_seq = rects.at(i).size();
@@ -244,107 +244,77 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     //Placeholder for the Text
     TextProps tx;
     tx.col = sf::Color::Black;
-    //Placeholder for the Shapes
-    SimpleArrow arr;
-
+    //initialize rectangle
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
-
-    sf::CircleShape tri;
-    tri.setRadius(sizeConstant * 0.1);
-    tri.setPointCount(3);
-    tri.setFillColor(sf::Color::Black);
-    tri.setOutlineThickness(2.f);
-    tri.setOutlineColor(sf::Color::Black);
-    tri.setRotation(90.f);
-
-    sf::RectangleShape line;
-    line.setSize(sf::Vector2f(sizeConstant, 0));
-    line.setOutlineColor(sf::Color::Black);
-    line.setOutlineThickness(2);
-
+    //Iterate to declare all shapes we need in the beginning
     for (uint k = 0; k < size_nodes; k++){
         i = nodeList.at(k).i;
         j = nodeList.at(k).j;
         rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
-        rect.setPosition(sizeConstant * 0.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.2 + ((sizeConstant / 2) * 3) * i);
+        rect.setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
         while (rects.size() != i + 1) {
             vector<sf::RectangleShape> fill;
             rects.push_back(fill);
         }
         rects.at(i).push_back(rect);
-        tx.pos.push_back(sizeConstant * 0.2 + (sizeConstant * 1.8) * j + sizeConstant * 0.1);
-        tx.pos.push_back(sizeConstant * 0.2 + (sizeConstant / 2) * 3 * i + (sizeConstant / 2) * 0.1);
+        tx.pos.push_back(sizeConstant * (0.3 + 1.8 * j));
+        tx.pos.push_back(sizeConstant * (0.25 + 1.5 * i));
         tx.kmer = nodeList.at(k).kmer;
         tx.charSize = sizeConstant * 0.25;
         txt.push_back(tx);
         tx.pos.clear();
         if (k != nodeList.size() - 1 && i == nodeList.at(k + 1).i) {
-            line.setPosition(sizeConstant * 1.2 + (sizeConstant * 1.8) * j, sizeConstant * 0.45 + (sizeConstant / 2) * 3 * i);
-            tri.setPosition(sizeConstant * 1.7 + (sizeConstant * 1.8) * j, sizeConstant * 0.35 + (sizeConstant / 2) * 3 * i);
-            arr.line = line;
-            arr.triangle = tri;
-            arrows.push_back(arr);
+            sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
+            sf::Vector2f end(sizeConstant * (1.85 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
+            ArrowShape placeholder(start, end, sizeConstant, sf::Color::Black);
+            rowArrows.push_back(placeholder);
         }
     }
-}
-
-//This method select an edge which got hovered
-void GraphRenderer::selectEdge(sf::Vector2f pos) {
-    int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
-    gameState.select(ind);
-    FuncArrowShape fill(gameState.edges.at(ind), sizeConstant, sf::Color::Black, ind);
-    selectedEdges.push_back(fill);
-    consistentEdges.clear();
-    nodeClicked = false;
-    edgeHovered = false;
-    deClickNode(pos);
-}
-
-//This method calculates Nodes in terms of positions
-Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList) {
-    uint x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-    uint y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
-    Node *actualNode;
-    for (auto &node : nodeList) {
-        if (node.i == y && node.j == x) {
-            actualNode = &node;
-            break;
-        }
-    }
-    return actualNode;
 }
 
 //this method will highlight a node which we hover
 void GraphRenderer::hoverNode(sf::Vector2f pos) {
-    if (!nodeClicked) {
-        int j = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-        int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
-        hoverPosition = sf::Vector2i(i, j);
-        rects.at(i).at(j).setOutlineColor(sf::Color::Black);
-        rects.at(i).at(j).setOutlineThickness(5);
-    }
+    sf::Vector2i temp = positionToCoords(pos);
+    hoverPosition = temp;
+    rects.at(temp.y).at(temp.x).setOutlineColor(sf::Color::Black);
+    rects.at(temp.y).at(temp.x).setOutlineThickness(5);
     nodeHovered = true;
 }
 
 //this method is removing the highlight of the hover function
 void GraphRenderer::deHoverNode() {
     if (!nodeClicked) {
-        rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineColor(sf::Color::Transparent);
-        rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineThickness(0);
+        rects.at(hoverPosition.y).at(hoverPosition.x).setOutlineColor(sf::Color::Transparent);
+        rects.at(hoverPosition.y).at(hoverPosition.x).setOutlineThickness(0);
     }
     nodeHovered = false;
 }
 
-//This method is removing the edge highlight
-void GraphRenderer::deHoverEdge() {
-    consistentEdges.at(hoveredEdgeIndex).deHoverFunc();
-    edgeHovered = false;
+//this function catches the click on a node and select it
+void GraphRenderer::clickNode(sf::Vector2f pos) {
+    sf::Vector2i temp = positionToCoords(pos);
+    clickPosition = temp;
+    colorOfClickedNode = rects.at(clickPosition.y).at(clickPosition.x).getFillColor();
+    rects.at(clickPosition.y).at(clickPosition.x).setFillColor(sf::Color(128, 128, 128));
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineColor(sf::Color::Red);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineThickness(8);
+    nodeClicked = true;
+}
+
+//this function remove the selected node
+void GraphRenderer::deClickNode() {
+    rects.at(clickPosition.y).at(clickPosition.x).setFillColor(colorOfClickedNode);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineColor(sf::Color::Transparent);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineThickness(0);
+    consistentEdges.clear();
+    nodeClicked = false;
 }
 
 //this method will highlight a edge, when we clicked a node and hover over a edge
 void GraphRenderer::hoverEdge(sf::Vector2f pos) {
     for (uint i = 0; i < consistentEdges.size(); i++) {
+        //is our mousepos in the edgefront?
         if (consistentEdges.at(i).getShape().getGlobalBounds().contains(pos)) {
             consistentEdges.at(i).hoverFunc();
             hoveredEdgeIndex = i;
@@ -354,25 +324,10 @@ void GraphRenderer::hoverEdge(sf::Vector2f pos) {
     edgeHovered = true;
 }
 
-//this function catches the click on a node and select it
-void GraphRenderer::clickNode() {
-    colorOfHoveredNode = rects.at(hoverPosition.x).at(hoverPosition.y).getFillColor();
-    rects.at(hoverPosition.x).at(hoverPosition.y).setFillColor(sf::Color(128, 128, 128));
-    rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineColor(sf::Color::Red);
-    rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineThickness(8);
-    nodeClicked = true;
-}
-
-//this function remove the selected node
-void GraphRenderer::deClickNode(sf::Vector2f pos) {
-    rects.at(hoverPosition.x).at(hoverPosition.y).setFillColor(colorOfHoveredNode);
-    rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineColor(sf::Color::Transparent);
-    rects.at(hoverPosition.x).at(hoverPosition.y).setOutlineThickness(0);
-    consistentEdges.clear();
-    nodeClicked = false;
-    int j = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-    int i = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
-    hoverPosition = sf::Vector2i(i, j);
+//This method is removing the edge highlight
+void GraphRenderer::deHoverEdge() {
+    consistentEdges.at(hoveredEdgeIndex).deHoverFunc();
+    edgeHovered = false;
 }
 
 //This function shows the consistent edges
@@ -380,11 +335,46 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos) {
     Node *recent = positionToNode(pos, nodeList);
     int size_Edges = gameState.edges.size();
     for (int i = 0; i < size_Edges; i++) {
+        //just look at all edges that come from the selected node
         if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i && recent->j == gameState.edges.at(i).first->j) {
             FuncArrowShape temp(gameState.edges[i], sizeConstant, sf::Color(200, 200, 200), i);
             consistentEdges.push_back(temp);
         }
     }
+}
+
+//This method select an edge which got hovered
+void GraphRenderer::selectEdge() {
+    int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
+    //select via state
+    gameState.select(ind);
+    FuncArrowShape fill(gameState.edges.at(ind), sizeConstant, sf::Color::Black, ind);
+    //Save the selected edge in visuals
+    selectedEdges.push_back(fill);
+    consistentEdges.clear();
+    nodeClicked = false;
+    edgeHovered = false;
+    deClickNode();
+}
+
+//Method for calculating the nearest node pos of the argument pos
+sf::Vector2i GraphRenderer::positionToCoords(sf::Vector2f pos) {
+    int x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
+    int y = (pos.y - sizeConstant * 0.2) / (sizeConstant * 1.5);
+    return sf::Vector2i(x, y);
+}
+
+//This method calculates Nodes in terms of positions
+Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList) {
+    sf::Vector2i temp = positionToCoords(pos);
+    Node *actualNode;
+    for (auto &node : nodeList) {
+        if ((int)node.i == temp.y && (int)node.j == temp.x) {
+            actualNode = &node;
+            break;
+        }
+    }
+    return actualNode;
 }
 
 //This method is checking that an edge is in mouseposition
@@ -398,10 +388,10 @@ bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
 
 //This method is checking that an Node is in mouseposition
 bool GraphRenderer::isPositionNode(sf::Vector2f pos) {
-	uint x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
-	uint y = (pos.y - sizeConstant * 0.2) / ((sizeConstant / 2) * 3);
-    if(y < rects.size() && y >= 0 && x >= 0 && x < rects.at(y).size()) {
-        bool s = rects.at(y).at(x).getGlobalBounds().contains(pos);
+    sf::Vector2i temp = positionToCoords(pos);
+    //just look at rectangle indices which we defined
+    if(temp.y < (int)rects.size() && temp.y >= 0 && temp.x >= 0 && temp.x < (int)rects.at(temp.y).size()) {
+        bool s = rects.at(temp.y).at(temp.x).getGlobalBounds().contains(pos);
         return s;
     } else {
         return false;
