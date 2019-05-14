@@ -15,13 +15,13 @@ ScoreTest.o: ScoreTest.cc $(HEADER1) $(HEADER2) $(HEADER3) $(HEADER4)
 State.o: ../State.cc $(HEADER2) $(HEADER3) $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
-Node.o: ../Node.cpp $(HEADER2)
+Node.o: ../Node.cc $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
-Edge.o: ../Edge.cpp $(HEADER3)
+Edge.o: ../Edge.cc $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
-Graph.o: ../Graph.cpp $(HEADER4) 
+Graph.o: ../Graph.cc $(HEADER4) 
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 

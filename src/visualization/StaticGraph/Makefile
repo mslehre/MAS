@@ -15,19 +15,19 @@ all: visualization
 visualization: $(OBJ) 
 	$(CC) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
 
-main.o: main.cpp $(HEADER1)
+main.o: main.cc $(HEADER1)
 	$(CC) $(CFLAGS) $< -o  $@
 
-GraphRenderer.o: ../GraphRenderer.cpp $(HEADER3) $(HEADER1) $(HEADER7)
+GraphRenderer.o: ../GraphRenderer.cc $(HEADER3) $(HEADER1) $(HEADER7)
 	$(CC) $(CFLAGS) $< -o $@
 
-Graph.o: ../../alignment/Graph.cpp $(HEADER1) $(HEADER2) $(HEADER4)
+Graph.o: ../../alignment/Graph.cc $(HEADER1) $(HEADER2) $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
-Node.o: ../../alignment/Node.cpp $(HEADER2)
+Node.o: ../../alignment/Node.cc $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
-Edge.o: ../../alignment/Edge.cpp $(HEADER4)
+Edge.o: ../../alignment/Edge.cc $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
 colorlist.o: ../colorlist.cc $(HEADER6)
@@ -36,10 +36,10 @@ colorlist.o: ../colorlist.cc $(HEADER6)
 colormap.o: ../colormap.cc $(HEADER5)
 	$(CC) $(CFLAGS) $< -o $@
 
-ArrowShape.o: ../ArrowShape.cpp $(HEADER7) 
+ArrowShape.o: ../ArrowShape.cc $(HEADER7) 
 	$(CC) $(CFLAGS) $< -o $@
 
-FuncArrowShape.o: ../FuncArrowShape.cpp $(HEADER7) $(HEADER8) 
+FuncArrowShape.o: ../FuncArrowShape.cc $(HEADER7) $(HEADER8) 
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 

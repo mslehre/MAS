@@ -25,6 +25,52 @@ vector<string> giveKmers(vector<Node>& Sequences) {
     return allKmers;
 }
 
+
+void GraphRenderer::render(sf::RenderWindow& window) {
+    if (actualView.getCenter() != window.getView().getCenter()) {
+        window.setView(actualView);
+    }
+	window.clear(sf::Color::White);
+    drawShape(window);
+    drawText(window);
+}
+
+void GraphRenderer::eventHandler(sf::Event event) {
+    if (event.type == sf::Event::EventType::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Right) {
+	        moveWindow(2);
+        } else if (event.key.code == sf::Keyboard::Left) {
+            moveWindow(1);
+        } else if (event.key.code == sf::Keyboard::Up) {
+            moveWindow(3);
+        } else if (event.key.code == sf::Keyboard::Down) {
+            moveWindow(0);
+        } else if (event.key.code == sf::Keyboard::Space) {
+            moveWindow(4);
+        } 
+    
+    }
+}
+
+/*
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+	        GrRend.moveWindow(4,window);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+	        GrRend.moveWindow(0,window);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+	        GrRend.moveWindow(1,window);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+	        GrRend.moveWindow(2,window);
+        }        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+	        GrRend.moveWindow(3,window);
+        }
+*/
+
 GraphRenderer::GraphRenderer() {
 }
 
@@ -33,50 +79,34 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, i
     hovered = false;
     clicked = false;
     st_hovered = false;
+    defaultView = window.getDefaultView();
+    actualView = defaultView;
     initShapes(nodeList);
     drawShape(window);
     drawText(window);
 }
 
-void GraphRenderer::moveWindow(int dir, sf::RenderWindow& window) {
-    bild = window.getView();
-        switch (dir) {
-            case 0:
-                bild.move(0,10);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(1) += 10;
-                break;
-            case 1:
-                bild.move(-10,0);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) += -10;
-                break;
-            case 2:
-                bild.move(10,0);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) += 10;
-                break;
-            case 3:    
-                bild.move(0,-10);
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(1) += -10;
-                break;
-            case 4:
-                bild = window.getDefaultView();
-                window.setView(bild);
-	            window.clear(sf::Color::White);
-                direction.at(0) = 0;
-                direction.at(1) = 0;
-                arrowList.clear();
-                break;
-        }
-    drawShape(window);
-    drawText(window);
+void GraphRenderer::moveWindow(int dir) {
+    switch (dir) {
+        case 0:
+            actualView.move(0,100);
+            break;
+        case 1:
+            actualView.move(-100,0);
+            break;
+        case 2:
+            actualView.move(100,0);
+            break;
+        case 3:    
+            actualView.move(0,-100);
+            break;
+        case 4:
+            actualView = defaultView;
+            arrowList.clear();
+            break;
+    }
 }
+
 
 void GraphRenderer::drawText(sf::RenderWindow& window) {
     int size_text = txt.size();  
@@ -190,15 +220,6 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
             arr.triangle = tri;
             arrows.push_back(arr);
 		}
-        //size_adjnodes = nodeList.at(k).adjNodes.size();
-        /*for(int l = 0; l < size_adjnodes; l++){
-            place.first = nodeList.at(k);
-            place.second = nodeList.at(k).adjNodes.at(l);
-            if (place.first.i == place.second.i - 1) {
-                FuncArrowShape hold(place, size);
-                arrows2.push_back(hold);
-            }
-        }*/
 	}
 }
 
@@ -217,13 +238,13 @@ void GraphRenderer::addToGame(sf::RenderWindow& window, sf::Vector2f pos) {
 
 
 
-Node GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
+Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
     uint x = (pos.x-size*0.2)/(size*1.8);
 	uint y = (pos.y-size*0.2)/((size/2)*3);
-	Node actualNode;
+	Node *actualNode;
 	for(auto &node : nodeList) {
 		if (node.i == y && node.j == x){
-			actualNode = node;
+			actualNode = &node;
 			break;
 		}
 	}
@@ -300,12 +321,12 @@ void GraphRenderer::deClickKmer(sf::RenderWindow& window, sf::Vector2f pos) {
 }
 
 void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window) {
-    Node recent = positionToNode(pos, nodeList);
-    int size_Edges = recent.adjNodes.size();
+    Node *recent = positionToNode(pos, nodeList);
+    int size_Edges = recent->adjNodes.size();
     Edge ph;
     ph.first = recent;
     for (int i = 0; i<size_Edges; i++) {
-        ph.second = recent.adjNodes.at(i);
+        ph.second = recent->adjNodes.at(i);
         FuncArrowShape temp(ph, size, sf::Color(200,200,200));
         if(isArrowValid(ph)) {
             tempArr.push_back(temp);
@@ -316,18 +337,19 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::Rende
     drawText(window);
 }
 
-bool GraphRenderer::isArrowValid(Edge temp) {
+
+bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
     Edge ph;
     for(auto &arr : arrowList) {
         ph = arr.getEdge();
-        if (ph.first.i == temp.first.i) { //gleiche Zeile
-            if (ph.second.j == temp.second.j && ph.first.j == temp.first.j) { //gleiches Ziel
+        if (ph.first->i == temp.first->i) { //gleiche Zeile
+            if (ph.second->j == temp.second->j || ph.first->j == temp.first->j) { //gleiches Ziel
                 return false;
-            } else if (ph.first.j < temp.first.j) { //Sich kreuzende Ziele
-                if (ph.second.j > temp.second.j)
+            } else if (ph.first->j < temp.first->j) { //Sich kreuzende Ziele
+                if (ph.second->j > temp.second->j)
                     return false;
-            } else if (ph.first.j > temp.first.j) {
-                if (ph.second.j < temp.second.j)
+            } else if (ph.first->j > temp.first->j) {
+                if (ph.second->j < temp.second->j)
                     return false;
             }
         }
@@ -335,14 +357,16 @@ bool GraphRenderer::isArrowValid(Edge temp) {
     return true;
 }
 
-bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
+
+bool GraphRenderer::isPositionEdge(sf::Vector2f pos) { //PASST
     for(auto &arr : tempArr) {
         if (arr.getShape().getGlobalBounds().contains(pos))
             return true;
     }
 }
 
-bool GraphRenderer::isPositionNode(sf::Vector2f pos){
+
+bool GraphRenderer::isPositionNode(sf::Vector2f pos){ //PASST
 	int x = (pos.x-size*0.2)/(size*1.8);
 	int y = (pos.y-size*0.2)/((size/2)*3);
     if(y<rects.size() && y>=0 && x>=0 && x<rects.at(y).size()) {
