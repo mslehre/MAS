@@ -8,18 +8,17 @@
 #include <chrono>
 #include <utility>
 
-/** \brief This RandomAgent class selects edges according to a policy.
-*          The policy is to just choose a random edge out of the selectable ones
-*/
-class RandomAgent : public BaseAgent {
+/** \brief This RandomPolicy can select edges at random.
+ */
+class RandomPolicy : public Policy {
     public:
-    RandomAgent(){};
-    ~RandomAgent(){};
-    std::vector <std::pair<std::vector <bool>, unsigned int>> history;
-    
-    /** The member policy selects selectable edges at random.
-    */
-    virtual int act(state* s) const override {
+    RandomPolicy(){};
+    ~RandomPolicy(){};
+    /** The member act selects an edge at random.
+     * \param s Expects a state s as input parameter.
+     * \return Returns the index of selected edge.
+     */
+    virtual unsigned int act(state* s) const override {
         std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
         std::vector <int> selectableIndices;
         bool hasEdge = false;
@@ -31,16 +30,32 @@ class RandomAgent : public BaseAgent {
         }
         if (hasEdge == true) {
             std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
-            unsigned int d = selectableIndices[dis(gen)];
-            vector <bool> b1 = s->selectedSubset;
-            std::pair <std::vector <bool>, unsigned int> p1= std::make_pair(b1, d);
-            this->history.push_back(p1);
-            s->select(d); //for tests ONLY!!
-            return d;
+            unsigned int edgeIndex = selectableIndices[dis(gen)];
+            s->select(edgeIndex);    //For tests ONLY
+            return edgeIndex;
         }
         else {
             return -1;
         }
+    }
+};
+
+/** \brief This RandomAgent class selects edges according to a policy.
+*          The policy is to just choose a random edge out of the selectable ones
+*/
+class RandomAgent : public RandomPolicy {
+    public:
+    RandomAgent(){};
+    ~RandomAgent(){};
+    /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
+     */
+    std::vector <std::pair<std::vector <bool>, unsigned int>> history;
+    /** The member executePolicy executes RandomPolicy.act and saves results in history.
+     * \param s Expects a state s as input parameter.
+     */
+    virtual void executePolicy(state* s) {
+    RandomPolicy randP;
+    this->history.push_back(std::make_pair(s->selectedSubset,randP.act(s)));
     }
 };
 #endif
