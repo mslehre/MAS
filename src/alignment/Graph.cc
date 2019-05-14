@@ -5,7 +5,7 @@ using namespace std;
 // constructor
 Graph::Graph(){}
 
-// Method: get number of secquences
+// Method: get number of sequences
 unsigned int Graph::getNumberOfSequences(){
     return nodes.at(nodes.size() - 1).i;
 }
