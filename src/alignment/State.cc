@@ -121,7 +121,6 @@ bool state::consistent(Edge& e, Edge& f){
         || (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
         return false;
     } else {
-    else {
         return true;
     }
 }
