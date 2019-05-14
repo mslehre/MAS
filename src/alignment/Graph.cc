@@ -68,7 +68,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
             // push sequence into vector
             stringListSequence.push_back(content);
 
-        // calcualte nodeListAll
+        // calculate nodeListAll
         calcNodeList(stringListSequence);
 	}  
 }
