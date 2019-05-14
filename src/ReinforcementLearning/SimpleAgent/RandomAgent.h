@@ -8,6 +8,11 @@
 #include <chrono>
 #include <utility>
 
+/**TODO: Include score (maybe expected score) in history, make RandomAgent dependent on BaseAgent.
+ *       The policy is supposed to map states to a vector of action probabilities in my view.
+ *       How do we use history to find optimal strategy?
+ */
+
 /** \brief This RandomPolicy can select edges at random.
  */
 class RandomPolicy : public Policy {
@@ -31,7 +36,7 @@ class RandomPolicy : public Policy {
         if (hasEdge == true) {
             std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
             unsigned int edgeIndex = selectableIndices[dis(gen)];
-            s->select(edgeIndex);    //For tests ONLY
+            s->select(edgeIndex);    ///<The select in the act function is for tests ONLY
             return edgeIndex;
         }
         else {

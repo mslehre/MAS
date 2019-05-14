@@ -132,6 +132,7 @@ int main(){
     else {
         cout << "history not created"<< endl << endl;
     }
+    //Print Results of RandomPolicy.act
     for (int j = 0; j < z.selectable.size(); j++) {
         if (z.selectedSubset[j] == true) {
             cout << "true" << endl;
