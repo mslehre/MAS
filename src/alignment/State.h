@@ -48,8 +48,7 @@ class state{
     std::vector <bool> selectable;    ///< Shows whether edge is selectable in the current subset (true = selectable)
     std::vector<unsigned int> selectedEdgeIndex; ///< contains indices from "edges" for all edges that are selected
     unsigned int score; ///< The score of the State
-    
-    
+        
     /**
      * Selects edge i if selectable (does nothing otherwise)
      * \param i is the index of the edge
