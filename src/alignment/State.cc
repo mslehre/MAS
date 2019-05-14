@@ -4,6 +4,8 @@
 #include "Graph.h"
 #include <vector>
 #include <iostream>
+#include <algorithm>
+#include <cmath>
 
 using namespace std;
 
@@ -34,10 +36,12 @@ state::state(){
 state::~state(){}; 
 
 void state::select(int i){
-    if(this->selectable[i] == true){
+    if (this->selectable[i] == true) {
         this->selectedSubset[i] = true;
         this->selectable[i] = false;
         this->updateSelectability(i);
+        selectedEdgeIndex.push_back(i);
+        sort(selectedEdgeIndex.begin(), selectedEdgeIndex.end()); 
     }
 }
 
@@ -60,26 +64,35 @@ void state::updateSelectability(int i){
     }
 } 
 
+bool state::consistent(Edge& e, Edge& f){
+    if ((e.first->j <= f.first->j && e.second->j >= f.second->j)
+        || (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
 // functions for scoring
 
-bool state::is_equal(Node& a, Node *b){
-    if (a.i == b->i && a.j == b->j) {
+bool state::is_equal(Node& a, Node& b){
+    if (a.i == b.i && a.j == b.j) {
         return true;
     } else {
         return false;
     }
 }
 
-void state::find_path(vector<unsigned int>& path, vector<Edge>& scoring_edges, Graph& graph){
-    for (unsigned int i = 0; i < scoring_edges.size(); i++) {
-        if (is_equal(graph.getNodes()[path.back()], scoring_edges[i].first)) { 
+void state::find_path(vector<unsigned int>& path, Graph& graph){
+    for (unsigned int i = 0; i < selectedEdgeIndex.size(); i++) {
+        if (is_equal(graph.getNodes()[path.back()], *edges[selectedEdgeIndex[i]].first)) {
             for (unsigned int j = path.back() + 1; j < graph.getNodes().size(); j++) {
-                if(is_equal(graph.getNodes()[j], scoring_edges[i].second)) {
+                if (is_equal(graph.getNodes()[j], *edges[selectedEdgeIndex[i]].second)) {
                     path.push_back(j);
                     break;
                 }                 
             }
-            find_path(path, scoring_edges, graph);         
+            find_path(path, graph);         
             break;
         }      
     }
@@ -87,19 +100,13 @@ void state::find_path(vector<unsigned int>& path, vector<Edge>& scoring_edges, G
 
 void state::calculate_score(Graph& graph){ 
     score = 0;
-    vector<Edge> scoring_edges; // all selected edges
-
-    for (unsigned int i = 0; i < graph.getEdges().size(); i++) {
-        if (selectedSubset[i])
-            scoring_edges.push_back(graph.getEdges()[i]);
-    }
     vector<bool> visited(graph.getNodes().size(), false);
 
     for (unsigned int i = 0; i < graph.getNodes().size(); i++) {
         if (visited[i] == false) {       
             vector<unsigned int> path;
             path.push_back(i); // push_back the startnode
-            find_path(path, scoring_edges, graph);   
+            find_path(path, graph);   
 /*       
             // print path
             for (unsigned int p = 0; p < path.size(); p++) {
@@ -107,20 +114,10 @@ void state::calculate_score(Graph& graph){
             }
             cout << endl;
 */
-            // update visited + calculate score
             for (unsigned int i = 0; i < path.size(); i++) {
                 visited[path[i]] = true;
-                score += i;
             }
+            score += (pow(path.size() - 1, 2) + path.size() - 1) / 2;            
         }        
-    }
-}
-
-bool state::consistent(Edge& e, Edge& f){
-    if ((e.first->j <= f.first->j && e.second->j >= f.second->j)
-        || (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
-        return false;
-    } else {
-        return true;
     }
 }

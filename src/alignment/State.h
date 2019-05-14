@@ -22,16 +22,15 @@ class state{
      * \return TRUE if a and b have the same indices
      */
 
-    bool is_equal(Node& a, Node* b);
+    bool is_equal(Node& a, Node& b);
 
      /**
-     * This function is recursive and find a path for a given set of edges and nodes
+     * This function is recursive and continues a given path in a graph
      * \param path is the path found so far
-     * \param edgesVector are all possible edges
      * \param graph is the graph (contains all nodes)
      */
 
-    void find_path(std::vector<unsigned int>& path, std::vector<Edge>& edgesVector, Graph& graph);
+    void find_path(std::vector<unsigned int>& path, Graph& graph);
 
     public:
     state(Graph& graph); ///< Constructor with a Graph
@@ -47,7 +46,9 @@ class state{
     std::vector <Edge> edges;
     std::vector <bool> selectedSubset;    ///< Shows whether edge is selected in current subset (true = selected)
     std::vector <bool> selectable;    ///< Shows whether edge is selectable in the current subset (true = selectable)
+    std::vector<unsigned int> selectedEdgeIndex; ///< contains indices from "edges" for all edges that are selected
     unsigned int score; ///< The score of the State
+    
     
     /**
      * Selects edge i if selectable (does nothing otherwise)
