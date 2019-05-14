@@ -22,7 +22,7 @@ class state{
      * \return TRUE if a and b have the same indices
      */
 
-    bool is_equal(Node& a, Node& b);
+    bool is_equal(Node& a, Node* b);
 
      /**
      * This function is recursive and find a path for a given set of edges and nodes
@@ -32,7 +32,6 @@ class state{
      */
 
     void find_path(std::vector<unsigned int>& path, std::vector<Edge>& edgesVector, Graph& graph);
-
 
     public:
     state(Graph& graph); ///< Constructor with a Graph
@@ -66,7 +65,16 @@ class state{
      * \param i is the index of the edge
      */
 
-    void updateSelectability(int i); 
+    void updateSelectability(int i);
+
+    /**
+     * If edges can both be selected while maintaining consistency, return true.
+     * Otherwise return false.
+     * \param e is an Edge
+     * \param f is an Edge
+     */
+
+    bool consistent(Edge& e, Edge& f);
    
     /** 
      * \param graph is a graph

@@ -16,14 +16,14 @@ RandomAgent_main.o: RandomAgent_main.cc RandomAgent.h BaseAgent.h $(H1) $(H2) $(
 State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
 	$(CC) -c -Wall ../../alignment/State.cc 
 
-Graph.o: ../../alignment/Graph.cpp $(H1) $(H2) $(H3) $(H4)
-	$(CC) -c -Wall ../../alignment/Graph.cpp
+Graph.o: ../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
+	$(CC) -c -Wall ../../alignment/Graph.cc
 
 Edge.o: ../../alignment/Edge.cpp $(H2) $(H3)
-	$(CC) -c -Wall ../../alignment/Edge.cpp
+	$(CC) -c -Wall ../../alignment/Edge.cc
 
 Node.o: ../../alignment/Node.cpp $(H3)
-	$(CC) -c -Wall ../../alignment/Node.cpp
+	$(CC) -c -Wall ../../alignment/Node.cc
 
 clean:
 	rm -f *.o RandomAgent_main

@@ -38,7 +38,8 @@ class GraphRenderer{
         int index;
         sf::Vector2i highlight;
         sf::Color highlightCol;
-        sf::View bild;
+        sf::View actualView;
+        sf::View defaultView;
         int size;
 	public:
         bool hovered;
@@ -48,11 +49,14 @@ class GraphRenderer{
 
         GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, int s);
 		GraphRenderer();
+        
+        void render(sf::RenderWindow& window);
+        void eventHandler(sf::Event event);
 
         void initShapes(vector<Node>& nodeList);
         void drawShape(sf::RenderWindow& window);
         void drawText(sf::RenderWindow& window);
-        void moveWindow(int dir, sf::RenderWindow& window);
+        void moveWindow(int dir);
         void addToGame(sf::RenderWindow& window, sf::Vector2f pos);
         void highlightHover(sf::Vector2f pos, sf::RenderWindow& window);
         void deHighlightHover(sf::RenderWindow& window);
@@ -61,11 +65,11 @@ class GraphRenderer{
         void clickKmer();
         void deClickKmer(sf::RenderWindow& window, sf::Vector2f pos);
         void showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window);
-		Node positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
+		Node* positionToNode(sf::Vector2f pos, vector<Node>& nodeList);
         bool isArrowValid(Edge temp); 
         bool isPositionEdge(sf::Vector2f pos);
 		bool isPositionNode(sf::Vector2f pos);
 };
 
-#endif //_H_
+#endif //GraphRenderer_H_
 

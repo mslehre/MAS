@@ -12,16 +12,20 @@ int main(int argc, char **argv){
 	// Get Graph Infos
 	Graph g;
 	g.readFastaFiles(argv[1],atoi(argv[2]));
-	vector<Node>& nodeList=g.getNodeList();
-    vector<int>& numbOfKmers=g.getNumberOfKmers();
+
+    // vector of nodes only with matches
+	vector<Node>& nodeList=g.getNodes();
+
+    // commented out because of tree
+    // vector<int>& numbOfKmers=g.getNumberOfKmers();
     
-	//Open the window with white Background
+    // Open the window with white Background
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 	window.clear(sf::Color::White);    
     window.setFramerateLimit(120);
 	window.display();
 
-	//Create a GraphRenderer
+	// Create a GraphRenderer
 	GraphRenderer GrRend(window, nodeList, 100);
     
     while (window.isOpen()) {
@@ -32,22 +36,9 @@ int main(int argc, char **argv){
         while (window.pollEvent(event)) {
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
-                window.close();
-		}
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-	        GrRend.moveWindow(4,window);
-        }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-	        GrRend.moveWindow(0,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-	        GrRend.moveWindow(1,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-	        GrRend.moveWindow(2,window);
-        }        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-	        GrRend.moveWindow(3,window);
+                window.close(); 
+
+            GrRend.eventHandler(event);
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
             GrRend.clickKmer();
@@ -68,12 +59,8 @@ int main(int argc, char **argv){
         } else if (GrRend.hovered && !GrRend.isPositionNode(global_mouse_pos)) {
             GrRend.deHighlightHover(window);
         }
-    
+        GrRend.render(window);
         window.display();
     }
     return 0;
 }
-
-
-			
-	

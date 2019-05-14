@@ -10,7 +10,7 @@ using namespace std;
 // score = 16
 
 int main(){
-    
+    /*
     Node n1(0,0,",");
     Node n2(0,1,",");
     Node n3(0,2,",");
@@ -68,12 +68,12 @@ int main(){
 
     vector<Node> nodeListe = {n1, n2, n3, n4, n5, n6, n7, n8, n9, n10, n11, 
                              n12, n13, n14, n15, n16, n17, n18, n19, n20, n21};
-    
+*/    
     Graph graph;
 
     graph.readFastaFiles("score_test_fasta.fa", 2);
     state s(graph);
-    for( unsigned int i = 0; i < graph.getEdgesVector().size(); i++) {
+    for (unsigned int i = 0; i < graph.getEdges().size(); i++) {
         s.select(i); //select all edges
     }  
     s.calculate_score(graph); 

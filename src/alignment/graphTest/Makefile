@@ -8,16 +8,16 @@ all: graphtest
 graphtest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 
-graphtest.o: graphtest.cpp $(HEADER1)
+graphtest.o: graphtest.cc $(HEADER1)
 	$(CC) $(CFLAGS) $< -o $@
 
-Graph.o: ../Graph.cpp $(HEADER1) $(HEADER2) $(HEADER3)
+Graph.o: ../Graph.cc $(HEADER1) $(HEADER2) $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
-Node.o: ../Node.cpp $(HEADER2)
+Node.o: ../Node.cc $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
-Edge.o: ../Edge.cpp $(HEADER3)
+Edge.o: ../Edge.cc $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
