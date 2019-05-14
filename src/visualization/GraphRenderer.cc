@@ -26,7 +26,7 @@ vector<string> giveKmers(vector<Node>& nodeList) {
 
 //Method for troubleshooting bad arguments
 void printHelp(){
-    cout << "\t Call skript with:\t./visualization [fasta file] [k] \n" << endl;
+    cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
     cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
     cout << "\t fasta file: Must be a file with the ending .fa" << endl;
     cout << "\t\t fasta files are there to save the information of multiple sequences.\n" << endl;

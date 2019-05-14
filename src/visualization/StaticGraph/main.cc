@@ -8,7 +8,7 @@ using namespace std;
 int main(int argc, char **argv){
     //Troubleshooting bad arguments
     if (argc != 3) {
-        cerr << "\nMissing arguments or too mutch arguments.\n" << endl;
+        cerr << "\nMissing arguments or too many arguments.\n" << endl;
         printHelp();
         return -1;
     }	

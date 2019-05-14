@@ -14,7 +14,7 @@ using namespace std;
 
 const double PI = 3.14159265359; ///< \f$ \pi \f$ defined by myself
 double norm(sf::Vector2f vec); ///< the euclidean norm \f$ ||\cdot||_2 \f$
-double innerPr(sf::Vector2f vec1, sf::Vector2f vec2); ///< the standard skalarproduct \f$ <\cdot ,\cdot > \f$
+double innerPr(sf::Vector2f vec1, sf::Vector2f vec2); ///< the standard inner product \f$ <\cdot ,\cdot > \f$
 
 /** \brief This Class stores the methods to draw a Arrow with a start and end coordinate
  *
