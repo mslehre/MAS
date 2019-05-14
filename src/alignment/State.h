@@ -68,7 +68,7 @@ class state{
     void updateSelectability(int i);
 
     /**
-     * If edges would can both be selected while mainaining consistency, return true.
+     * If edges can both be selected while maintaining consistency, return true.
      * Otherwise return false.
      * \param e is an Edge
      * \param f is an Edge

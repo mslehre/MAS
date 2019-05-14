@@ -5,7 +5,7 @@ using namespace std;
 // constructor
 Graph::Graph(){}
 
-// Method: get number of secquences
+// Method: get number of sequences
 unsigned int Graph::getNumberOfSequences(){
     return nodes.at(nodes.size() - 1).i;
 }
@@ -37,7 +37,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
     vector<string> stringListSequence;
 
     ifstream data (nameFile);                                  			
-	// open file												
+    // open file												
     if (!data.is_open()) {
         cout << "Can't open file!" << endl;
 	} else {
@@ -68,7 +68,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
             // push sequence into vector
             stringListSequence.push_back(content);
 
-        // calcualte nodeListAll
+        // calculate nodeListAll
         calcNodeList(stringListSequence);
 	}  
 }
@@ -99,21 +99,23 @@ void Graph::calcNodeList(vector<string>& stringList) {
             }
         }
     }
+    unsigned numNodes = nodeListAll.size();
     // vector for matches
-    vector<bool> matches;
+    vector<bool> matches(numNodes, false);
+    
     // store if node had a match
     bool matched;
     // For-Loop if node has a match: then true else false
-    for (unsigned int m = 0; m < nodeListAll.size(); m++) {
+    for (unsigned int m = 0; m < numNodes; m++) {
         matched = false;
-        for (unsigned int n = 0; n < nodeListAll.size(); n++) {
-                if (nodeListAll.at(m).kmer == nodeListAll.at(n).kmer && nodeListAll.at(m).i != nodeListAll.at(n).i)
-                    matched = true;             
+        for (unsigned int n = 0; n < numNodes; n++) {
+            if (nodeListAll.at(m).kmer == nodeListAll.at(n).kmer && nodeListAll.at(m).i != nodeListAll.at(n).i)
+                matched = true;             
         }
-        matches.push_back(matched); 
+        matches.at(m) = matched; 
     }
     // push node in nodes only with match
-    for (unsigned int m = 0; m < nodeListAll.size(); m++) {
+    for (unsigned int m = 0; m < numNodes; m++) {
         if (matches.at(m))
             nodes.push_back(nodeListAll.at(m)); 
     }
@@ -122,7 +124,7 @@ void Graph::calcNodeList(vector<string>& stringList) {
     unsigned int counter_j = 0;
 
     // rewrite index of row and column
-    for(unsigned int i = 0; i < nodes.size(); i++) {
+    for (unsigned int i = 0; i < nodes.size(); i++) {
         if (nodes.at(i).i != counter_i) {
             counter_j = 0;
             counter_i++;
@@ -137,7 +139,7 @@ void Graph::calcNodeList(vector<string>& stringList) {
     unsigned int counter = 0;
     index.push_back(0);
     // push index into vector
-    for(unsigned int i = 0; i < nodes.size(); i++) {
+    for (unsigned int i = 0; i < nodes.size(); i++) {
         if (nodes.at(i).i != counter) {
             index.push_back(i);
             counter++;

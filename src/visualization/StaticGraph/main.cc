@@ -40,7 +40,6 @@ int main(int argc, char **argv){
     } else {
         size = 130;
     }
-    cout << size << endl;
     //Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.clear(sf::Color::White);
@@ -51,6 +50,7 @@ int main(int argc, char **argv){
     GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
     //create clock to compute a scroll speed
     sf::Clock clock;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -69,5 +69,3 @@ int main(int argc, char **argv){
     }
     return 0;
 }
-
-
