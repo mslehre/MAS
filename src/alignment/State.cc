@@ -65,13 +65,16 @@ void state::updateSelectability(int i){
 } 
 
 bool state::consistent(Edge& e, Edge& f){
-    if ((e.first->j <= f.first->j && e.second->j >= f.second->j)
-        || (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
-        return false;
-    } else {
-        return true;
-    }
+   if ((e.first->j <= f.first->j && e.second->j >= f.second->j)
+       || (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
+       return false;
+   } else if (e.first->j == f.first->j && e.second->j == f.second->j) {
+       return true;
+   } else {
+       return true;
+   }
 }
+
 
 // functions for scoring
 
