@@ -11,6 +11,7 @@
 /**TODO: Include score (maybe expected score) in history, make RandomAgent dependent on BaseAgent.
  *       The policy is supposed to map states to a vector of action probabilities in my view.
  *       How do we use history to find optimal strategy?
+ *       Initialise randA with state* , make policy subclass of Agent(agent contains policy as var)
  */
 
 /** \brief This RandomPolicy can select edges at random.
