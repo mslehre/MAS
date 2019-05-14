@@ -196,7 +196,7 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
         std::cout << "Can't find the font file" << std::endl;
     for (int i = 0; i < size_text; i++) {
         text.setFont(font);
-        text.setFillColor(txt[i].col);
+        text.setColor(txt[i].col);
         text.setPosition(txt[i].pos[0], txt[i].pos[1]);
         text.setString(txt[i].kmer);
         text.setCharacterSize(txt[i].charSize);
