@@ -73,6 +73,16 @@ bool state::consistent(Edge& e, Edge& f){
    } else {
        return true;
    }
+
+    if (e.first->i == f.first->i && e.second->i == f.second->i &&
+        e.first->j == f.first->j && e.second->j == f.second->j) { 
+        return true; // edges e and f are equal
+    } else if ((e.first->j <= f.first->j && e.second->j >= f.second->j) ||
+               (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
+       return false; // edges e and f crossing eath other or go to the same node
+    } else {
+        return true;
+    }
 }
 
 // functions for scoring
