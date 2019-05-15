@@ -1,5 +1,5 @@
 CC = g++
-OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o
+OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o State.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o
 HEADER1 = ../../alignment/Graph.h
 HEADER2 = ../../alignment/Node.h 
 HEADER3 = ../GraphRenderer.h
@@ -8,6 +8,7 @@ HEADER5 = ../colormap.h
 HEADER6 = ../colorlist.h
 HEADER7 = ../ArrowShape.h
 HEADER8 = ../FuncArrowShape.h
+HEADER9 = ../../alignment/State.h
 CFLAGS = -c -std=c++11 -Wall 
 
 all: visualization
@@ -28,6 +29,9 @@ Node.o: ../../alignment/Node.cc $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
 Edge.o: ../../alignment/Edge.cc $(HEADER4)
+	$(CC) $(CFLAGS) $< -o $@
+
+State.o: ../../alignment/State.cc $(HEADER9)
 	$(CC) $(CFLAGS) $< -o $@
 
 colorlist.o: ../colorlist.cc $(HEADER6)

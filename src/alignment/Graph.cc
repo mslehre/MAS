@@ -5,7 +5,7 @@ using namespace std;
 // constructor
 Graph::Graph(){}
 
-// Method: get number of secquences
+// Method: get number of sequences
 unsigned int Graph::getNumberOfSequences(){
     return nodes.at(nodes.size() - 1).i;
 }
@@ -68,7 +68,7 @@ void Graph::readFastaFiles(std::string nameFile, unsigned int k){
             // push sequence into vector
             stringListSequence.push_back(content);
 
-        // calcualte nodeListAll
+        // calculate nodeListAll
         calcNodeList(stringListSequence);
 	}  
 }
