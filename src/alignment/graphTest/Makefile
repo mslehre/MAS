@@ -21,7 +21,7 @@ Node.o: ../Node.cc $(HEADER2)
 Edge.o: ../Edge.cc $(HEADER3)
 	$(CC) $(CFLAGS) $< -o $@
 
-DrawNode.o: ../DrawNode.cc $(HEADER4) $(HEADER2)
+DrawNode.o: ../DrawNode.cc $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 

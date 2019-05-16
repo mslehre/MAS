@@ -1,15 +1,20 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Node.h"
 
  /** 
-  * \brief The class "DrawNode" inherits from the class "Node"
-  * and additionally has the properties "x_coord", "y-coord" and "sf :: Color col".
+  * \brief The class "DrawNode" has the properties "sf::Vector2f" and "sf :: Color col".
   */
 
-class DrawNode : public Node {
+class DrawNode {
     public:
-        unsigned x_coord;   ///< x-coordinate
-        unsigned y_coord;   ///< y-coordinate
+       /** 
+         * \brief a simple class that defines a mathematical vector with two coordinates (x and y) <br>
+         * public attributes: <br>
+         * x for the x-coordinate of the vector <br>
+         * y for the y-coordinate of the vector 
+         */    
+
+        sf::Vector2f coordinate;
+
         sf::Color col;      ///< color k-mer
 };
