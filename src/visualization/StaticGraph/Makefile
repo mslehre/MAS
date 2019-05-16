@@ -14,10 +14,10 @@ HEADER9 = ../../alignment/State.h
 all: visualization
 
 visualization: $(OBJ)
-	$(CC) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CXXFLAGS) $(OBJ) -o  $@ -lsfml-graphics -lsfml-window -lsfml-system
 
 main.o: main.cc $(HEADER1)
-	$(CC) -c $(CFLAGS) $< -o  $@
+	$(CC) -c $(CXXFLAGS) $< -o  $@
 
 GraphRenderer.o: ../GraphRenderer.cc $(HEADER3) $(HEADER1) $(HEADER7)
 	$(CC) -c $(CXXFLAGS) $< -o $@
