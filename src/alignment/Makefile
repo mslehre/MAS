@@ -21,4 +21,4 @@ Node.o: Node.cc Node.h
 	g++ $(CXXFLAGS) -c Node.cc
 
 clean:
-	rm -rf *.o State_test
+	rm -f *.o State_test
