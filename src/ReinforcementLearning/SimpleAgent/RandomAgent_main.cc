@@ -4,6 +4,8 @@
 #include "../../alignment/Edge.h"
 #include "BaseAgent.h"
 #include "RandomAgent.h"
+#include "Policy.h"
+#include "RandomPolicy.h"
 using namespace std;
 
 int main(){
@@ -95,11 +97,11 @@ int main(){
     edgeList.push_back(e14);
     //Test for state
     state s(edgeList);
-    for (int i = 0; i < s.edges.size(); i++) {
+    for (unsigned int i = 0; i < s.edges.size(); i++) {
         if(s.selectable[i] == true)		
             s.select(i);
     }
-    for (int j = 0; j < s.selectable.size(); j++) {
+    for (unsigned int j = 0; j < s.selectable.size(); j++) {
         if (s.selectedSubset[j] == true) {
             cout << "true" << endl;
         }
@@ -108,7 +110,7 @@ int main(){
         }
     }
     cout << endl;
-    for (int j = 0; j < s.selectable.size(); j++) {
+    for (unsigned int j = 0; j < s.selectable.size(); j++) {
         if (s.selectable[j] == true) {
             cout << "true" << endl;
         }
@@ -133,7 +135,7 @@ int main(){
         cout << "history not created"<< endl << endl;
     }
     //Print Results of RandomPolicy.act
-    for (int j = 0; j < z.selectable.size(); j++) {
+    for (unsigned int j = 0; j < z.selectable.size(); j++) {
         if (z.selectedSubset[j] == true) {
             cout << "true" << endl;
         }
@@ -142,7 +144,7 @@ int main(){
         }
     }
     cout << endl;
-    for (int j = 0; j < z.selectable.size(); j++) {
+    for (unsigned int j = 0; j < z.selectable.size(); j++) {
         if (z.selectable[j] == true) {
             cout << "true" << endl;
         }
