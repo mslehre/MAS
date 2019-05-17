@@ -2,13 +2,13 @@
 wget https://download.pytorch.org/libtorch/nightly/cpu/libtorch-shared-with-deps-latest.zip
 unzip libtorch-shared-with-deps-latest.zip
 
-# then
-cd example
-make mnist
-
 # set LD_LIBRARY_PATH environment variable to the directory that includes
 # the shared object files, e.g. libc10.so
 # adjust the path in the following line accordingly
 export LD_LIBRARY_PATH=/home/mario/tools/libtorch/lib
+
+# then
+cd example
+make mnist
 
 ./mnist # takes ~1m
