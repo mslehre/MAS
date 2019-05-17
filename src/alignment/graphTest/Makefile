@@ -1,8 +1,9 @@
 CC = g++
-OBJ = graphtest.o Graph.o Node.o Edge.o
+OBJ = graphtest.o Graph.o Node.o Edge.o DrawNode.o
 HEADER1 = ../Graph.h
 HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
+HEADER4 = ../DrawNode.h
 CFLAGS = -c -std=c++11 -Wall -I../
 all: graphtest
 graphtest: $(OBJ) 
@@ -18,6 +19,9 @@ Node.o: ../Node.cc $(HEADER2)
 	$(CC) $(CFLAGS) $< -o $@
 
 Edge.o: ../Edge.cc $(HEADER3)
+	$(CC) $(CFLAGS) $< -o $@
+
+DrawNode.o: ../DrawNode.cc $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 

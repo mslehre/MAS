@@ -5,3 +5,6 @@
 
 # Documentation
   [Doxygen of current _master_](https://mslehre.github.io/MAS)
+
+# Architecture
+![plan](docs/plan.png)

@@ -1,84 +1,144 @@
 #include "GraphRenderer.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include "ArrowShape.h"
-#include <cmath>
+
 using namespace std;
 
-//ignore this, this is just a help method, which get solved later
-vector<string> giveKmers(vector<Node>& Sequences) {
+//This method is used to make a list of Kmers, where all Kmers are just once in
+vector<string> giveKmers(vector<Node>& nodeList) {
     vector<string> allKmers; // The set of all different Kmers
-    int index;
-    for (uint i = 0; i<Sequences.size(); i++) {
-        index = 0;
-        for (uint j = 0; j<i; j++) {
-            if(Sequences.at(i).kmer == Sequences.at(j).kmer){
-                index = 1;
-                break;            
+    bool elementOf;
+    //go through all nodes
+    for (uint i = 0; i<nodeList.size(); i++) {
+        elementOf = false;
+        //go through all nodes we discovered already to check if they are in the list
+        for (uint j = 0; j < i; j++) {
+            if(nodeList.at(i).kmer == nodeList.at(j).kmer) {
+                elementOf = true;
+                break;
             }
         }
-        if(index == 0) {
-            allKmers.push_back(Sequences.at(i).kmer);
+        //push the nodes who aren't in yet
+        if(!elementOf) {
+            allKmers.push_back(nodeList.at(i).kmer);
         }
     }
     return allKmers;
 }
 
+//Method for troubleshooting bad arguments
+void printHelp(){
+    cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
+    cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
+    cout << "\t fasta file: Must be a file with the ending .fa" << endl;
+    cout << "\t\t fasta files are there to save the information of multiple sequences.\n" << endl;
+    cout << "\t k: Must be an integer greater than zero." << endl;
+    cout << "\t\t k is the length of the Kmers we observe.\n" << endl;
+}
 
+//Method for rendering the actual window view with its components
 void GraphRenderer::render(sf::RenderWindow& window) {
-    if (actualView.getCenter() != window.getView().getCenter()) {
+    //update window view, if changed in class
+    if (actualView.getCenter() != window.getView().getCenter())
         window.setView(actualView);
+    //adjust window view, if size of window was changed
+    if (window.getSize().x != window.getView().getSize().x || window.getSize().y != window.getView().getSize().y) {
+        sf::Vector2f wSize(window.getSize().x, window.getSize().y);
+        sf::Vector2f vSize(window.getView().getSize().x, window.getView().getSize().y);
+        sf::Vector2f newCenter = window.getView().getCenter();
+        sf::Vector2f temp = wSize - vSize;
+        float vec = 0.5;
+        temp = temp * vec;
+        newCenter = newCenter + temp;
+        window.setView(sf::View(newCenter, wSize));
     }
-	window.clear(sf::Color::White);
+    //reset window
+    window.clear(sf::Color::White);
     drawShape(window);
     drawText(window);
 }
 
-void GraphRenderer::eventHandler(sf::Event event) {
+//Method which catches all events of the window
+void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList) {
+    //Move the view of the window
+    enum direction {Down, Left, Right, Up, Space};
     if (event.type == sf::Event::EventType::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Right) {
-	        moveWindow(2);
-        } else if (event.key.code == sf::Keyboard::Left) {
-            moveWindow(1);
-        } else if (event.key.code == sf::Keyboard::Up) {
-            moveWindow(3);
-        } else if (event.key.code == sf::Keyboard::Down) {
-            moveWindow(0);
-        } else if (event.key.code == sf::Keyboard::Space) {
-            moveWindow(4);
-        } 
-    
+        if (event.key.code == sf::Keyboard::Right)
+            moveWindow(Right);
+        if (event.key.code == sf::Keyboard::Left)
+            moveWindow(Left);
+        if (event.key.code == sf::Keyboard::Up)
+            moveWindow(Up);
+        if (event.key.code == sf::Keyboard::Down)
+            moveWindow(Down);
+        if (event.key.code == sf::Keyboard::Space)
+            moveWindow(Space);
+    }
+    //Get hovercoords of the window
+    sf::Vector2i posOfMouse1(event.mouseMove.x, event.mouseMove.y);
+    auto movePos = window.mapPixelToCoords(posOfMouse1);
+    //Now check what gets hovered
+    if (event.type == sf::Event::EventType::MouseMoved) {
+        //highlight the hovered Node
+        if (!nodeHovered && !nodeClicked && isPositionNode(movePos)) {
+            hoverNode(movePos);
+        //remove the highlight of the Node
+        } else if (nodeHovered && !isPositionNode(movePos)) {
+            deHoverNode();
+        }
+        //highlight a hovered edge, if possible
+        if (nodeClicked && !edgeHovered && isPositionEdge(movePos)) {
+            hoverEdge(movePos);
+        //remove this highlight
+        } else if (nodeClicked && edgeHovered && !isPositionEdge(movePos)) {
+            deHoverEdge();
+        }
+    }
+    //Get clickcoords of the window
+    sf::Vector2i posOfMouse2(event.mouseButton.x, event.mouseButton.y);
+    auto clickPos = window.mapPixelToCoords(posOfMouse2);
+    //Now check what gets clicked
+    if (event.type == sf::Event::EventType::MouseButtonPressed) {
+        //select the Node you hovered
+        if (event.mouseButton.button == sf::Mouse::Left && nodeHovered && !nodeClicked) {
+            clickNode(clickPos);
+            showEdges(nodeList, clickPos);
+        //remove the selected Node
+        } else if (event.mouseButton.button == sf::Mouse::Right && nodeClicked) {
+            deClickNode();
+        }
+        //select a Edge you hovered
+        if (event.mouseButton.button == sf::Mouse::Left && nodeClicked && edgeHovered)
+            selectEdge();
     }
 }
 
-/*
+//Method which will set the move speed in terms of Computer speed with an upper Bound
+void GraphRenderer::update(float delta) {
+    if (delta > moveConstant)
+        moveConstant = delta * 10000;
+}
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-	        GrRend.moveWindow(4,window);
-        }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-	        GrRend.moveWindow(0,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-	        GrRend.moveWindow(1,window);
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-	        GrRend.moveWindow(2,window);
-        }        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-	        GrRend.moveWindow(3,window);
-        }
-*/
-
+//Default Constructor
 GraphRenderer::GraphRenderer() {
 }
 
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, int s) {
-    size = s;
-    hovered = false;
-    clicked = false;
-    st_hovered = false;
+//Complete Constructor
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int sizeConst) {
+    maxNodesPerRow = 0;
+    maxSequences = 0;
+    for (uint i = 0; i < nodeList.size(); i++) {
+        if (maxNodesPerRow < nodeList.at(i).j)
+            maxNodesPerRow = nodeList.at(i).j;
+        if (maxSequences < nodeList.at(i).i)
+            maxSequences = nodeList.at(i).i;
+    }
+    direction.push_back(0);
+    direction.push_back(0);
+    sizeConstant = sizeConst;
+    state place(edgeList);
+    gameState = place;
+    nodeHovered = false;
+    nodeClicked = false;
+    edgeHovered = false;
     defaultView = window.getDefaultView();
     actualView = defaultView;
     initShapes(nodeList);
@@ -86,291 +146,252 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, i
     drawText(window);
 }
 
+//Method which will move the window in a choosed direction or resets it
 void GraphRenderer::moveWindow(int dir) {
     switch (dir) {
-        case 0:
-            actualView.move(0,100);
+        case 0: //to the down
+            if (direction.at(1) + moveConstant <= sizeConstant * (0.9 + 1.5 * maxSequences)) {
+                actualView.move(0, moveConstant);
+                direction.at(1) += moveConstant;
+            }
             break;
-        case 1:
-            actualView.move(-100,0);
+        case 1: //to the left
+            if (direction.at(0) > 0) {
+                actualView.move(- moveConstant, 0);
+                direction.at(0) -= moveConstant;
+            }
             break;
-        case 2:
-            actualView.move(100,0);
+        case 2: //to the right
+            if (direction.at(0) + moveConstant <= sizeConstant * (1.4 + 1.8 * maxNodesPerRow)) {
+                actualView.move(moveConstant, 0);
+                direction.at(0) += moveConstant;
+            }
             break;
-        case 3:    
-            actualView.move(0,-100);
+        case 3: //to the up
+            if (direction.at(1) > 0) {
+                actualView.move(0,- moveConstant);
+                direction.at(1) -= moveConstant;
+            }
             break;
-        case 4:
+        case 4: //resets all
             actualView = defaultView;
-            arrowList.clear();
+            selectedEdges.clear();
+            for (uint i = 0; i < gameState.edges.size(); i++) {
+                gameState.selectedSubset.at(i) = false;
+                gameState.selectable.at(i) = true;
+            }
+            direction.at(0) = 0;
+            direction.at(1) = 0;
             break;
     }
 }
 
-
+//This Method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
-    int size_text = txt.size();  
+    int size_text = txt.size();
     sf::Text text;
     sf::Font font;
-	if(!font.loadFromFile("Amiko-Regular.ttf")){
-		std::cout <<"Can't find the font file" << std::endl;
-    }
+    //load font out of file
+    if (!font.loadFromFile("Amiko-Regular.ttf"))
+        std::cout << "Can't find the font file" << std::endl;
     for (int i = 0; i < size_text; i++) {
         text.setFont(font);
-	    text.setColor(txt[i].col);
-	    text.setPosition(txt[i].pos[0],txt[i].pos[1]);
-	    text.setString(txt[i].kmer);
-	    text.setCharacterSize(txt[i].charSize);
+        text.setColor(txt[i].col);
+        text.setPosition(txt[i].pos[0], txt[i].pos[1]);
+        text.setString(txt[i].kmer);
+        text.setCharacterSize(txt[i].charSize);
         window.draw(text);
     }
 }
 
+//This Method draws all shapes
 void GraphRenderer::drawShape(sf::RenderWindow& window) {
     int size_Rect = rects.size();
     int size_seq;
-    int size_Arrow = arrows.size();
-    int size_tempArr = tempArr.size();
-    int size_arrowList = arrowList.size();
-
-    for (int i = 0; i < size_Arrow; i++) {
-        window.draw(arrows.at(i).line);
-        window.draw(arrows.at(i).triangle);
+    int size_rowArrows = rowArrows.size();
+    int size_tempArr = consistentEdges.size();
+    int size_arrowList = selectedEdges.size();
+    //iterate through vectors to draw all
+    for (int i = 0; i < size_rowArrows; i++) {
+        rowArrows.at(i).Draw(window);
     }
     for (int i = 0; i < size_Rect; i++) {
         size_seq = rects.at(i).size();
-        for (int j = 0; j < size_seq; j++) {
+        for (int j = 0; j < size_seq; j++)
             window.draw(rects.at(i).at(j));
-        }
     }
-    for (int i = 0; i < size_tempArr; i++) {
-        tempArr.at(i).Draw(window);
-    }
-    
-    for (int i = 0; i < size_arrowList; i++) {
-        arrowList.at(i).Draw(window);
-    }
+    for (int i = 0; i < size_tempArr; i++)
+        consistentEdges.at(i).Draw(window);
+    for (int i = 0; i < size_arrowList; i++)
+        selectedEdges.at(i).Draw(window);
 }
 
-
+//This method initialize the shapes by the properties of nodeList
 void GraphRenderer::initShapes(vector<Node>& nodeList) {
-    
     //initialize the shift of the view
     direction.push_back(0);
     direction.push_back(0);
-
-    //Get k
-    int k = nodeList.at(0).kmer.size();
     //Get all nodes we need
-    int size_nodes = nodeList.size(); 
-    int size_adjnodes;
-    Edge place;
-
+    uint size_nodes = nodeList.size();
     //Initialize colormap
     vector<string> Kmers = giveKmers(nodeList);
     colorlist colorExample(Kmers.size());
     vector<sf::Color> colors = colorExample.giveList();
     colormap mapExample(Kmers, colors);
-
     //Placeholder for readablity OF THE NODES
-    int i;
-    int j;
+    uint i;
+    uint j;
     //Placeholder for the Text
     TextProps tx;
-	tx.col = sf::Color::Black;
-    //Placeholder for the Shapes
-    SimpleArrow arr;
-
+    tx.col = sf::Color::Black;
+    //initialize rectangle
     sf::RectangleShape rect;
-	rect.setSize(sf::Vector2f(size, size/2));
-
-    sf::CircleShape tri;
-    tri.setRadius(size*0.1);
-    tri.setPointCount(3);
-    tri.setFillColor(sf::Color::Black);
-    tri.setOutlineThickness(2.f);
-    tri.setOutlineColor(sf::Color::Black);
-    tri.setRotation(90.f);
-
-    sf::RectangleShape line;
-    line.setSize(sf::Vector2f(size, 0));
-	line.setOutlineColor(sf::Color::Black);
-	line.setOutlineThickness(2);
-	//calculate our Graph in visuals
-
-	for(int k = 0; k<size_nodes; k++){
+    rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
+    //Iterate to declare all shapes we need in the beginning
+    for (uint k = 0; k < size_nodes; k++){
         i = nodeList.at(k).i;
         j = nodeList.at(k).j;
-	    rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
-	    rect.setPosition(size*0.2+(size*1.8)*j, size*0.2+((size/2)*3)*i);
-        while(rects.size()!=i+1) {
+        rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
+        rect.setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
+        while (rects.size() != i + 1) {
             vector<sf::RectangleShape> fill;
             rects.push_back(fill);
         }
         rects.at(i).push_back(rect);
-	    tx.pos.push_back(size*0.2+(size*1.8)*j+size*0.1);
-        tx.pos.push_back(size*0.2+(size/2)*3*i+(size/2)*0.1);
-	    tx.kmer = nodeList.at(k).kmer;
-	    tx.charSize = size*0.25;
+        tx.pos.push_back(sizeConstant * (0.3 + 1.8 * j));
+        tx.pos.push_back(sizeConstant * (0.25 + 1.5 * i));
+        tx.kmer = nodeList.at(k).kmer;
+        tx.charSize = sizeConstant * 0.25;
         txt.push_back(tx);
         tx.pos.clear();
-		if(k!=nodeList.size()-1 && i==nodeList.at(k+1).i){
-	        line.setPosition(size*1.2+(size*1.8)*j, size*0.45+(size/2)*3*i);
-	        tri.setPosition(size*1.7 +(size*1.8)*j, size*0.35+(size/2)*3*i);
-            arr.line = line;
-            arr.triangle = tri;
-            arrows.push_back(arr);
-		}
-	}
-}
-
-void GraphRenderer::addToGame(sf::RenderWindow& window, sf::Vector2f pos) {
-    Edge temp = tempArr.at(index).getEdge();
-    FuncArrowShape fill(temp, size, sf::Color::Black);
-    arrowList.push_back(fill);
-	window.clear(sf::Color::White);
-    tempArr.clear();
-    clicked = false;
-    st_hovered = false;
-    deClickKmer(window, pos);
-    drawShape(window);
-    drawText(window);
-}
-
-
-
-Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList){
-    uint x = (pos.x-size*0.2)/(size*1.8);
-	uint y = (pos.y-size*0.2)/((size/2)*3);
-	Node *actualNode;
-	for(auto &node : nodeList) {
-		if (node.i == y && node.j == x){
-			actualNode = &node;
-			break;
-		}
-	}
-	return actualNode;
-}
-
-void GraphRenderer::highlightHover(sf::Vector2f pos, sf::RenderWindow& window) {
-    if (!clicked) {        
-        int j = (pos.x-size*0.2)/(size*1.8);
-	    int i = (pos.y-size*0.2)/((size/2)*3);
-        highlight = sf::Vector2i(i,j);
-        rects.at(i).at(j).setOutlineColor(sf::Color::Black);
-        rects.at(i).at(j).setOutlineThickness(5);
-	    window.clear(sf::Color::White);
-        drawShape(window);
-        drawText(window);
+        if (k != nodeList.size() - 1 && i == nodeList.at(k + 1).i) {
+            sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
+            sf::Vector2f end(sizeConstant * (1.85 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
+            ArrowShape placeholder(start, end, sizeConstant, sf::Color::Black);
+            rowArrows.push_back(placeholder);
+        }
     }
-    hovered = true;
 }
-void GraphRenderer::deHighlightHover(sf::RenderWindow& window) {
-    if (!clicked) {
-        rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Transparent);
-        rects.at(highlight.x).at(highlight.y).setOutlineThickness(0);
-	    window.clear(sf::Color::White);
-        drawShape(window);
-        drawText(window);
+
+//this method will highlight a node which we hover
+void GraphRenderer::hoverNode(sf::Vector2f pos) {
+    sf::Vector2i temp = positionToCoords(pos);
+    hoverPosition = temp;
+    rects.at(temp.y).at(temp.x).setOutlineColor(sf::Color::Black);
+    rects.at(temp.y).at(temp.x).setOutlineThickness(5);
+    nodeHovered = true;
+}
+
+//this method is removing the highlight of the hover function
+void GraphRenderer::deHoverNode() {
+    if (!nodeClicked) {
+        rects.at(hoverPosition.y).at(hoverPosition.x).setOutlineColor(sf::Color::Transparent);
+        rects.at(hoverPosition.y).at(hoverPosition.x).setOutlineThickness(0);
     }
-    hovered = false;
+    nodeHovered = false;
 }
 
-void GraphRenderer::deEdgeHover(sf::RenderWindow& window) {
-    tempArr.at(index).deHoverFunc();
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
-    st_hovered = false;
+//this function catches the click on a node and select it
+void GraphRenderer::clickNode(sf::Vector2f pos) {
+    sf::Vector2i temp = positionToCoords(pos);
+    clickPosition = temp;
+    colorOfClickedNode = rects.at(clickPosition.y).at(clickPosition.x).getFillColor();
+    rects.at(clickPosition.y).at(clickPosition.x).setFillColor(sf::Color(128, 128, 128));
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineColor(sf::Color::Red);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineThickness(8);
+    nodeClicked = true;
 }
 
-void GraphRenderer::edgeHover(sf::Vector2f pos, sf::RenderWindow& window) {
-    for(int i = 0; i<tempArr.size(); i++) {
-        if (tempArr.at(i).getShape().getGlobalBounds().contains(pos)) {
-            tempArr.at(i).hoverFunc();
-            index = i;
+//this function remove the selected node
+void GraphRenderer::deClickNode() {
+    rects.at(clickPosition.y).at(clickPosition.x).setFillColor(colorOfClickedNode);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineColor(sf::Color::Transparent);
+    rects.at(clickPosition.y).at(clickPosition.x).setOutlineThickness(0);
+    consistentEdges.clear();
+    nodeClicked = false;
+}
+
+//this method will highlight a edge, when we clicked a node and hover over a edge
+void GraphRenderer::hoverEdge(sf::Vector2f pos) {
+    for (uint i = 0; i < consistentEdges.size(); i++) {
+        //is our mousepos in the edgefront?
+        if (consistentEdges.at(i).getShape().getGlobalBounds().contains(pos)) {
+            consistentEdges.at(i).hoverFunc();
+            hoveredEdgeIndex = i;
             break;
         }
     }
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
-    st_hovered = true;
+    edgeHovered = true;
 }
 
-void GraphRenderer::clickKmer() {
-    highlightCol = rects.at(highlight.x).at(highlight.y).getFillColor();
-    rects.at(highlight.x).at(highlight.y).setFillColor(sf::Color(128,128,128));
-    rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Red);
-    rects.at(highlight.x).at(highlight.y).setOutlineThickness(8);
-    clicked = true;
-    
+//This method is removing the edge highlight
+void GraphRenderer::deHoverEdge() {
+    consistentEdges.at(hoveredEdgeIndex).deHoverFunc();
+    edgeHovered = false;
 }
 
-void GraphRenderer::deClickKmer(sf::RenderWindow& window, sf::Vector2f pos) {
-    rects.at(highlight.x).at(highlight.y).setFillColor(highlightCol);
-    rects.at(highlight.x).at(highlight.y).setOutlineColor(sf::Color::Transparent);
-    rects.at(highlight.x).at(highlight.y).setOutlineThickness(0);
-    tempArr.clear();
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
-    clicked = false;
-    int j = (pos.x-size*0.2)/(size*1.8);
-	int i = (pos.y-size*0.2)/((size/2)*3);
-    highlight = sf::Vector2i(i,j);
-}
-
-void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos,sf::RenderWindow& window) {
+//This function shows the consistent edges
+void GraphRenderer::showEdges(vector<Node>& nodeList, sf::Vector2f pos) {
     Node *recent = positionToNode(pos, nodeList);
-    int size_Edges = recent->adjNodes.size();
-    Edge ph;
-    ph.first = recent;
-    for (int i = 0; i<size_Edges; i++) {
-        ph.second = recent->adjNodes.at(i);
-        FuncArrowShape temp(ph, size, sf::Color(200,200,200));
-        if(isArrowValid(ph)) {
-            tempArr.push_back(temp);
+    int size_Edges = gameState.edges.size();
+    for (int i = 0; i < size_Edges; i++) {
+        //just look at all edges that come from the selected node
+        if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i && recent->j == gameState.edges.at(i).first->j) {
+            FuncArrowShape temp(gameState.edges[i], sizeConstant, sf::Color(200, 200, 200), i);
+            consistentEdges.push_back(temp);
         }
     }
-	window.clear(sf::Color::White);
-    drawShape(window);
-    drawText(window);
 }
 
+//This method select an edge which got hovered
+void GraphRenderer::selectEdge() {
+    int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
+    //select via state
+    gameState.select(ind);
+    FuncArrowShape fill(gameState.edges.at(ind), sizeConstant, sf::Color::Black, ind);
+    //Save the selected edge in visuals
+    selectedEdges.push_back(fill);
+    consistentEdges.clear();
+    nodeClicked = false;
+    edgeHovered = false;
+    deClickNode();
+}
 
-bool GraphRenderer::isArrowValid(Edge temp) { //ERSETZEN DURCH ETWAS IM STATE
-    Edge ph;
-    for(auto &arr : arrowList) {
-        ph = arr.getEdge();
-        if (ph.first->i == temp.first->i) { //gleiche Zeile
-            if (ph.second->j == temp.second->j || ph.first->j == temp.first->j) { //gleiches Ziel
-                return false;
-            } else if (ph.first->j < temp.first->j) { //Sich kreuzende Ziele
-                if (ph.second->j > temp.second->j)
-                    return false;
-            } else if (ph.first->j > temp.first->j) {
-                if (ph.second->j < temp.second->j)
-                    return false;
-            }
+//Method for calculating the nearest node pos of the argument pos
+sf::Vector2i GraphRenderer::positionToCoords(sf::Vector2f pos) {
+    int x = (pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8);
+    int y = (pos.y - sizeConstant * 0.2) / (sizeConstant * 1.5);
+    return sf::Vector2i(x, y);
+}
+
+//This method calculates Nodes in terms of positions
+Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList) {
+    sf::Vector2i temp = positionToCoords(pos);
+    Node *actualNode;
+    for (auto &node : nodeList) {
+        if ((int)node.i == temp.y && (int)node.j == temp.x) {
+            actualNode = &node;
+            break;
         }
     }
-    return true;
+    return actualNode;
 }
 
-
-bool GraphRenderer::isPositionEdge(sf::Vector2f pos) { //PASST
-    for(auto &arr : tempArr) {
+//This method is checking that an edge is in mouseposition
+bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
+    for (auto &arr : consistentEdges) {
         if (arr.getShape().getGlobalBounds().contains(pos))
             return true;
     }
+    return false;
 }
 
-
-bool GraphRenderer::isPositionNode(sf::Vector2f pos){ //PASST
-	int x = (pos.x-size*0.2)/(size*1.8);
-	int y = (pos.y-size*0.2)/((size/2)*3);
-    if(y<rects.size() && y>=0 && x>=0 && x<rects.at(y).size()) {
-        bool s = rects.at(y).at(x).getGlobalBounds().contains(pos);
+//This method is checking that an Node is in mouseposition
+bool GraphRenderer::isPositionNode(sf::Vector2f pos) {
+    sf::Vector2i temp = positionToCoords(pos);
+    //just look at rectangle indices which we defined
+    if(temp.y < (int)rects.size() && temp.y >= 0 && temp.x >= 0 && temp.x < (int)rects.at(temp.y).size()) {
+        bool s = rects.at(temp.y).at(temp.x).getGlobalBounds().contains(pos);
         return s;
     } else {
         return false;
