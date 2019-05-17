@@ -64,13 +64,13 @@ void state::updateSelectability(int i){
     }
 } 
 
+// requires that e.first->i = f.first->i and e.second->i = f.second->i            
 bool state::consistent(Edge& e, Edge& f){
-    if (e.first->i == f.first->i && e.second->i == f.second->i &&
-        e.first->j == f.first->j && e.second->j == f.second->j) { 
+    if (e.first->j == f.first->j && e.second->j == f.second->j) { 
         return true; // edges e and f are equal
     } else if ((e.first->j <= f.first->j && e.second->j >= f.second->j) ||
                (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
-       return false; // requires that e.first->i = f.first->i and e.second->i = f.second->i                    
+       return false;          
     } else {
         return true;
     }
