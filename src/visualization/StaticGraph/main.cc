@@ -60,9 +60,6 @@ int main(int argc, char **argv){
             //eventhandler for graphical interaction
             GrRend.eventHandler(event, window, nodeList);
         }
-        //update score
-        if(GrRend.new_score)
-            GrRend.update_score(g);
         //Render method for update window
         GrRend.render(window);
         window.display();

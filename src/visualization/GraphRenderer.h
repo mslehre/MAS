@@ -68,9 +68,7 @@ class GraphRenderer{
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
-        bool new_score; ///< true, if the score changes
         int hoveredEdgeIndex; ///< the index of the hovered edge
-        unsigned int score; ///< the current score
         /**
          * The Complete Constructor, which initialize the visuals in the referenced window.
          *
@@ -201,13 +199,6 @@ class GraphRenderer{
          * \param a position vector we want to check
          */
         bool isPositionNode(sf::Vector2f pos);
-
-        /**
-         * update the score of Graph g
-         * \param Graph g
-         */
-
-        void update_score(Graph& g);
 };
 
 #endif //GraphRenderer_H_
