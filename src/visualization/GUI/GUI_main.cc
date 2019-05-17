@@ -8,12 +8,15 @@
 void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;
 } 
+void test2() { // for tests TODO: delete this function later
+    std::cout << "test2" << std::endl;
+} 
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 
     Button startButton = Button("../../../fig/startButton.png", 550, 100, test);
-    Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, test);
+    Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, test2);
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, test);
 
     bool clicked_startButton = false;
@@ -53,10 +56,6 @@ int main() {
             if (event.type == sf::Event::MouseButtonPressed) { 
             // left mouseButton               
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    std::cout << "the left button was pressed" << std::endl;
-                    std::cout << "mouse x: " << mouse_pos.x << std::endl;
-                    std::cout << "mouse y: " << mouse_pos.y << std::endl;
-
                     if (!clicked_startButton) {
                         if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             clicked_startButton = true;

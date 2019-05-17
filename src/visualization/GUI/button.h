@@ -3,16 +3,14 @@
 
 #include <string>
 #include <SFML/Graphics.hpp>
+#include <functional>
 
 /** 
  * \brief This class generate button for the GUI.
  */
 
 // TODO: 
-//       - The call of function()  dont work for any function yet. (only for void)
-//       - the button class could have a general "setFunction" method that assignes 
-//         a method that is invoked on button click. 
-//         (see function object https://de.cppreference.com/w/cpp/utility/functional/function)
+//      - Button_function dont work for any function yet. (only for void)
 
 class Button {
     private:
@@ -20,8 +18,8 @@ class Button {
         sf::Texture Button_Texture; ///< Texture of the Button
 
     public:
-        void (*Button_function) ();
-         
+        std::function<void()> Button_function; ///< Function of the Button  
+ 
          /** 
          * \param texturename is the name of the texture of the button
          * \param x_pos is the x coordinate of the sprite in the window
@@ -30,7 +28,7 @@ class Button {
          * \return a Button with texture on a specific position
          */
 
-        Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, void function());
+        Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, std::function<void()> function);
         
         /**
          * This function load a new texture for the Button. 
