@@ -2,33 +2,65 @@
 #ifndef FuncArrowShape_H_
 #define FuncArrowShape_H_
 
-#include "ArrowShape.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
-#include <iostream>
-#include <algorithm>
 #include <vector>
-#include <array>
-#include <string>
 #include <cmath>
-#include <utility>
+#include "ArrowShape.h"
 #include "../alignment/Edge.h"
 
 using namespace std;
 
+/** \brief This Class stores the methods to draw an arrow for the game with some functionalities
+ *
+ * 
+ *
+ */
 class FuncArrowShape : public ArrowShape {
     protected:
-        Edge edge;
-        sf::Color hovCol;
-        bool clicked;
-        bool hovered;
-    public:        
+        sf::Color hovCol; ///< the color of a hovered edge (see GraphRenderer.h)
+        int indexOfState; ///< the index of the edge for the state vectors (see State.h)
+    public:
+        /**
+         * The standard constructor. This does nothing.
+         */
         FuncArrowShape();
-        FuncArrowShape(sf::Vector2f s, sf::Vector2f e, sf::Color col);
-        FuncArrowShape(Edge Arr, int size, sf::Color col);
-        Edge getEdge();
+        /**
+         * The half-complete constructor, which initialize a arrow by start and end coords, 
+         * with a specified color and in terms of the sizeConstant we know out of 
+         * GraphRenderer.h
+         *
+         * \param s the start coords point of the arrow
+         * \param e the end coords point of the arrow
+         * \param sizeConstant an integer which scales the arrow
+         * \param col the color of the arrow
+         */
+        FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant, sf::Color col);
+        /**
+         * The complete constructor, which initialize a arrow by an edge, 
+         * with a specified color, the index of the state vector it corresponds to and 
+         * in terms of the sizeConstant we know out of GraphRenderer.h
+         *
+         * \param Arr the edge which get made to an Funcarrowshape
+         * \param ind an integer which is the index of the corresponded edge Vector in state
+         * \param sizeConstant an integer which scales the arrow
+         * \param col the color of the arrow
+         */
+        FuncArrowShape(Edge Arr, int sizeConstant, sf::Color col, int ind);
+        /**
+         * a function to get the protected index
+         *
+         * \return an integer which is the index in the corresponded edge vector in state
+         */
+        int getIndex();
+        /**
+         * A function which manipulate the FuncArrowShape
+         */
         void hoverFunc();
+        /**
+         * A function which remove all manipulations of the FuncArrowShape
+         */
         void deHoverFunc();
 };
 

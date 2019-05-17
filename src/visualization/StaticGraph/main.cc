@@ -1,66 +1,71 @@
 #include "../GraphRenderer.h"
-
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+
 using namespace std;
 
-
-
 int main(int argc, char **argv){
+    //Troubleshooting bad arguments
+    if (argc != 3) {
+        cerr << "\nMissing arguments or too many arguments.\n" << endl;
+        printHelp();
+        return -1;
+    }	
+    unsigned int k = atoi(argv[2]);
+    if (k <= 0) {
+        cerr << "\nThe number must be an positive integer.\n" << endl;
+        printHelp();
+        return -1;
+    }
 
-	// Get Graph Infos
-	Graph g;
-	g.readFastaFiles(argv[1],atoi(argv[2]));
-
-    // vector of nodes only with matches
-	vector<Node>& nodeList=g.getNodes();
-
-    // commented out because of tree
-    // vector<int>& numbOfKmers=g.getNumberOfKmers();
-    
-    // Open the window with white Background
+    // Get Graph by file
+    Graph g;
+    g.readFastaFiles(argv[1], atoi(argv[2]));
+    //get some graph components to compute sth
+    vector<Node> nodeList = g.getNodes();
+    vector<Edge> edgeList = g.getEdges();
+    //initialize width and length of the sequences to compute a sizeConstant for the visuals
+    float length = 0;
+    float width = 0;
+    float size;
+    for (uint i = 0; i < nodeList.size(); i++) {
+        if (length < nodeList.at(i).j)
+            length = nodeList.at(i).j;
+        if (width < nodeList.at(i).i)
+            width = nodeList.at(i).i;
+    }
+    if (length > 50 && width > 5) {
+        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
+    } else {
+        size = 130;
+    }
+    //Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
-	window.clear(sf::Color::White);    
+    window.clear(sf::Color::White);
     window.setFramerateLimit(120);
-	window.display();
+    window.display();
 
-	// Create a GraphRenderer
-	GraphRenderer GrRend(window, nodeList, 100);
-    
+    //Create a GraphRenderer
+    GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
+    //create clock to compute a scroll speed
+    sf::Clock clock;
+
     while (window.isOpen()) {
-        
-        auto mouse_pos = sf::Mouse::getPosition(window); // local mouse position in the window
-        auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
         sf::Event event;
         while (window.pollEvent(event)) {
             // "close requested" event: we close the window
             if (event.type == sf::Event::EventType::Closed)
-                window.close(); 
-
-            GrRend.eventHandler(event);
+                window.close();
+            //eventhandler for graphical interaction
+            GrRend.eventHandler(event, window, nodeList);
         }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.hovered && !GrRend.clicked) {
-            GrRend.clickKmer();
-            GrRend.showEdges(nodeList, global_mouse_pos, window);
-        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && GrRend.clicked) {
-            GrRend.deClickKmer(window, global_mouse_pos);
-        }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && GrRend.clicked && GrRend.st_hovered) {
-            GrRend.addToGame(window, global_mouse_pos);
-        }
-        if (GrRend.clicked && !GrRend.st_hovered && GrRend.isPositionEdge(global_mouse_pos)) {
-            GrRend.edgeHover(global_mouse_pos, window);
-        } else if (GrRend.clicked && GrRend.st_hovered && !GrRend.isPositionEdge(global_mouse_pos)) {
-            GrRend.deEdgeHover(window);
-        }
-        if (!GrRend.hovered && GrRend.isPositionNode(global_mouse_pos)) {
-            GrRend.highlightHover(global_mouse_pos, window);
-        } else if (GrRend.hovered && !GrRend.isPositionNode(global_mouse_pos)) {
-            GrRend.deHighlightHover(window);
-        }
+        //Render method for update window
         GrRend.render(window);
         window.display();
+        sf::Time elapsed = clock.restart();
+        //scroll speed computation
+        GrRend.update(elapsed.asSeconds());
     }
     return 0;
 }
