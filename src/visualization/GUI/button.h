@@ -18,7 +18,7 @@ class Button {
         sf::Texture Button_Texture; ///< Texture of the Button
 
     public:
-        std::function<void()> Button_function; ///< Function of the Button  
+        std::function<void()> Button_function; ///< function of the Button
  
          /** 
          * \param texturename is the name of the texture of the button
