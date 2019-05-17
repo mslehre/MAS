@@ -180,6 +180,7 @@ void GraphRenderer::moveWindow(int dir) {
                 gameState.selectedSubset.at(i) = false;
                 gameState.selectable.at(i) = true;
             }
+            //gameState.selectedEdgeIndex.clear(); //TODO: Need the "new" State.cc from pull request 71"
             direction.at(0) = 0;
             direction.at(1) = 0;
             break;
@@ -355,6 +356,7 @@ void GraphRenderer::selectEdge() {
     nodeClicked = false;
     edgeHovered = false;
     deClickNode();
+    new_score = true;
 }
 
 //Method for calculating the nearest node pos of the argument pos
@@ -396,4 +398,12 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos) {
     } else {
         return false;
     }
+}
+
+//This method calculate a new score and update them
+void GraphRenderer::update_score(Graph& g) {
+    gameState.calculate_score(g);
+    score = gameState.score;
+    cout << "score: "<< score << endl;
+    new_score = false;
 }
