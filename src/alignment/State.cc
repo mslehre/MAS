@@ -70,7 +70,7 @@ bool state::consistent(Edge& e, Edge& f){
         return true; // edges e and f are equal
     } else if ((e.first->j <= f.first->j && e.second->j >= f.second->j) ||
                (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
-       return false;          
+        return false;          
     } else {
         return true;
     }
