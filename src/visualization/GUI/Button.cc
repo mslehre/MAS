@@ -25,16 +25,20 @@ sf::Sprite Button::get_Button_Sprite(){
     return Button_Sprite;
 }
 
-Graph Button::create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences, unsigned int probability){
+Graph Button::create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences, double probability){
     Graph g;
+
+    std::cout << k << " " << lenght << " " << number_of_sequences << " " << probability << std::endl;
 
     std::stringstream s;
     s << lenght << " " << number_of_sequences << " " << probability;
-    std::string command = "../../SequenceSimulation/simulation_main " + s.str();
+    std::string command = "../../SequenceSimulation/./simulation_main " + s.str();    
 
     printf ("Checking if processor is available...");
     if (system(NULL)) puts ("Ok");
         else exit (EXIT_FAILURE);
+    int i = system (command.c_str());
+    printf ("The value returned was: %d.\n", i);
 
     g.readFastaFiles("../../SequenceSimulation/sequences.fa", k);
     return g;

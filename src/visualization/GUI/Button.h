@@ -57,8 +57,7 @@ class Button {
          * \return create a Graph
          */
             
-        Graph create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences,
-                           unsigned int probability);
+        Graph create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences, double probability);
 
 };
 
