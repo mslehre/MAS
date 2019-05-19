@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "button.h"
+#include "Button.h"
 
 void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;
@@ -17,10 +17,9 @@ int main() {
 
     Button startButton = Button("../../../fig/startButton.png", 550, 100, test);
     Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, test2);
-    Button quitButton = Button("../../../fig/quitButton.png", 550, 500, test);
+    Button quitButton = Button("../../../fig/quitButton.png", 550, 500);
 
-    bool clicked_startButton = false;
-    //bool clicked_settingsButton = false;
+    std::string status = "menu";
     
     while (window.isOpen()) {
         sf::Event event;
@@ -34,7 +33,7 @@ int main() {
                 window.close();
 
             // hover with mouse over Button                                            
-            if (!clicked_startButton) {
+            if (status == "menu") {
                 if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                     startButton.load_Texture("../../../fig/startButton_hover.png");
                 } else {
@@ -56,23 +55,20 @@ int main() {
             if (event.type == sf::Event::MouseButtonPressed) { 
             // left mouseButton               
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (!clicked_startButton) {
+                    if (status == "menu") {
                         if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
-                            clicked_startButton = true;
-                            std::cout << "startButton clicked" << std::endl;
+                            status = "ingame";
                             //startButton.load_Texture("../../../fig/startButton_clicked.png");
                             startButton.Button_function();
                         }
                         if (settingsButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
-                            //clicked_settingsButton = true;
-                            std::cout << "settingsButton clicked" << std::endl;
+                            //status = "settings";
                             //settingsButton.load_Texture("../../../fig/settingsButton_clicked.png");
-                            settingsButton.Button_function();
+                            Graph g;                            
+                            g = settingsButton.create_level(4, 200, 10, 0.5); // this is a test for a "level button"
                         }
                         if (quitButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
-                            std::cout << "quitButton clicked" << std::endl;
                             //quitButton.load_Texture("../../../fig/quitButton_clicked.png");
-                            quitButton.Button_function();
                             window.close();
                         }
                     }
@@ -87,7 +83,7 @@ int main() {
         }
 
         window.clear(sf::Color::White);
-        if (!clicked_startButton) {
+        if (status == "menu") {
             window.draw(startButton.get_Button_Sprite());
             window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
