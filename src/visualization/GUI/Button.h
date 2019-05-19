@@ -52,13 +52,13 @@ class Button {
 
         /**
          * \param k is the length of the kmers
-         * \param lenght is the length of the created sequences
+         * \param length is the length of the created sequences
          * \param number_of_sequences is the number of sequences that will created   
          * \param probability is the probability for mutations in the sequencens  
          * \return create a Graph
          */
             
-        Graph create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences, double probability);
+        Graph create_level(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
 
 };
 

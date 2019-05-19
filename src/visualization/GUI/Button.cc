@@ -25,13 +25,13 @@ sf::Sprite Button::get_Button_Sprite(){
     return Button_Sprite;
 }
 
-Graph Button::create_level(unsigned int k, unsigned int lenght, unsigned int number_of_sequences, double probability){
+Graph Button::create_level(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
     Graph g;
 
-    //std::cout << k << " " << lenght << " " << number_of_sequences << " " << probability << std::endl;
+    //std::cout << k << " " << length << " " << number_of_sequences << " " << probability << std::endl;
 
     std::stringstream s;
-    s << lenght << " " << number_of_sequences << " " << probability;
+    s << length << " " << number_of_sequences << " " << probability;
     std::string command = "../../SequenceSimulation/./simulation_main " + s.str();    
 
     printf ("Checking if processor is available...");
