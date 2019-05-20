@@ -18,6 +18,6 @@ sf::Sprite Button::get_Button_Sprite(){
 
 /*
 void Button::eventHandler(sf::Event event) {
-    Button.Button_function()
+    Button_function();
 }
 */
