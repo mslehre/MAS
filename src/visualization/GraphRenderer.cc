@@ -367,7 +367,7 @@ sf::Vector2i GraphRenderer::positionToCoords(sf::Vector2f pos) {
 //This method calculates Nodes in terms of positions
 Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList) {
     sf::Vector2i temp = positionToCoords(pos);
-    Node *actualNode;
+    Node *actualNode = nullptr;
     for (auto &node : nodeList) {
         if ((int)node.i == temp.y && (int)node.j == temp.x) {
             actualNode = &node;

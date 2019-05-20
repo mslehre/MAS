@@ -14,6 +14,7 @@
 #include "../alignment/Graph.h"
 #include "../alignment/Edge.h"
 #include "../alignment/State.h"
+#include "../alignment/DrawNode.h"
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 
