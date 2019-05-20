@@ -1,10 +1,12 @@
+include ../../common.mk
+
 CC = g++
 OBJ = graphtest.o Graph.o Node.o Edge.o DrawNode.o
 HEADER1 = ../Graph.h
 HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
 HEADER4 = ../DrawNode.h
-CFLAGS = -c -std=c++11 -Wall -I../
+CFLAGS = $(CXXFLAGS) -c -I../
 all: graphtest
 graphtest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
@@ -25,4 +27,4 @@ DrawNode.o: ../DrawNode.cc $(HEADER4)
 	$(CC) $(CFLAGS) $< -o $@
 
 clean: 
-	rm -rf *o graphtest
+	rm -f *o graphtest
