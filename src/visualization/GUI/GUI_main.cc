@@ -3,23 +3,31 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "../../alignment/Graph.h"
 #include "Button.h"
 
 void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;
 } 
-void test2() { // for tests TODO: delete this function later
-    std::cout << "test2" << std::endl;
-} 
+
+void test2(Graph g) { //for tests
+    std::cout << g.getNodes().size() << std::endl;
+}  
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 
-    Button startButton = Button("../../../fig/startButton.png", 550, 100, test);
-    Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, test2);
+    Graph g;
+    g.readFastaFiles("sequences.fa", 2);
+
+    Button startButton = Button("../../../fig/startButton.png", 550, 100);
+    Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300);
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500);
+    startButton.Button_function = test;
+    settingsButton.Button_function = [&g] () {test2(g);};
 
     std::string status = "menu";
+
     
     while (window.isOpen()) {
         sf::Event event;
@@ -59,13 +67,13 @@ int main() {
                         if (startButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             status = "ingame";
                             //startButton.load_Texture("../../../fig/startButton_clicked.png");
-                            startButton.Button_function();
                         }
                         if (settingsButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             //status = "settings";
                             //settingsButton.load_Texture("../../../fig/settingsButton_clicked.png");
-                            Graph g;                            
-                            g = settingsButton.create_level(4, 200, 10, 0.5); // this is a test for a "level button"
+                            
+                              settingsButton.Button_function();
+                            //settingsButton.set_function(test3(g));                            
                         }
                         if (quitButton.get_Button_Sprite().getGlobalBounds().contains(global_mouse_pos)) {
                             //quitButton.load_Texture("../../../fig/quitButton_clicked.png");

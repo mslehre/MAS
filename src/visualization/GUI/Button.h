@@ -1,7 +1,6 @@
 #ifndef Button_H_ 
 #define Button_H_
 
-#include "../../alignment/Graph.h"
 #include <string>
 #include <SFML/Graphics.hpp>
 #include <functional>
@@ -17,16 +16,6 @@ class Button {
 
     public:
         std::function<void()> Button_function; ///< function of the Button
- 
-        /** 
-         * \param texturename is the name of the texture of the button
-         * \param x_pos is the x coordinate of the sprite in the window
-         * \param y_pos is the y coordinate of the sprite in the window
-         * \param function is the function that will executed if the button is pushed
-         * \return a Button with a texture on a specific position
-         */
-
-        Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, std::function<void()> function);
 
         /** 
          * \param texturename is the name of the texture of the button
@@ -49,16 +38,6 @@ class Button {
          */
 
         sf::Sprite get_Button_Sprite();
-
-        /**
-         * \param k is the length of the kmers
-         * \param length is the length of the created sequences
-         * \param number_of_sequences is the number of sequences that will created   
-         * \param probability is the probability for mutations in the sequencens  
-         * \return create a Graph
-         */
-            
-        Graph create_level(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
 
 };
 
