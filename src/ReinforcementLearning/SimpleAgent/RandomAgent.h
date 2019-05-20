@@ -25,6 +25,9 @@ class RandomAgent /*: public BaseAgent.h*/ {
     public:
     state* constState;
     RandomAgent(){};
+    RandomAgent(state* cs){
+        constState = cs;
+    }
     ~RandomAgent(){};
     /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
      */
@@ -33,6 +36,24 @@ class RandomAgent /*: public BaseAgent.h*/ {
      * \param s Expects a state s as input parameter.
      */
     virtual void executePolicy(state* s) {
+        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        std::vector <int> selectableIndices;
+        bool hasEdge = false;
+        for (unsigned int j = 0; j < s->selectable.size(); j++) {
+            if (s->selectable[j] == true) {
+                selectableIndices.push_back(j);
+                hasEdge = true;
+            }
+        }
+        if (hasEdge == true) {
+            std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
+            unsigned int edgeIndex = selectableIndices[dis(gen)];
+            s->select(edgeIndex);    ///<The select in the act function is for tests ONLY
+            return edgeIndex;
+        }
+        else {
+            return -1;
+        }
         RandomPolicy randP;
         this->history.push_back(std::make_pair(s->selectedSubset,randP.act(s)));
     }

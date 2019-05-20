@@ -18,8 +18,11 @@ class RandomPolicy : public Policy {
      * \param s Expects a state s as input parameter.
      * \return Returns the index of selected edge.
      */
-    virtual unsigned int act(state* s) const override {
-        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+    virtual std::vector <float> act(state* s) const override {
+        unsigned int n = s->selectable.size();
+        std::vector <float> probAct(n, 1/n);
+        return probAct;
+        /*std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
         std::vector <int> selectableIndices;
         bool hasEdge = false;
         for (unsigned int j = 0; j < s->selectable.size(); j++) {
@@ -36,7 +39,7 @@ class RandomPolicy : public Policy {
         }
         else {
             return -1;
-        }
+        }*/
     }
 };
 #endif
