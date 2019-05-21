@@ -5,6 +5,10 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <algorithm> 
+#include <iostream>
+
+using namespace std;
 
 Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
     simulate(number_of_sequences, length, probability);     
@@ -25,7 +29,6 @@ Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_
         GameNodes.at(i).coordinate = coords;
         GameNodes.at(i).col = mapExample.Map(GameGraph.getNodes().at(i).kmer);
     }
-
 }
 
 Graph Gamemaster::get_GameGraph(){
@@ -36,23 +39,17 @@ state Gamemaster::get_GameState(){
     return GameState;
 }
 
-std::vector<DrawNode> Gamemaster::get_GameNodes(){
+vector<DrawNode> Gamemaster::get_GameNodes(){
     return GameNodes;
 }
 
-std::vector<std::string> Gamemaster::giveKmers(vector<Node>& nodeList) {
-    vector<std::string> allKmers; 
-    bool elementOf;
+vector<string> Gamemaster::giveKmers(vector<Node>& nodeList) {
+    vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
-        elementOf = false;
-        for (unsigned int j = 0; j < i; j++) {
-            if (nodeList.at(i).kmer == nodeList.at(j).kmer) {
-                elementOf = true;
-                break;
-            }
-        }
-        if (!elementOf)
-            allKmers.push_back(nodeList.at(i).kmer);
+        allKmers[i] = nodeList.at(i).kmer;
     }
+    sort(allKmers.begin(), allKmers.end());
+    allKmers.erase(unique(allKmers.begin(), allKmers.end()), allKmers.end());
+ 
     return allKmers;
 }
