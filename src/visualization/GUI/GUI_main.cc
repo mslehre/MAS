@@ -33,11 +33,11 @@ int main() {
         sf::Event event;
         while (window.pollEvent(event)) {
             auto mouse_pos = sf::Mouse::getPosition(window); // local mouse position in the window
-            sf::Vector2f global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
+            auto global_mouse_pos = window.mapPixelToCoords(mouse_pos); // mouse position in world coordinates
 
-            // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close(); 
+
             status = startButton.eventHandler(event, status, global_mouse_pos);
            // status = settingsButton.eventHandler(event, status, global_mouse_pos);
             status = quitButton.eventHandler(event, status, global_mouse_pos);

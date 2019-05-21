@@ -12,7 +12,7 @@ void printHelp();
  * random sequences of lenght DNAlength and mutation probability mutationProbability.
  * \param numberOfSequences is the number of sequences that will created 
  * \param DNAlength is the length of the created sequences  
- * \param mutationpProbability is the probability for mutations in the sequencens  
+ * \param mutationProbability is the probability for mutations in the sequencens  
  */
 
 void simulate(unsigned int numberOfSequences, unsigned int DNAlength, double mutationProbability);
