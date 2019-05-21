@@ -40,3 +40,7 @@ std::string Button::eventHandler(sf::Event event, std::string status, sf::Vector
     return status;
 }
 
+void Button::setFunction(std::function<void()> func) {
+    Button_function = func;
+}
+

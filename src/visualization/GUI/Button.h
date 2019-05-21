@@ -17,9 +17,10 @@ class Button {
         std::string Button_texturename; ///< name of the texture 
         std::string my_status;  ///< in this status the Button is clickable    
         std::string next_status;    ///< the next GUI status after the Button was clicked
+        std::function<void()> Button_function;  ///< function of the Button
 
     public:
-        std::function<void()> Button_function;  ///< function of the Button
+
         /** 
          * \param texturename is the name of the texture of the button
          * \param x_pos is the x coordinate of the sprite in the window
@@ -51,6 +52,12 @@ class Button {
          */
     
         std::string eventHandler(sf::Event event, std::string status, sf::Vector2f global_mouse_pos);
+
+        /** 
+         * set the function of the Button
+         */
+        
+        void setFunction(std::function<void()> func);
 
 };
 

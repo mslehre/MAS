@@ -21,10 +21,11 @@ int main() {
     g.readFastaFiles("sequences.fa", 2);
 
     Button startButton = Button("../../../fig/startButton.png", 550, 100, "ingame", "menu");
-    Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
+   // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
-    startButton.Button_function = test;
-    settingsButton.Button_function = [&g] () {test2(g);};
+    startButton.setFunction(test);
+    quitButton.setFunction(test);
+   // settingsButton.setFunction([&g] () {test2(g);});
 
     std::string status = "menu";
 
@@ -39,14 +40,14 @@ int main() {
             if (event.type == sf::Event::Closed)
                 window.close(); 
             status = startButton.eventHandler(event, status, global_mouse_pos);
-            status = settingsButton.eventHandler(event, status, global_mouse_pos);
+           // status = settingsButton.eventHandler(event, status, global_mouse_pos);
             status = quitButton.eventHandler(event, status, global_mouse_pos);
         }
 
         window.clear(sf::Color::White);
         if (status == "menu") {
             window.draw(startButton.get_Button_Sprite());
-            window.draw(settingsButton.get_Button_Sprite());
+          //  window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
         }
         window.display();
