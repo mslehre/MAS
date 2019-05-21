@@ -11,6 +11,14 @@ class Gamemaster {
         state GameState; ///< The State of GameGraph
         std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
 
+        /**
+         * This function is used to make a list of unique Kmers 
+         * \param nodeList is a vector with all nodes (contains the Kmers)
+         * \return a vector of unique strings
+         */
+
+        std::vector<std::string> giveKmers(std::vector<Node>& nodeList);
+
     public:
 
         /**

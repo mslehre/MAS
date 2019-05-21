@@ -1,9 +1,10 @@
-#include <iostream>
 #include "../../SequenceSimulation/sequence.h"
 #include "../colorlist.h"
 #include "../colormap.h"
 #include "Gamemaster.h"
 #include <stdio.h>
+#include <string>
+#include <vector>
 
 Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
     simulate(number_of_sequences, length, probability);     
@@ -11,7 +12,7 @@ Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_
     remove("sequences.fa");
     state statetemp(GameGraph);
     GameState = statetemp;
-/*
+
     //Initialize colomap
     vector<string> Kmers = giveKmers(GameGraph.getNodes());
     colorlist colorExample(Kmers.size());
@@ -24,7 +25,7 @@ Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_
         GameNodes.at(i).coordinate = coords;
         GameNodes.at(i).col = mapExample.Map(GameGraph.getNodes().at(i).kmer);
     }
-*/
+
 }
 
 Graph Gamemaster::get_GameGraph(){
@@ -37,4 +38,21 @@ state Gamemaster::get_GameState(){
 
 std::vector<DrawNode> Gamemaster::get_GameNodes(){
     return GameNodes;
+}
+
+std::vector<std::string> Gamemaster::giveKmers(vector<Node>& nodeList) {
+    vector<std::string> allKmers; 
+    bool elementOf;
+    for (unsigned int i = 0; i < nodeList.size(); i++) {
+        elementOf = false;
+        for (unsigned int j = 0; j < i; j++) {
+            if (nodeList.at(i).kmer == nodeList.at(j).kmer) {
+                elementOf = true;
+                break;
+            }
+        }
+        if (!elementOf)
+            allKmers.push_back(nodeList.at(i).kmer);
+    }
+    return allKmers;
 }
