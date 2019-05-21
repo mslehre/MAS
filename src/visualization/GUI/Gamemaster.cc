@@ -1,8 +1,8 @@
 #include <iostream>
-#include "Gamemaster.h"
 #include "../../SequenceSimulation/sequence.h"
 #include "../colorlist.h"
 #include "../colormap.h"
+#include "Gamemaster.h"
 #include <stdio.h>
 
 Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){

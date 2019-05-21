@@ -4,8 +4,8 @@
 #include <vector>
 #include <string>
 #include "../../alignment/Graph.h"
-#include "Button.h"
 #include "Gamemaster.h"
+#include "Button.h"
 
 void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;

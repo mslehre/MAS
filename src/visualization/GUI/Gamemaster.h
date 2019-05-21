@@ -22,8 +22,22 @@ class Gamemaster {
 
         Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
 
+        /**
+         * \return Gamegraph  
+         */
+
         Graph get_GameGraph();
+
+        /**
+         * \return GameState  
+         */
+
         state get_GameState();
+
+        /**
+         * \return GameNodes  
+         */
+
         std::vector<DrawNode> get_GameNodes();
         
 };
