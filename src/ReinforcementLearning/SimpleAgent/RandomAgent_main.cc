@@ -5,6 +5,7 @@
 #include "Agent.h"
 #include "Policy.h"
 #include "RandomPolicy.h"
+#include "Episode.h"
 using namespace std;
 
 int main(){

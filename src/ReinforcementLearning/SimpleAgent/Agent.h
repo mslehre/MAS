@@ -36,14 +36,10 @@ class Agent {
     /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
      */
     std::vector <std::pair<std::vector <bool>, unsigned int>> history;
-    /** The member executePolicy selects an edge in state s according to Policy p.
-     * \param s Expects a state s as input parameter.
-     * \param p Expects a policy p as input parameter.
+    /** This function runs an episode. It relies on constState, policy and graph
+     *  to calculate state-action pairs as well as score.
+     * \return This function returns an episode
      */
-
-    
-
-
     Episode getEpisode() {
 
         Episode episode();
@@ -72,12 +68,12 @@ class Agent {
      * \param s Expects a state s as input parameter.
      * \param p Expects a policy p as input parameter.
      */                      
-    std::pair <state*, int> executePolicy(state* s, Policy* p) {
+    std::pair <state*, unsigned int> executePolicy(state* s, Policy* p) {
         std::random_device rd;
         std::mt19937 gen(rd());
         std::vector <float> probActions = p->act(s);
         std::discrete_distribution<> dis(probActions.begin(), probActions.end());
-        int edgeSelection = dis(gen);
+        unsigned int edgeSelection = dis(gen);
         if (s->selectable[edgeSelection] == false) {
             edgeSelection = -1;
         }

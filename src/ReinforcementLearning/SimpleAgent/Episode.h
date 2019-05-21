@@ -1,7 +1,9 @@
-#pragma once
+#ifndef EPISODE_H
+#define EPISODE_H
 #include <vector>
 
 using std::vector;
+
 class Episode{
     public:
         Episode(){};
@@ -10,5 +12,4 @@ class Episode{
         unsigned int score;
         unsigned int numbOfStates;
  }
-        
-    
+#endif
