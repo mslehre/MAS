@@ -24,7 +24,7 @@ int main() {
    // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
     startButton.setFunction(test);
-    quitButton.setFunction(test);
+    quitButton.setFunction([&window] () {window.close();});
    // settingsButton.setFunction([&g] () {test2(g);});
 
     std::string status = "menu";
