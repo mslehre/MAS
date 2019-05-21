@@ -82,6 +82,11 @@ class state{
      */
 
     void calculate_score(Graph& graph);
+	
+	/** This function determines whether state has a selectable edge.
+	 * \return Returns true if it has selectable edge and false otherwise.
+	 */
+	bool hasEdge();
 
 };
 

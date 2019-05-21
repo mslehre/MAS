@@ -7,7 +7,9 @@ HEADER2 = ../Node.h
 HEADER3 = ../Edge.h
 HEADER4 = ../Graph.h
 CFLAGS = $(CXXFLAGS) -c -I../
+
 all: ScoreTest
+
 ScoreTest: $(OBJ) 
 	$(CC) $(OBJ) -o $@
 
@@ -26,5 +28,5 @@ Edge.o: ../Edge.cc $(HEADER3)
 Graph.o: ../Graph.cc $(HEADER4) 
 	$(CC) $(CFLAGS) $< -o $@
 
-clean: 
+clean:
 	rm -f *o ScoreTest

@@ -76,6 +76,14 @@ bool state::consistent(Edge& e, Edge& f){
     }
 }
 
+bool state::hasEdge() {
+	for (unsigned int i = 0; i < selectable.size(); i++) {
+		if (selectable[i] == true)
+			return true;
+	}
+	return false;
+}
+
 // functions for scoring
 
 bool state::is_equal(Node& a, Node& b){
