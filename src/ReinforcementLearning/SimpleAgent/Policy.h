@@ -2,15 +2,15 @@
 #define POLICY_H
 #include "../../alignment/State.h"
 
-/** \brief This Policy class maps states to an action deterministically.
+/** \brief This Policy class maps states to probabilities for an action.
 */
 class Policy {
     public:
     Policy(){};
     ~Policy(){};
-    /** Member policy selects edges in order as long as they are selectable.
+    /** Function act calculates probabilities for taking each action.
      * \param s Expects a state as input parameter.
-     * \return Returns the index of edge that was selected according to policy.
+     * \return Returns the vector of probabilities for each action.
      */
     virtual std::vector <float> act(state* s) const = 0;
 };

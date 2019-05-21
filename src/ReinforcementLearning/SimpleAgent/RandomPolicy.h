@@ -8,15 +8,15 @@
 #include <chrono>
 #include <utility>
 
-/** \brief This RandomPolicy can select edges at random.
+/** \brief This RandomPolicy promotes random selection of edges.
  */
 class RandomPolicy : public Policy {
     public:
     RandomPolicy(){};
     ~RandomPolicy(){};
-    /** The member act selects an edge at random.
+    /** The function act returns probability vector of 0 if edge not selectable, 1/# of selectable edges otherwise.
      * \param s Expects a state s as input parameter.
-     * \return Returns the index of selected edge.
+     * \return Returns the probability vector.
      */
     virtual std::vector <float> act(state* s) const override {
         unsigned int n = s->edges.size();

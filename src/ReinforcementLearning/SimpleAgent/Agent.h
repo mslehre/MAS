@@ -10,13 +10,11 @@
 #include <utility>
 #include <iostream>
 
-/**TODO: Include score (maybe expected score) in history, make RandomAgent dependent on BaseAgent.
+/**TODO: Include score (maybe expected score) in history.
  *       The policy is supposed to map states to a vector of action probabilities in my view.
- *       How do we use history to find optimal strategy?
  */
 
-/** \brief This RandomAgent class selects edges according to a policy.
-*          The policy is to just choose a random edge out of the selectable ones
+/** \brief This Agent class selects edges according to a policy.
 */
 class Agent {
     public:
@@ -29,8 +27,9 @@ class Agent {
     /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
      */
     std::vector <std::pair<std::vector <bool>, unsigned int>> history;
-    /** The member executePolicy executes RandomPolicy.act and saves results in history.
+    /** The member executePolicy selects an edge in state s according to Policy p.
      * \param s Expects a state s as input parameter.
+     * \param p Expects a policy p as input parameter.
      */
     void executePolicy(state* s, Policy* p) {
         std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
