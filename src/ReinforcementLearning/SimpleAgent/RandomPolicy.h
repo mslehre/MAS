@@ -19,10 +19,16 @@ class RandomPolicy : public Policy {
      * \return Returns the index of selected edge.
      */
     virtual std::vector <float> act(state* s) const override {
-        unsigned int n = s->selectable.size();
-        std::vector <float> probAct(n, 1/n);
+        unsigned int n = s->edges.size();
+        std::vector <float> probAct(n, 0.0);
+        int counter = std::count(s->selectable.begin(), s->selectable.end(), true);
+        for (int i = 0; i < n; i++) {
+            if (s->selectable[i] == true)
+                probAct[i] = 1/counter;
+        }
         return probAct;
-        /*std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        /*
+        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
         std::vector <int> selectableIndices;
         bool hasEdge = false;
         for (unsigned int j = 0; j < s->selectable.size(); j++) {

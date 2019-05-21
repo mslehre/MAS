@@ -1,7 +1,6 @@
-#ifndef RANDOM_AGENT_H
-#define RANDOM_AGENT_H
+#ifndef AGENT_H
+#define AGENT_H
 
-#include "BaseAgent.h"
 #include "RandomPolicy.h"
 #include "Policy.h"
 #include "../../alignment/State.h"
@@ -9,53 +8,41 @@
 #include <random>
 #include <chrono>
 #include <utility>
+#include <iostream>
 
 /**TODO: Include score (maybe expected score) in history, make RandomAgent dependent on BaseAgent.
  *       The policy is supposed to map states to a vector of action probabilities in my view.
  *       How do we use history to find optimal strategy?
  */
 
-/**TODO: Make RandomAgent dependent on BaseAgent, also initialise RandomAgent with state*
- */
-
 /** \brief This RandomAgent class selects edges according to a policy.
 *          The policy is to just choose a random edge out of the selectable ones
 */
-class RandomAgent /*: public BaseAgent.h*/ {
+class Agent {
     public:
     state* constState;
-    RandomAgent(){};
-    RandomAgent(state* cs){
+    Agent(){};
+    Agent(state* cs){
         constState = cs;
     }
-    ~RandomAgent(){};
+    ~Agent(){};
     /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
      */
     std::vector <std::pair<std::vector <bool>, unsigned int>> history;
     /** The member executePolicy executes RandomPolicy.act and saves results in history.
      * \param s Expects a state s as input parameter.
      */
-    virtual void executePolicy(state* s) {
+    void executePolicy(state* s, Policy* p) {
         std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-        std::vector <int> selectableIndices;
-        bool hasEdge = false;
-        for (unsigned int j = 0; j < s->selectable.size(); j++) {
-            if (s->selectable[j] == true) {
-                selectableIndices.push_back(j);
-                hasEdge = true;
-            }
+        std::vector <float> probActions = p->act(s);
+        std::discrete_distribution<> dis(probActions.begin(), probActions.end());
+        int edgeSelection = dis(gen);
+        if (edgeSelection == 0) {
+            std::cout << "done" << std::endl;
+            edgeSelection = -1;
         }
-        if (hasEdge == true) {
-            std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
-            unsigned int edgeIndex = selectableIndices[dis(gen)];
-            s->select(edgeIndex);    ///<The select in the act function is for tests ONLY
-            return edgeIndex;
-        }
-        else {
-            return -1;
-        }
-        RandomPolicy randP;
-        this->history.push_back(std::make_pair(s->selectedSubset,randP.act(s)));
+        s->select(edgeSelection);
+        this->history.push_back(std::make_pair(s->selectedSubset, edgeSelection));
     }
 };
 #endif

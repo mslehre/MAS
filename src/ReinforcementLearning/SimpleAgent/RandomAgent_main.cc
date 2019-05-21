@@ -2,8 +2,7 @@
 #include "../../alignment/Graph.h"
 #include "../../alignment/Node.h"
 #include "../../alignment/Edge.h"
-#include "BaseAgent.h"
-#include "RandomAgent.h"
+#include "Agent.h"
 #include "Policy.h"
 #include "RandomPolicy.h"
 using namespace std;
@@ -121,14 +120,15 @@ int main(){
 	cout << endl << "Next Test" << endl << endl;
     //Test for RandomAgent
     state z(edgeList);
-    RandomAgent rAgent;
+    Agent agent(&z);
+    RandomPolicy randP;
     int testInt;
     while (testInt != -1) {
-        rAgent.executePolicy(&z);
-        testInt = rAgent.history.back().second;
+        agent.executePolicy(&z, &randP);
+        testInt = agent.history.back().second;
     }
     //Test if history is created
-    if (rAgent.history[2].second != -1) {
+    if (agent.history[2].second > 0) {
         cout << "history is created" << endl << endl;
     }
     else {

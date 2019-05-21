@@ -12,6 +12,6 @@ class Policy {
      * \param s Expects a state as input parameter.
      * \return Returns the index of edge that was selected according to policy.
      */
-    virtual unsigned int act(state* s) const = 0;
+    virtual std::vector <float> act(state* s) const = 0;
 };
 #endif
