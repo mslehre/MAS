@@ -25,9 +25,9 @@ class Agent {
     public:
     state* constState;
     Policy* policy;
-    Graph* graph;
+    Graph graph;
     Agent(){};
-    Agent(state* cs, Graph* g, Policy* pol){
+    Agent(state* cs, Graph& g, Policy* pol){
         constState = cs;
         policy = pol;
         graph = g;
@@ -42,24 +42,26 @@ class Agent {
      */
     Episode getEpisode() {
 
-        Episode episode();
+        Episode episode;
         unsigned int n = constState->edges.size();
         vector <bool> action(n, false);
-        episode.states.push_back(&constState.selectedSubset); 
+        episode.states.push_back(constState->selectedSubset); 
         unsigned int counter = 0;
+        std::pair <state*, unsigned int> stateAction = executePolicy(constState, policy);
+        
        
         while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
-            std::pair <state*, int> stateAction = executePolicy(constState, policy);
-            episode.states.push_back(&stateAction.first.selectedSubset);
+            episode.states.push_back(stateAction.first->selectedSubset);
             episode.actions.push_back(action);
             episode.actions.at(counter).at(stateAction.second)=true;
             counter++;
+            stateAction = executePolicy(stateAction.first, policy);
         }
         
         episode.actions.push_back(action);
         episode.numbOfStates = counter + 1;
-        &stateAction.first.calculate_score;
-        episode.score = &stateAction.score;
+        stateAction.first->calculate_score(graph);
+        episode.score = stateAction.first->score;
 
         return episode;
     }

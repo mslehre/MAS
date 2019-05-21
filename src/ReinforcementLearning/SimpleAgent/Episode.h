@@ -11,5 +11,5 @@ class Episode{
         vector<vector<bool>> actions;
         unsigned int score;
         unsigned int numbOfStates;
- }
+ };
 #endif

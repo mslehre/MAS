@@ -10,7 +10,24 @@ using namespace std;
 
 int main(){
     //Following is just a Test
-    vector <Edge> edgeList;
+
+    // example create object from class Graph
+    Graph g;
+    g.readFastaFiles("../../alignment/sequences.fa" , 2);
+    state s(g.getEdges());
+    RandomPolicy randP;
+    Agent agent(&s, g, &randP);
+    Episode episode = agent.getEpisode();
+    vector<vector<bool>> ausgabe = episode.states;
+    for (unsigned int i = 0; i < ausgabe.size(); i++) {
+        for (unsigned int j = 0; j < ausgabe.at(i).size(); j++) {
+            cout << ausgabe.at(i).at(j);
+        }
+        cout << "nächster State: " << endl;
+    }
+
+}
+    /*vector <Edge> edgeList;
     Node n1(0,1,",");
     Node n2(1,3,",");
     Edge e1;
@@ -97,6 +114,12 @@ int main(){
     edgeList.push_back(e14);
     //Test for state
     state s(edgeList);
+    
+
+    
+
+
+    
     for (unsigned int i = 0; i < s.edges.size(); i++) {
         if(s.selectable[i] == true)		
             s.select(i);
@@ -147,4 +170,5 @@ int main(){
         }
     }
     return 0;
-}
+    */
+
