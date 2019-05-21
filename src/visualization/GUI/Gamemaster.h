@@ -12,7 +12,7 @@ class Gamemaster {
         std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
 
         /**
-         * This function is used to make a list of unique Kmers 
+         * This function make a list of unique Kmers 
          * \param nodeList is a vector with all nodes (contains the Kmers)
          * \return a vector of unique strings
          */
