@@ -48,7 +48,7 @@ class Agent {
         episode.states.push_back(&constState.selectedSubset); 
         unsigned int counter = 0;
        
-        while (stateAction.first->hasEdge) { ///< state needs boolean to determine whether a selectable edge exists
+        while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
             std::pair <state*, int> stateAction = executePolicy(constState, policy);
             episode.states.push_back(&stateAction.first.selectedSubset);
             episode.actions.push_back(action);
