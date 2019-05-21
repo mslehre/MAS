@@ -1,9 +1,5 @@
 #include "sequence.h"
-#include "generator.h"
 #include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
 #include <stdlib.h>
 
 using namespace std;
@@ -38,33 +34,7 @@ int main(int argc, char *argv[]){
         return -1;
     }
 
-    vector<string> DNAsequences(numberOfSequences);
-    Generator gen;
-    string DNA = gen.randomDNA(DNAlength);
-
-    for (unsigned int i = 0; i < numberOfSequences; i++) {
-        string mutantDNA = gen.mutateDNA(DNA, mutationpProbability);
-        DNAsequences[i] = mutantDNA;
-    }
-	
-    ofstream outfile("sequences.fa");
-    if (!outfile.is_open()) {
-        cerr << "Error creating the output file." << endl;
-        return -1;
-    }
-
-    const int maxLineLength = 80;
-
-    for (unsigned int i = 0; i < DNAsequences.size(); i++) {
-        outfile << ">seq" << i + 1;
-        for (unsigned int j = 0; j < DNAlength; j++) {
-            if (j % maxLineLength == 0) 
-                outfile << "\n";
-            outfile << DNAsequences[i][j];
-        }
-        outfile << endl;
-    }
-    outfile.close();
+    simulate(numberOfSequences, DNAlength, mutationpProbability);
 
     return 0;
 }
