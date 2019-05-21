@@ -28,7 +28,6 @@ int main() {
    // settingsButton.setFunction([&g] () {test2(g);});
 
     std::string status = "menu";
-
     
     while (window.isOpen()) {
         sf::Event event;
