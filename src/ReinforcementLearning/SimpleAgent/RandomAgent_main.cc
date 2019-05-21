@@ -118,7 +118,7 @@ int main(){
         }
     }
 	cout << endl << "Next Test" << endl << endl;
-    //Test for RandomAgent
+    //Test for Agent
     state z(edgeList);
     Agent agent(&z);
     RandomPolicy randP;
@@ -126,13 +126,6 @@ int main(){
     while (testInt != -1) {
         agent.executePolicy(&z, &randP);
         testInt = agent.history.back().second;
-    }
-    //Test if history is created
-    if (agent.history[2].second > 0) {
-        cout << "history is created" << endl << endl;
-    }
-    else {
-        cout << "history not created"<< endl << endl;
     }
     //Print Results of RandomPolicy.act
     for (unsigned int j = 0; j < z.selectable.size(); j++) {

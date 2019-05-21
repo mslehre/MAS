@@ -20,11 +20,12 @@ class RandomPolicy : public Policy {
      */
     virtual std::vector <float> act(state* s) const override {
         unsigned int n = s->edges.size();
-        std::vector <float> probAct(n, 0.0);
-        int counter = std::count(s->selectable.begin(), s->selectable.end(), true);
-        for (int i = 0; i < n; i++) {
+        std::vector <float> probAct(n, 0);
+        int cTemp = std::count(s->selectable.begin(), s->selectable.end(), true);
+        float counter = (float) cTemp;
+        for (unsigned int i = 0; i < n; i++) {
             if (s->selectable[i] == true)
-                probAct[i] = 1/counter;
+                probAct[i] = (float)(1/counter);
         }
         return probAct;
         /*

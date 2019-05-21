@@ -9,6 +9,7 @@
 #include <chrono>
 #include <utility>
 #include <iostream>
+#include <map>
 
 /**TODO: Include score (maybe expected score) in history.
  *       The policy is supposed to map states to a vector of action probabilities in my view.
@@ -32,15 +33,17 @@ class Agent {
      * \param p Expects a policy p as input parameter.
      */
     void executePolicy(state* s, Policy* p) {
-        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
+        std::random_device rd;
+        std::mt19937 gen(rd());
         std::vector <float> probActions = p->act(s);
         std::discrete_distribution<> dis(probActions.begin(), probActions.end());
         int edgeSelection = dis(gen);
-        if (edgeSelection == 0) {
-            std::cout << "done" << std::endl;
+        if (s->selectable[edgeSelection] == false) {
             edgeSelection = -1;
         }
-        s->select(edgeSelection);
+        else {
+            s->select(edgeSelection);
+        }
         this->history.push_back(std::make_pair(s->selectedSubset, edgeSelection));
     }
 };
