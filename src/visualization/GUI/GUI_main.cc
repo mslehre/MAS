@@ -5,6 +5,7 @@
 #include <string>
 #include "../../alignment/Graph.h"
 #include "Button.h"
+#include "Gamemaster.h"
 
 void test() { // for tests TODO: delete this function later
     std::cout << "test" << std::endl;
@@ -17,13 +18,12 @@ void test2(Graph g) { //for tests
 int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
 
-    Graph g;
-    g.readFastaFiles("sequences.fa", 2);
+    Gamemaster gamemaster(4, 100, 10, 0.8);
 
     Button startButton = Button("../../../fig/startButton.png", 550, 100, "ingame", "menu");
    // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
-    startButton.setFunction(test);
+    startButton.setFunction([&gamemaster] () {test2(gamemaster.get_GameGraph()); });
     quitButton.setFunction([&window] () {window.close();});
    // settingsButton.setFunction([&g] () {test2(g);});
 

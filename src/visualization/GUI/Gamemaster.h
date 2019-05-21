@@ -8,8 +8,8 @@
 class Gamemaster {
     private:
         Graph GameGraph; ///< The Graph of the game
-        State GameState; ///< The State of GameGraph
-        vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
+        state GameState; ///< The State of GameGraph
+        std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
 
     public:
 
@@ -21,6 +21,11 @@ class Gamemaster {
          */
 
         Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
+
+        Graph get_GameGraph();
+        state get_GameState();
+        std::vector<DrawNode> get_GameNodes();
+        
 };
 
 #endif //Gamemaster_H_ 
