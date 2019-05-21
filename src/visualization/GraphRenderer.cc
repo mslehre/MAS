@@ -122,7 +122,9 @@ GraphRenderer::GraphRenderer() {
 }
 
 //Complete Constructor
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int sizeConst) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode> Nodes, int sizeConst) {
+    vector<Node> nodeList = gr.getNodes();
+    vector<Edge> edgeList = gr.getEdges();
     maxNodesPerRow = 0;
     maxSequences = 0;
     for (uint i = 0; i < nodeList.size(); i++) {
@@ -141,7 +143,7 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, v
     edgeHovered = false;
     defaultView = window.getDefaultView();
     actualView = defaultView;
-    initShapes(nodeList);
+    initShapes(Nodes, nodeList);
     drawShape(window);
     drawText(window);
 }
@@ -227,17 +229,12 @@ void GraphRenderer::drawShape(sf::RenderWindow& window) {
 }
 
 //This method initialize the shapes by the properties of nodeList
-void GraphRenderer::initShapes(vector<Node>& nodeList) {
+void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList) {
     //initialize the shift of the view
     direction.push_back(0);
     direction.push_back(0);
     //Get all nodes we need
-    uint size_nodes = nodeList.size();
-    //Initialize colormap
-    vector<string> Kmers = giveKmers(nodeList);
-    colorlist colorExample(Kmers.size());
-    vector<sf::Color> colors = colorExample.giveList();
-    colormap mapExample(Kmers, colors);
+    uint size_nodes = Nodes.size();
     //Placeholder for readablity OF THE NODES
     uint i;
     uint j;
@@ -249,9 +246,9 @@ void GraphRenderer::initShapes(vector<Node>& nodeList) {
     rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
     //Iterate to declare all shapes we need in the beginning
     for (uint k = 0; k < size_nodes; k++){
-        i = nodeList.at(k).i;
-        j = nodeList.at(k).j;
-        rect.setFillColor(mapExample.Map(nodeList.at(k).kmer));
+        i = Nodes.at(k).coordinate.y;
+        j = Nodes.at(k).coordinate.x;
+        rect.setFillColor(Nodes.at(k).col);
         rect.setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
         while (rects.size() != i + 1) {
             vector<sf::RectangleShape> fill;

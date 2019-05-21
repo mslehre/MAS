@@ -18,6 +18,8 @@
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 
+vector<string> giveKmers(vector<Node>& nodeList);
+
 void printHelp(); ///< a function which calls a troubleshooting for bad arguments
 
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
@@ -78,7 +80,7 @@ class GraphRenderer{
          * \param edgeList a vector of Edges we use for the game (state inits)
          * \param sizeConst a integer which defines the scale of drawed things
          */
-        GraphRenderer(sf::RenderWindow& window, vector<Node>& nodeList, vector<Edge>& edgeList, int sizeConst);
+        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode> Nodes, int sizeConst);
         /**
          * The standard constructor, which do nothing.
          */
@@ -112,7 +114,7 @@ class GraphRenderer{
          *
          * \param nodeList a vector of Nodes which we want to draw as rectangles with text
          */
-        void initShapes(vector<Node>& nodeList);
+        void initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
         /**
          * a function which draw all shapes in their current state
          *

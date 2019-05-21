@@ -24,7 +24,20 @@ int main(int argc, char **argv){
     g.readFastaFiles(argv[1], atoi(argv[2]));
     //get some graph components to compute sth
     vector<Node> nodeList = g.getNodes();
-    vector<Edge> edgeList = g.getEdges();
+    vector<DrawNode> Nodes;
+    //Initialize colomap
+    vector<string> Kmers = giveKmers(nodeList);
+    colorlist colorExample(Kmers.size());
+    vector<sf::Color> colors = colorExample.giveList();
+    colormap mapExample(Kmers, colors);
+    //initialize DrawNodes
+    for (uint i = 0; i < nodeList.size(); i++) {
+        DrawNode ph;
+        Nodes.push_back(ph);
+        sf::Vector2f coords(nodeList.at(i).j, nodeList.at(i).i);
+        Nodes.at(i).coordinate = coords;
+        Nodes.at(i).col = mapExample.Map(nodeList.at(i).kmer);
+    }
     //initialize width and length of the sequences to compute a sizeConstant for the visuals
     float length = 0;
     float width = 0;
@@ -47,7 +60,7 @@ int main(int argc, char **argv){
     window.display();
 
     //Create a GraphRenderer
-    GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
+    GraphRenderer GrRend(window, g, Nodes, (int)size);
     //create clock to compute a scroll speed
     sf::Clock clock;
 
