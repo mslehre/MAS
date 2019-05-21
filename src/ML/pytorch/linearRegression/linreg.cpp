@@ -22,14 +22,13 @@ struct Net : torch::nn::Module {
 
 int main() {
 
-    unsigned num = 64000;
-    unsigned dim_state = 50;
-
+    unsigned numberOfEpisodes = 100;
+   
     // Create a new Net.
     auto net = std::make_shared<Net>(dim_state);
 
     //create random dataset
-    auto data_set = MyDataset(num, dim_state).map(torch::data::transforms::Stack<>());
+    auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
 
     // Create a multi-threaded data loader for the MNIST dataset.
     auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/64);
