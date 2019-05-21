@@ -6,6 +6,7 @@
 #include "Policy.h"
 #include "RandomPolicy.h"
 #include "Episode.h"
+#include "../../ML/pytorch/linearRegression/MyDataset.h"
 using namespace std;
 
 int main(){
@@ -23,8 +24,13 @@ int main(){
         for (unsigned int j = 0; j < ausgabe.at(i).size(); j++) {
             cout << ausgabe.at(i).at(j);
         }
-        cout << "nächster State: " << endl;
+        //cout << "nächster State: " << endl;
     }
+
+    MyDataset ds(10, agent);
+    
+    
+    
 
 }
     /*vector <Edge> edgeList;

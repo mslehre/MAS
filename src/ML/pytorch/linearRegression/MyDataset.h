@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../../ReinforcementLearning/SimpleAgent/RandomAgent.h"
+#include "../../../ReinforcementLearning/SimpleAgent/Agent.h"
 class MyDataset : public torch::data::Dataset<MyDataset>
 {
     private:
