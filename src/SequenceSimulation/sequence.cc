@@ -19,13 +19,13 @@ void printHelp(){
     cout << "\t\t P is the probability for mutations in the sequencens.\n" << endl;
 }
 
-void simulate(unsigned int numberOfSequences, unsigned int DNAlength, double mutationpProbability){
+void simulate(unsigned int numberOfSequences, unsigned int DNAlength, double mutationProbability){
     vector<string> DNAsequences(numberOfSequences);
     Generator gen;
     string DNA = gen.randomDNA(DNAlength);
 
     for (unsigned int i = 0; i < numberOfSequences; i++) {
-        string mutantDNA = gen.mutateDNA(DNA, mutationpProbability);
+        string mutantDNA = gen.mutateDNA(DNA, mutationProbability);
         DNAsequences[i] = mutantDNA;
     }
 	
