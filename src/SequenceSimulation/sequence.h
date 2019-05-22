@@ -5,7 +5,7 @@
  * prints the usage of this program in the console
  */
 
-void printHelpSequenceSimulation();
+void printHelpSS();
 
 /**
  * This function creates one multiple FASTA file "sequences.fa" with numberOfSequences 

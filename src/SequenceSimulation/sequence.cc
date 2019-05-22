@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void printHelpSequenceSimulation(){
+void printHelpSS(){
     cout << "\t Call skript with:\t./simulation_main S L P \n" << endl;
     cout << "\t Example: ./simulation_main 5 100 0.3 \n" << endl;
     cout << "\t S: Must be an integer greater then zero." << endl;
