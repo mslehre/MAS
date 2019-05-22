@@ -1,3 +1,4 @@
+include ../../common.mk
 CC = g++ -std=c++11
 OBJ = RandomAgent_main.o State.o Graph.o Node.o Edge.o
 H1 = ../../alignment/Graph.h
@@ -8,22 +9,22 @@ H4 = ../../alignment/State.h
 all: RandomAgent_main
 
 RandomAgent_main: $(OBJ)
-	$(CC) $(OBJ) -o RandomAgent_main
+	g++ $(CXXFLAGS) $(OBJ) -o RandomAgent_main
 
-RandomAgent_main.o: RandomAgent_main.cc RandomAgent.h BaseAgent.h $(H1) $(H2) $(H3) $(H4)
-	$(CC) -c RandomAgent_main.cc
+RandomAgent_main.o: RandomAgent_main.cc Agent.h Policy.h RandomPolicy.h $(H1) $(H2) $(H3) $(H4)
+	g++ $(CXXFLAGS) -c RandomAgent_main.cc
 
 State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
-	$(CC) -c -Wall ../../alignment/State.cc 
+	g++ $(CXXFLAGS) -c -Wall ../../alignment/State.cc 
 
 Graph.o: ../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
-	$(CC) -c -Wall ../../alignment/Graph.cc
+	g++ $(CXXFLAGS) -c -Wall ../../alignment/Graph.cc
 
-Edge.o: ../../alignment/Edge.cpp $(H2) $(H3)
-	$(CC) -c -Wall ../../alignment/Edge.cc
+Edge.o: ../../alignment/Edge.cc $(H2) $(H3)
+	g++ $(CXXFLAGS) -c -Wall ../../alignment/Edge.cc
 
-Node.o: ../../alignment/Node.cpp $(H3)
-	$(CC) -c -Wall ../../alignment/Node.cc
+Node.o: ../../alignment/Node.cc $(H3)
+	g++ $(CXXFLAGS) -c -Wall ../../alignment/Node.cc
 
 clean:
 	rm -f *.o RandomAgent_main
