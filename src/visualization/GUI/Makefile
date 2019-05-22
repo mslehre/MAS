@@ -58,6 +58,9 @@ colormap.o: ../colormap.cc $(HEADER10)
 GraphRenderer.o: ../GraphRenderer.cc $(HEADER12) $(HEADER1) $(HEADER13)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
+ArrowShape.o: ../ArrowShape.cc $(HEADER13)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
 FuncArrowShape.o: ../FuncArrowShape.cc $(HEADER13) $(HEADER14)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 

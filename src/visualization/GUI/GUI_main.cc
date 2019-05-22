@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../../alignment/Graph.h"
 #include "../GraphRenderer.h"
 #include "Gamemaster.h"
 #include "Button.h"
