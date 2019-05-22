@@ -1,7 +1,7 @@
 include ../../common.mk
 
 CC = g++
-OBJ = GUI_main.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o
+OBJ = GUI_main.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o GraphRenderer.o ArrowShape.o FuncArrowShape.o
 HEADER1 = ../../alignment/Graph.h
 HEADER2 = ../../alignment/Node.h 
 HEADER3 = ../../alignment/Edge.h
@@ -13,6 +13,9 @@ HEADER8 = Gamemaster.h
 HEADER9 = ../colormap.h
 HEADER10 = ../colorlist.h
 HEADER11 = ../../SequenceSimulation/generator.h
+HEADER12 = ../GraphRenderer.h
+HEADER13 = ../ArrowShape.h
+HEADER14 = ../FuncArrowShape.h
 
 all: GUI_main
 
@@ -50,6 +53,12 @@ colorlist.o: ../colorlist.cc $(HEADER9)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 colormap.o: ../colormap.cc $(HEADER10)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
+GraphRenderer.o: ../GraphRenderer.cc $(HEADER12) $(HEADER1) $(HEADER13)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
+FuncArrowShape.o: ../FuncArrowShape.cc $(HEADER13) $(HEADER14)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 clean:

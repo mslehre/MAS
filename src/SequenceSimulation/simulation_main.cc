@@ -12,25 +12,25 @@ using namespace std;
 int main(int argc, char *argv[]){
     if (argc != 4) {
         cerr << "\nMissing arguments or too mutch arguments.\n" << endl;
-        printHelp();
+        printHelpSequenceSimulation();
         return -1;
     }	
     unsigned int numberOfSequences = atoi(argv[1]);
     if (numberOfSequences <= 0) {
         cerr << "\nThe first number must be an positive integer.\n" << endl;
-        printHelp();
+        printHelpSequenceSimulation();
         return -1;
     }
     unsigned int DNAlength = atoi(argv[2]);
     if (DNAlength <= 0) {
         cerr << "\nThe second number must be an positive integer.\n"  << endl;
-        printHelp();
+        printHelpSequenceSimulation();
         return -1;
     }
     double mutationpProbability = atof(argv[3]);
     if (mutationpProbability < 0 || mutationpProbability > 1) {
         cerr << "\nThe third number must be an double between 0 and 1.\n" << endl;
-        printHelp();
+        printHelpSequenceSimulation();
         return -1;
     }
 

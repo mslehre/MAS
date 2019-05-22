@@ -30,15 +30,15 @@ Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_
     }
 }
 
-Graph Gamemaster::get_GameGraph(){
+Graph Gamemaster::getGameGraph(){
     return GameGraph;
 }
 
-state Gamemaster::get_GameState(){
+state Gamemaster::getGameState(){
     return GameState;
 }
 
-vector<DrawNode> Gamemaster::get_GameNodes(){
+vector<DrawNode> Gamemaster::getGameNodes(){
     return GameNodes;
 }
 

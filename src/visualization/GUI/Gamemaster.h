@@ -34,19 +34,19 @@ class Gamemaster {
          * \return Gamegraph  
          */
 
-        Graph get_GameGraph();
+        Graph getGameGraph();
 
         /**
          * \return GameState  
          */
 
-        state get_GameState();
+        state getGameState();
 
         /**
          * \return GameNodes  
          */
 
-        std::vector<DrawNode> get_GameNodes();
+        std::vector<DrawNode> getGameNodes();
         
 };
 
