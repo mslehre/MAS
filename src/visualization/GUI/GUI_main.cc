@@ -7,30 +7,24 @@
 #include "Gamemaster.h"
 #include "Button.h"
 
-void test() { // for tests TODO: delete this function later
-    std::cout << "test" << std::endl;
-} 
-
-void test2(Graph g) { //for tests
+void test(Graph g) { //for tests TODO: delete this function later
     std::cout << g.getNodes().size() << std::endl;
 }  
 
 int main() {
-    //Open the window with white Background and restrict framerate
+    //Open the window with restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
-    window.clear(sf::Color::White);
     window.setFramerateLimit(120);
-    window.display();
 
-    Gamemaster gamemaster(4, 100, 10, 0.8);
+    Gamemaster gamemaster(4, 100, 10, 0.2);
 
     //initialize Buttons
     Button startButton = Button("../../../fig/startButton.png", 550, 100, "game", "menu");
     // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
-    startButton.setFunction([&gamemaster] () {test2(gamemaster.getGameGraph()); });
+    startButton.setFunction([&gamemaster] () {test(gamemaster.getGameGraph()); });
     quitButton.setFunction([&window] () {window.close();});
-    // settingsButton.setFunction([&g] () {test2(g);});
+    // settingsButton.setFunction([&g] () {test(g);});
 
     //initialize width and length of the sequences to compute a sizeConstant for the visuals
     float length = 0;
@@ -75,16 +69,15 @@ int main() {
             window.draw(startButton.get_Button_Sprite());
           //  window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
-            window.display();
         }
         if (status == "game") {
             //Render method for update window
             GrRend.render(window);
-            window.display();
             sf::Time elapsed = clock.restart();
             //scroll speed computation
             GrRend.update(elapsed.asSeconds());
-        }      
+        }
+        window.display();      
     }
     return 0;
 }
