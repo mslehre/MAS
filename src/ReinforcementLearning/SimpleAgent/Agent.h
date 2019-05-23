@@ -23,25 +23,28 @@ using std::vector;
 */
 class Agent {
     public:
-    state* constState;
+    //The beginning state for every Episode
+    state beginningState;
+    //A copy of the beginning state, which is reseted everytime we call getEpisode
+    state copyBeginningState;
     Policy* policy;
     Graph graph;
     Agent(){};
-    Agent(state* cs, Graph& g, Policy* pol){
-        constState = cs;
+    Agent(state cs, Graph& g, Policy* pol){
+        beginningState = cs;
         policy = pol;
         graph = g;
     }
     ~Agent(){};
-    /** This vector consists of pairs of selectedSubset (i.e. a state) and the action taken in that state.
-     */
-    std::vector <std::pair<std::vector <bool>, unsigned int>> history;
     /** This function runs an episode. It relies on constState, policy and graph
      *  to calculate state-action pairs as well as score.
      * \return This function returns an episode
      */
     Episode getEpisode() {
-
+	//Reset the copy of the beginning State, so it is the real beginning state again
+	copyBeginningState = beginningState;
+        //Set a pointer on the copy of the beginning state
+	state* constState = &copyBeginningState;
         Episode episode;
         unsigned int n = constState->edges.size();
         vector <bool> action(n, false);
@@ -82,7 +85,6 @@ class Agent {
         else {
             s->select(edgeSelection);
         }
-        this->history.push_back(std::make_pair(s->selectedSubset, edgeSelection));
         return std::make_pair(s,edgeSelection);
     }
 };
