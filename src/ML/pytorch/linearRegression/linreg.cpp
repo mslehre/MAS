@@ -35,7 +35,7 @@ int main() {
 
     // Instantiate an SGD optimization algorithm to update our Net's parameters.
     torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
-
+/*
     for (size_t epoch = 1; epoch <= 10; ++epoch) {
         size_t batch_index = 0;
         // Iterate the data loader to yield batches from the dataset.
@@ -59,6 +59,5 @@ int main() {
             }
         }
     }
-
-
+*/
 }

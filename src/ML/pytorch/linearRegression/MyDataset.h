@@ -11,7 +11,7 @@ class MyDataset : public torch::data::Dataset<MyDataset>
          * \param numbEpisodes number of episodes
          * \param agent random agent
          */
-        explicit MyDataset(unsigned numbEpisodes, RandomAgent& agent) {          
+        explicit MyDataset(unsigned numbEpisodes, Agent& agent) {          
           
             vector<Episode> episodes;               // vector of episodes
             vector<vector<bool>> states;            // vector of states
