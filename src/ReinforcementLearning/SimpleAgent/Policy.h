@@ -10,7 +10,6 @@ class Policy {
     ~Policy(){};
     /** Function act calculates probabilities for taking each action.
      * \param s Expects a state as input parameter.
-     * \return Returns the vector of probabilities for each action.
      */
     virtual std::vector <float> act(state* s) const = 0;
 };

@@ -30,13 +30,13 @@ class Agent {
     Graph graph;    ///< The graph used to calculate score (see Todo).
 
 
-    Agent(){};    ///< Default constructor
-    Agent(state cs, Graph& g, Policy* pol){    ///< Constructs Agent with state graph and policy.
+    Agent() {};    ///< Default constructor
+    Agent(state cs, Graph& g, Policy* pol) {    ///< Constructs Agent with state graph and policy.
         beginningState = cs;
         policy = pol;
         graph = g;
     }
-    ~Agent(){};    ///< Default destructor
+    ~Agent() {};    ///< Default destructor
 
 
     /** This function runs an episode. It relies on constState, policy and graph
@@ -44,7 +44,7 @@ class Agent {
      * \return This function returns an episode
      */
     Episode getEpisode() {
-        copyBeginningState = beginningState;    // Reset the copy of the beginning State
+        copyBeginningState = beginningState;    //Reset the copy of the beginning State
         state* constState = &copyBeginningState;    // Set a pointer on the copy of the beginning state
         Episode episode;
         unsigned int n = constState->edges.size();
@@ -54,10 +54,10 @@ class Agent {
         std::pair <state*, unsigned int> stateAction = executePolicy(constState, policy);
         
        
-        while (stateAction.first->hasEdge()) {    // State needs boolean to determine whether a selectable edge exists
+        while (stateAction.first->hasEdge()) {    // state needs boolean to determine whether a selectable edge exists
             episode.states.push_back(stateAction.first->selectedSubset);
             episode.actions.push_back(action);
-            episode.actions.at(counter).at(stateAction.second)=true;
+            episode.actions.at(counter).at(stateAction.second) = true;
             counter++;
             stateAction = executePolicy(stateAction.first, policy);
         }

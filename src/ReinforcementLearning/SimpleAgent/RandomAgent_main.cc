@@ -24,7 +24,7 @@ int main(){
         for (unsigned int j = 0; j < ausgabe.at(i).size(); j++) {
             cout << ausgabe.at(i).at(j);
         }
-        cout << "nächster State: " << endl;
+        cout << endl << "nächster State: " << endl;
     }
 
 }
