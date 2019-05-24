@@ -15,36 +15,37 @@
 
 using std::vector;
 
-/**TODO: Include score (maybe expected score) in history.
- *       The policy is supposed to map states to a vector of action probabilities in my view.
+/**TODO: Remove graph and calculate score by state as soon as Timon's function is merged
+ * 
  */
 
 /** \brief This Agent class selects edges according to a policy.
 */
 class Agent {
     public:
-    //The beginning state for every Episode
-    state beginningState;
-    //A copy of the beginning state, which is reseted everytime we call getEpisode
-    state copyBeginningState;
-    Policy* policy;
-    Graph graph;
-    Agent(){};
-    Agent(state cs, Graph& g, Policy* pol){
+
+    state beginningState;    ///< The beginning state for every Episode.
+    state copyBeginningState;    ///< A copy of the beginning state, which is reset everytime we call getEpisode.
+    Policy* policy;    ///< The Policy the Agent uses to assign action selection probabilities to a state
+    Graph graph;    ///< The graph used to calculate score (see Todo).
+
+
+    Agent(){};    ///< Default constructor
+    Agent(state cs, Graph& g, Policy* pol){    ///< Constructs Agent with state graph and policy.
         beginningState = cs;
         policy = pol;
         graph = g;
     }
-    ~Agent(){};
+    ~Agent(){};    ///< Default destructor
+
+
     /** This function runs an episode. It relies on constState, policy and graph
      *  to calculate state-action pairs as well as score.
      * \return This function returns an episode
      */
     Episode getEpisode() {
-	//Reset the copy of the beginning State, so it is the real beginning state again
-	copyBeginningState = beginningState;
-        //Set a pointer on the copy of the beginning state
-	state* constState = &copyBeginningState;
+        copyBeginningState = beginningState;    // Reset the copy of the beginning State
+        state* constState = &copyBeginningState;    // Set a pointer on the copy of the beginning state
         Episode episode;
         unsigned int n = constState->edges.size();
         vector <bool> action(n, false);
@@ -53,7 +54,7 @@ class Agent {
         std::pair <state*, unsigned int> stateAction = executePolicy(constState, policy);
         
        
-        while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
+        while (stateAction.first->hasEdge()) {    // State needs boolean to determine whether a selectable edge exists
             episode.states.push_back(stateAction.first->selectedSubset);
             episode.actions.push_back(action);
             episode.actions.at(counter).at(stateAction.second)=true;
