@@ -29,7 +29,7 @@ class Gamemaster {
          */
 
         Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
-
+        
         /**
          * \return Gamegraph  
          */
@@ -47,7 +47,7 @@ class Gamemaster {
          */
 
         std::vector<DrawNode> getGameNodes();
-        
+
 };
 
 #endif //Gamemaster_H_ 

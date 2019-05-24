@@ -7,61 +7,58 @@
 #include "Gamemaster.h"
 #include "Button.h"
 
-void test(Graph g) { //for tests TODO: delete this function later
-    std::cout << g.getNodes().size() << std::endl;
-}  
+//initialize width and length of the sequences to compute a sizeConstant for the visuals
+void calculate_visual_size(Gamemaster& g, float& size){ //TODO:Mayby into Graphrenderer.cc? 
+    float length = 0;
+    float width = 0;
+    for (unsigned int i = 0; i < g.getGameGraph().getNodes().size(); i++) {
+        if (length < g.getGameGraph().getNodes().at(i).j)
+            length = g.getGameGraph().getNodes().at(i).j;
+        if (width < g.getGameGraph().getNodes().at(i).i)
+            width = g.getGameGraph().getNodes().at(i).i;
+    }
+    if (length > 50 && width > 5)
+        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
+}
 
 int main() {
     //Open the window with restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.setFramerateLimit(120);
 
-    Gamemaster gamemaster(4, 100, 10, 0.2);
+    //parameter for game
+    unsigned int k = 4;
+    unsigned int length_of_sequences = 100;
+    unsigned int number_of_sequences = 10;
+    double probability = 0.2;    
+    float size = 130; // for visuals
+    std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
 
-    //initialize Buttons
+    Gamemaster gamemaster(k, length_of_sequences, number_of_sequences, probability);
+    calculate_visual_size(gamemaster, size);
+    GraphRenderer GrRend(window, gamemaster.getGameGraph().getNodes(), gamemaster.getGameGraph().getEdges(), (int)size);
+    sf::Clock clock; //clock to compute a scroll speed
+
     Button startButton = Button("../../../fig/startButton.png", 550, 100, "game", "menu");
     // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
-    startButton.setFunction([&gamemaster] () {test(gamemaster.getGameGraph()); });
-    quitButton.setFunction([&window] () {window.close();});
-    // settingsButton.setFunction([&g] () {test(g);});
-
-    //initialize width and length of the sequences to compute a sizeConstant for the visuals
-    float length = 0;
-    float width = 0;
-    float size;
-    for (uint i = 0; i < gamemaster.getGameGraph().getNodes().size(); i++) {
-        if (length < gamemaster.getGameGraph().getNodes().at(i).j)
-            length = gamemaster.getGameGraph().getNodes().at(i).j;
-        if (width < gamemaster.getGameGraph().getNodes().at(i).i)
-            width = gamemaster.getGameGraph().getNodes().at(i).i;
-    }
-    if (length > 50 && width > 5) {
-        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
-    } else {
-        size = 130;
-    }
-
-    std::string status = "menu";
-
-    //Create a GraphRenderer
-    GraphRenderer GrRend(window, gamemaster.getGameGraph().getNodes(), gamemaster.getGameGraph().getEdges(), (int)size);
-    //create clock to compute a scroll speed
-    sf::Clock clock;
-    
+    startButton.setFunction([] () {});
+    // settingsButton.setFunction([] () {});
+    quitButton.setFunction([&window] () {window.close(); });
+   
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
-            auto global_mouse_pos = window.mapPixelToCoords(sf::Mouse::getPosition(window)); // mouse position
+            auto mouse_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close(); 
-            
+           
+            startButton.eventHandler(event, status, mouse_position);
+           // settingsButton.eventHandler(event, status, global_mouse_pos);
+            quitButton.eventHandler(event, status, mouse_position);
             GrRend.eventHandler(event, window, gamemaster.getGameGraph().getNodes());
-            status = startButton.eventHandler(event, status, global_mouse_pos);
-           // status = settingsButton.eventHandler(event, status, global_mouse_pos);
-            status = quitButton.eventHandler(event, status, global_mouse_pos);
         }
 
         if (status == "menu") {
@@ -69,13 +66,12 @@ int main() {
             window.draw(startButton.get_Button_Sprite());
           //  window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
+            sf::Time elapsed = clock.restart();
         }
         if (status == "game") {
-            //Render method for update window
-            GrRend.render(window);
+            GrRend.render(window);  //Render method for update window
             sf::Time elapsed = clock.restart();
-            //scroll speed computation
-            GrRend.update(elapsed.asSeconds());
+            GrRend.update(elapsed.asSeconds()); //scroll speed computation
         }
         window.display();      
     }
