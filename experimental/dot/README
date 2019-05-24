@@ -1,0 +1,2 @@
+dot msa.dot -Tpng > msa.png
+dot msa.dot -Tjson # or another output format, see `man dot`
