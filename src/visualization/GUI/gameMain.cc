@@ -66,7 +66,7 @@ int main() {
             window.draw(startButton.get_Button_Sprite());
           //  window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
-            sf::Time elapsed = clock.restart();
+            clock.restart();
         }
         if (status == "game") {
             GrRend.render(window);  //Render method for update window
