@@ -5,7 +5,9 @@
 #include "Agent.h"
 #include "Policy.h"
 #include "RandomPolicy.h"
+
 #include "Episode.h"
+
 using namespace std;
 
 int main(){
@@ -114,12 +116,14 @@ int main(){
     edgeList.push_back(e14);
     //Test for state
     state s(edgeList);
-    
 
     
 
+    
+
 
     
+
     for (unsigned int i = 0; i < s.edges.size(); i++) {
         if(s.selectable[i] == true)		
             s.select(i);
