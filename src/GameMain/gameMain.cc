@@ -3,9 +3,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "../GraphRenderer.h"
+#include "../visualization/GraphRenderer.h"
+#include "../visualization/Button.h"
 #include "Gamemaster.h"
-#include "Button.h"
 
 //initialize width and length of the sequences to compute a sizeConstant for the visuals
 void calculate_visual_size(Gamemaster& g, float& size){ //TODO:Mayby into Graphrenderer.cc? 
@@ -39,13 +39,13 @@ int main() {
     GraphRenderer GrRend(window, gamemaster.getGameGraph().getNodes(), gamemaster.getGameGraph().getEdges(), (int)size);
     sf::Clock clock; //clock to compute a scroll speed
 
-    Button startButton = Button("../../../fig/startButton.png", 550, 100, "game", "menu");
-    // Button settingsButton = Button("../../../fig/settingsButton.png", 550, 300, "settings", "menu");
-    Button quitButton = Button("../../../fig/quitButton.png", 550, 500, "quit", "menu");
+    Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
+    // Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
+    Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
     startButton.setFunction([] () {});
     // settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
-   
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -54,7 +54,7 @@ int main() {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close(); 
-           
+
             startButton.eventHandler(event, status, mouse_position);
            // settingsButton.eventHandler(event, status, global_mouse_pos);
             quitButton.eventHandler(event, status, mouse_position);

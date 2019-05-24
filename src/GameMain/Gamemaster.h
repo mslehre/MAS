@@ -1,9 +1,9 @@
 #ifndef Gamemaster_H_ 
 #define Gamemaster_H_
 #include <vector>
-#include "../../alignment/DrawNode.h"
-#include "../../alignment/Graph.h"
-#include "../../alignment/State.h"
+#include "../alignment/DrawNode.h"
+#include "../alignment/Graph.h"
+#include "../alignment/State.h"
 
 class Gamemaster {
     private:

@@ -1,6 +1,6 @@
-#include "../../SequenceSimulation/sequence.h"
-#include "../colorlist.h"
-#include "../colormap.h"
+#include "../SequenceSimulation/sequence.h"
+#include "../visualization/colorlist.h"
+#include "../visualization/colormap.h"
 #include "Gamemaster.h"
 #include <stdio.h>
 #include <string>
