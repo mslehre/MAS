@@ -1,5 +1,9 @@
 #pragma once
 #include "../../../ReinforcementLearning/SimpleAgent/Agent.h"
+#include <torch/torch.h>
+
+using std::vector;
+
 class MyDataset : public torch::data::Dataset<MyDataset>
 {
     private:
@@ -21,7 +25,7 @@ class MyDataset : public torch::data::Dataset<MyDataset>
 
             for (unsigned int i = 0; i < numbEpisodes; i++) { // calculate the total number of all states of all episodes
                 episodes.push_back(agent.getEpisode());
-                numbStates+=episode.numbStates;    
+                numbStates+=episode.numbOfStates;    
             }
 
             unsigned int numbEdges = episodes.at(0).states.at(0).size();    // number of edges of one graph
@@ -33,18 +37,18 @@ class MyDataset : public torch::data::Dataset<MyDataset>
          
             // get the states, actions and scores of all episodes
             for (unsigned int i = 0; i < numbEpisodes; i++) {
-                statesVector = episodes.at(i).states;
-                actionsVector = episodes.at(i).actions;   
+                states = episodes.at(i).states;
+                actions = episodes.at(i).actions;   
                 score = episodes.at(i).score;
                 // save the score for every episode
-                for (unsigned int j = 0; j < statesVector.size(); j++) {
+                for (unsigned int j = 0; j < states.size(); j++) {
                     scores[counter] = score;
                     // save the states for every episode
-                    for(unsigned int k = 0; k < numbEdges; k++) {
-                    statesAndActions[counter][k] = statesVector.at(j).at(k);
+                    for (unsigned int k = 0; k < numbEdges; k++) {
+                    statesAndActions[counter][k] = states.at(j).at(k);
                     }
                     // save the actions for every episode
-                    for(unsigned int k = numbEdges; k < 2*numbEdges; k++) {
+                    for (unsigned int k = numbEdges; k < 2*numbEdges; k++) {
                     statesAndActions[counter][k] = actionsVector.at(j).at(k);
                     }
                     counter++;
