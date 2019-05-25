@@ -25,16 +25,16 @@ int main() {
     unsigned numberOfEpisodes = 100;
    
     // Create a new Net.
-    auto net = std::make_shared<Net>(dim_state);
+   // auto net = std::make_shared<Net>(dim_state);
 
     //create random dataset
-    auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
+    //auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
 
     // Create a multi-threaded data loader for the MNIST dataset.
-    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/64);
+   // auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/64);
 
     // Instantiate an SGD optimization algorithm to update our Net's parameters.
-    torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
+   // torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
 /*
     for (size_t epoch = 1; epoch <= 10; ++epoch) {
         size_t batch_index = 0;

@@ -1,13 +1,12 @@
 #pragma once
 #include "../../../ReinforcementLearning/SimpleAgent/Agent.h"
 #include <torch/torch.h>
-
 using std::vector;
 
 class MyDataset : public torch::data::Dataset<MyDataset>
 {
     private:
-        torch::Tensor states, scores;
+        torch::Tensor states, scores, statesAndActions;
 
     public:
         /** 
@@ -16,7 +15,7 @@ class MyDataset : public torch::data::Dataset<MyDataset>
          * \param agent random agent
          */
         explicit MyDataset(unsigned numbEpisodes, Agent& agent) {          
-          
+
             vector<Episode> episodes;               // vector of episodes
             vector<vector<bool>> states;            // vector of states
             vector<vector<bool>> actions;           // vector of actions
@@ -25,14 +24,14 @@ class MyDataset : public torch::data::Dataset<MyDataset>
 
             for (unsigned int i = 0; i < numbEpisodes; i++) { // calculate the total number of all states of all episodes
                 episodes.push_back(agent.getEpisode());
-                numbStates+=episode.numbOfStates;    
+                numbStates = numbStates + episodes.at(i).numbOfStates;    
             }
-
+    
             unsigned int numbEdges = episodes.at(0).states.at(0).size();    // number of edges of one graph
                             
             statesAndActions = torch::zeros({numbStates,2*numbEdges});      ///< dataset of states and actions
             scores = torch::zeros({numbStates,1});                          ///< corresponding scores
-
+        
             unsigned int counter = 0;
          
             // get the states, actions and scores of all episodes
@@ -41,21 +40,23 @@ class MyDataset : public torch::data::Dataset<MyDataset>
                 actions = episodes.at(i).actions;   
                 score = episodes.at(i).score;
                 // save the score for every episode
+
                 for (unsigned int j = 0; j < states.size(); j++) {
-                    scores[counter] = score;
+                    scores[counter] = (float) score;
                     // save the states for every episode
                     for (unsigned int k = 0; k < numbEdges; k++) {
-                    statesAndActions[counter][k] = states.at(j).at(k);
+                        statesAndActions[counter][k] = (float) states.at(j).at(k);
                     }
                     // save the actions for every episode
                     for (unsigned int k = numbEdges; k < 2*numbEdges; k++) {
-                    statesAndActions[counter][k] = actionsVector.at(j).at(k);
+                        statesAndActions[counter][k] = (float) actions.at(j).at(k);
                     }
                     counter++;
                  }   
             }
-        }
 
+        }
+    
         torch::data::Example<> get(size_t index) override {
             return {statesAndActions[index], scores[index]};
         }
@@ -63,4 +64,5 @@ class MyDataset : public torch::data::Dataset<MyDataset>
         torch::optional<size_t> size() const override {
             return statesAndActions.size(0);
         }
+
 };
