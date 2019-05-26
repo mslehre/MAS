@@ -31,7 +31,7 @@ int main(int argc, char **argv){
     vector<sf::Color> colors = colorExample.giveList();
     colormap mapExample(Kmers, colors);
     //initialize DrawNodes
-    for (uint i = 0; i < nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         DrawNode ph;
         Nodes.push_back(ph);
         sf::Vector2f coords(nodeList.at(i).j, nodeList.at(i).i);
@@ -42,7 +42,7 @@ int main(int argc, char **argv){
     float length = 0;
     float width = 0;
     float size;
-    for (uint i = 0; i < nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         if (length < nodeList.at(i).j)
             length = nodeList.at(i).j;
         if (width < nodeList.at(i).i)

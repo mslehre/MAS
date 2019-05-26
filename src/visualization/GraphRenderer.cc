@@ -7,10 +7,10 @@ vector<string> giveKmers(vector<Node>& nodeList) {
     vector<string> allKmers; // The set of all different Kmers
     bool elementOf;
     //go through all nodes
-    for (uint i = 0; i<nodeList.size(); i++) {
+    for (unsigned i = 0; i<nodeList.size(); i++) {
         elementOf = false;
         //go through all nodes we discovered already to check if they are in the list
-        for (uint j = 0; j < i; j++) {
+        for (unsigned j = 0; j < i; j++) {
             if(nodeList.at(i).kmer == nodeList.at(j).kmer) {
                 elementOf = true;
                 break;
@@ -148,20 +148,20 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
     bool computed = false;
-    for (uint i = 0; i < selectedEdges.size(); i++) {
+    for (unsigned i = 0; i < selectedEdges.size(); i++) {
         nodeIndices.push_back(selectedEdges.at(i).getIndexOfArrow());
     }
-    for (uint i = 0; i < nodeIndices.size(); i++) {
+    for (unsigned i = 0; i < nodeIndices.size(); i++) {
         int s = nodeIndices.at(i).x;
         int e = nodeIndices.at(i).y;
         if (newNodes.at(e).coordinate.x != newNodes.at(s).coordinate.x)
             checked = false;
     }
-    uint index;
+    unsigned index;
     float diff;
     while (!checked) {
         computed = true;
-        for (uint i = 0; i < nodeIndices.size(); i++) {
+        for (unsigned i = 0; i < nodeIndices.size(); i++) {
             int s = nodeIndices.at(i).x;
             int e = nodeIndices.at(i).y;
             if (newNodes.at(s).coordinate.x > newNodes.at(e).coordinate.x) {
@@ -182,7 +182,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
             }
         }
         checked = true;
-        for (uint i = 0; i < nodeIndices.size(); i++) {
+        for (unsigned i = 0; i < nodeIndices.size(); i++) {
             int s = nodeIndices.at(i).x;
             int e = nodeIndices.at(i).y;
             if (newNodes.at(e).coordinate.x != newNodes.at(s).coordinate.x)
@@ -191,11 +191,11 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
     }
     if (computed) {
         vector<double> ranges;
-        for (uint i = 0; i < newNodes.size(); i++) {
+        for (unsigned i = 0; i < newNodes.size(); i++) {
             ranges.push_back((newNodes.at(i).coordinate.x - Nodes.at(i).coordinate.x) * 0.01);
         }
-        for (uint j = 0; j < 100; j++) {
-            for (uint i = 0; i < newNodes.size(); i++) {
+        for (unsigned j = 0; j < 100; j++) {
+            for (unsigned i = 0; i < newNodes.size(); i++) {
                 Nodes.at(i).coordinate.x += ranges.at(i);
             }
             window.clear(sf::Color::White);
@@ -224,7 +224,7 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     vector<Edge> edgeList = gr.getEdges();
     maxNodesPerRow = 0;
     maxSequences = 0;
-    for (uint i = 0; i < nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         if (maxNodesPerRow < nodeList.at(i).j)
             maxNodesPerRow = nodeList.at(i).j;
         if (maxSequences < nodeList.at(i).i)
@@ -286,7 +286,7 @@ void GraphRenderer::moveWindow(int dir) {
         case 4: //resets all
             actualView = defaultView;
             selectedEdges.clear();
-            /*for (uint i = 0; i < gameState.edges.size(); i++) {
+            /*for (unsigned i = 0; i < gameState.edges.size(); i++) {
                 gameState.selectedSubset.at(i) = false;
                 gameState.selectable.at(i) = true;
             }*/
@@ -341,7 +341,7 @@ void GraphRenderer::drawShape(sf::RenderWindow& window) {
 void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>& nodeList) {
     //Get all nodes we need
     rowArrows.clear();
-    uint size_nodes = Nodes.size();
+    unsigned size_nodes = Nodes.size();
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
@@ -349,7 +349,7 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
     int i2;
     double j3;
     //Iterate to declare all shapes we need in the beginning
-    for (uint k = 0; k < size_nodes; k++){
+    for (unsigned k = 0; k < size_nodes; k++){
         i = Nodes.at(k).coordinate.y;
         j = Nodes.at(k).coordinate.x;
         i2 = nodeList.at(k).i;
@@ -370,7 +370,7 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
 //This method initialize the shapes by the properties of nodeList
 void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList) {
     //Get all nodes we need
-    uint size_nodes = Nodes.size();
+    unsigned size_nodes = Nodes.size();
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
@@ -381,7 +381,7 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
     //Iterate to declare all shapes we need in the beginning
-    for (uint k = 0; k < size_nodes; k++){
+    for (unsigned k = 0; k < size_nodes; k++){
         i = Nodes.at(k).coordinate.y;
         j = Nodes.at(k).coordinate.x;
         rect.setFillColor(Nodes.at(k).col);
@@ -446,7 +446,7 @@ void GraphRenderer::deClickNode() {
 
 //this method will highlight a edge, when we clicked a node and hover over a edge
 void GraphRenderer::hoverEdge(sf::Vector2f pos) {
-    for (uint i = 0; i < consistentEdges.size(); i++) {
+    for (unsigned i = 0; i < consistentEdges.size(); i++) {
         //is our mousepos in the edgefront?
         if (consistentEdges.at(i).getShape().getGlobalBounds().contains(pos)) {
             consistentEdges.at(i).hoverFunc();
@@ -473,7 +473,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
             Edge temp = gameState.edges.at(i);
             int start = 0;
             int end = 0;
-            for (uint j = 0; j < nodeList.size(); j++) {
+            for (unsigned j = 0; j < nodeList.size(); j++) {
                 if (temp.first->i == nodeList.at(j).i && temp.first->j == nodeList.at(j).j)
                     start = j;
                 if (temp.second->i == nodeList.at(j).i && temp.second->j == nodeList.at(j).j) {
@@ -495,7 +495,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, 
     //select via state
     int start = 0;
     int end = 0;
-    for (uint i = 0; i < nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         if (temp.first->i == nodeList.at(i).i && temp.first->j == nodeList.at(i).j)
             start = i;
         if (temp.second->i == nodeList.at(i).i && temp.second->j == nodeList.at(i).j) {
@@ -523,7 +523,7 @@ sf::Vector2f GraphRenderer::positionToCoords(sf::Vector2f pos) {
 Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList, vector<DrawNode>& Nodes) {
     sf::Vector2f temp = positionToCoords(pos);
     Node *actualNode = nullptr;
-    for (uint i = 0; i < nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         if ((int)Nodes.at(i).coordinate.y == temp.y && (int)Nodes.at(i).coordinate.x == temp.x) {
             actualNode = &nodeList.at(i);
             break;
@@ -545,7 +545,7 @@ bool GraphRenderer::isPositionEdge(sf::Vector2f pos) {
 bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList) {
     sf::Vector2f temp = positionToCoords(pos);
     //just look at rectangle indices which we defined
-    for (uint i = 0; i < Nodes.size(); i++) {
+    for (unsigned i = 0; i < Nodes.size(); i++) {
         if (Nodes.at(i).coordinate.y == temp.y && Nodes.at(i).coordinate.x == temp.x) {
             bool s = rects.at(nodeList.at(i).i).at(nodeList.at(i).j).getGlobalBounds().contains(pos);
             return s;

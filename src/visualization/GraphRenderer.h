@@ -59,8 +59,8 @@ class GraphRenderer{
         sf::Vector2i hoverPosition; ///< a index vector for the actual hovered Node
         sf::Vector2i clickPosition; ///< a index vector for the actual clicked Node
         sf::Color colorOfClickedNode; ///< the color of the Node rectangle, which is in the position of the clickPosition
-        uint maxNodesPerRow; ///< an upper bound for the row lengths
-        uint maxSequences; ///< an upper boudn for the column lengths
+        unsigned maxNodesPerRow; ///< an upper bound for the row lengths
+        unsigned maxSequences; ///< an upper boudn for the column lengths
         int sizeConstant; ///< a constant which defines the scale of the visuals
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
