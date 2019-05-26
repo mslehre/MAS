@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include "../alignment/DrawNode.h"
 #include "../alignment/Edge.h"
 
 using namespace std;
@@ -49,12 +50,13 @@ class ArrowShape {
          * \param sizeConstant an integer which scales the arrow
          * \param col the color of the arrow
          */
-        void initArrow(sf::Vector2f start, sf::Vector2f end, int sizeConstant, sf::Color col);
+        void setCoords(sf::Vector2f start, sf::Vector2f end);
         /**
          * A Method to draw the initialized arrow in a specified window
          *
          * \param window a renderWindow that get the drawed arrowshape
          */
+        void setProps(int sizeConstant, sf::Color col);
         void Draw(sf::RenderWindow& window);
         /**
          * A method to return the front of the arrow

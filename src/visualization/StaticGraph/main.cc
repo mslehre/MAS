@@ -59,6 +59,8 @@ int main(int argc, char **argv){
     window.setFramerateLimit(120);
     window.display();
 
+    //Create Game State
+    state gameState(g);
     //Create a GraphRenderer
     GraphRenderer GrRend(window, g, Nodes, (int)size);
     //create clock to compute a scroll speed
@@ -71,10 +73,12 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             //eventhandler for graphical interaction
-            GrRend.eventHandler(event, window, nodeList);
+            GrRend.scoreHandler(event, window);
+            GrRend.eventHandler(event, window, nodeList, Nodes, gameState);
         }
+        GrRend.updateDrawNode(window, nodeList, Nodes);
         //Render method for update window
-        GrRend.render(window);
+        GrRend.render(window, Nodes, nodeList);
         window.display();
         sf::Time elapsed = clock.restart();
         //scroll speed computation
