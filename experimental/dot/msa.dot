@@ -1,0 +1,57 @@
+graph G {
+ node[shape=box];
+ rankdir=TB;
+ size="6,9";
+ { rank=same;
+    v11[label=tatc,style=filled,color=dodgerblue];
+    v12[label=tcat,style=filled,color=orangered];
+    v13[label=aatg,style=filled,color=olivedrab3];
+    v14[label=tata,style=filled,color=lemonchiffon];
+    v15[label=gcgg,style=filled,color=hotpink];
+ };
+ { rank=same;
+    v21[label=aatg,style=filled,color=olivedrab3];
+    v22[label=tatc,style=filled,color=dodgerblue];
+    v23[label=tata,style=filled,color=lemonchiffon];
+    v24[label=tcat,style=filled,color=orangered];
+    v25[label=tatc,style=filled,color=dodgerblue];
+    v26[label=tata,style=filled,color=lemonchiffon];
+    v27[label=tcat,style=filled,color=orangered];
+    v28[label=gcgg,style=filled,color=hotpink];
+    v29[label=aatg,style=filled,color=olivedrab3];
+    v20[label=tata,style=filled,color=lemonchiffon];
+ };
+ { rank=same;
+    v31[label=tata,style=filled,color=lemonchiffon];
+    v32[label=tatc,style=filled,color=dodgerblue];
+    v33[label=tcat,style=filled,color=orangered];
+    v34[label=tata,style=filled,color=lemonchiffon];
+    v35[label=aatg,style=filled,color=olivedrab3];
+    v36[label=gcgg,style=filled,color=hotpink];
+    v37[label=tcat,style=filled,color=orangered];
+    v38[label=tata,style=filled,color=lemonchiffon];
+ };
+ { rank=same;
+    v41[label=tatc,style=filled,color=dodgerblue];
+    v42[label=tata,style=filled,color=lemonchiffon];
+    v43[label=gcgg,style=filled,color=hotpink];
+    v44[label=aatg,style=filled,color=olivedrab3];
+    v45[label=tcat,style=filled,color=orangered];
+    v46[label=tata,style=filled,color=lemonchiffon];
+    v47[label=gcgg,style=filled,color=hotpink];
+    v48[label=aatg,style=filled,color=olivedrab3];
+ };
+ 
+ v11--v12--v13--v14--v15;
+ v21--v22--v23--v24--v25--v26--v27--v28--v29--v20 [weight=8];
+ v31--v32--v33--v34--v35--v36--v37--v38;
+ v41--v42--v43--v44--v45--v46--v47--v48;
+ v11--v22--v32--v41 [weight=8,style=dashed,color=blue]; /*blue*/
+ v12--v24--v33--v45 [weight=8,style=dashed,color=blue]; /*red*/
+ v26--v34--v46 [weight=8,style=dashed,color=blue]; /*yellow*/
+ v13--v35 [weight=8,style=dashed,color=blue];/* green */
+ v15--v28--v36--v47 [weight=8,style=dashed,color=blue];
+ v29--v48 [weight=8,style=dashed,color=blue];
+ v20--v38 [weight=8,style=dashed,color=blue]; /*yellow*/
+ v23--v42 [weight=8,style=dashed,color=blue]; /*yellow*/
+}

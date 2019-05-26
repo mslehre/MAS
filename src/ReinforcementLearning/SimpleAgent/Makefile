@@ -11,8 +11,7 @@ all: RandomAgent_main
 RandomAgent_main: $(OBJ)
 	g++ $(CXXFLAGS) $(OBJ) -o RandomAgent_main
 
-RandomAgent_main.o: RandomAgent_main.cc Agent.h Episode.h Policy.h RandomPolicy.h $(H1) $(H2) $(H3) $(H4)
-	g++ $(CXXFLAGS) -c RandomAgent_main.cc
+RandomAgent_main.o: RandomAgent_main.cc Agent.h Policy.h RandomPolicy.h $(H1) $(H2) $(H3) $(H4)
 
 State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
 	g++ $(CXXFLAGS) -c -Wall ../../alignment/State.cc 

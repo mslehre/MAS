@@ -15,10 +15,6 @@
 
 using std::vector;
 
-/**TODO: Include score (maybe expected score) in history.
- *       The policy is supposed to map states to a vector of action probabilities in my view.
- */
-
 /** \brief This Agent class selects edges according to a policy.
 */
 class Agent {
@@ -74,6 +70,7 @@ class Agent {
      * \param p Expects a policy p as input parameter.
      */                      
     std::pair <state*, unsigned int> executePolicy(state* s, Policy* p) {
+   
         std::random_device rd;
         std::mt19937 gen(rd());
         std::vector <float> probActions = p->act(s);
