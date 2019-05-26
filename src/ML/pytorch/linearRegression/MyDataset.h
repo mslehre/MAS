@@ -1,6 +1,7 @@
 #pragma once
 #include "../../../ReinforcementLearning/SimpleAgent/Agent.h"
 #include <torch/torch.h>
+#include <iostream>
 using std::vector;
 
 class MyDataset : public torch::data::Dataset<MyDataset>
@@ -26,23 +27,23 @@ class MyDataset : public torch::data::Dataset<MyDataset>
                 episodes.push_back(agent.getEpisode());
                 numbStates = numbStates + episodes.at(i).numbOfStates;    
             }
-    
+            std::cout << "Number of states: " << numbStates << std::endl;
             unsigned int numbEdges = episodes.at(0).states.at(0).size();    // number of edges of one graph
-                            
+            std::cout << "Number of edges: " << numbEdges << std::endl;                
             statesAndActions = torch::zeros({numbStates,2*numbEdges});      ///< dataset of states and actions
             scores = torch::zeros({numbStates,1});                          ///< corresponding scores
-        
+           
             unsigned int counter = 0;
-         
+        
             // get the states, actions and scores of all episodes
             for (unsigned int i = 0; i < numbEpisodes; i++) {
                 states = episodes.at(i).states;
                 actions = episodes.at(i).actions;   
-                score = episodes.at(i).score;
+                score = episodes.at(i).score;          
                 // save the score for every episode
-
                 for (unsigned int j = 0; j < states.size(); j++) {
                     scores[counter] = (float) score;
+                    
                     // save the states for every episode
                     for (unsigned int k = 0; k < numbEdges; k++) {
                         statesAndActions[counter][k] = (float) states.at(j).at(k);

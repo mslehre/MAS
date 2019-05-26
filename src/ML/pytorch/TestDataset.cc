@@ -8,8 +8,27 @@
 #include "../../ReinforcementLearning/SimpleAgent/RandomPolicy.h"
 #include "../../ReinforcementLearning/SimpleAgent/Episode.h"
 #include "linearRegression/MyDataset.h"
-
+#include <torch/torch.h>
 using namespace std;
+
+
+// Define a new Module.
+struct Net : torch::nn::Module {
+    Net(unsigned ds) : dim_state(ds) {
+        // Construct and register a Linear submodule
+        lin_mod = register_module("fc", torch::nn::Linear(dim_state, 1));
+    }
+
+    // Implement the Net's algorithm.
+    torch::Tensor forward(torch::Tensor x) {
+        return lin_mod->forward(x.reshape({x.size(0), dim_state}));
+    }
+
+   	// Use one of many "standard library" modules.
+    unsigned dim_state;
+    torch::nn::Linear lin_mod{nullptr};
+};
+
 
 int main() {
   //Following is just a Test
@@ -28,5 +47,14 @@ int main() {
         }
         cout << "next state: " << endl;
     }
+
+    unsigned dim_state = 50;
+    unsigned numberOfEpisodes = 5;
+    // Create a new Net.
+    auto net = std::make_shared<Net>(dim_state);
+
+    // create random dataset
+    auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
+
    //MyDataset(10, agent);
 }
