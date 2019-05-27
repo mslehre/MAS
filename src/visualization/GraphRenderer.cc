@@ -219,7 +219,7 @@ GraphRenderer::GraphRenderer() {
 }
 
 //Complete Constructor
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, int sizeConst) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes) {
     vector<Node> nodeList = gr.getNodes();
     vector<Edge> edgeList = gr.getEdges();
     maxNodesPerRow = 0;
@@ -230,9 +230,13 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
         if (maxSequences < nodeList.at(i).i)
             maxSequences = nodeList.at(i).i;
     }
+    if (maxNodesPerRow > 50 && maxSequences > 5) {
+        sizeConstant = 50 + 80.0 * (1.0 / ((maxNodesPerRow / 50.0) * (maxSequences / 5)));
+    } else {
+        sizeConstant = 130;
+    }
     direction.push_back(0);
     direction.push_back(0);
-    sizeConstant = sizeConst;
     //state place(edgeList);
     //gameState = place;
     nodeHovered = false;
@@ -285,7 +289,7 @@ void GraphRenderer::moveWindow(int dir) {
             break;
         case 4: //resets all
             actualView = defaultView;
-            selectedEdges.clear();
+            //selectedEdges.clear();
             /*for (unsigned i = 0; i < gameState.edges.size(); i++) {
                 gameState.selectedSubset.at(i) = false;
                 gameState.selectable.at(i) = true;

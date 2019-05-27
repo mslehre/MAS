@@ -6,7 +6,7 @@
 #include "../alignment/State.h"
 
 class Gamemaster {
-    private:
+    public:
         Graph GameGraph; ///< The Graph of the game
         state GameState; ///< The State of GameGraph
         std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
@@ -18,8 +18,6 @@ class Gamemaster {
          */
 
         std::vector<std::string> giveKmers(std::vector<Node>& nodeList);
-
-    public:
 
         /**
          * \param k is the length of the kmers
@@ -35,18 +33,6 @@ class Gamemaster {
          */
 
         Graph getGameGraph();
-
-        /**
-         * \return GameState  
-         */
-
-        state getGameState();
-
-        /**
-         * \return GameNodes  
-         */
-
-        std::vector<DrawNode> getGameNodes();
 
 };
 

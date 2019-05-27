@@ -80,9 +80,8 @@ class GraphRenderer{
          * \param window a renderWindow what gets the drawed shapes and texts
          * \param nodeList a vector of Nodes we use for the game (shape inits)
          * \param edgeList a vector of Edges we use for the game (state inits)
-         * \param sizeConst a integer which defines the scale of drawed things
          */
-        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, int sizeConst);
+        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes);
         /**
          * The standard constructor, which do nothing.
          */
