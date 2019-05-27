@@ -15,16 +15,14 @@ int main(){
     // example create object from class Graph
     Graph g;
     g.readFastaFiles("../../alignment/sequences.fa" , 2);
-    state s(g.getEdges());
-    RandomPolicy randP;
-    Agent agent(s, g, &randP);
+    Agent agent(g, Policytype::rnd);
     Episode episode = agent.getEpisode();
-    vector<vector<bool>> ausgabe = episode.states;
-    for (unsigned int i = 0; i < ausgabe.size(); i++) {
-        for (unsigned int j = 0; j < ausgabe.at(i).size(); j++) {
-            cout << ausgabe.at(i).at(j);
+    vector<vector<bool>> output = episode.states;
+    for (unsigned int i = 0; i < output.size(); i++) {
+        for (unsigned int j = 0; j < output.at(i).size(); j++) {
+            cout << output.at(i).at(j);
         }
-        cout << "nächster State: " << endl;
+        cout << " next state: " << endl;
     }
 }
 
