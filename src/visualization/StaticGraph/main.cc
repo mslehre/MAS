@@ -24,21 +24,19 @@ int main(int argc, char **argv){
     g.readFastaFiles(argv[1], atoi(argv[2]));
     //get some graph components to compute sth
     vector<Node> nodeList = g.getNodes();
-    vector<Edge> edgeList = g.getEdges();
-    //initialize width and length of the sequences to compute a sizeConstant for the visuals
-    float length = 0;
-    float width = 0;
-    float size;
-    for (uint i = 0; i < nodeList.size(); i++) {
-        if (length < nodeList.at(i).j)
-            length = nodeList.at(i).j;
-        if (width < nodeList.at(i).i)
-            width = nodeList.at(i).i;
-    }
-    if (length > 50 && width > 5) {
-        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
-    } else {
-        size = 130;
+    vector<DrawNode> Nodes;
+    //Initialize colomap
+    vector<string> Kmers = giveKmers(nodeList);
+    colorlist colorExample(Kmers.size());
+    vector<sf::Color> colors = colorExample.giveList();
+    colormap mapExample(Kmers, colors);
+    //initialize DrawNodes
+    for (unsigned i = 0; i < nodeList.size(); i++) {
+        DrawNode ph;
+        Nodes.push_back(ph);
+        sf::Vector2f coords(nodeList.at(i).j, nodeList.at(i).i);
+        Nodes.at(i).coordinate = coords;
+        Nodes.at(i).col = mapExample.Map(nodeList.at(i).kmer);
     }
     //Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
@@ -46,8 +44,10 @@ int main(int argc, char **argv){
     window.setFramerateLimit(120);
     window.display();
 
+    //Create Game State
+    state gameState(g);
     //Create a GraphRenderer
-    GraphRenderer GrRend(window, nodeList, edgeList, (int)size);
+    GraphRenderer GrRend(window, g, Nodes);
     //create clock to compute a scroll speed
     sf::Clock clock;
 
@@ -58,10 +58,12 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             //eventhandler for graphical interaction
-            GrRend.eventHandler(event, window, nodeList);
+            GrRend.scoreHandler(event, window);
+            GrRend.eventHandler(event, window, nodeList, Nodes, gameState);
         }
+        GrRend.updateDrawNode(window, nodeList, Nodes);
         //Render method for update window
-        GrRend.render(window);
+        GrRend.render(window, Nodes, nodeList);
         window.display();
         sf::Time elapsed = clock.restart();
         //scroll speed computation

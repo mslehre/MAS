@@ -1,20 +1,30 @@
 #include "FuncArrowShape.h"
+#include <iostream>
 using namespace std;
 
 FuncArrowShape::FuncArrowShape() {
 }
 
-FuncArrowShape::FuncArrowShape(Edge Arr, int sizeConstant, sf::Color col, int ind) {
-    uint arr[4] = {Arr.first->i, Arr.first->j, Arr.second->i, Arr.second->j};
-    sf::Vector2f start(sizeConstant * (0.7 + 1.8 * arr[1]), sizeConstant * (0.7 + 1.5 * arr[0]));
-    sf::Vector2f End(sizeConstant * (0.7 + 1.8 * arr[3]), sizeConstant * (0.2 + 1.5 * arr[2]));
+FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2) {
+    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(start).coordinate.x), sizeConstant * (0.7 + 1.5 * Nodes.at(start).coordinate.y));
+    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(end).coordinate.x), sizeConstant * (0.2 + 1.5 * Nodes.at(end).coordinate.y));
     hovCol = col;
-    indexOfState = ind;
-    initArrow(start, End, sizeConstant, col);
+    sf::Vector2i temp(start, end);
+    indexOfState = ind2;
+    indexOfDrawNode = temp;
+    setCoords(s, e);
+    setProps(sizeConstant, col);
 }
 
 FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant, sf::Color col) {
-    initArrow(s, e, sizeConstant, col);
+    setCoords(s, e);
+    setProps(sizeConstant, col);
+}
+
+void FuncArrowShape::setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant) {
+    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.x).coordinate.x), sizeConstant * (0.7 + 1.5 * Nodes.at(indexOfDrawNode.x).coordinate.y));
+    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.y).coordinate.x), sizeConstant * (0.2 + 1.5 * Nodes.at(indexOfDrawNode.y).coordinate.y));
+    setCoords(s, e);
 }
 
 void FuncArrowShape::hoverFunc() {
@@ -29,4 +39,8 @@ void FuncArrowShape::deHoverFunc() {
 
 int FuncArrowShape::getIndex() {
     return indexOfState;
+}
+
+sf::Vector2i FuncArrowShape::getIndexOfArrow() {
+    return indexOfDrawNode;
 }

@@ -51,7 +51,7 @@ class Button {
          * \param global_mouse_pos the current mouse position
          */
     
-        std::string eventHandler(sf::Event event, std::string status, sf::Vector2f global_mouse_pos);
+        void eventHandler(sf::Event& event, std::string& status, sf::Vector2f& global_mouse_pos);
 
         /** 
          * set the function of the Button
