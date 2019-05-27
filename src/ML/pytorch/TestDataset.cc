@@ -30,27 +30,38 @@ struct Net : torch::nn::Module {
 
 
 int main() {
-  //Following is just a Test
+    //Following is just a Test
 
     // example create object from class Graph
     Graph g;
     g.readFastaFiles("../../alignment/sequences.fa" , 2);
     Agent agent(g, Policytype::rnd);
     Episode episode = agent.getEpisode();
-    vector<vector<bool>> ausgabe = episode.states;
-    for (unsigned int i = 0; i < ausgabe.size(); i++) {
-        for (unsigned int j = 0; j < ausgabe.at(i).size(); j++) {
-            cout << ausgabe.at(i).at(j);
+    vector<vector<bool>> output = episode.states;
+    for (unsigned int i = 0; i < output.size(); i++) {
+        for (unsigned int j = 0; j < output.at(i).size(); j++) {
+            cout << output.at(i).at(j);
         }
-        cout << "next state: " << endl;
+        cout << " next state: " << endl;
     }
 
     unsigned dim_state = 50;
-    unsigned numberOfEpisodes = 5;
-    // Create a new Net.
+    unsigned numberOfEpisodes = 10;
+    // create a new Net.
     auto net = std::make_shared<Net>(dim_state);
-
     // create random dataset
     auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
+    // create a multi-threaded data loader for the MNIST dataset.
+    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/5);
+    // instantiate an SGD optimization algorithm to update our Net's parameters.
+    torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
 
+   /* // iterate the data loader to printout batches from the dataset.
+    for (torch::data::Example<>& batch : *data_loader) {
+        cout << "Batch size: " << batch.data.size(0) << " | Labels: ";
+        for (int64_t i = 0; i < batch.data.size(0); ++i) {
+            cout << batch.target[i].item<int64_t>() << " ";
+        }
+        cout << endl;
+    } */
 }
