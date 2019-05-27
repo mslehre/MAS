@@ -35,7 +35,7 @@ class Agent {
     void executePolicy(state* s, Policy* p) {
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::vector <float> probActions = p->act(s);
+        std::vector <float> probActions = p->runPolicy(s);
         std::discrete_distribution<> dis(probActions.begin(), probActions.end());
         int edgeSelection = dis(gen);
         if (s->selectable[edgeSelection] == false) {
