@@ -11,7 +11,6 @@
 #include <torch/torch.h>
 using namespace std;
 
-
 // Define a new Module.
 struct Net : torch::nn::Module {
     Net(unsigned ds) : dim_state(ds) {
@@ -36,9 +35,7 @@ int main() {
     // example create object from class Graph
     Graph g;
     g.readFastaFiles("../../alignment/sequences.fa" , 2);
-    state s(g.getEdges());
-    RandomPolicy randP;
-    Agent agent(s, g, &randP);
+    Agent agent(g, Policytype::rnd);
     Episode episode = agent.getEpisode();
     vector<vector<bool>> ausgabe = episode.states;
     for (unsigned int i = 0; i < ausgabe.size(); i++) {
@@ -56,5 +53,4 @@ int main() {
     // create random dataset
     auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
 
-   //MyDataset(10, agent);
 }

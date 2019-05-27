@@ -12,41 +12,47 @@
 #include <map>
 #include "../../alignment/Graph.h"
 #include "Episode.h"
+#include <memory>
 
 using std::vector;
-
+enum Policytype {rnd, rl};
 /** \brief This Agent class selects edges according to a policy.
 */
+
+
 class Agent {
     public:
+
+    
     //The beginning state for every Episode
-    state beginningState;
-    //A copy of the beginning state, which is reseted everytime we call getEpisode
-    state copyBeginningState;
-    Policy* policy;
-    Graph graph;
+    state s;
+    std::unique_ptr<Policy> policy;
     Agent(){};
-    Agent(state cs, Graph& g, Policy* pol){
-        beginningState = cs;
-        policy = pol;
-        graph = g;
-    }
+    Agent(Graph& g, Policytype pol) : s(g.getEdges()){
+        switch(pol) {
+            case rnd:
+                policy = std::unique_ptr<Policy>(new RandomPolicy()); 
+                break;
+            case rl:
+                break;
+
+            default : 
+                break;
+        }
+     }
     ~Agent(){};
     /** This function runs an episode. It relies on constState, policy and graph
      *  to calculate state-action pairs as well as score.
      * \return This function returns an episode
      */
     Episode getEpisode() {
-	//Reset the copy of the beginning State, so it is the real beginning state again
-	copyBeginningState = beginningState;
-        //Set a pointer on the copy of the beginning state
-	state* constState = &copyBeginningState;
+        s.reset();
         Episode episode;
-        unsigned int n = constState->edges.size();
+        unsigned int n = s.edges.size();
         vector <bool> action(n, false);
-        episode.states.push_back(constState->selectedSubset); 
+        episode.states.push_back(s.selectedSubset); 
         unsigned int counter = 0;
-        std::pair <state*, unsigned int> stateAction = executePolicy(constState, policy);
+        std::pair <state*, unsigned int> stateAction = executePolicy(&s, policy.get());
         
        
         while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
@@ -54,12 +60,12 @@ class Agent {
             episode.actions.push_back(action);
             episode.actions.at(counter).at(stateAction.second)=true;
             counter++;
-            stateAction = executePolicy(stateAction.first, policy);
+            stateAction = executePolicy(stateAction.first, policy.get());
         }
         
         episode.actions.push_back(action);
         episode.numbOfStates = counter + 1;
-        stateAction.first->calculate_score(graph);
+        stateAction.first->calculate_score();
         episode.score = stateAction.first->score;
 
         return episode;

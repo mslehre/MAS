@@ -48,10 +48,12 @@ class MyDataset : public torch::data::Dataset<MyDataset>
                     for (unsigned int k = 0; k < numbEdges; k++) {
                         statesAndActions[counter][k] = (float) states.at(j).at(k);
                     }
+                    
                     // save the actions for every episode
                     for (unsigned int k = numbEdges; k < 2*numbEdges; k++) {
-                        statesAndActions[counter][k] = (float) actions.at(j).at(k);
+                        statesAndActions[counter][k] = (float) actions.at(j).at(k-numbEdges);
                     }
+                  
                     counter++;
                  }   
             }
