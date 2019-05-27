@@ -13,11 +13,12 @@ ArrowShape::ArrowShape() {
 }
 
 ArrowShape::ArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant, sf::Color col) {
-    initArrow(s, e, sizeConstant, col);
+    setCoords(s, e);
+    setProps(sizeConstant, col);
 }
 
 // the main initialization of the arrows
-void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int sizeConstant, sf::Color col) {
+void ArrowShape::setCoords(sf::Vector2f start, sf::Vector2f end) {
     sf::Vector2f diagVec = end - start;
     float scalar1 = 0.001;
     float scalar2 = 0.999;
@@ -29,18 +30,21 @@ void ArrowShape::initArrow(sf::Vector2f start, sf::Vector2f end, int sizeConstan
     double norm_diag = norm(diagVec);
     double angle_diag = (360 / (2 * PI)) * acos(innerPr(right, diagVec) / (norm_diag * norm(right)));
     line.setSize(sf::Vector2f(norm_diag, 0));
-    line.setOutlineColor(col);
-    line.setOutlineThickness(sizeConstant / 50);
     line.setPosition(softStart);
     line.setRotation(angle_diag);
+    tri.setPosition(softEnd);
+    tri.setRotation(angle_diag + 90);
+}
+
+void ArrowShape::setProps(int sizeConstant, sf::Color col) {
+    line.setOutlineColor(col);
+    line.setOutlineThickness(sizeConstant / 50);
     tri.setRadius(sizeConstant / 10);
     tri.setPointCount(3);
     tri.setOrigin(sizeConstant / 10, sizeConstant / 10);
     tri.setFillColor(col);
     tri.setOutlineThickness(2.f);
     tri.setOutlineColor(col);
-    tri.setPosition(softEnd);
-    tri.setRotation(angle_diag + 90);
 }
 
 void ArrowShape::Draw(sf::RenderWindow& window) {

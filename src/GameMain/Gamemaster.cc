@@ -34,14 +34,6 @@ Graph Gamemaster::getGameGraph(){
     return GameGraph;
 }
 
-state Gamemaster::getGameState(){
-    return GameState;
-}
-
-vector<DrawNode> Gamemaster::getGameNodes(){
-    return GameNodes;
-}
-
 vector<string> Gamemaster::giveKmers(vector<Node>& nodeList) {
     vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
