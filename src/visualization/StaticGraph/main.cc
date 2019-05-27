@@ -38,21 +38,6 @@ int main(int argc, char **argv){
         Nodes.at(i).coordinate = coords;
         Nodes.at(i).col = mapExample.Map(nodeList.at(i).kmer);
     }
-    //initialize width and length of the sequences to compute a sizeConstant for the visuals
-    float length = 0;
-    float width = 0;
-    float size;
-    for (unsigned i = 0; i < nodeList.size(); i++) {
-        if (length < nodeList.at(i).j)
-            length = nodeList.at(i).j;
-        if (width < nodeList.at(i).i)
-            width = nodeList.at(i).i;
-    }
-    if (length > 50 && width > 5) {
-        size = 50 + 80.0 * (1.0 / ((length / 50.0) * (width / 5)));
-    } else {
-        size = 130;
-    }
     //Open the window with white Background and restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.clear(sf::Color::White);
@@ -62,7 +47,7 @@ int main(int argc, char **argv){
     //Create Game State
     state gameState(g);
     //Create a GraphRenderer
-    GraphRenderer GrRend(window, g, Nodes, (int)size);
+    GraphRenderer GrRend(window, g, Nodes);
     //create clock to compute a scroll speed
     sf::Clock clock;
 
