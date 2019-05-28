@@ -7,7 +7,7 @@
 #include "../../ReinforcementLearning/SimpleAgent/Policy.h"
 #include "../../ReinforcementLearning/SimpleAgent/RandomPolicy.h"
 #include "../../ReinforcementLearning/SimpleAgent/Episode.h"
-#include "linearRegression/MyDataset.h"
+#include "linearRegression/RLDataset.h"
 #include <torch/torch.h>
 using namespace std;
 
@@ -34,7 +34,7 @@ int main() {
 
     // example create object from class Graph
     Graph g;
-    g.readFastaFiles("../../alignment/sequences.fa" , 2);
+    g.readFastaFiles("../../alignment/sequences.fa" , 3);
     Agent agent(g, Policytype::rnd);
     Episode episode = agent.getEpisode();
     vector<vector<bool>> output = episode.states;
@@ -50,18 +50,15 @@ int main() {
     // create a new Net.
     auto net = std::make_shared<Net>(dim_state);
     // create random dataset
-    auto data_set = MyDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
+    auto data_set = RLDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
     // create a multi-threaded data loader for the MNIST dataset.
-    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/5);
+    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/2);
     // instantiate an SGD optimization algorithm to update our Net's parameters.
     torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
 
-   /* // iterate the data loader to printout batches from the dataset.
+    // iterate the data loader to printout batches from the dataset.
     for (torch::data::Example<>& batch : *data_loader) {
-        cout << "Batch size: " << batch.data.size(0) << " | Labels: ";
-        for (int64_t i = 0; i < batch.data.size(0); ++i) {
-            cout << batch.target[i].item<int64_t>() << " ";
-        }
-        cout << endl;
-    } */
+        cout << "Batch size: " << batch.data.size(0) << ": ";
+            cout << batch.data << endl;
+    } 
 }
