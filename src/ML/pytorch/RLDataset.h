@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../ReinforcementLearning/SimpleAgent/Agent.h"
+#include "../SimpleAgent/Agent.h"
 #include <torch/torch.h>
 #include <iostream>
 using std::vector;

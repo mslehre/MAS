@@ -14,16 +14,16 @@ RandomAgent_main: $(OBJ)
 RandomAgent_main.o: RandomAgent_main.cc Agent.h Policy.h RandomPolicy.h $(H1) $(H2) $(H3) $(H4)
 
 State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
-	g++ $(CXXFLAGS) -c -Wall ../../alignment/State.cc 
+	g++ $(CXXFLAGS) -c ../../alignment/State.cc 
 
 Graph.o: ../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
-	g++ $(CXXFLAGS) -c -Wall ../../alignment/Graph.cc
+	g++ $(CXXFLAGS) -c ../../alignment/Graph.cc
 
 Edge.o: ../../alignment/Edge.cc $(H2) $(H3)
-	g++ $(CXXFLAGS) -c -Wall ../../alignment/Edge.cc
+	g++ $(CXXFLAGS) -c ../../alignment/Edge.cc
 
 Node.o: ../../alignment/Node.cc $(H3)
-	g++ $(CXXFLAGS) -c -Wall ../../alignment/Node.cc
+	g++ $(CXXFLAGS) -c ../../alignment/Node.cc
 
 clean:
 	rm -f *.o RandomAgent_main

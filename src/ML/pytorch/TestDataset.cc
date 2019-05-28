@@ -3,11 +3,11 @@
 #include "../../alignment/Graph.h"
 #include "../../alignment/Node.h"
 #include "../../alignment/Edge.h"
-#include "../../ReinforcementLearning/SimpleAgent/Agent.h"
-#include "../../ReinforcementLearning/SimpleAgent/Policy.h"
-#include "../../ReinforcementLearning/SimpleAgent/RandomPolicy.h"
-#include "../../ReinforcementLearning/SimpleAgent/Episode.h"
-#include "linearRegression/RLDataset.h"
+#include "../SimpleAgent/Agent.h"
+#include "../SimpleAgent/Policy.h"
+#include "../SimpleAgent/RandomPolicy.h"
+#include "../SimpleAgent/Episode.h"
+#include "RLDataset.h"
 #include <torch/torch.h>
 using namespace std;
 
