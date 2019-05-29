@@ -65,5 +65,4 @@ class RLDataset : public torch::data::Dataset<RLDataset>
         torch::optional<size_t> size() const override {
             return states.size(0);
         }
-
 };

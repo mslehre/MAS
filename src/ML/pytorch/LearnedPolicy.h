@@ -17,8 +17,5 @@ class LearnedPolicy : public Policy {
         /* This function maps a state to a probability for each action.
          * Here it is influenced by learnResults.
          */
-        vector<float> act(state* s);
-
-
-
+        void act(state* s);
 };
