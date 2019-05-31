@@ -118,7 +118,7 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     }
 }
 
-void GraphRenderer::update_score(sf::RenderWindow& window, const state& gameState) {
+void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameState) {
     int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
     int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
 
@@ -201,7 +201,6 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 Nodes.at(i).coordinate.x += ranges.at(i);
             }
             window.clear(sf::Color::White);
-            window.setView(defaultView);
             for (auto &arr : selectedEdges)
                 arr.setCoordsByPos(Nodes, sizeConstant);
             setCoords(Nodes, nodeList);
@@ -245,7 +244,6 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     defaultView = window.getDefaultView();
     actualView = defaultView;
     initShapes(Nodes, nodeList);
-    window.setView(actualView);
     drawShape(window);
     drawText(window);
 }

@@ -79,7 +79,7 @@ int main() {
         if (status == "game") {
             GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
-            GrRend.update_score(window, gamemaster.GameState);
+            GrRend.display_score(window, gamemaster.GameState);
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation
         }

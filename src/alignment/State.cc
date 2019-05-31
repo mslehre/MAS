@@ -78,7 +78,7 @@ bool state::consistent(Edge& e, Edge& f){
 
 // functions for scoring
 
-bool state::is_equal(const Node& a,const Node& b){
+bool state::is_equal(const Node& a, const Node& b){
     if (a.i == b.i && a.j == b.j) {
         return true;
     } else {

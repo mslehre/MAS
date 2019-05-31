@@ -114,7 +114,7 @@ class GraphRenderer{
          * \param gamestate is the current state of the game
          */        
 
-        void update_score(sf::RenderWindow& window, const state& gamestate);
+        void display_score(sf::RenderWindow& window, const state& gamestate);
         void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes);
 
         /**
