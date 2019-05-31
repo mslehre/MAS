@@ -22,9 +22,8 @@ enum Policytype {rnd, rl};
 
 class Agent {
     public:
-
-    
-    //The beginning state for every Episode
+ 
+    ///< The initial state where every episode starts
     state s;
     std::unique_ptr<Policy> policy;
     Agent(){};
@@ -35,7 +34,6 @@ class Agent {
                 break;
             case rl:
                 break;
-
             default : 
                 break;
         }
@@ -84,8 +82,7 @@ class Agent {
         unsigned int edgeSelection = dis(gen);
         if (s->selectable[edgeSelection] == false) {
             edgeSelection = -1;
-        }
-        else {
+        } else {
             s->select(edgeSelection);
         }
         return std::make_pair(s,edgeSelection);
