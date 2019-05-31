@@ -124,7 +124,7 @@ void GraphRenderer::update_score(sf::RenderWindow& window, state& gameState) {
 
     sf::RectangleShape rect;
     rect.setPosition(x_pos, y_pos);   
-    rect.setSize(sf::Vector2f(window.getSize().x, 70));
+    rect.setSize(sf::Vector2f(window.getSize().x, 140));
     rect.setFillColor(sf::Color::White);
 
     sf::Text text;
@@ -133,12 +133,13 @@ void GraphRenderer::update_score(sf::RenderWindow& window, state& gameState) {
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
 
-    std::string GameScore = "Score: " + std::to_string(gameState.score);  
+    std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
+    std::string AgentScore = "Computer Score: " + std::to_string(gameState.score); // TODO: need a score from an Agent 
     text.setFont(font);
     text.setColor(sf::Color::Black);
     text.setPosition(x_pos, y_pos);
-    text.setString(GameScore);
-    text.setCharacterSize(45);
+    text.setString(PlayerScore + "\n" + AgentScore);
+    text.setCharacterSize(40);
     window.draw(rect);
     window.draw(text);
     window.display();
