@@ -86,41 +86,23 @@ bool state::is_equal(Node& a, Node& b){
     }
 }
 
-void state::find_path(vector<unsigned int>& path, Graph& graph){
-    for (unsigned int i = 0; i < selectedEdgeIndex.size(); i++) {
-        if (is_equal(graph.getNodes()[path.back()], *edges[selectedEdgeIndex[i]].first)) {
-            for (unsigned int j = path.back() + 1; j < graph.getNodes().size(); j++) {
-                if (is_equal(graph.getNodes()[j], *edges[selectedEdgeIndex[i]].second)) {
-                    path.push_back(j);
-                    break;
-                }                 
-            }
-            find_path(path, graph);         
-            break;
-        }      
-    }
-}
-
-void state::calculate_score(Graph& graph){ 
+void state::calculate_score(){ 
     score = 0;
-    vector<bool> visited(graph.getNodes().size(), false);
+    vector<bool> visited(selectedEdgeIndex.size(), false);
 
-    for (unsigned int i = 0; i < graph.getNodes().size(); i++) {
-        if (visited[i] == false) {       
-            vector<unsigned int> path;
-            path.push_back(i); // push_back the startnode
-            find_path(path, graph);   
-/*       
-            // print path
-            for (unsigned int p = 0; p < path.size(); p++) {
-                cout << "(" << graph.getNodes()[path[p]].i << ", " << graph.getNodes()[path[p]].j << ") ";
+    for (unsigned int i = 0; i < selectedEdgeIndex.size(); i++) {
+        if (visited[i] == false) { 
+            unsigned int path_length = 1;
+            Edge current_edge = edges[selectedEdgeIndex[i]];
+            visited[i] = true;
+            for (unsigned int j = i; j < selectedEdgeIndex.size(); j++) {
+                if (is_equal(*current_edge.second, *edges[selectedEdgeIndex[j]].first)) {
+                    current_edge = edges[selectedEdgeIndex[j]];
+                    path_length++;
+                    visited[j] = true;
+                }
             }
-            cout << endl;
-*/
-            for (unsigned int i = 0; i < path.size(); i++) {
-                visited[path[i]] = true;
-            }
-            score += (pow(path.size() - 1, 2) + path.size() - 1) / 2;            
-        }        
+            score += (pow(path_length, 2) + path_length) / 2;                            
+        }            
     }
 }

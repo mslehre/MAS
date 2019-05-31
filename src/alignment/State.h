@@ -24,14 +24,6 @@ class state{
 
     bool is_equal(Node& a, Node& b);
 
-     /**
-     * This function is recursive and continues a given path in a graph
-     * \param path is the path found so far
-     * \param graph is the graph (contains all nodes)
-     */
-
-    void find_path(std::vector<unsigned int>& path, Graph& graph);
-
     public:
     state(Graph& graph); ///< Constructor with a Graph
     state(std::vector <Edge> e); ///< Constructor with an Edge vector
@@ -81,7 +73,7 @@ class state{
      * calculate the score for a given graph
      */
 
-    void calculate_score(Graph& graph);
+    void calculate_score();
 
 };
 

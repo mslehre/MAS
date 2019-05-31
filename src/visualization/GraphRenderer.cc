@@ -7,7 +7,7 @@ vector<string> giveKmers(vector<Node>& nodeList) {
     vector<string> allKmers; // The set of all different Kmers
     bool elementOf;
     //go through all nodes
-    for (unsigned i = 0; i<nodeList.size(); i++) {
+    for (unsigned i = 0; i < nodeList.size(); i++) {
         elementOf = false;
         //go through all nodes we discovered already to check if they are in the list
         for (unsigned j = 0; j < i; j++) {
@@ -17,9 +17,8 @@ vector<string> giveKmers(vector<Node>& nodeList) {
             }
         }
         //push the nodes who aren't in yet
-        if(!elementOf) {
+        if(!elementOf)
             allKmers.push_back(nodeList.at(i).kmer);
-        }
     }
     return allKmers;
 }
@@ -49,17 +48,13 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
         temp = temp * vec;
         newCenter = newCenter + temp;
         actualView = sf::View(newCenter, wSize);
-        actualView.setViewport(sf::FloatRect(0.f, 0.1f, 1.f, 0.9f));
-        window.setView(sf::View(newCenter, wSize));
+        window.setView(actualView);
     }
     //reset window
     window.clear(sf::Color::White);
-    //Example for draw sth in Bar
-    window.setView(scoreBar);
-    window.draw(example);
-    //continue the main part
+
     window.setView(defaultView);
-    for ( auto &arr : selectedEdges )
+    for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant);
     setCoords(Nodes, nodeList);
     window.setView(actualView);
@@ -123,19 +118,30 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     }
 }
 
-void GraphRenderer::scoreHandler(sf::Event event, sf::RenderWindow& window) {
-    window.setView(scoreBar);
-    //example to include events
-    if (event.type == sf::Event::EventType::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Middle) {
-            sf::RectangleShape temp;
-            temp.setPosition(sf::Vector2f(0, 0));
-            temp.setSize(scoreBar.getSize());
-            temp.setFillColor(sf::Color(128, 128, 255));
-            window.draw(temp);
-            example = temp;
-        }
-    }
+void GraphRenderer::update_score(sf::RenderWindow& window, state& gameState) {
+    int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
+    int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
+
+    sf::RectangleShape rect;
+    rect.setPosition(x_pos, y_pos);   
+    rect.setSize(sf::Vector2f(window.getSize().x, 70));
+    rect.setFillColor(sf::Color::White);
+
+    sf::Text text;
+    sf::Font font;
+
+    if (!font.loadFromFile("Amiko-Regular.ttf"))
+        std::cout << "Can't find the font file" << std::endl;
+
+    std::string GameScore = "Score: " + std::to_string(gameState.score);  
+    text.setFont(font);
+    text.setColor(sf::Color::Black);
+    text.setPosition(x_pos, y_pos);
+    text.setString(GameScore);
+    text.setCharacterSize(45);
+    window.draw(rect);
+    window.draw(text);
+    window.display();
 }
 
 //Method which will set the move speed in terms of Computer speed with an upper Bound
@@ -169,7 +175,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 diff = (newNodes.at(s).coordinate.x - newNodes.at(e).coordinate.x);
                 while (index != newNodes.size() && newNodes.at(e).coordinate.y == newNodes.at(index).coordinate.y) {
                     newNodes.at(index).coordinate.x += diff;
-                    index = index + 1;
+                    index += 1;
                 }
             }
             if (newNodes.at(s).coordinate.x < newNodes.at(e).coordinate.x) {
@@ -199,8 +205,6 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 Nodes.at(i).coordinate.x += ranges.at(i);
             }
             window.clear(sf::Color::White);
-            window.setView(scoreBar);
-            window.draw(example);
             window.setView(defaultView);
             for ( auto &arr : selectedEdges )
                 arr.setCoordsByPos(Nodes, sizeConstant);
@@ -243,18 +247,8 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     nodeClicked = false;
     edgeHovered = false;
     defaultView = window.getDefaultView();
-    scoreBar = defaultView;
-    scoreBar.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 0.1f));
-    defaultView.setViewport(sf::FloatRect(0.f, 0.1f, 1.f, 0.9f));
     actualView = defaultView;
     initShapes(Nodes, nodeList);
-    window.setView(scoreBar);
-    sf::RectangleShape temp;
-    temp.setPosition(sf::Vector2f(0, 0));
-    temp.setSize(scoreBar.getSize());
-    temp.setFillColor(sf::Color(128, 128, 128));
-    window.draw(temp);
-    example = temp;
     window.setView(actualView);
     drawShape(window);
     drawText(window);
@@ -299,8 +293,6 @@ void GraphRenderer::moveWindow(int dir) {
             break;
     }
 }
-
-
 
 //This Method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
@@ -495,6 +487,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
 void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gameState.select(ind);
+    gameState.calculate_score();
     Edge temp = gameState.edges.at(ind);
     //select via state
     int start = 0;

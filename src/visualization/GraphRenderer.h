@@ -9,6 +9,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cmath>
+#include <string>
 #include "colorlist.h"
 #include "colormap.h"
 #include "../alignment/Graph.h"
@@ -73,7 +74,6 @@ class GraphRenderer{
         int hoveredEdgeIndex; ///< the index of the hovered edge
         sf::View actualView; ///< a View which we use as main-"view"
         sf::View defaultView; ///< a View to reset our actualView
-        sf::View scoreBar;
         /**
          * The Complete Constructor, which initialize the visuals in the referenced window.
          *
@@ -102,7 +102,7 @@ class GraphRenderer{
          * \param nodeList a vector of Nodes which is needed for a few methods
          */
         void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState);
-        void scoreHandler(sf::Event event, sf::RenderWindow& window);
+        void update_score(sf::RenderWindow& window, state& gamestate);
         void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes);
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
