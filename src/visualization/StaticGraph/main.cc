@@ -58,7 +58,6 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             //eventhandler for graphical interaction
-            GrRend.scoreHandler(event, window);
             GrRend.eventHandler(event, window, nodeList, Nodes, gameState);
         }
         GrRend.updateDrawNode(window, nodeList, Nodes);
