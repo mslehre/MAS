@@ -22,7 +22,7 @@ class state{
      * \return TRUE if a and b have the same indices
      */
 
-    bool is_equal(Node& a, Node& b);
+    bool is_equal(const Node& a, const Node& b);
 
     public:
     state(Graph& graph); ///< Constructor with a Graph

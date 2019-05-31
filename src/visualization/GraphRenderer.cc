@@ -118,28 +118,23 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     }
 }
 
-void GraphRenderer::update_score(sf::RenderWindow& window, state& gameState) {
+void GraphRenderer::update_score(sf::RenderWindow& window, const state& gameState) {
     int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
     int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
 
-    sf::RectangleShape rect;
-    rect.setPosition(x_pos, y_pos);   
-    rect.setSize(sf::Vector2f(window.getSize().x, 140));
-    rect.setFillColor(sf::Color::White);
-
-    sf::Text text;
+    sf::RectangleShape rect(sf::Vector2f(window.getSize().x, 130));
+    rect.setPosition(x_pos, y_pos);
+   
     sf::Font font;
-
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
 
     std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
-    std::string AgentScore = "Computer Score: " + std::to_string(gameState.score); // TODO: need a score from an Agent 
-    text.setFont(font);
+    std::string AgentScore = "Computer Score: " + std::to_string(gameState.score); // TODO: need a score from an Agent    
+    sf::Text text(PlayerScore + "\n" + AgentScore, font, 40);
     text.setColor(sf::Color::Black);
     text.setPosition(x_pos, y_pos);
-    text.setString(PlayerScore + "\n" + AgentScore);
-    text.setCharacterSize(40);
+
     window.draw(rect);
     window.draw(text);
     window.display();
@@ -207,7 +202,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
             }
             window.clear(sf::Color::White);
             window.setView(defaultView);
-            for ( auto &arr : selectedEdges )
+            for (auto &arr : selectedEdges)
                 arr.setCoordsByPos(Nodes, sizeConstant);
             setCoords(Nodes, nodeList);
             window.setView(actualView);
@@ -288,6 +283,8 @@ void GraphRenderer::moveWindow(int dir) {
             /*for (unsigned i = 0; i < gameState.edges.size(); i++) {
                 gameState.selectedSubset.at(i) = false;
                 gameState.selectable.at(i) = true;
+                gameState.selectedEdgeIndex.clear();
+                gameState.score = 0;
             }*/
             direction.at(0) = 0;
             direction.at(1) = 0;
@@ -297,13 +294,13 @@ void GraphRenderer::moveWindow(int dir) {
 
 //This Method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
-    int size_text = txt.size();
+    unsigned int size_text = txt.size();
     sf::Text text;
     sf::Font font;
     //load font out of file
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
-    for (int i = 0; i < size_text; i++) {
+    for (unsigned int i = 0; i < size_text; i++) {
         text.setFont(font);
         text.setColor(txt[i].col);
         text.setPosition(txt[i].pos[0], txt[i].pos[1]);
@@ -315,23 +312,23 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
 
 //This Method draws all shapes
 void GraphRenderer::drawShape(sf::RenderWindow& window) {
-    int size_Rect = rects.size();
-    int size_seq;
-    int size_rowArrows = rowArrows.size();
-    int size_tempArr = consistentEdges.size();
-    int size_arrowList = selectedEdges.size();
+    unsigned int size_Rect = rects.size();
+    unsigned int size_seq;
+    unsigned int size_rowArrows = rowArrows.size();
+    unsigned int size_tempArr = consistentEdges.size();
+    unsigned int size_arrowList = selectedEdges.size();
     //iterate through vectors to draw all
-    for (int i = 0; i < size_rowArrows; i++) {
+    for (unsigned int i = 0; i < size_rowArrows; i++) {
         rowArrows.at(i).Draw(window);
     }
-    for (int i = 0; i < size_Rect; i++) {
+    for (unsigned int i = 0; i < size_Rect; i++) {
         size_seq = rects.at(i).size();
-        for (int j = 0; j < size_seq; j++)
+        for (unsigned int j = 0; j < size_seq; j++)
             window.draw(rects.at(i).at(j));
     }
-    for (int i = 0; i < size_tempArr; i++)
+    for (unsigned int i = 0; i < size_tempArr; i++)
         consistentEdges.at(i).Draw(window);
-    for (int i = 0; i < size_arrowList; i++)
+    for (unsigned int i = 0; i < size_arrowList; i++)
         selectedEdges.at(i).Draw(window);
 }
 
