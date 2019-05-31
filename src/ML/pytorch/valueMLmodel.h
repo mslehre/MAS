@@ -1,6 +1,7 @@
 #pragma once
 #include "RLDataset.h"
 #include <math.h>
+#include <map.h>
 
 
 class valueMLmodel {
@@ -9,22 +10,29 @@ class valueMLmodel {
             this->data = data;
         }
         RLDataset data;
-        void setDataset(RLDataset& data);
+		/** This function initialise the RLDataset
+		 */
+        void setDataset(RLDataset& data) {
+			this->data = data;
+		}
+  
          /** This function calculates Theta from a
           *  RLDataset using linear regression.
           *  \return returns Theta as a vector <float>.
           */
-        void calcValueEstimates(); ///< In this function linreg happens
+        void calcValueEstimates();
         vector<float> valueEstimates;
         vector<states*> correspondingStates;
         /** This function gives every state an index
          *  Its needed to efficiently find the valueEstimated of a given state 
-         *\return returns a vector with indices
+         *\ return returns a map in which the index of the valueEstimated 
+		    of a state is assigned by its binary Value
          */
-        vector<unsigned int> stateToIndex() {
-            vector<unsigned int> index;
+        map <unsigned int, unsigned int> stateToIndex() {
+          	map <unsigned int, unsigned int> index;
+			
             for (unsigned int j = 0; j < correspondingStates.size();  j++) {
-                index.push_back(calculateBinaryValue(correspondingStates.at(i));
+               	index[calculateBinaryValue(correspondingStates.at(i))] = i;
             }
             return index;
         }
