@@ -28,13 +28,11 @@ int main() {
     double probability = 0.3;
     std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
     bool new_parameter = false;
+    sf::Clock clock; //clock to compute a scroll speed
 
     Gamemaster gamemaster(k, length_of_sequences, number_of_sequences, probability);
-    //Initialize variables
     vector<Node> nodeList = gamemaster.GameGraph.getNodes();
-    //continue main
     GraphRenderer GrRend(window, gamemaster.GameGraph, gamemaster.GameNodes);
-    sf::Clock clock; //clock to compute a scroll speed
 
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
      // Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
