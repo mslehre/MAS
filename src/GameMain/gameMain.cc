@@ -7,11 +7,12 @@
 #include "../visualization/Button.h"
 #include "Gamemaster.h"
 /*
-void choose_parameter(unsigned int& k, unsigned int& length_of_sequences, unsigned int& number_of_sequences, double& probability, bool& new_parameter){
-    k = 3;
-    length_of_sequences = 100;
+void choose_parameter(unsigned int& k, unsigned int& length_of_sequences, unsigned int& number_of_sequences, 
+                      double& probability, bool& new_parameter){
+    k = 4;
+    length_of_sequences = 80;
     number_of_sequences = 3;
-    probability = 0.3;
+    probability = 0.2;
     new_parameter = true;
 }
 */
@@ -20,7 +21,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.setFramerateLimit(120);
 
-    //parameter for game
+    //parameter for the game
     unsigned int k = 3;
     unsigned int length_of_sequences = 42;
     unsigned int number_of_sequences = 4;
@@ -36,17 +37,18 @@ int main() {
     sf::Clock clock; //clock to compute a scroll speed
 
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
-  // Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "menu", "menu");
+     // Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
     Button menuButton = Button("../../fig/menuButton.png", 1300, 0, "menu", "game");
 
-    startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences, &number_of_sequences, &probability, &new_parameter] () {
+    startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
+                             &number_of_sequences, &probability, &new_parameter] () {
         if (new_parameter) {
-            Gamemaster gM(k, length_of_sequences, number_of_sequences, probability);
-            gamemaster = gM;
-            nodeList = gM.GameGraph.getNodes();
-            GraphRenderer g(window, gM.GameGraph, gM.GameNodes);
-            GrRend = g;
+            Gamemaster gMtemp(k, length_of_sequences, number_of_sequences, probability);
+            gamemaster = gMtemp;
+            nodeList = gMtemp.GameGraph.getNodes();
+            GraphRenderer gtemp(window, gMtemp.GameGraph, gMtemp.GameNodes);
+            GrRend = gtemp;
         } 
     });
 /*
@@ -76,12 +78,11 @@ int main() {
         if (status == "menu") {
             window.clear(sf::Color::White);
             window.draw(startButton.get_Button_Sprite());
-           // window.draw(settingsButton.get_Button_Sprite());
+           //  window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
             clock.restart();
         }
         if (status == "game") {
-            window.clear(sf::Color::White);
             GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             GrRend.display_score(window, gamemaster.GameState);

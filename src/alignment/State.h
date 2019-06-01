@@ -69,8 +69,7 @@ class state{
     bool consistent(Edge& e, Edge& f);
    
     /** 
-     * \param graph is a graph
-     * calculate the score for a given graph
+     * calculate the score for the state
      */
 
     void calculate_score();

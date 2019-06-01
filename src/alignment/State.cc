@@ -48,7 +48,7 @@ void state::select(int i){
 void state::updateSelectability(int i){
     int left = i;
     unsigned int right = i;
-    while (left != -1 && edges[left].first->i == edges[i].first->i) { 
+    while (left != -1 && edges[left].first->i == edges[i].first->i) {
         if ((edges[left].first->j <= edges[i].first->j && edges[left].second->j >= edges[i].second->j) 
             || (edges[left].first->j >= edges[i].first->j && edges[left].second->j <= edges[i].second->j)) {
             this->selectable[left] = false;
@@ -66,7 +66,7 @@ void state::updateSelectability(int i){
 
 // requires that e.first->i = f.first->i and e.second->i = f.second->i            
 bool state::consistent(Edge& e, Edge& f){
-    if (e.first->j == f.first->j && e.second->j == f.second->j) { 
+    if (e.first->j == f.first->j && e.second->j == f.second->j) {
         return true; // edges e and f are equal
     } else if ((e.first->j <= f.first->j && e.second->j >= f.second->j) ||
                (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
@@ -86,12 +86,12 @@ bool state::is_equal(const Node& a, const Node& b){
     }
 }
 
-void state::calculate_score(){ 
+void state::calculate_score(){
     score = 0;
     vector<bool> visited(selectedEdgeIndex.size(), false);
 
     for (unsigned int i = 0; i < selectedEdgeIndex.size(); i++) {
-        if (visited[i] == false) { 
+        if (visited[i] == false) {
             unsigned int path_length = 1;
             Edge current_edge = edges[selectedEdgeIndex[i]];
             visited[i] = true;
@@ -103,6 +103,6 @@ void state::calculate_score(){
                 }
             }
             score += (pow(path_length, 2) + path_length) / 2;                            
-        }            
+        }
     }
 }

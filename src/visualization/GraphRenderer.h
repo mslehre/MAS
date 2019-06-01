@@ -39,6 +39,7 @@ void printHelp(); ///< a function which calls a troubleshooting for bad argument
  * (s\cdot(0,2 + 1,8\cdot j),s\cdot(0,2 + 1,5\cdot i))\f$
  *
  */
+
 class GraphRenderer{
     /**
      * A struct to define textproperties to save text in an other way
@@ -63,8 +64,6 @@ class GraphRenderer{
         int sizeConstant; ///< a constant which defines the scale of the visuals
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
-        sf::RectangleShape example;
-        //state gameState; ///< the state object we use for the game
 	public:
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked

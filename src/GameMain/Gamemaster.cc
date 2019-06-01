@@ -9,6 +9,8 @@
 
 using namespace std;
 
+Gamemaster::Gamemaster(){};
+
 Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
     simulate(number_of_sequences, length, probability);     
     GameGraph.readFastaFiles("sequences.fa", k);

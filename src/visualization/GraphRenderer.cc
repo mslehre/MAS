@@ -168,7 +168,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 diff = (newNodes.at(s).coordinate.x - newNodes.at(e).coordinate.x);
                 while (index != newNodes.size() && newNodes.at(e).coordinate.y == newNodes.at(index).coordinate.y) {
                     newNodes.at(index).coordinate.x += diff;
-                    index += 1;
+                    index++;
                 }
             }
             if (newNodes.at(s).coordinate.x < newNodes.at(e).coordinate.x) {
@@ -176,7 +176,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 diff = (newNodes.at(e).coordinate.x - newNodes.at(s).coordinate.x);
                 while (index != newNodes.size() && newNodes.at(s).coordinate.y == newNodes.at(index).coordinate.y) {
                     newNodes.at(index).coordinate.x += diff;
-                    index += 1;
+                    index++;
                 }
             }
         }
@@ -233,16 +233,12 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     }
     direction.push_back(0);
     direction.push_back(0);
-    //state place(edgeList);
-    //gameState = place;
     nodeHovered = false;
     nodeClicked = false;
     edgeHovered = false;
     defaultView = window.getDefaultView();
     actualView = defaultView;
     initShapes(Nodes, nodeList);
-    drawShape(window);
-    drawText(window);
 }
 
 //Method which will move the window in a choosed direction or resets it
@@ -275,19 +271,14 @@ void GraphRenderer::moveWindow(int dir) {
         case 4: //resets all
             actualView = defaultView;
             //selectedEdges.clear();
-            /*for (unsigned i = 0; i < gameState.edges.size(); i++) {
-                gameState.selectedSubset.at(i) = false;
-                gameState.selectable.at(i) = true;
-                gameState.selectedEdgeIndex.clear();
-                gameState.score = 0;
-            }*/
+            //gameState.reset();
             direction.at(0) = 0;
             direction.at(1) = 0;
             break;
     }
 }
 
-//This Method draws the text
+//This method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
     unsigned int size_text = txt.size();
     sf::Text text;
@@ -305,7 +296,7 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
     }
 }
 
-//This Method draws all shapes
+//This method draws all shapes
 void GraphRenderer::drawShape(sf::RenderWindow& window) {
     unsigned int size_Rect = rects.size();
     unsigned int size_seq;
