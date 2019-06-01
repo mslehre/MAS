@@ -19,7 +19,7 @@ sf::Sprite Button::get_Button_Sprite(){
     return Button_Sprite;
 }
 
-void Button::eventHandler(sf::Event& event, std::string& status, sf::Vector2f& global_mouse_pos) {
+void Button::eventHandler(const sf::Event& event, std::string& status, const sf::Vector2f& global_mouse_pos) {
     if (status == my_status) {
         if (event.type == sf::Event::EventType::MouseMoved) {
             if (Button_Sprite.getGlobalBounds().contains(global_mouse_pos)) {
@@ -41,5 +41,9 @@ void Button::eventHandler(sf::Event& event, std::string& status, sf::Vector2f& g
 
 void Button::setFunction(std::function<void()> func) {
     Button_function = func;
+}
+
+void Button::setPosition(float x_pos, float y_pos) {
+    Button_Sprite.setPosition(sf::Vector2f(x_pos, y_pos));
 }
 

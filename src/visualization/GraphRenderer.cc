@@ -52,12 +52,10 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     }
     //reset window
     window.clear(sf::Color::White);
-
-    window.setView(defaultView);
     for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant);
     setCoords(Nodes, nodeList);
-    window.setView(actualView);
+//  window.setView(actualView);
     drawShape(window);
     drawText(window);
 }
@@ -124,20 +122,19 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
 
     sf::RectangleShape rect(sf::Vector2f(window.getSize().x, 130));
     rect.setPosition(x_pos, y_pos);
-   
+  
     sf::Font font;
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
 
     std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
     std::string AgentScore = "Computer Score: " + std::to_string(gameState.score); // TODO: need a score from an Agent    
-    sf::Text text(PlayerScore + "\n" + AgentScore, font, 40);
+    sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
     text.setColor(sf::Color::Black);
-    text.setPosition(x_pos, y_pos);
+    text.setPosition(x_pos + 150, y_pos);
 
     window.draw(rect);
     window.draw(text);
-    window.display();
 }
 
 //Method which will set the move speed in terms of Computer speed with an upper Bound
