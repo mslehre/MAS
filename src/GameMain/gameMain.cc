@@ -81,7 +81,7 @@ int main() {
             clock.restart();
         }
         if (status == "game") {
-            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes);
+            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             GrRend.display_score(window, gamemaster.GameState);
             menuButton.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),

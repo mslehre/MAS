@@ -37,7 +37,6 @@ void printHelp(); ///< a function which calls a troubleshooting for bad argument
  * \f$\textrm{For the Rectangle }R_{i,j}\textrm{ and a sizeConstant }s\textrm{ ,where }i\textrm{ and }j\textrm{ are the indices of the nodes,
  * holds that length}(R_{i,j})=s, \textrm{width}(R_{i,j})=\frac{1}{2}\cdot s \textrm{ and upperleftpoint}(R_{i,j})=
  * (s\cdot(0,2 + 1,8\cdot j),s\cdot(0,2 + 1,5\cdot i))\f$
- *
  */
 
 class GraphRenderer{
@@ -108,13 +107,13 @@ class GraphRenderer{
         void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState);
 
         /**
-         * a function which update and display the current score of the game
+         * a function which display the current score of the game
          * \param window a renderWindow what gets the new score
          * \param gamestate is the current state of the game
          */        
 
         void display_score(sf::RenderWindow& window, const state& gamestate);
-        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes);
+        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.

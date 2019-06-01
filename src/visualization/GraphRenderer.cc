@@ -141,7 +141,7 @@ void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
 }
 
-void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes) {
+void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState) {
     vector<DrawNode> newNodes = Nodes;
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
@@ -203,6 +203,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
             window.setView(actualView);
             drawShape(window);
             drawText(window);
+            display_score(window, GameState);
             window.display();
         }
     }
