@@ -55,7 +55,7 @@ Gamemaster.o: Gamemaster.cc $(HEADER1) $(HEADER4) $(HEADER5) $(HEADER6) $(HEADER
 colorlist.o: ../visualization/colorlist.cc $(HEADER8)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
-GraphRenderer.o: ../visualization/GraphRenderer.cc $(HEADER1) $(HEADER10) $(HEADER11)
+GraphRenderer.o: ../visualization/GraphRenderer.cc $(HEADER1) $(HEADER10) $(HEADER11) $(HEADER13)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 ArrowShape.o: ../visualization/ArrowShape.cc $(HEADER11)

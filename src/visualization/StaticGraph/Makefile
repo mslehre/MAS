@@ -1,6 +1,6 @@
 include ../../common.mk
 CC = g++
-OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o State.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o DrawNode.o
+OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o State.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o DrawNode.o Button.o
 HEADER1 = ../../alignment/Graph.h
 HEADER2 = ../../alignment/Node.h 
 HEADER3 = ../GraphRenderer.h
@@ -11,6 +11,7 @@ HEADER7 = ../ArrowShape.h
 HEADER8 = ../FuncArrowShape.h
 HEADER9 = ../../alignment/State.h
 HEADER10 = ../../alignment/DrawNode.h
+HEADER11 = ../Button.h
 
 all: visualization
 
@@ -20,7 +21,7 @@ visualization: $(OBJ)
 main.o: main.cc $(HEADER1)
 	$(CC) -c $(CXXFLAGS) $< -o  $@
 
-GraphRenderer.o: ../GraphRenderer.cc $(HEADER3) $(HEADER1) $(HEADER7)
+GraphRenderer.o: ../GraphRenderer.cc $(HEADER3) $(HEADER1) $(HEADER7) $(HEADER11)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 Graph.o: ../../alignment/Graph.cc $(HEADER1) $(HEADER2) $(HEADER4)
@@ -48,6 +49,9 @@ FuncArrowShape.o: ../FuncArrowShape.cc $(HEADER7) $(HEADER8)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 DrawNode.o: ../../alignment/DrawNode.cc $(HEADER10)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
+Button.o: ../Button.cc $(HEADER11)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 clean:

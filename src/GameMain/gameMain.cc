@@ -81,11 +81,12 @@ int main() {
             clock.restart();
         }
         if (status == "game") {
-            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState);
+            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButton);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             GrRend.display_score(window, gamemaster.GameState);
             menuButton.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                    window.getView().getCenter().y - (window.getSize().y / 2));
+            GrRend.display_score(window, gamemaster.GameState);
             window.draw(menuButton.get_Button_Sprite());                        
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation

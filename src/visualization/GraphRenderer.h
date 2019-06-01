@@ -17,6 +17,7 @@
 #include "../alignment/DrawNode.h"
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
+#include "Button.h"
 
 vector<string> giveKmers(vector<Node>& nodeList);
 
@@ -113,7 +114,7 @@ class GraphRenderer{
          */        
 
         void display_score(sf::RenderWindow& window, const state& gamestate);
-        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState);
+        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState, Button& menuButton);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
