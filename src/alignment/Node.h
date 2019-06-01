@@ -7,6 +7,9 @@ using std::vector;
 
 class Node {
     public:
+
+        bool operator ==(const Node& a); ///< overload operator "==" to compare two Nodes
+
         Node();
 
         // constructor: i sequence, j node in i, string of node

@@ -76,16 +76,6 @@ bool state::consistent(Edge& e, Edge& f){
     }
 }
 
-// functions for scoring
-
-bool state::is_equal(const Node& a, const Node& b){
-    if (a.i == b.i && a.j == b.j) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
 void state::calculate_score(){
     score = 0;
     vector<bool> visited(selectedEdgeIndex.size(), false);
@@ -96,13 +86,13 @@ void state::calculate_score(){
             Edge current_edge = edges[selectedEdgeIndex[i]];
             visited[i] = true;
             for (unsigned int j = i; j < selectedEdgeIndex.size(); j++) {
-                if (is_equal(*current_edge.second, *edges[selectedEdgeIndex[j]].first)) {
+                if (*current_edge.second == *edges[selectedEdgeIndex[j]].first) {
                     current_edge = edges[selectedEdgeIndex[j]];
                     path_length++;
                     visited[j] = true;
                 }
             }
-            score += (pow(path_length, 2) + path_length) / 2;                            
+            score += (pow(path_length, 2) + path_length) / 2;
         }
     }
 }

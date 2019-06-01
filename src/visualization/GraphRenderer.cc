@@ -55,7 +55,6 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant);
     setCoords(Nodes, nodeList);
-//  window.setView(actualView);
     drawShape(window);
     drawText(window);
 }

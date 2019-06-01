@@ -14,16 +14,6 @@
  */
 
 class state{
-    private:
-
-     /** 
-     * \param a is a Node
-     * \param b is a Node
-     * \return TRUE if a and b have the same indices
-     */
-
-    bool is_equal(const Node& a, const Node& b);
-
     public:
     state(Graph& graph); ///< Constructor with a Graph
     state(std::vector <Edge> e); ///< Constructor with an Edge vector
