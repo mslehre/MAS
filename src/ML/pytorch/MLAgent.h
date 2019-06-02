@@ -1,10 +1,6 @@
 #pragma once
 #include "../SimpleAgent/Agent.h"
 
-
-
-
-
 class MLAgent : public Agent {
     public:
         /** This valueMLmodel contains data required for prediction of

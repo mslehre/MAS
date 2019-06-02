@@ -3,7 +3,6 @@
 #include <math.h>
 #include <map.h>
 
-
 class valueMLmodel {
     public:
         valueMLmodel(RLDataset& data) {
@@ -41,16 +40,11 @@ class valueMLmodel {
          *\return returns a binary Value for a given State
          */
         unsigned int calculateBinaryValue(state* s) {
-             unsigned int binaryValue = 0;
-             for (unsigned int i = s->selectedSubset.size(); i > 0; i--) {
+            unsigned int binaryValue = 0;
+            for (unsigned int i = s->selectedSubset.size(); i > 0; i--) {
                 if (s->selectedSubset.at(i))
-                binaryValue += pow(2,i);
-             }
-                return binaryValue;
-        }
-                
-                
-        
-       
-
+                    binaryValue += pow(2,i);
+            }
+            return binaryValue;
+        }                 
 };

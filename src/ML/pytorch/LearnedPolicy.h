@@ -3,7 +3,6 @@
 #include "../SimpleAgent/state.h"
 #include "valueMLmodel.h"
 
-
 class LearnedPolicy : public Policy {
     public:
 
@@ -23,9 +22,7 @@ class LearnedPolicy : public Policy {
             }
             return values;
         }
-                
-                
-            
+                         
         vector<float> getPiSoftMax(const state *s, const vector<float> &valueEstimates, map <unsigned int, unsigned int& index) {
             vector<float> values;
 			float sum = 0;
@@ -43,6 +40,5 @@ class LearnedPolicy : public Policy {
 				values.at(i) = exp(values.at(i))/sum;
 			}
 			return values;           
-        }
-        
+        }     
 };

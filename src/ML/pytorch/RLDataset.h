@@ -23,7 +23,8 @@ class RLDataset : public torch::data::Dataset<RLDataset>
             unsigned int score;                     // score of one episode
             unsigned int numbStates = 0;            // total number of states of all episodes
 
-            for (unsigned int i = 0; i < numbEpisodes; i++) { // calculate the total number of all states of all episodes
+            // calculate the total number of all states of all episodes
+            for (unsigned int i = 0; i < numbEpisodes; i++) { 
                 episodes.push_back(agent.getEpisode());
                 numbStates = numbStates + episodes.at(i).numbOfStates;    
             }
@@ -43,19 +44,15 @@ class RLDataset : public torch::data::Dataset<RLDataset>
                 score = episodes.at(i).score;          
                 // save the score for every episode
                 for (unsigned int j = 0; j < s.size(); j++) {
-                    scores[counter] = (float) score;
-                    
-                    // save the states,actions for every episode
+                    scores[counter] = (float) score;             
+                    // save the states and actions for every episode
                     for (unsigned int k = 0; k < numbEdges; k++) {
                         states[counter][k] = (float) s.at(j).at(k);
                         actions[counter][k] = (float) a.at(j).at(k);
                     }
-                    
-                  
                     counter++;
                  }   
             }
-
         }
     
         torch::data::Example<> get(size_t index) override {
