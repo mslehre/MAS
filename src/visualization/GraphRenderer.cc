@@ -38,7 +38,8 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
 }
 
 //Method which catches all events of the window
-void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState) {
+void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
+                                 vector<DrawNode>& Nodes, state& gameState) {
     window.setView(actualView);
     //Move the view of the window
     enum direction {Down, Left, Right, Up, Space};
@@ -119,7 +120,8 @@ void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
 }
 
-void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState, Button& menuButton) {
+void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
+                                   const state& GameState, Button& menuButton) {
     vector<DrawNode> newNodes = Nodes;
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;

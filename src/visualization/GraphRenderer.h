@@ -103,7 +103,8 @@ class GraphRenderer{
          * \param nodeList a vector of Nodes which is needed for a few methods
          */
 
-        void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState);
+        void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
+                          state& gameState);
 
         /**
          * a function which display the current score of the game
@@ -112,7 +113,8 @@ class GraphRenderer{
          */        
 
         void display_score(sf::RenderWindow& window, const state& gamestate);
-        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, const state& GameState, Button& menuButton);
+        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
+                            const state& GameState, Button& menuButton);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
