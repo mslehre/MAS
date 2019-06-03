@@ -1,6 +1,7 @@
 include ../../common.mk
 CC = g++
-OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o State.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o DrawNode.o Button.o
+OBJ = main.o Graph.o Node.o GraphRenderer.o Edge.o State.o colormap.o colorlist.o ArrowShape.o FuncArrowShape.o \
+    DrawNode.o Button.o
 HEADER1 = ../../alignment/Graph.h
 HEADER2 = ../../alignment/Node.h 
 HEADER3 = ../GraphRenderer.h
