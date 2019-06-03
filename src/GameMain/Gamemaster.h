@@ -17,7 +17,7 @@ class Gamemaster {
          * \return a vector of unique strings
          */
 
-        std::vector<std::string> giveKmers(std::vector<Node>& nodeList);
+        std::vector<std::string> getKmers(std::vector<Node>& nodeList);
 
         /**
          * \param k is the length of the kmers
