@@ -6,16 +6,7 @@
 #include "../visualization/GraphRenderer.h"
 #include "../visualization/Button.h"
 #include "Gamemaster.h"
-/*
-void choose_parameter(unsigned int& k, unsigned int& length_of_sequences, unsigned int& number_of_sequences, 
-                      double& probability, bool& new_parameter){
-    k = 4;
-    length_of_sequences = 80;
-    number_of_sequences = 3;
-    probability = 0.2;
-    new_parameter = true;
-}
-*/
+
 int main() {
     //Open the window with restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
@@ -27,7 +18,6 @@ int main() {
     unsigned int number_of_sequences = 4;
     double probability = 0.3;
     std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
-    bool new_parameter = false;
     sf::Clock clock; //clock to compute a scroll speed
 
     Gamemaster gamemaster(k, length_of_sequences, number_of_sequences, probability);
@@ -40,21 +30,7 @@ int main() {
     Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
 
-    startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
-                             &number_of_sequences, &probability, &new_parameter] () {
-        if (new_parameter) {
-            Gamemaster gMtemp(k, length_of_sequences, number_of_sequences, probability);
-            gamemaster = gMtemp;
-            nodeList = gMtemp.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gMtemp.GameGraph, gMtemp.GameNodes);
-            GrRend = gtemp;
-        } 
-    });
-/*
-    settingsButton.setFunction([&k, &length_of_sequences, &number_of_sequences, &probability, &new_parameter] () {
-        choose_parameter(k, length_of_sequences, number_of_sequences, probability, new_parameter);
-    });
-*/
+    startButton.setFunction([] () {});
     settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
     menuButtonGame.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
