@@ -106,7 +106,7 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
         std::cout << "Can't find the font file" << std::endl;
 
     std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
-    std::string AgentScore = "Computer Score: " + std::to_string(gameState.score); // TODO: need a score from an Agent    
+    std::string AgentScore = "Computer Score: " + "?"; // TODO: need a score from an Agent    
     sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
     text.setColor(sf::Color::Black);
     text.setPosition(x_pos + 150, y_pos);
