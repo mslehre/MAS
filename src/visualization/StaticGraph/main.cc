@@ -3,7 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
-vector<string> giveKmers(vector<Node>& nodeList) {
+vector<string> getKmers(vector<Node>& nodeList) {
     vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
         allKmers[i] = nodeList.at(i).kmer;
@@ -37,7 +37,7 @@ int main(int argc, char **argv){
     vector<Node> nodeList = g.getNodes();
     vector<DrawNode> Nodes;
     //Initialize colomap
-    vector<string> Kmers = giveKmers(nodeList);
+    vector<string> Kmers = getKmers(nodeList);
     colorlist colorExample(Kmers.size());
     vector<sf::Color> colors = colorExample.giveList();
     colormap mapExample(Kmers, colors);
