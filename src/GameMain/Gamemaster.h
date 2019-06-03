@@ -29,7 +29,7 @@ class Gamemaster {
         Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
 
         /**
-         * standard constructor, which do nothing
+         * standard constructor, which does nothing
          */
 
         Gamemaster();
