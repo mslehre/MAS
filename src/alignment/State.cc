@@ -92,7 +92,7 @@ void state::calculate_score(){
                     visited[j] = true;
                 }
             }
-            score += (pow(path_length, 2) + path_length) / 2;
+            score += (path_length * (path_length + 1)) / 2;
         }
     }
 }
