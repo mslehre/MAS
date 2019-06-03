@@ -19,7 +19,7 @@ Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_
     GameState = statetemp;
 
     //Initialize colomap
-    vector<string> Kmers = giveKmers(GameGraph.getNodes());
+    vector<string> Kmers = getKmers(GameGraph.getNodes());
     colorlist colorExample(Kmers.size());
     vector<sf::Color> colors = colorExample.giveList();
     colormap mapExample(Kmers, colors);
@@ -36,7 +36,7 @@ Graph Gamemaster::getGameGraph(){
     return GameGraph;
 }
 
-vector<string> Gamemaster::giveKmers(vector<Node>& nodeList) {
+vector<string> Gamemaster::getKmers(vector<Node>& nodeList) {
     vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
         allKmers[i] = nodeList.at(i).kmer;
