@@ -64,7 +64,7 @@ class state{
 
     /**
      * update the current score of the state: 
-     * \f$ \text{score} = \sum_{c \in C} |c| (|c| - 1) / 2\f$, 
+     * \f$ \textrm{score} = \sum_{c \in C} |c| (|c| - 1) / 2\f$, 
      * where C is the set of connected components and |c| is the number of nodes in connected 
      * component c.
      * This function requires that the edges are sorted increasingly by i.
