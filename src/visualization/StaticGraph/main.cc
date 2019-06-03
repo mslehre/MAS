@@ -3,6 +3,17 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
+vector<string> giveKmers(vector<Node>& nodeList) {
+    vector<string> allKmers(nodeList.size());
+    for (unsigned int i = 0; i < nodeList.size(); i++) {
+        allKmers[i] = nodeList.at(i).kmer;
+    }
+    sort(allKmers.begin(), allKmers.end());
+    allKmers.erase(unique(allKmers.begin(), allKmers.end()), allKmers.end());
+ 
+    return allKmers;
+}
+
 using namespace std;
 
 int main(int argc, char **argv){

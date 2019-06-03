@@ -8,7 +8,7 @@ using std::vector;
 class Node {
     public:
 
-        bool operator ==(const Node& a); ///< operator "==" to compare two Nodes
+        bool operator ==(const Node& a); ///< operator "==" to compare the indices of two Nodes
 
         Node();
 

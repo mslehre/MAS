@@ -35,9 +35,10 @@ int main() {
     GraphRenderer GrRend(window, gamemaster.GameGraph, gamemaster.GameNodes);
 
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
-     // Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
+    Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
-    Button menuButton = Button("../../fig/menuButton.png", 1300, 0, "menu", "game");
+    Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
+    Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
 
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
                              &number_of_sequences, &probability, &new_parameter] () {
@@ -54,8 +55,10 @@ int main() {
         choose_parameter(k, length_of_sequences, number_of_sequences, probability, new_parameter);
     });
 */
+    settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
-    menuButton.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
+    menuButtonGame.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
+    menuButtonSettings.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
 
     while (window.isOpen()) {
         sf::Event event;
@@ -67,27 +70,32 @@ int main() {
                 window.close(); 
 
             startButton.eventHandler(event, status, mouse_position);
-           // settingsButton.eventHandler(event, status, mouse_position);
+            settingsButton.eventHandler(event, status, mouse_position);
             quitButton.eventHandler(event, status, mouse_position);
-            menuButton.eventHandler(event, status, mouse_position);
+            menuButtonGame.eventHandler(event, status, mouse_position);
+            menuButtonSettings.eventHandler(event, status, mouse_position);
             GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState);
         }
 
         if (status == "menu") {
             window.clear(sf::Color::White);
             window.draw(startButton.get_Button_Sprite());
-           //  window.draw(settingsButton.get_Button_Sprite());
+            window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
             clock.restart();
         }
+        if (status == "settings") {
+            window.clear(sf::Color::White);
+            window.draw(menuButtonSettings.get_Button_Sprite());                        
+            clock.restart();
+        }
         if (status == "game") {
-            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButton);
+            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
-            GrRend.display_score(window, gamemaster.GameState);
-            menuButton.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
+            menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                    window.getView().getCenter().y - (window.getSize().y / 2));
             GrRend.display_score(window, gamemaster.GameState);
-            window.draw(menuButton.get_Button_Sprite());                        
+            window.draw(menuButtonGame.get_Button_Sprite());                        
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation
         }

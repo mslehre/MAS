@@ -2,27 +2,6 @@
 
 using namespace std;
 
-//This method is used to make a list of Kmers, where all Kmers are just once in
-vector<string> giveKmers(vector<Node>& nodeList) {
-    vector<string> allKmers; // The set of all different Kmers
-    bool elementOf;
-    //go through all nodes
-    for (unsigned i = 0; i < nodeList.size(); i++) {
-        elementOf = false;
-        //go through all nodes we discovered already to check if they are in the list
-        for (unsigned j = 0; j < i; j++) {
-            if(nodeList.at(i).kmer == nodeList.at(j).kmer) {
-                elementOf = true;
-                break;
-            }
-        }
-        //push the nodes who aren't in yet
-        if(!elementOf)
-            allKmers.push_back(nodeList.at(i).kmer);
-    }
-    return allKmers;
-}
-
 //Method for troubleshooting bad arguments
 void printHelp(){
     cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
@@ -44,9 +23,8 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
         sf::Vector2f vSize(window.getView().getSize().x, window.getView().getSize().y);
         sf::Vector2f newCenter = window.getView().getCenter();
         sf::Vector2f temp = wSize - vSize;
-        float vec = 0.5;
-        temp = temp * vec;
-        newCenter = newCenter + temp;
+        temp *= (float)0.5;
+        newCenter += temp;
         actualView = sf::View(newCenter, wSize);
         window.setView(actualView);
     }

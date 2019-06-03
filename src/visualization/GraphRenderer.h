@@ -19,8 +19,6 @@
 #include "FuncArrowShape.h"
 #include "Button.h"
 
-vector<string> giveKmers(vector<Node>& nodeList);
-
 void printHelp(); ///< a function which calls a troubleshooting for bad arguments
 
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
