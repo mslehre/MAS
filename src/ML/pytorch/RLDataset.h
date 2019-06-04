@@ -11,16 +11,16 @@ class RLDataset : public torch::data::Dataset<RLDataset>
 
     public:
         unsigned int numbEpisodes;
+        vector<Episode> episodes;               // vector of episodes
         /** 
          * \brief calculate states and scores for the dataset
          * \param numbEpisodes number of episodes
          * \param agent random agent
          */
-        explicit RLDataset(unsigned numbEpisodes, Agent& agent) { 
+        explicit RLDataset(vector<Episode> episodes) { 
 
-            this->numbEpisodes = numbEpisodes;         
-
-            vector<Episode> episodes;               // vector of episodes
+            this->episodes = episodes;
+            numbEpisodes = episodes.size();         
             vector<vector<bool>> s;            // vector of states
             vector<vector<bool>> a;           // vector of actions
             unsigned int score;                     // score of one episode
@@ -28,7 +28,6 @@ class RLDataset : public torch::data::Dataset<RLDataset>
 
             // calculate the total number of all states of all episodes
             for (unsigned int i = 0; i < numbEpisodes; i++) { 
-                episodes.push_back(agent.getEpisode());
                 numbStates = numbStates + episodes.at(i).numbOfStates;    
             }
             std::cout << "Number of states: " << numbStates << std::endl;

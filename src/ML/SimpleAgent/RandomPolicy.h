@@ -18,7 +18,7 @@ class RandomPolicy : public Policy {
      * \param s Expects a state s as input parameter.
      * \return Returns the probability vector.
      */
-    virtual std::vector <float> act(state* s) const override {
+    virtual std::vector <float> runPolicy(state* s) const override {
         unsigned int n = s->edges.size();
         std::vector <float> probAct(n, 0);
         int cTemp = std::count(s->selectable.begin(), s->selectable.end(), true);
