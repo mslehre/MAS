@@ -1,17 +1,22 @@
 #pragma once
+#include <iostream>
 #include "RLDataset.h"
 #include <math.h>
 #include "LinearNet.h"
+#include <torch/torch.h>
+
+using std::vector;
 
 class valueMLmodel {
     public:
+        valueMLmodel(){};
         valueMLmodel(unsigned int dimstate) {
             this->dimstate = dimstate;
             linearNet = std::make_shared<LinearNet>(dimstate);
-        };
-        LinearNet linearNet;
+        }
+        std::shared_ptr<LinearNet> linearNet;
         unsigned int dimstate;
-        
+          
         void learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsigned int batch_size, float alpha) {
             auto data_set = dataSet.map(torch::data::transforms::Stack<>());
             // create a multi-threaded data loader for the MNIST dataset.
@@ -36,9 +41,8 @@ class valueMLmodel {
                  }
                  std::cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << std::endl;
             }
-       };
-            
-            
+       }
+                     
         vector<float> calcValueEstimates(state* s) {
             vector<bool> index = s->calcSuccessorStates();
             torch::Tensor succStates = vectorToTensor(s->successorStates);
@@ -55,17 +59,17 @@ class valueMLmodel {
                 }
             }                                        
             return prediction;                              
-        };
+        }
 
         torch::Tensor vectorToTensor(vector<vector<bool>> vec) {
-            torch::Tensor tens = torch::zeros({vec.at(0).size(), dimstate});
+            torch::Tensor tens = torch::zeros({(long int) vec.at(0).size(), dimstate});
             for (unsigned int i = 0; i < vec.size(); i++){
                 for (unsigned int j = 0; j < vec.at(i).size(); j++) {
                     tens[i][j] = (float)vec.at(i).at(j);
                 }
             }
             return tens;
-        };
+        }
 
 
         vector<float> tensorToVector(torch::Tensor tens) {
@@ -74,14 +78,5 @@ class valueMLmodel {
                 vec.push_back(tens[i]);
             }
             return vec;
-        };
-                
-              
-
-
-
-
-
-
-
-
+        }
+};

@@ -89,7 +89,7 @@ class Agent {
         return std::make_pair(s,edgeSelection);
     }
 
-   /* void setPolicy(Policy& pol) {
+    /*void setPolicy(Policy& pol) {
         this->policy = std::unique_ptr<Policy>(pol);
     } */
 };

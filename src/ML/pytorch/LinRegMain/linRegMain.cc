@@ -11,28 +11,28 @@
 #include "../LearnedPolicy.h"
 #include "../LinearNet.h"
 #include "../RLDataset.h"
-
 #include <torch/torch.h>
+#include <vector>
 
-
+using std::vector;
 
 int main() {
     Graph g;
     g.readFastaFiles("../../alignment/sequences.fa" , 2);
     Agent agent(g, Policytype::rnd);
-    vector<Episodes> episodes1;
+    vector<Episode> episodes1;
     unsigned int numbEpisodes = 100;
     for (unsigned int i = 0; i < numbEpisodes; i++) {
         episodes1.push_back(agent.getEpisode());
     }
     RLDataset dataSet1(episodes1);
-    valueMLmodel vModel(g.getEdges.size());
-    LearnedPolicy lpol;
+    valueMLmodel vModel(g.getEdges().size());
+    LearnedPolicy* lpol;
     lpol->vModel = &vModel;
-    vModel.learn(dataSet, 100, 64, 0.1);
-    agent.setPolicy(lpol);
-    vector<Episodes> episodes2;
-    unsigned int numbEpisodes = 100;
+    vModel.learn(dataSet1, 100, 64, 0.1);
+    //agent.setPolicy(lpol);
+    vector<Episode> episodes2;
+
     for (unsigned int i = 0; i < numbEpisodes; i++) {
         episodes2.push_back(agent.getEpisode());
     }
