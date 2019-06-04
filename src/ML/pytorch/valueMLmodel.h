@@ -39,8 +39,38 @@ class valueMLmodel {
        };
             
             
-        vector<float> calcValueEstimates();      
-};
+        vector<float> calcValueEstimates(state* s) {
+            vector<bool> index = s->calcSuccessorStates();
+            torch::Tensor succStates = vectorToTensor(s->successorStates);
+            torch::Tensor pred = linearNet->forward(succStates);
+            vector<float> tempPrediction = tensorToVector(pred);
+            vector<float> prediction;
+            unsigned int counter = 0;
+            for (unsigned int i = 0; i < dimstate; i++) {
+                if (index.at(i)) {
+                    prediction.push_back(tempPrediction.at(counter));
+                    counter++;
+                } else {
+                    prediction.push_back(0);
+                }
+            }                                        
+            return prediction;                              
+        };
+
+        torch::Tensor vectorToTensor(vector<vector<bool>> vec) {
+            torch::Tensor tens = torch::zeros({vec.at(0).size(), dimstate});
+            for (unsigned int i = 0; i < vec.size(); i++){
+                for (unsigned int j = 0; j < vec.at(i).size(); j++) {
+                    tens[i][j] = (float)vec.at(i).at(j);
+                }
+            }
+            return tens;
+        };
+
+
+        vector<float> tensorToVector(torch::Tensor tens) {
+            for (unsigned int i = 0; i < tens
+              
 
 
 

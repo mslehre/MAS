@@ -121,16 +121,19 @@ void state::calculate_score(){
     }
 }
 
-vector<vector<bool>> state::successorStates() {
-    vector<vector<bool>> successorStates;
+vector<bool> state::successorStates() {
+    vector<bool> indexSet;
     for (unsigned int i = 0; i < edges.size(); i++) {
         if (!selectedSubset.at(i) && selectable.at(i)) {
             selectedSubset.at(i) = true;
             successorStates.push_back(selectedSubset);
             selectedSubset.at(i) = false;
-        }
+            indexSet.push_back(true);
+        }else {
+            indexSet.push_back(false);
+            
     }
-    return successorStates;
+  
 }
             
        

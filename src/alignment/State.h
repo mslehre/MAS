@@ -41,6 +41,8 @@ class state{
     std::vector <bool> selectable;    ///< Shows whether edge is selectable in the current subset (true = selectable)
     std::vector<unsigned int> selectedEdgeIndex; ///< contains indices from "edges" for all edges that are selected
     unsigned int score; ///< The score of the State
+    vector<vector<bool>> successorStates; ///< The direct successor States
+    
         
     /**
      * Selects edge i if selectable (does nothing otherwise)
@@ -87,9 +89,8 @@ class state{
     void reset();
 
     /** This function determines all direct successor states.
-     *  \return returns a vector of selected Subsets
      */
-    vector<vector<bool>> successorStates();
+    vector<bool> calcSuccessorStates();
 
 };
 
