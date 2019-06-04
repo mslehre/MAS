@@ -34,31 +34,55 @@ int main() {
 
     // example create object from class Graph
     Graph g;
-    g.readFastaFiles("../../alignment/sequences.fa" , 3);
+    g.readFastaFiles("../../alignment/sequences.fa" , 2);
     Agent agent(g, Policytype::rnd);
-    Episode episode = agent.getEpisode();
+    /*Episode episode = agent.getEpisode();
     vector<vector<bool>> output = episode.states;
     for (unsigned int i = 0; i < output.size(); i++) {
         for (unsigned int j = 0; j < output.at(i).size(); j++) {
             cout << output.at(i).at(j);
         }
         cout << " next state: " << endl;
-    }
+    }*/
 
-    unsigned dim_state = 50;
-    unsigned numberOfEpisodes = 10;
+    unsigned dim_state = g.getEdges().size();
+    unsigned numberOfEpisodes = 200;
+    unsigned numberOfEpochs = 100;
     // create a new Net.
     auto net = std::make_shared<Net>(dim_state);
     // create random dataset
     auto data_set = RLDataset(numberOfEpisodes, agent).map(torch::data::transforms::Stack<>());
     // create a multi-threaded data loader for the MNIST dataset.
-    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/2);
+    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/64);
     // instantiate an SGD optimization algorithm to update our Net's parameters.
     torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.1);
 
-    // iterate the data loader to printout batches from the dataset.
+    /*// iterate the data loader to printout batches from the dataset.
     for (torch::data::Example<>& batch : *data_loader) {
         cout << "Batch size: " << batch.data.size(0) << ": ";
             cout << batch.data << endl;
-    } 
-}
+    } */
+
+for (size_t epoch = 1; epoch <= numberOfEpochs; ++epoch) {
+        torch::Tensor loss;
+        // Iterate the data loader to yield batches from the dataset.
+        for (auto& batch : *data_loader) {
+            // Reset gradients.
+            optimizer.zero_grad();
+            // Execute the model on the input data.
+            torch::Tensor prediction = net->forward(batch.data);
+            // Compute a loss value to judge the prediction of our model.
+            loss = torch::mse_loss(prediction, batch.target);
+            // Compute gradients of the loss w.r.t. the parameters of our model.
+            loss.backward();
+            // Update the parameters based on the calculated gradients.
+            optimizer.step();
+            // Output the loss and checkpoint every 100 batches.
+    
+                
+                // Serialize your model periodically as a checkpoint.
+                //torch::save(net, "net.pt");
+            }
+        std::cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << std::endl;
+        }
+    }

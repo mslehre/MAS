@@ -5,46 +5,47 @@
 
 class valueMLmodel {
     public:
-        valueMLmodel(RLDataset& data) {
-            this->data = data;
-        }
-        RLDataset data;
-		/** This function initialise the RLDataset
-		 */
-        void setDataset(RLDataset& data) {
-			this->data = data;
-		}
-  
-         /** This function calculates Theta from a
-          *  RLDataset using linear regression.
-          *  \return returns Theta as a vector <float>.
-          */
-        void calcValueEstimates();
-        vector<float> valueEstimates;
-        vector<states*> correspondingStates;
-        /** This function gives every state an index
-         *  Its needed to efficiently find the valueEstimated of a given state 
-         *\ return returns a map in which the index of the valueEstimated 
-		    of a state is assigned by its binary Value
-         */
-        map <unsigned int, unsigned int> stateToIndex() {
-          	map <unsigned int, unsigned int> index;
-			
-            for (unsigned int j = 0; j < correspondingStates.size();  j++) {
-               	index[calculateBinaryValue(correspondingStates.at(i))] = i;
+        valueMLmodel(unsigned int dimstate) {
+            this->dimstate = dimstate;
+            auto linearNet = std::make_shared<LinearNet>(dimstate);
+        };
+        LinearNet linearNet;
+        unsigned int dimstate;
+        
+        void learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsigned int batch_size, float alpha) {
+            auto data_set = dataSet.map(torch::data::transforms::Stack<>());
+            // create a multi-threaded data loader for the MNIST dataset.
+            auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/batch_size);
+            // instantiate an SGD optimization algorithm to update our LinearNet's parameters.
+            torch::optim::SGD optimizer(linearNet->parameters(), /*lr=*/alpha);
+            for (size_t epoch = 1; epoch <= numberOfEpochs; ++epoch) {
+                torch::Tensor loss;
+                // Iterate the data loader to yield batches from the dataset.
+                for (auto& batch : *data_loader) {
+                    // Reset gradients.
+                    optimizer.zero_grad();
+                    // Execute the model on the input data.
+                    torch::Tensor prediction = linearNet->forward(batch.data);
+                    // Compute a loss value to judge the prediction of our model.
+                    loss = torch::mse_loss(prediction, batch.target);
+                    // Compute gradients of the loss w.r.t. the parameters of our model.
+                    loss.backward();
+                    // Update the parameters based on the calculated gradients.
+                    optimizer.step();
+                    // Output the loss and checkpoint every 100 batches
+                 }
+                 std::cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << std::endl;
             }
-            return index;
-        }
-        /** This function ideally would belong to state.
-         *  It calculates the binary Value for a given state, which is needed for the calculation in stateToIndex
-         *\return returns a binary Value for a given State
-         */
-        unsigned int calculateBinaryValue(state* s) {
-            unsigned int binaryValue = 0;
-            for (unsigned int i = s->selectedSubset.size(); i > 0; i--) {
-                if (s->selectedSubset.at(i))
-                    binaryValue += pow(2,i);
-            }
-            return binaryValue;
-        }                 
+       };
+            
+            
+        vector<float> calcValueEstimates();      
 };
+
+
+
+
+
+
+
+

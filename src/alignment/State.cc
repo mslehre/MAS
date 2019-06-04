@@ -43,6 +43,7 @@ void state::select(int i){
 }
 
 void state::reset(){
+    selectedEdgeIndex.clear();
     vector<bool> tempSelectedSubset(edges.size(), false);
     vector<bool> tempSelectable(edges.size(), true);
     this->selectedSubset = tempSelectedSubset;
@@ -119,3 +120,17 @@ void state::calculate_score(){
         }            
     }
 }
+
+vector<vector<bool>> state::successorStates() {
+    vector<vector<bool>> successorStates;
+    for (unsigned int i = 0; i < edges.size(); i++) {
+        if (!selectedSubset.at(i) && selectable.at(i)) {
+            selectedSubset.at(i) = true;
+            successorStates.push_back(selectedSubset);
+            selectedSubset.at(i) = false;
+        }
+    }
+    return successorStates;
+}
+            
+       

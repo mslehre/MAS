@@ -86,6 +86,11 @@ class state{
     */
     void reset();
 
+    /** This function determines all direct successor states.
+     *  \return returns a vector of selected Subsets
+     */
+    vector<vector<bool>> successorStates();
+
 };
 
 #endif

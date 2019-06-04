@@ -10,12 +10,15 @@ class RLDataset : public torch::data::Dataset<RLDataset>
         torch::Tensor states, scores, actions;
 
     public:
+        unsigned int numbEpisodes;
         /** 
          * \brief calculate states and scores for the dataset
          * \param numbEpisodes number of episodes
          * \param agent random agent
          */
-        explicit RLDataset(unsigned numbEpisodes, Agent& agent) {          
+        explicit RLDataset(unsigned numbEpisodes, Agent& agent) { 
+
+            this->numbEpisodes = numbEpisodes;         
 
             vector<Episode> episodes;               // vector of episodes
             vector<vector<bool>> s;            // vector of states
@@ -54,6 +57,8 @@ class RLDataset : public torch::data::Dataset<RLDataset>
                  }   
             }
         }
+        
+        
     
         torch::data::Example<> get(size_t index) override {
             return {states[index], scores[index]};
