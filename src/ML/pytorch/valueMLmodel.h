@@ -1,13 +1,13 @@
 #pragma once
 #include "RLDataset.h"
 #include <math.h>
-#include <map.h>
+#include "LinearNet.h"
 
 class valueMLmodel {
     public:
         valueMLmodel(unsigned int dimstate) {
             this->dimstate = dimstate;
-            auto linearNet = std::make_shared<LinearNet>(dimstate);
+            linearNet = std::make_shared<LinearNet>(dimstate);
         };
         LinearNet linearNet;
         unsigned int dimstate;

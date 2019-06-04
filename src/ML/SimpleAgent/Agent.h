@@ -33,6 +33,7 @@ class Agent {
                 policy = std::unique_ptr<Policy>(new RandomPolicy()); 
                 break;
             case rl:
+                //policy = std::unique_ptr<Policy>(new LearnedPolicy()); 
                 break;
             default : 
                 break;
@@ -87,5 +88,9 @@ class Agent {
         }
         return std::make_pair(s,edgeSelection);
     }
+
+   /* void setPolicy(Policy& pol) {
+        this->policy = std::unique_ptr<Policy>(pol);
+    } */
 };
 #endif

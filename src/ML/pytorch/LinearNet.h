@@ -3,7 +3,7 @@
 
 // Define a new Module.
 class LinearNet : torch::nn::Module {
-    Net(unsigned ds) : dim_state(ds) {
+    LinearNet(unsigned ds) : dim_state(ds) {
         // Construct and register a Linear submodule
         lin_mod = register_module("fc", torch::nn::Linear(dim_state, 1));
     }
