@@ -23,17 +23,17 @@ linRegMain.o: linRegMain.cc $(H1) $(H2) $(H3) $(H4) $(H5) $(H6) $(H7) $(H8) $(H9
 	g++ $(CXXFLAGS) -c linRegMain.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 	$(torchOpt1) $(torchOpt2)
 
-State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../alignment/State.cc 
+State.o: ../../../alignment/State.cc $(H4) $(H2) $(H3)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/State.cc 
 
-Graph.o: ../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../alignment/Graph.cc
+Graph.o: ../../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/Graph.cc
 
-Edge.o: ../../alignment/Edge.cc $(H2) $(H3)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../alignment/Edge.cc
+Edge.o: ../../../alignment/Edge.cc $(H2) $(H3)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/Edge.cc
 
-Node.o: ../../alignment/Node.cc $(H3)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../alignment/Node.cc
+Node.o: ../../../alignment/Node.cc $(H3)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/Node.cc
 
 clean:
 	rm -f *.o linRegMain net.pt

@@ -2,6 +2,7 @@
 #include "../SimpleAgent/Agent.h"
 #include <torch/torch.h>
 #include <iostream>
+#include "../SimpleAgent/Episode.h"
 using std::vector;
 
 class RLDataset : public torch::data::Dataset<RLDataset>

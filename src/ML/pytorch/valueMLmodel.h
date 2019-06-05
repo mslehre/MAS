@@ -73,10 +73,12 @@ class valueMLmodel {
 
 
         vector<float> tensorToVector(torch::Tensor tens) {
-            vector<float> vec;
-            for (unsigned int i = 0; i < tens.size(); i++) {
-                vec.push_back(tens[i]);
+            vector<float*> vec;
+            vector<float> vecReturn;
+            for (unsigned int i = 0; i < tens.numel(); i++) {
+                vec.push_back(tens[i].data<float>());
+                vecReturn.push_back(*vec.at(i));
             }
-            return vec;
+            return vecReturn;
         }
 };

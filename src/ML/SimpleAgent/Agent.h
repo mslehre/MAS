@@ -9,6 +9,7 @@
 #include <chrono>
 #include <utility>
 #include <iostream>
+#include "../pytorch/LearnedPolicy.h"
 #include <map>
 #include "../../alignment/Graph.h"
 #include "Episode.h"
@@ -25,15 +26,18 @@ class Agent {
  
     ///< The initial state where every episode starts
     state s;
-    std::unique_ptr<Policy> policy;
+    //std::unique_ptr<Policy> policy;
+    Policy* policy;
     Agent(){};
     Agent(Graph& g, Policytype pol) : s(g.getEdges()){
         switch(pol) {
             case rnd:
-                policy = std::unique_ptr<Policy>(new RandomPolicy()); 
+                //policy = std::unique_ptr<Policy>(new RandomPolicy());
+                policy = new RandomPolicy();
                 break;
             case rl:
-                //policy = std::unique_ptr<Policy>(new LearnedPolicy()); 
+                //policy = std::unique_ptr<Policy>(new LearnedPolicy());
+                policy = new LearnedPolicy();
                 break;
             default : 
                 break;
@@ -51,7 +55,7 @@ class Agent {
         vector <bool> action(n, false);
         episode.states.push_back(s.selectedSubset); 
         unsigned int counter = 0;
-        std::pair <state*, unsigned int> stateAction = executePolicy(&s, policy.get());
+        std::pair <state*, unsigned int> stateAction = executePolicy(&s, policy);
         
        
         while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
@@ -59,7 +63,7 @@ class Agent {
             episode.actions.push_back(action);
             episode.actions.at(counter).at(stateAction.second)=true;
             counter++;
-            stateAction = executePolicy(stateAction.first, policy.get());
+            stateAction = executePolicy(stateAction.first, policy);
         }
         
         episode.actions.push_back(action);
@@ -89,8 +93,8 @@ class Agent {
         return std::make_pair(s,edgeSelection);
     }
 
-    /*void setPolicy(Policy& pol) {
-        this->policy = std::unique_ptr<Policy>(pol);
-    } */
+    void setPolicy(Policy *pol) {
+        this->policy = pol;
+    } 
 };
 #endif
