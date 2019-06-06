@@ -14,24 +14,6 @@
  */
 
 class state{
-    private:
-
-     /** 
-     * \param a is a Node
-     * \param b is a Node
-     * \return TRUE if a and b have the same indices
-     */
-
-    bool is_equal(Node& a, Node& b);
-
-     /**
-     * This function is recursive and continues a given path in a graph
-     * \param path is the path found so far
-     * \param graph is the graph (contains all nodes)
-     */
-
-    void find_path(std::vector<unsigned int>& path, Graph& graph);
-
     public:
     state(Graph& graph); ///< Constructor with a Graph
     state(std::vector <Edge> e); ///< Constructor with an Edge vector
@@ -77,11 +59,17 @@ class state{
     bool consistent(Edge& e, Edge& f);
    
     /** 
-     * \param graph is a graph
-     * calculate the score for a given graph
+     * calculate the score for the state
      */
 
-    void calculate_score(Graph& graph);
+    /**
+     * update the current score of the state: 
+     * \f$ \textrm{score} = \sum_{c \in C} |c| (|c| - 1) / 2\f$, 
+     * where C is the set of connected components and |c| is the number of nodes in connected 
+     * component c.
+     * This function requires that the edges are sorted increasingly by i.
+     */
+    void calculate_score();
 
 };
 

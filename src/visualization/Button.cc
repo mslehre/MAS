@@ -19,10 +19,10 @@ sf::Sprite Button::get_Button_Sprite(){
     return Button_Sprite;
 }
 
-void Button::eventHandler(sf::Event& event, std::string& status, sf::Vector2f& global_mouse_pos) {
+void Button::eventHandler(const sf::Event& event, std::string& status, const sf::Vector2f& mouse_pos) {
     if (status == my_status) {
         if (event.type == sf::Event::EventType::MouseMoved) {
-            if (Button_Sprite.getGlobalBounds().contains(global_mouse_pos)) {
+            if (Button_Sprite.getGlobalBounds().contains(mouse_pos)) {
                 std::string hover = Button_texturename.substr(0, Button_texturename.size() - 4) + "_hover.png";
                 load_Texture(hover);
             } else {
@@ -31,7 +31,7 @@ void Button::eventHandler(sf::Event& event, std::string& status, sf::Vector2f& g
         }
 
         if (event.type == sf::Event::EventType::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            if (Button_Sprite.getGlobalBounds().contains(global_mouse_pos)) {
+            if (Button_Sprite.getGlobalBounds().contains(mouse_pos)) {
                 Button_function();
                 status = next_status;
             }
@@ -41,5 +41,9 @@ void Button::eventHandler(sf::Event& event, std::string& status, sf::Vector2f& g
 
 void Button::setFunction(std::function<void()> func) {
     Button_function = func;
+}
+
+void Button::setPosition(float x_pos, float y_pos) {
+    Button_Sprite.setPosition(sf::Vector2f(x_pos, y_pos));
 }
 

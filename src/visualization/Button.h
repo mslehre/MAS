@@ -48,16 +48,24 @@ class Button {
          * This function handle events
          * \param event a Event which will describe the event that will happen
          * \param status is the status of the current GUI
-         * \param global_mouse_pos the current mouse position
+         * \param mouse_pos the current mouse position
          */
     
-        void eventHandler(sf::Event& event, std::string& status, sf::Vector2f& global_mouse_pos);
+        void eventHandler(const sf::Event& event, std::string& status, const sf::Vector2f& mouse_pos);
 
         /** 
          * set the function of the Button
          */
         
         void setFunction(std::function<void()> func);
+
+        /** 
+         * set a new position for the Button
+         * \param x_pos is the new x-coordinate
+         * \param y_pos is the new y-coordinate
+         */
+
+        void setPosition(float x_pos, float y_pos);
 
 };
 
