@@ -5,6 +5,7 @@
 #include <string>
 #include "../visualization/GraphRenderer.h"
 #include "../visualization/Button.h"
+#include "../visualization/Slider.h"
 #include "Gamemaster.h"
 
 int main() {
@@ -36,6 +37,11 @@ int main() {
     menuButtonGame.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
     menuButtonSettings.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
 
+    Slider slider_k(450, 100, 1, 10, k, "Length of kmer");
+	Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
+	Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
+	//Slider slider_mutation(450, 100, 0, 100, probability, "Mutationprobability");
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -62,6 +68,10 @@ int main() {
         }
         if (status == "settings") {
             window.clear(sf::Color::White);
+		    slider_k.draw(window, k);
+		    slider_lengSeq.draw(window, length_of_sequences);
+		    slider_numSeq.draw(window, number_of_sequences);
+		    //slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());                        
             clock.restart();
         }

@@ -1,7 +1,7 @@
 include ../common.mk
 
 CC = g++
-OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o GraphRenderer.o ArrowShape.o FuncArrowShape.o
+OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o
 HEADER1 = ../alignment/Graph.h
 HEADER2 = ../alignment/Node.h
 HEADER3 = ../alignment/Edge.h
@@ -15,7 +15,8 @@ HEADER10 = ../visualization/GraphRenderer.h
 HEADER11 = ../visualization/ArrowShape.h
 HEADER12 = ../visualization/FuncArrowShape.h
 HEADER13 = ../visualization/Button.h
-HEADER14 = Gamemaster.h
+HEADER14 = ../visualization/Slider.h
+HEADER15 = Gamemaster.h
 
 all: game_main
 
@@ -49,7 +50,7 @@ generator.o: ../SequenceSimulation/generator.cc $(HEADER7)
 colormap.o: ../visualization/colormap.cc $(HEADER9)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
-Gamemaster.o: Gamemaster.cc $(HEADER1) $(HEADER4) $(HEADER5) $(HEADER6) $(HEADER8) $(HEADER9) $(HEADER14)
+Gamemaster.o: Gamemaster.cc $(HEADER1) $(HEADER4) $(HEADER5) $(HEADER6) $(HEADER8) $(HEADER9) $(HEADER15)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 colorlist.o: ../visualization/colorlist.cc $(HEADER8)
@@ -62,6 +63,9 @@ ArrowShape.o: ../visualization/ArrowShape.cc $(HEADER11)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 FuncArrowShape.o: ../visualization/FuncArrowShape.cc $(HEADER11) $(HEADER12)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
+Slider.o: ../visualization/Slider.cc $(HEADER14)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 clean:
