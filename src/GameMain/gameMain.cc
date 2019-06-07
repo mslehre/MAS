@@ -13,14 +13,14 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.setFramerateLimit(120);
 
-    //parameter for the game
+    //default parameter for the game
     unsigned int k = 3;
     unsigned int length_of_sequences = 42;
     unsigned int number_of_sequences = 4;
-    double probability = 0.3;
+    unsigned int probability = 25;
     std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
-    sf::Clock clock; //clock to compute a scroll speed
 
+    sf::Clock clock; //clock to compute a scroll speed
     Gamemaster gamemaster(k, length_of_sequences, number_of_sequences, probability);
     vector<Node> nodeList = gamemaster.GameGraph.getNodes();
     GraphRenderer GrRend(window, gamemaster.GameGraph, gamemaster.GameNodes);
@@ -40,7 +40,7 @@ int main() {
     Slider slider_k(450, 100, 1, 10, k, "Length of kmer");
 	Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
 	Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
-	//Slider slider_mutation(450, 100, 0, 100, probability, "Mutationprobability");
+	Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
 
     while (window.isOpen()) {
         sf::Event event;
@@ -71,7 +71,7 @@ int main() {
 		    slider_k.draw(window, k);
 		    slider_lengSeq.draw(window, length_of_sequences);
 		    slider_numSeq.draw(window, number_of_sequences);
-		    //slider_mutation.draw(window, probability);
+		    slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());                        
             clock.restart();
         }

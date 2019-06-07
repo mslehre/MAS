@@ -26,7 +26,7 @@ class Gamemaster {
          * \param probability is the probability for mutations in the sequencens  
          */
 
-        Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
+        Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, unsigned int probability);
 
         /**
          * standard constructor, which does nothing

@@ -7,7 +7,7 @@ using namespace std;
 // This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
 // If there is more then one sequence then we have mutations with mutation probability P. 
 // Call script with: ./simulation_main S L P
-// Example: ./simulation_main 5 100 0.3
+// Example: ./simulation_main 5 100 30
 
 int main(int argc, char *argv[]){
     if (argc != 4) {
@@ -27,9 +27,9 @@ int main(int argc, char *argv[]){
         printHelpSS();
         return -1;
     }
-    double mutationpProbability = atof(argv[3]);
-    if (mutationpProbability < 0 || mutationpProbability > 1) {
-        cerr << "\nThe third number must be an double between 0 and 1.\n" << endl;
+    unsigned int mutationpProbability = atof(argv[3]);
+    if (mutationpProbability < 0 || mutationpProbability > 100) {
+        cerr << "\nThe third number must be an integer between 0 and 100.\n" << endl;
         printHelpSS();
         return -1;
     }

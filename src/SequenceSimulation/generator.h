@@ -29,7 +29,7 @@ class Generator {
          * \return a mutated DNA
          */
 
-        std::string mutateDNA(std::string DNA, double mutationProbability); 
+        std::string mutateDNA(std::string DNA, unsigned int mutationProbability); 
 };
 
 #endif //generator_H_ 

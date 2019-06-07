@@ -17,7 +17,7 @@ Slider::Slider(int x_pos, int y_pos, unsigned int min, unsigned int max, unsigne
         number = max;
     }
 
-    height = 20;
+    axis_height = 20;
     axis_width = 600;
     slider_width = 20;
 
@@ -31,15 +31,15 @@ Slider::Slider(int x_pos, int y_pos, unsigned int min, unsigned int max, unsigne
 	axis.setFillColor(sf::Color(100, 100, 100));
     axis.setOutlineColor(sf::Color::Black);
 	axis.setOutlineThickness(1);
-	axis.setSize(sf::Vector2f(axis_width, height));
-	axis.setOrigin(0, height / 2);
+	axis.setSize(sf::Vector2f(axis_width, axis_height));
+	axis.setOrigin(0, axis_height / 2);
 
     slider.setPosition(x_pos + (axis_width / (max - min)) * (value - min), y_pos);
 	slider.setFillColor(sf::Color(200, 200, 200));
 	slider.setOutlineColor(sf::Color::Black);
 	slider.setOutlineThickness(1);
-    slider.setSize(sf::Vector2f(slider_width, height * 3));
-    slider.setOrigin(slider_width / 2, height * 1.5);
+    slider.setSize(sf::Vector2f(slider_width, axis_height * 3));
+    slider.setOrigin(slider_width / 2, axis_height * 1.5);
 }
 
 void Slider::draw(sf::RenderWindow& window, unsigned int& number){
@@ -56,10 +56,10 @@ void Slider::draw(sf::RenderWindow& window, unsigned int& number){
 
     window.draw(axis);
 	window.draw(slider);
-	window.draw(drawText(to_string(min), x_pos - 10, y_pos + height + 8,  20));
-	window.draw(drawText(to_string(max), x_pos + axis_width - 10, y_pos + height + 8,  20));
-	window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + height + 5,  25));
-	window.draw(drawText(name, x_pos + axis_width / 2, y_pos - height * 3,  25));
+	window.draw(drawText(to_string(min), x_pos - 10, y_pos + axis_height + 8,  20));
+	window.draw(drawText(to_string(max), x_pos + axis_width - 10, y_pos + axis_height + 8,  20));
+	window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + axis_height + 5,  25));
+	window.draw(drawText(name, x_pos + axis_width / 2, y_pos - axis_height * 3,  25));
 }
 
 sf::Text Slider::drawText(std::string s, int x_pos, int y_pos,  unsigned int size){
@@ -67,8 +67,4 @@ sf::Text Slider::drawText(std::string s, int x_pos, int y_pos,  unsigned int siz
     text.setPosition(x_pos, y_pos);
     text.setCharacterSize(size);
 	return text;
-}
-
-unsigned int Slider::getValue(){
-	return value;
 }

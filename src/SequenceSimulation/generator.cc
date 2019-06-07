@@ -22,13 +22,13 @@ string Generator::randomDNA(unsigned int DNAlength){
     return DNA;
 }
 
-string Generator::mutateDNA(string DNA, double mutationProbability){
+string Generator::mutateDNA(string DNA, unsigned int mutationProbability){
     uniform_int_distribution<> dis(0, 3);
-    uniform_real_distribution<> dis2(0, 1);
+    uniform_real_distribution<> dis2(0, 100);
     string alphabet = "ACTG";
 
     for (unsigned int i = 0; i < DNA.length(); i++) {
-        double isMutant = dis2(rng); // random number between 0 and 1
+        unsigned int isMutant = dis2(rng); // random number between 0 and 100
         if (isMutant <= mutationProbability)
             DNA[i] = alphabet[dis(rng)];
     }
