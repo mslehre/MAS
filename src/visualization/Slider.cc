@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Slider::Slider(int x_pos, int y_pos, unsigned int min, unsigned int max, unsigned int& number, string name){
+Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, string name){
 	this->x_pos = x_pos;
 	this->y_pos = y_pos;
     this->min = min;
@@ -10,11 +10,11 @@ Slider::Slider(int x_pos, int y_pos, unsigned int min, unsigned int max, unsigne
     this->movable = false;
     this->name = name;
 
-    if (number < max) {
-        value = number;
+    if (variable >= min && variable <= max) {
+        value = variable;
     } else {
-        value = max;
-        number = max;
+        value = ceil((min + max) / 2);
+        variable = value;
     }
 
     axis_height = 20;

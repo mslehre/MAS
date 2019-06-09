@@ -6,37 +6,46 @@
 
 class Slider{
     private:
-        int x_pos; ///< x coordinate of the slider
-        int y_pos; ///< y coordinate of the slider
-        bool movable;   ///< true, if the slider button is movable
+        unsigned int x_pos; ///< x coordinate of the slider
+        unsigned int y_pos; ///< y coordinate of the slider
         unsigned int min;   ///< the minimal value of the slider
         unsigned int max;   ///< the maximal value of the slider
         unsigned int value; ///< the current value of the slider
         unsigned int axis_height;   ///< height of the slider axis
         unsigned int axis_width;    ///< width of the slider axis
         unsigned int slider_width;  ///< width of the slider button
+        bool movable;   ///< true, if the movable part of the slider is movable
+	    sf::Text text;  ///< is needed to display the values of the slider
         sf::Font font;  ///< font of text
-	    sf::Text text;  ///< for the
-	    sf::RectangleShape axis;    ///<
-        sf::RectangleShape slider;  ///<
+	    sf::RectangleShape axis;    ///< slider axis
+        sf::RectangleShape slider;  ///< movable part of the slider
         std::string name;   ///< name of the slider
     public:
 
-        /**
-         *
+        /** 
+         * \param x_pos is the x coordinate of the slider in the window
+         * \param y_pos is the y coordinate of the slider in the window
+         * \param min is the minimal value of the slider
+         * \param max is the maximal value of the slider
+         * \param number is variable that will be changed with the slider
+         * \param name this string will draw above the slider in the window
          */
 
-	Slider(int x_pos, int y_pos, unsigned int min, unsigned int max, unsigned int& number, std::string name);
+	    Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, std::string name);
 
-        /**
-         *
+        /** 
+         * \param window is the RenderWindow which gets the drawed slider
+         * \param number is variable that will be changed with the slider
          */
 
-	void draw(sf::RenderWindow& window, unsigned int& number);
+	    void draw(sf::RenderWindow& window, unsigned int& variable);
 
         /**
-         *
+         * \param text is the string that will be displayed in the window
+         * \param x_pos is the x coordinate of the text in the window
+         * \param y_pos is the y coordinate of the text in the window
+         * \param size is the size of the text
          */
 
-	sf::Text drawText(std::string s, int x_pos, int y_pos, unsigned int size);
+	    sf::Text drawText(std::string text, int x_pos, int y_pos, unsigned int size);
 };

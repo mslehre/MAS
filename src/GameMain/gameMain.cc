@@ -21,8 +21,11 @@ int main() {
     std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
 
     sf::Clock clock; //clock to compute a scroll speed
+    //Gamemaster gamemaster;
     Gamemaster gamemaster(k, length_of_sequences, number_of_sequences, probability);
+    //vector<Node> nodeList;
     vector<Node> nodeList = gamemaster.GameGraph.getNodes();
+    //GraphRenderer GrRend;
     GraphRenderer GrRend(window, gamemaster.GameGraph, gamemaster.GameNodes);
 
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
@@ -30,6 +33,17 @@ int main() {
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
     Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
+
+/*
+    startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
+                             &number_of_sequences, &probability] () {
+            Gamemaster gMtemp(k, length_of_sequences, number_of_sequences, probability);
+            gamemaster = gMtemp;
+            nodeList = gMtemp.GameGraph.getNodes();
+            GraphRenderer gtemp(window, gMtemp.GameGraph, gMtemp.GameNodes);
+            GrRend = gtemp;
+    });
+*/
 
     startButton.setFunction([] () {});
     settingsButton.setFunction([] () {});
@@ -56,7 +70,7 @@ int main() {
             quitButton.eventHandler(event, status, mouse_position);
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
-            GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState);
+            GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, mouse_position);
         }
 
         if (status == "menu") {

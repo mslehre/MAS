@@ -38,8 +38,8 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
 }
 
 //Method which catches all events of the window
-void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
-                                 vector<DrawNode>& Nodes, state& gameState) {
+void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
+                                 vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos) {
     window.setView(actualView);
     //Move the view of the window
     enum direction {Down, Left, Right, Up, Space};
@@ -55,35 +55,31 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
         if (event.key.code == sf::Keyboard::Space)
             moveWindow(Space);
     }
-    //Get hovercoords of the window
-    sf::Vector2i posOfMouse1(event.mouseMove.x, event.mouseMove.y);
-    auto movePos = window.mapPixelToCoords(posOfMouse1);
+
     //Now check what gets hovered
     if (event.type == sf::Event::EventType::MouseMoved) {
         //highlight the hovered Node
-        if (!nodeHovered && !nodeClicked && isPositionNode(movePos, Nodes, nodeList)) {
-            hoverNode(nodeList, Nodes, movePos);
+        if (!nodeHovered && !nodeClicked && isPositionNode(mouse_pos, Nodes, nodeList)) {
+            hoverNode(nodeList, Nodes, mouse_pos);
         //remove the highlight of the Node
-        } else if (nodeHovered && !isPositionNode(movePos, Nodes, nodeList)) {
+        } else if (nodeHovered && !isPositionNode(mouse_pos, Nodes, nodeList)) {
             deHoverNode();
         }
         //highlight a hovered edge, if possible
-        if (nodeClicked && !edgeHovered && isPositionEdge(movePos)) {
-            hoverEdge(movePos);
+        if (nodeClicked && !edgeHovered && isPositionEdge(mouse_pos)) {
+            hoverEdge(mouse_pos);
         //remove this highlight
-        } else if (nodeClicked && edgeHovered && !isPositionEdge(movePos)) {
+        } else if (nodeClicked && edgeHovered && !isPositionEdge(mouse_pos)) {
             deHoverEdge();
         }
     }
-    //Get clickcoords of the window
-    sf::Vector2i posOfMouse2(event.mouseButton.x, event.mouseButton.y);
-    auto clickPos = window.mapPixelToCoords(posOfMouse2);
+
     //Now check what gets clicked
     if (event.type == sf::Event::EventType::MouseButtonPressed) {
         //select the Node you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeHovered && !nodeClicked) {
-            clickNode(nodeList, Nodes, clickPos);
-            showEdges(nodeList, Nodes, clickPos, gameState);
+            clickNode(nodeList, Nodes, mouse_pos);
+            showEdges(nodeList, Nodes, mouse_pos, gameState);
         //remove the selected Node
         } else if (event.mouseButton.button == sf::Mouse::Right && nodeClicked) {
             deClickNode();

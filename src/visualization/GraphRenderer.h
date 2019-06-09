@@ -101,10 +101,11 @@ class GraphRenderer{
          * \param window a renderWindow which is needed to get informations (i.e. mousepos)
          * \param event a Event which will describe the event that will happen
          * \param nodeList a vector of Nodes which is needed for a few methods
+         * \param mouse_pos the current mouse position
          */
 
-        void eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                          state& gameState);
+        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
+                          state& gameState, const sf::Vector2f& mouse_pos);
 
         /**
          * a function which display the current score of the game
