@@ -15,9 +15,9 @@ class Slider{
         unsigned int axis_width;    ///< width of the slider axis
         unsigned int slider_width;  ///< width of the slider button
         bool movable;   ///< true, if the movable part of the slider is movable
-	    sf::Text text;  ///< is needed to display the values of the slider
+        sf::Text text;  ///< is needed to display the values of the slider
         sf::Font font;  ///< font of text
-	    sf::RectangleShape axis;    ///< slider axis
+        sf::RectangleShape axis;    ///< slider axis
         sf::RectangleShape slider;  ///< movable part of the slider
         std::string name;   ///< name of the slider
     public:
