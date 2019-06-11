@@ -77,10 +77,10 @@ int main() {
         }
         if (status == "settings") {
             window.clear(sf::Color::White);
-		    slider_k.draw(window, k);
-		    slider_lengSeq.draw(window, length_of_sequences);
-		    slider_numSeq.draw(window, number_of_sequences);
-		    slider_mutation.draw(window, probability);
+            slider_k.draw(window, k);
+            slider_lengSeq.draw(window, length_of_sequences);
+            slider_numSeq.draw(window, number_of_sequences);
+            slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());                        
             clock.restart();
         }
