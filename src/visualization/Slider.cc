@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, string name){
+Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, 
+               string name){
     this->x_pos = x_pos;
     this->y_pos = y_pos;
     this->min = min;

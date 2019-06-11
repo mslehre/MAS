@@ -1,4 +1,6 @@
-#pragma once
+#ifndef Slider_H_
+#define Slider_H_
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <iostream>
@@ -50,3 +52,5 @@ class Slider{
 
         sf::Text drawText(std::string text, int x_pos, int y_pos, unsigned int size);
 };
+
+#endif //Slider_H_
