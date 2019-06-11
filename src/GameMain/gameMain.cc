@@ -31,20 +31,18 @@ int main() {
     Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
 
-
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
                              &number_of_sequences, &probability] () {
-            Gamemaster gMtemp(k, length_of_sequences, number_of_sequences, probability);
-            gamemaster = gMtemp;
-            nodeList = gMtemp.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gMtemp.GameGraph, gMtemp.GameNodes);
+            gamemaster.makeGame(k, length_of_sequences, number_of_sequences, probability);
+            nodeList = gamemaster.GameGraph.getNodes();
+            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes);
             GrRend = gtemp;
     });
-
+ 
     settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
-    menuButtonGame.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
-    menuButtonSettings.setFunction([&GrRend] () {GrRend.actualView = GrRend.defaultView; });
+    menuButtonGame.setFunction([&GrRend, &window] () {window.setView(GrRend.defaultView); });
+    menuButtonSettings.setFunction([&GrRend, &window] () {window.setView(GrRend.defaultView); });
 
     Slider slider_k(450, 100, 1, 10, k, "Length of kmer");
 	Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
@@ -65,7 +63,8 @@ int main() {
             quitButton.eventHandler(event, status, mouse_position);
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
-            //GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, mouse_position);
+            if (status == "game")
+                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, mouse_position);
         }
 
         if (status == "menu") {

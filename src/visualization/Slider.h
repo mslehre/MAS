@@ -18,7 +18,7 @@ class Slider{
         sf::Text text;  ///< is needed to display the values of the slider
         sf::Font font;  ///< font of text
         sf::RectangleShape axis;    ///< slider axis
-        sf::RectangleShape slider;  ///< movable part of the slider
+        sf::RectangleShape slider_bar;  ///< movable part of the slider
         std::string name;   ///< name of the slider
     public:
 
@@ -31,14 +31,14 @@ class Slider{
          * \param name this string will draw above the slider in the window
          */
 
-	    Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, std::string name);
+        Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, std::string name);
 
         /** 
          * \param window is the RenderWindow which gets the drawed slider
          * \param number is variable that will be changed with the slider
          */
 
-	    void draw(sf::RenderWindow& window, unsigned int& variable);
+         void draw(sf::RenderWindow& window, unsigned int& variable);
 
         /**
          * \param text is the string that will be displayed in the window
@@ -47,5 +47,5 @@ class Slider{
          * \param size is the size of the text
          */
 
-	    sf::Text drawText(std::string text, int x_pos, int y_pos, unsigned int size);
+        sf::Text drawText(std::string text, int x_pos, int y_pos, unsigned int size);
 };

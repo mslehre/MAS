@@ -40,7 +40,6 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
 //Method which catches all events of the window
 void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
                                  vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos) {
-    window.setView(actualView);
     //Move the view of the window
     enum direction {Down, Left, Right, Up, Space};
     if (event.type == sf::Event::EventType::KeyPressed) {
