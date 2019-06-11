@@ -64,7 +64,8 @@ int main() {
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
             if (status == "game")
-                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, mouse_position);
+                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, 
+                                    mouse_position);
         }
 
         if (status == "menu") {

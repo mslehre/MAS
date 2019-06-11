@@ -27,11 +27,12 @@ class Slider{
          * \param y_pos is the y coordinate of the slider in the window
          * \param min is the minimal value of the slider
          * \param max is the maximal value of the slider
-         * \param number is variable that will be changed with the slider
+         * \param variable is variable that will be changed with the slider
          * \param name this string will draw above the slider in the window
          */
 
-        Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, std::string name);
+        Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, 
+               std::string name);
 
         /** 
          * \param window is the RenderWindow which gets the drawed slider

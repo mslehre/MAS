@@ -104,8 +104,8 @@ class GraphRenderer{
          * \param mouse_pos the current mouse position
          */
 
-        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                          state& gameState, const sf::Vector2f& mouse_poszz);
+        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
+                          vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos);
 
         /**
          * a function which display the current score of the game

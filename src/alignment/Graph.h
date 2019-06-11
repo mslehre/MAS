@@ -59,5 +59,6 @@ class Graph {
          * \brief reset the Graph
          * clears nodes and edges and sets k to zero
          */
+
         void resetGraph();
 };
