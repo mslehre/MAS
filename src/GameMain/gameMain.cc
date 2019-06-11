@@ -18,7 +18,7 @@ int main() {
     unsigned int length_of_sequences = 42;
     unsigned int number_of_sequences = 4;
     unsigned int probability = 25;
-    std::string status = "menu"; // "status" of the window {menu, game, settings, help, quit} 
+    std::string status = "menu"; // "status" of the window {menu, game, settings, quit} 
 
     sf::Clock clock; //clock to compute a scroll speed
     Gamemaster gamemaster;
@@ -45,9 +45,9 @@ int main() {
     menuButtonSettings.setFunction([&GrRend, &window] () {window.setView(GrRend.defaultView); });
 
     Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
-	Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
-	Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
-	Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
+    Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
+    Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
+    Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
 
     while (window.isOpen()) {
         sf::Event event;
@@ -64,7 +64,7 @@ int main() {
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
             if (status == "game")
-                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState, 
+                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState,
                                     mouse_position);
         }
 
@@ -81,7 +81,7 @@ int main() {
             slider_lengSeq.draw(window, length_of_sequences);
             slider_numSeq.draw(window, number_of_sequences);
             slider_mutation.draw(window, probability);
-            window.draw(menuButtonSettings.get_Button_Sprite());                        
+            window.draw(menuButtonSettings.get_Button_Sprite());
             clock.restart();
         }
         if (status == "game") {
@@ -90,11 +90,11 @@ int main() {
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                        window.getView().getCenter().y - (window.getSize().y / 2));
             GrRend.display_score(window, gamemaster.GameState);
-            window.draw(menuButtonGame.get_Button_Sprite());                        
+            window.draw(menuButtonGame.get_Button_Sprite());
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation
         }
-        window.display();      
+        window.display();
     }
     return 0;
 }

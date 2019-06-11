@@ -26,7 +26,7 @@ class Gamemaster {
          * \param probability is the probability for mutations in the sequencens  
          */
 
-        void makeGame(const unsigned int& k, const unsigned int& length, const unsigned int& number_of_sequences, 
+        void makeGame(const unsigned int& k, const unsigned int& length, const unsigned int& number_of_sequences,
                       const unsigned int& probability);
 
         /**
@@ -43,5 +43,4 @@ class Gamemaster {
 
 };
 
-#endif //Gamemaster_H_ 
-
+#endif //Gamemaster_H_
