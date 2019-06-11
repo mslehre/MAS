@@ -1,7 +1,8 @@
 include ../common.mk
 
 CC = g++
-OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o
+OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o \
+    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o
 HEADER1 = ../alignment/Graph.h
 HEADER2 = ../alignment/Node.h
 HEADER3 = ../alignment/Edge.h
