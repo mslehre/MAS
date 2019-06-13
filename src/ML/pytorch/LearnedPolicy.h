@@ -14,7 +14,6 @@ class LearnedPolicy : public Policy {
         
         void setVModel(valueMLmodel* valModel) {
             vModel = valModel;
-            std::cout<<"hello"<<std::endl;
         };
 
         virtual std::vector <float> runPolicy(state* s) const override {

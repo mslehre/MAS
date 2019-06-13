@@ -28,19 +28,17 @@ int main() {
     
     RLDataset dataSet1(episodes1);
     valueMLmodel valModel(g.getEdges().size());
-    LearnedPolicy* lpol;
+    LearnedPolicy lpol;
     
-    lpol->setVModel(valModel);
-    std::cout<<"hello"<<std::endl;
+    lpol.setVModel(&valModel); 
     
-    
-    lpol->vModel->learn(dataSet1, 100, 64, 0.1);
-    agent.setPolicy(lpol);
+    lpol.vModel->learn(dataSet1, 100, 64, 0.1);
+    agent.setPolicy(&lpol);
     vector<Episode> episodes2;
 
     for (unsigned int i = 0; i < numbEpisodes; i++) {
         episodes2.push_back(agent.getEpisode());
     }
     RLDataset dataSet2(episodes2);
-    lpol->vModel->learn(dataSet2, 100, 64, 0.1);
+    lpol.vModel->learn(dataSet2, 100, 64, 0.1);
 }

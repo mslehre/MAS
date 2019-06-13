@@ -18,7 +18,7 @@ class RLDataset : public torch::data::Dataset<RLDataset>
          * \param numbEpisodes number of episodes
          * \param agent random agent
          */
-        explicit RLDataset(vector<Episode> episodes) { 
+        explicit RLDataset(vector<Episode>& episodes) { 
 
             this->episodes = episodes;
             numbEpisodes = episodes.size();         
