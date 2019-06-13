@@ -11,8 +11,8 @@ using namespace std;
 
 Gamemaster::Gamemaster(){};
 
-void Gamemaster::makeGame(const unsigned int& k, const unsigned int& length, const unsigned int& number_of_sequences,
-                          const unsigned int& probability){
+void Gamemaster::makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences,
+                          unsigned int probability){
     simulate(number_of_sequences, length, probability);
     GameGraph.resetGraph();
     GameGraph.readFastaFiles("sequences.fa", k);

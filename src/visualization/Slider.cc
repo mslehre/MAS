@@ -1,4 +1,5 @@
 #include "Slider.h"
+#include <math.h>
 
 using namespace std;
 

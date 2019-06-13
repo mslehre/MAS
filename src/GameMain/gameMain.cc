@@ -17,7 +17,7 @@ int main() {
     unsigned int k = 3;
     unsigned int length_of_sequences = 42;
     unsigned int number_of_sequences = 4;
-    unsigned int probability = 25;
+    unsigned int probability = 25; // the actual probability is 25%
     std::string status = "menu"; // "status" of the window {menu, game, settings, quit} 
 
     sf::Clock clock; //clock to compute a scroll speed
@@ -32,7 +32,7 @@ int main() {
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
 
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
-                             &number_of_sequences, &probability] () {
+                             &number_of_sequences, &probability, &menuButtonGame] () {
             gamemaster.makeGame(k, length_of_sequences, number_of_sequences, probability);
             nodeList = gamemaster.GameGraph.getNodes();
             GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes);
@@ -41,8 +41,8 @@ int main() {
  
     settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
-    menuButtonGame.setFunction([&GrRend, &window] () {window.setView(GrRend.defaultView); });
-    menuButtonSettings.setFunction([&GrRend, &window] () {window.setView(GrRend.defaultView); });
+    menuButtonGame.setFunction([&window] () {window.getDefaultView(); });
+    menuButtonSettings.setFunction([&window] () {window.getDefaultView(); });
 
     Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
     Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
