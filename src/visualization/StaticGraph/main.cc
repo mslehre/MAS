@@ -74,7 +74,7 @@ int main(int argc, char **argv){
             if (event.type == sf::Event::EventType::Closed)
                 window.close();
             //eventhandler for graphical interaction
-            GrRend.eventHandler(event, window, nodeList, Nodes, gameState);
+            GrRend.eventHandler(event, window, nodeList, Nodes, gameState, mouse_position);
             menuButton.eventHandler(event, status, mouse_position);
         }
         GrRend.updateDrawNode(window, nodeList, Nodes, gameState, menuButton);

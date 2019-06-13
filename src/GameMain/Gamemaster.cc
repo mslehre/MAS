@@ -11,8 +11,9 @@ using namespace std;
 
 Gamemaster::Gamemaster(){};
 
-Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
-    simulate(number_of_sequences, length, probability);     
+void Gamemaster::makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
+    simulate(number_of_sequences, length, probability);
+    GameGraph.resetGraph();
     GameGraph.readFastaFiles("sequences.fa", k);
     remove("sequences.fa");
     state statetemp(GameGraph);

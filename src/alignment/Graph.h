@@ -54,4 +54,11 @@ class Graph {
          */
 
         void readFastaFiles(string nameFile, unsigned int k);
+        
+        /** 
+         * \brief reset the Graph
+         * clears nodes and edges and sets k to zero
+         */
+
+        void resetGraph();
 };

@@ -34,7 +34,7 @@ void simulate(unsigned int numberOfSequences, unsigned int DNAlength, double mut
         cerr << "Error creating the output file." << endl;
     }
 
-    const int maxLineLength = 80;
+    const unsigned int maxLineLength = 80;
 
     for (unsigned int i = 0; i < DNAsequences.size(); i++) {
         outfile << ">seq" << i + 1;
