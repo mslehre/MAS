@@ -27,9 +27,9 @@ int main(int argc, char *argv[]){
         printHelpSS();
         return -1;
     }
-    unsigned int mutationpProbability = atof(argv[3]);
-    if (mutationpProbability < 0 || mutationpProbability > 100) {
-        cerr << "\nThe third number must be an integer between 0 and 100.\n" << endl;
+    double mutationpProbability = atof(argv[3]);
+    if (mutationpProbability < 0 || mutationpProbability > 1) {
+        cerr << "\nThe third number must be an double between 0 and 1.\n" << endl;
         printHelpSS();
         return -1;
     }
