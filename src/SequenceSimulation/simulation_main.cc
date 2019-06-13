@@ -7,7 +7,7 @@ using namespace std;
 // This programm creates one multiple FASTA file "sequences.fa" with S random sequences of lenght L.
 // If there is more then one sequence then we have mutations with mutation probability P. 
 // Call script with: ./simulation_main S L P
-// Example: ./simulation_main 5 100 30
+// Example: ./simulation_main 5 100 0.3
 
 int main(int argc, char *argv[]){
     if (argc != 4) {

@@ -23,10 +23,10 @@ class Gamemaster {
          * \param k is the length of the kmers
          * \param length is the length of the created sequences
          * \param number_of_sequences is the number of sequences that will created   
-         * \param probability is the probability for mutations in the sequences  
+         * \param probability is the probability for mutations in the sequences
          */
 
-        void makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences, unsigned int probability);
+        void makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
 
         /**
          * standard constructor, which does nothing

@@ -44,16 +44,24 @@ Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigne
     slider_bar.setOrigin(slider_width / 2, axis_height * 1.5);
 }
 
-void Slider::draw(sf::RenderWindow& window, unsigned int& number){
+void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
     auto mouse_position = window.mapPixelToCoords(sf::Mouse::getPosition(window));
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && slider_bar.getGlobalBounds().contains(mouse_position))
         movable = true;
     if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
         movable = false;
-    if (movable && x_pos <= mouse_position.x && mouse_position.x <= x_pos + axis_width) {
-        slider_bar.setPosition(mouse_position.x, y_pos);
-        value = ceil(min + ((slider_bar.getPosition().x - x_pos) / axis_width * (max - min)));
-        number = value;
+    if (movable) {
+        if (x_pos <= mouse_position.x && mouse_position.x <= x_pos + axis_width) {
+            slider_bar.setPosition(mouse_position.x, y_pos);
+            value = min + ((slider_bar.getPosition().x - x_pos) / axis_width * (max - min));
+        } else if (mouse_position.x >= x_pos + axis_width) {
+            slider_bar.setPosition(x_pos + axis_width, y_pos);
+            value = max;
+        } else {
+            slider_bar.setPosition(x_pos, y_pos);
+            value = min;
+        }
+        variable = value;
     }
 
     window.draw(axis);

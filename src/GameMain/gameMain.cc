@@ -12,6 +12,7 @@ int main() {
     //Open the window with restrict framerate
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.setFramerateLimit(120);
+    sf::View defaultView = window.getDefaultView();
 
     //default parameter for the game
     unsigned int k = 3;
@@ -32,8 +33,8 @@ int main() {
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
 
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
-                             &number_of_sequences, &probability, &menuButtonGame] () {
-            gamemaster.makeGame(k, length_of_sequences, number_of_sequences, probability);
+                             &number_of_sequences, &probability] () {
+            gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
             nodeList = gamemaster.GameGraph.getNodes();
             GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes);
             GrRend = gtemp;
@@ -41,8 +42,8 @@ int main() {
  
     settingsButton.setFunction([] () {});
     quitButton.setFunction([&window] () {window.close(); });
-    menuButtonGame.setFunction([&window] () {window.getDefaultView(); });
-    menuButtonSettings.setFunction([&window] () {window.getDefaultView(); });
+    menuButtonGame.setFunction([&window, &defaultView] () {window.setView(defaultView); });
+    menuButtonSettings.setFunction([&window, &defaultView] () {window.setView(defaultView); });
 
     Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
     Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");

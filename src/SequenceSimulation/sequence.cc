@@ -11,15 +11,15 @@ using namespace std;
 void printHelpSS(){
     cout << "\t Call skript with:\t./simulation_main S L P \n" << endl;
     cout << "\t Example: ./simulation_main 5 100 0.3 \n" << endl;
-    cout << "\t S: Must be an positive integer greater then zero." << endl;
+    cout << "\t S: Must be an integer greater then zero." << endl;
     cout << "\t\t S is the number of sequences that will created.\n" << endl;
-    cout << "\t L: Must be an positive integer greater then zero." << endl;
+    cout << "\t L: Must be an integer greater then zero." << endl;
     cout << "\t\t L is the length of the created sequences.\n" << endl;
-    cout << "\t P: Must be an integer between 0 and 100." << endl;
+    cout << "\t P: Must be an double between zero and one." << endl;
     cout << "\t\t P is the probability for mutations in the sequencens.\n" << endl;
 }
 
-void simulate(unsigned int numberOfSequences, unsigned int DNAlength, unsigned int mutationProbability){
+void simulate(unsigned int numberOfSequences, unsigned int DNAlength, double mutationProbability){
     vector<string> DNAsequences(numberOfSequences);
     Generator gen;
     string DNA = gen.randomDNA(DNAlength);
@@ -34,7 +34,7 @@ void simulate(unsigned int numberOfSequences, unsigned int DNAlength, unsigned i
         cerr << "Error creating the output file." << endl;
     }
 
-    const int maxLineLength = 80;
+    const unsigned int maxLineLength = 80;
 
     for (unsigned int i = 0; i < DNAsequences.size(); i++) {
         outfile << ">seq" << i + 1;
