@@ -42,10 +42,15 @@ class valueMLmodel {
                  std::cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << std::endl;
             }
        }
-                     
+        
+
+		/** \brief This function calculates Value Estimates for learning of learnedPolicy.
+		 *  \param s State that we use to calculate ValueEstimates using its successor States.
+		 *  \return Returns prediction values for creation of learnedPolicy.
+		 */             
         vector<float> calcValueEstimates(state* s) {
-            vector<bool> index = s->calcSuccessorStates();
-            torch::Tensor succStates = vectorToTensor(s->successorStates);
+            vector<bool> index = s->calcSuccessorStates();		
+            torch::Tensor succStates = vectorToTensor(s->successorStates);		
             torch::Tensor pred = linearNet->forward(succStates);
             vector<float> tempPrediction = tensorToVector(pred);
             vector<float> prediction;
@@ -61,12 +66,15 @@ class valueMLmodel {
             return prediction;                              
         }
 
-        torch::Tensor vectorToTensor(vector<vector<bool>> vec) {
+        torch::Tensor vectorToTensor(vector<vector<bool>>& vec) {
             torch::Tensor tens = torch::zeros({(long int) vec.at(0).size(), dimstate});
             for (unsigned int i = 0; i < vec.size(); i++){
-                for (unsigned int j = 0; j < vec.at(i).size(); j++) {
+                for (unsigned int j = 0; j < vec.at(i).size(); j++) {				
                     tens[i][j] = (float)vec.at(i).at(j);
+					std::cout << (float)vec.at(i).at(j) << std::endl;
                 }
+					std::cout << vec.size()<< std::endl;
+					
             }
             return tens;
         }
