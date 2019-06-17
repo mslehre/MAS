@@ -1,5 +1,6 @@
 #include "Slider.h"
 #include <math.h>
+
 using namespace std;
 
 Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, 
@@ -49,7 +50,6 @@ void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
     if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
         movable = false;
     if (movable) {
-        mouse_position.x << mouse_position.y 
         if (x_pos <= mouse_position.x && mouse_position.x <= x_pos + axis_width) {
             slider_bar.setPosition(mouse_position.x, y_pos);
             value = min + ((slider_bar.getPosition().x - x_pos) / axis_width * (max - min));
