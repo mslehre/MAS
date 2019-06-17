@@ -67,7 +67,7 @@ void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
     window.draw(slider_bar);
     window.draw(drawText(to_string(min), x_pos - 10, y_pos + axis_height * 2,  20));
     window.draw(drawText(to_string(max), x_pos + axis_width - 10, y_pos + axis_height * 2,  20));
-    window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + axis_height + 15,  25));
+    window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + axis_height * 2,  25));
     window.draw(drawText(name, x_pos + axis_width / 2, y_pos - axis_height * 2.5,  25));
 }
 
