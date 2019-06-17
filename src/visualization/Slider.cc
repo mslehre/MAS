@@ -1,6 +1,5 @@
 #include "Slider.h"
 #include <math.h>
-
 using namespace std;
 
 Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigned int max, unsigned int& variable, 
@@ -34,14 +33,13 @@ Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigne
     axis.setOutlineColor(sf::Color::Black);
     axis.setOutlineThickness(1);
     axis.setSize(sf::Vector2f(axis_width, axis_height));
-    axis.setOrigin(0, axis_height / 2);
 
     slider_bar.setPosition(x_pos + (axis_width / (max - min)) * (value - min), y_pos);
     slider_bar.setFillColor(sf::Color(200, 200, 200));
     slider_bar.setOutlineColor(sf::Color::Black);
     slider_bar.setOutlineThickness(1);
-    slider_bar.setSize(sf::Vector2f(slider_width, axis_height * 3));
-    slider_bar.setOrigin(slider_width / 2, axis_height * 1.5);
+    slider_bar.setSize(sf::Vector2f(slider_width, axis_height * 3)); // The slider height is in the ratio 1:3 to the axis_height
+    slider_bar.setOrigin(slider_width / 2, axis_height);
 }
 
 void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
@@ -51,6 +49,7 @@ void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
     if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
         movable = false;
     if (movable) {
+        mouse_position.x << mouse_position.y 
         if (x_pos <= mouse_position.x && mouse_position.x <= x_pos + axis_width) {
             slider_bar.setPosition(mouse_position.x, y_pos);
             value = min + ((slider_bar.getPosition().x - x_pos) / axis_width * (max - min));
@@ -66,10 +65,10 @@ void Slider::draw(sf::RenderWindow& window, unsigned int& variable){
 
     window.draw(axis);
     window.draw(slider_bar);
-    window.draw(drawText(to_string(min), x_pos - 10, y_pos + axis_height + 8,  20));
-    window.draw(drawText(to_string(max), x_pos + axis_width - 10, y_pos + axis_height + 8,  20));
-    window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + axis_height + 5,  25));
-    window.draw(drawText(name, x_pos + axis_width / 2, y_pos - axis_height * 3,  25));
+    window.draw(drawText(to_string(min), x_pos - 10, y_pos + axis_height * 2,  20));
+    window.draw(drawText(to_string(max), x_pos + axis_width - 10, y_pos + axis_height * 2,  20));
+    window.draw(drawText(to_string(value), x_pos + axis_width / 2, y_pos + axis_height + 15,  25));
+    window.draw(drawText(name, x_pos + axis_width / 2, y_pos - axis_height * 2.5,  25));
 }
 
 sf::Text Slider::drawText(std::string s, int x_pos, int y_pos, unsigned int size){

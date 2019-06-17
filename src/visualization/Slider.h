@@ -8,8 +8,8 @@
 
 class Slider{
     private:
-        unsigned int x_pos; ///< x coordinate of the slider
-        unsigned int y_pos; ///< y coordinate of the slider
+        unsigned int x_pos; ///< x coordinate of the slider (upper left corner of axis)
+        unsigned int y_pos; ///< y coordinate of the slider (upper left corner of axis)
         unsigned int min;   ///< the minimal value of the slider
         unsigned int max;   ///< the maximal value of the slider
         unsigned int value; ///< the current value of the slider
