@@ -12,7 +12,7 @@ class LinearNet : public torch::nn::Module {
         }
 
         // Implement the Net's algorithm.
-        torch::Tensor forward(torch::Tensor x) {
+        torch::Tensor forward(torch::Tensor& x) {
             return lin_mod->forward(x.reshape({x.size(0), dim_state}));
         }
 

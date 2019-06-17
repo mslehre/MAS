@@ -67,20 +67,20 @@ class valueMLmodel {
         }
 
         torch::Tensor vectorToTensor(vector<vector<bool>>& vec) {
-            torch::Tensor tens = torch::zeros({(long int) vec.at(0).size(), dimstate});
+            torch::Tensor tens = torch::zeros({(long int) vec.size(),(long int) vec.at(0).size()});
             for (unsigned int i = 0; i < vec.size(); i++){
                 for (unsigned int j = 0; j < vec.at(i).size(); j++) {				
                     tens[i][j] = (float)vec.at(i).at(j);
-					std::cout << (float)vec.at(i).at(j) << std::endl;
+					//std::cout << (float)vec.at(i).at(j) << std::endl;
                 }
-					std::cout << vec.size()<< std::endl;
+					//std::cout << vec.size()<< std::endl;
 					
             }
             return tens;
         }
 
 
-        vector<float> tensorToVector(torch::Tensor tens) {
+        vector<float> tensorToVector(torch::Tensor& tens) {
             vector<float*> vec;
             vector<float> vecReturn;
             for (unsigned int i = 0; i < tens.numel(); i++) {
