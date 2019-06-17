@@ -39,7 +39,7 @@ Slider::Slider(unsigned int x_pos, unsigned int y_pos, unsigned int min, unsigne
     slider_bar.setFillColor(sf::Color(200, 200, 200));
     slider_bar.setOutlineColor(sf::Color::Black);
     slider_bar.setOutlineThickness(1);
-    slider_bar.setSize(sf::Vector2f(slider_width, axis_height * 3)); // The slider height is in the ratio 1:3 to the axis_height
+    slider_bar.setSize(sf::Vector2f(slider_width, axis_height * 3)); // height is in the ratio 1:3 to the axis_height
     slider_bar.setOrigin(slider_width / 2, axis_height);
 }
 
