@@ -521,20 +521,20 @@ vector<double> calcR(unsigned int size){
     return r;
 }
     
-vector<Node> calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
+sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
 
 vector<double> r = calcR(100); // müsste einmal berechnet werden (in der main)
 
 void GraphRenderer::animation(sf::RenderWindow& window, const state& GameState, vector<Node>& nodeList, 
                               vector<DrawNode>& Nodes, Button& menuButton, vector<double>& r){
     vector<Node> old_nodes_coord = nodeList;
-    vector<Node> new_nodes_coord = calcNewNodeCoord(GameState, nodeList, Nodes);
+    sf::Vector2f pos new_nodes_coord = calcNewNodeCoord(GameState, nodeList, Nodes);
 
     for (unsigned i = 0; i < r.size(); i++) {
         for (unsigned j = 0; j < nodeList.size(); j++) {
-            if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord.at(j).coordinate.x)
+            if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord[j].x)
                 nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - r[i]) 
-                                            + new_nodes_coord.at(j).coordinate.x * r[i];        
+                                            + new_nodes_coord[j].x * r[i];        
         }
         // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
         for (unsigned i = 0; i < Knotenvektor.size(); i++) {
