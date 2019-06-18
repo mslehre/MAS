@@ -509,4 +509,41 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
         }
     }
     return false;
-} //&& temp.x >= positionToCoords(rects.at(temp.y).at(0).getOrigin()).x && temp.x < positionToCoords(rects.at(temp.y).back().getOrigin()).x)
+}
+
+/*
+
+vector<double> calcR(unsigned int size){
+    vector<double> r(size);
+    for (unsigned i = 0; i < size; i++) {
+        r[i] = //hier coole Funktion in [0, 1]
+    }
+    return r;
+}
+    
+vector<Node> calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
+
+vector<double> r = calcR(100); // müsste einmal berechnet werden (in der main)
+
+void GraphRenderer::animation(sf::RenderWindow& window, const state& GameState, vector<Node>& nodeList, 
+                              vector<DrawNode>& Nodes, Button& menuButton, vector<double>& r){
+    vector<Node> old_nodes_coord = nodeList;
+    vector<Node> new_nodes_coord = calcNewNodeCoord(GameState, nodeList, Nodes);
+
+    for (unsigned i = 0; i < r.size(); i++) {
+        for (unsigned j = 0; j < nodeList.size(); j++) {
+            nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - r[i]) + new_nodes_coord.at(j).coordinate.x * r[i];        
+        }
+        window.clear(sf::Color::White);
+        for (auto &arr : selectedEdges)
+            arr.setCoordsByPos(Nodes, sizeConstant);
+        setCoords(Nodes, nodeList);
+        //window.setView(actualView);
+        drawShape(window);
+        drawText(window);
+        display_score(window, GameState);
+        window.draw(menuButton.get_Button_Sprite());
+        window.display();
+    }
+}
+*/
