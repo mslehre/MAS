@@ -18,8 +18,5 @@ class LearnedPolicy : public Policy {
 
         virtual std::vector <float> runPolicy(state* s) const override {
            return vModel->calcValueEstimates(s);  
-        };                
-        /*vector<float> getPiSoftMax(const vector<float> &valueEstimates) {
-              
-        }*/     
+        };                   
 };
