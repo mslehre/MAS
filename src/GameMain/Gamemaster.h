@@ -33,13 +33,6 @@ class Gamemaster {
          */
 
         Gamemaster();
-
-        /**
-         * \return Gamegraph  
-         */
-
-        Graph getGameGraph();
-
 };
 
 #endif //Gamemaster_H_

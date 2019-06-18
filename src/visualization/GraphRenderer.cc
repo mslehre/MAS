@@ -525,10 +525,10 @@ sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, ve
 
 vector<double> r = calcR(100); // müsste einmal berechnet werden (in der main)
 
-void GraphRenderer::animation(sf::RenderWindow& window, const state& GameState, vector<Node>& nodeList, 
-                              vector<DrawNode>& Nodes, Button& menuButton, vector<double>& r){
+void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
+                              Button& menuButton, vector<double>& r){
     vector<Node> old_nodes_coord = nodeList;
-    sf::Vector2f pos new_nodes_coord = calcNewNodeCoord(GameState, nodeList, Nodes);
+    sf::Vector2f new_nodes_coord = calcNewNodeCoord(gamemaster.GameState, nodeList, gamemaster.GameNodes);
 
     for (unsigned i = 0; i < r.size(); i++) {
         for (unsigned j = 0; j < nodeList.size(); j++) {
@@ -541,7 +541,7 @@ void GraphRenderer::animation(sf::RenderWindow& window, const state& GameState, 
             Knotenvektor.at(i).draw(window);
         }
     }
-    display_score(window, GameState);
+    display_score(window, gamemaster.GameState);
     window.draw(menuButton.get_Button_Sprite());
     window.display();
 }
