@@ -532,18 +532,17 @@ void GraphRenderer::animation(sf::RenderWindow& window, const state& GameState, 
 
     for (unsigned i = 0; i < r.size(); i++) {
         for (unsigned j = 0; j < nodeList.size(); j++) {
-            nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - r[i]) + new_nodes_coord.at(j).coordinate.x * r[i];        
+            if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord.at(j).coordinate.x)
+                nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - r[i]) 
+                                            + new_nodes_coord.at(j).coordinate.x * r[i];        
         }
-        window.clear(sf::Color::White);
-        for (auto &arr : selectedEdges)
-            arr.setCoordsByPos(Nodes, sizeConstant);
-        setCoords(Nodes, nodeList);
-        //window.setView(actualView);
-        drawShape(window);
-        drawText(window);
-        display_score(window, GameState);
-        window.draw(menuButton.get_Button_Sprite());
-        window.display();
+        // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
+        for (unsigned i = 0; i < Knotenvektor.size(); i++) {
+            Knotenvektor.at(i).draw(window);
+        }
     }
+    display_score(window, GameState);
+    window.draw(menuButton.get_Button_Sprite());
+    window.display();
 }
 */
