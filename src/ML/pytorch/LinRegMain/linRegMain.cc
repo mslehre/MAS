@@ -1,16 +1,7 @@
 #include <iostream>
 #include "../../../alignment/State.h"
-#include "../../../alignment/Graph.h"
-#include "../../../alignment/Node.h"
-#include "../../../alignment/Edge.h"
 #include "../../SimpleAgent/Agent.h"
-#include "../../SimpleAgent/Policy.h"
-#include "../../SimpleAgent/RandomPolicy.h"
-#include "../../SimpleAgent/Episode.h"
 #include "../valueMLmodel.h"
-#include "../LearnedPolicy.h"
-#include "../LinearNet.h"
-#include "../RLDataset.h"
 #include <torch/torch.h>
 #include <vector>
 #include "../TrainingSet.h"
@@ -44,5 +35,4 @@ int main() {
     
     TrainingSet TS(3, 100, 20, 64, 0.1);
     TS.train(&agent, lpol);
-	
 }

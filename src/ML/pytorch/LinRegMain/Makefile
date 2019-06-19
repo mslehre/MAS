@@ -1,6 +1,6 @@
 include ../../../common.mk
 CC = -std=c++11
-OBJ = linRegMain.o State.o Graph.o Node.o Edge.o 
+OBJ = linRegMain.o State.o Graph.o Node.o Edge.o LearnedPolicy.o valueMLmodel.o
 H1 = ../../../alignment/Graph.h
 H2 = ../../../alignment/Edge.h
 H3 = ../../../alignment/Node.h
@@ -21,12 +21,18 @@ linRegMain: $(OBJ)
 	g++ $(OBJ) -o linRegMain -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 	$(torchOpt1) $(torchOpt2)
 
-linRegMain.o: linRegMain.cc $(H1) $(H2) $(H3) $(H4) $(H5) $(H6) $(H7) $(H8) $(H9) $(H10) $(H11) $(H13)  
+linRegMain.o: linRegMain.cc $(H4) $(H10) $(H6) $(H7) $(H8) $(H9) $(H13)  
 	g++ $(CXXFLAGS) -c linRegMain.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 	$(torchOpt1) $(torchOpt2)
 
 State.o: ../../../alignment/State.cc $(H4) $(H2) $(H3)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/State.cc 
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/State.cc
+
+LearnedPolicy.o: ../LearnedPolicy.cc $(H8) $(H9)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../LearnedPolicy.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
+
+valueMLmodel.o: ../valueMLmodel.cc $(H11) $(H12)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../valueMLmodel.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 
 Graph.o: ../../../alignment/Graph.cc $(H1) $(H2) $(H3) $(H4)
 	g++ $(CXXFLAGS) $(torchOpt2) -c ../../../alignment/Graph.cc

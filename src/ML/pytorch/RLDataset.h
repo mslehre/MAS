@@ -1,9 +1,11 @@
-#pragma once
 #include "../SimpleAgent/Agent.h"
 #include <torch/torch.h>
 #include <iostream>
 #include "../SimpleAgent/Episode.h"
 using std::vector;
+
+#ifndef RLDATASET_H
+#define RLDATASET_H
 
 class RLDataset : public torch::data::Dataset<RLDataset>
 {
@@ -68,3 +70,4 @@ class RLDataset : public torch::data::Dataset<RLDataset>
             return states.size(0);
         }
 };
+#endif
