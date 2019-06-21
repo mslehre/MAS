@@ -1,6 +1,6 @@
 include ../../../common.mk
 CC = -std=c++11
-OBJ = linRegMain.o State.o Graph.o Node.o Edge.o LearnedPolicy.o valueMLmodel.o Agent.o TrainingSet.o
+OBJ = linRegMain.o State.o Graph.o Node.o Edge.o LearnedPolicy.o valueMLmodel.o Agent.o TrainingSet.o RLDataset.o
 H1 = ../../../alignment/Graph.h
 H2 = ../../../alignment/Edge.h
 H3 = ../../../alignment/Node.h
@@ -36,6 +36,9 @@ valueMLmodel.o: ../valueMLmodel.cc $(H11) $(H12)
 
 Agent.o: ../../SimpleAgent/Agent.cc $(H6)
 	g++ $(CXXFLAGS) $(torchOpt2) -c ../../SimpleAgent/Agent.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
+
+RLDataset.o: ../RLDataset.cc $(H12)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../RLDataset.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 
 TrainingSet.o: ../TrainingSet.cc $(H13)
 	g++ $(CXXFLAGS) $(torchOpt2) -c ../TrainingSet.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
