@@ -17,84 +17,48 @@
 
 using std::vector;
 enum Policytype {rnd, rl};
+
 /** \brief This Agent class selects edges according to a policy.
 */
-
-
 class Agent {
     public:
  
-    ///< The initial state where every episode starts
-    state s;
-    //std::unique_ptr<Policy> policy;
-    Policy* policy;
-    Agent(){};
-    Agent(Graph& g, Policytype pol) : s(g.getEdges()){
-        switch(pol) {
-            case rnd:
-                //policy = std::unique_ptr<Policy>(new RandomPolicy());
-                policy = new RandomPolicy();
-                break;
-            case rl:
-                //policy = std::unique_ptr<Policy>(new LearnedPolicy());
-                policy = new LearnedPolicy();
-                break;
-            default : 
-                break;
-        }
-     }
-    ~Agent(){};
-    /** This function runs an episode. It relies on constState, policy and graph
+    state s;    ///< The initial state where every episode starts.
+    Policy* policy;    ///< Pointer to the Policy that Agent currently uses.
+
+    Agent(){};    ///< Default constructor
+    ~Agent(){};    ///< Default destructor
+    
+    /** Constructor with Graph and policy being set. 
+     *  \param g Graph being used to create state
+     *  \param pol Type of Policy, either Random or Learned
+     */
+    Agent(Graph& g, Policytype pol) : s(g.getEdges()) {
+    switch(pol) {
+        case rnd:
+
+            policy = new RandomPolicy();
+            break;
+        case rl:
+            policy = new LearnedPolicy();
+            break;
+        default : 
+            break;
+                }
+    }
+
+    /** This function runs an episode. It relies on s and policy
      *  to calculate state-action pairs as well as score.
      * \return This function returns an episode
      */
-    Episode getEpisode() {
-        s.reset();
-        Episode episode;
-        unsigned int n = s.edges.size();
-        vector <bool> action(n, false);
-        episode.states.push_back(s.selectedSubset); 
-        unsigned int counter = 0;
-        std::pair <state*, unsigned int> stateAction = executePolicy(&s, policy);
-        
-       
-        while (stateAction.first->hasEdge()) { ///< state needs boolean to determine whether a selectable edge exists
-            episode.states.push_back(stateAction.first->selectedSubset);
-            episode.actions.push_back(action);
-            episode.actions.at(counter).at(stateAction.second)=true;
-            counter++;
-            stateAction = executePolicy(stateAction.first, policy);
-        }
-        
-        episode.actions.push_back(action);
-        episode.numbOfStates = counter + 1;
-        stateAction.first->calculate_score();
-        episode.score = stateAction.first->score;
-
-        return episode;
-    }
+    Episode getEpisode();
 
     /** The member executePolicy selects an edge in state s according to Policy p.
      * \param s Expects a state s as input parameter.
      * \param p Expects a policy p as input parameter.
-     */                      
-    std::pair <state*, unsigned int> executePolicy(state* s, Policy* p) {
-   
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::vector <float> probActions = p->runPolicy(s);
-        std::discrete_distribution<> dis(probActions.begin(), probActions.end());
-        unsigned int edgeSelection = dis(gen);
-        if (s->selectable[edgeSelection] == false) {
-            edgeSelection = -1;
-        } else {
-            s->select(edgeSelection);
-        }
-        return std::make_pair(s,edgeSelection);
-    }
+     */
+    std::pair <state*, unsigned int> executePolicy(state* s, Policy* p);
 
-    void setPolicy(Policy *pol) {
-        this->policy = pol;
-    } 
+    void setPolicy(Policy *pol);    ///< Sets Policy.
 };
 #endif

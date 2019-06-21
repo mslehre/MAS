@@ -12,8 +12,10 @@
  */
 class RandomPolicy : public Policy {
     public:
+
     RandomPolicy(){};
     ~RandomPolicy(){};
+
     /** The function act returns probability vector of 0 if edge not selectable, 1/# of selectable edges otherwise.
      * \param s Expects a state s as input parameter.
      * \return Returns the probability vector.
@@ -27,8 +29,7 @@ class RandomPolicy : public Policy {
             if (s->selectable[i] == true)
                 probAct[i] = (float)(1/counter);
         }
-        return probAct;
-      
+        return probAct;     
     }
 };
 #endif

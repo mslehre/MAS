@@ -25,4 +25,3 @@ int main(){
         cout << " next state: " << endl;
     }
 }
-
