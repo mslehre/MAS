@@ -2,28 +2,6 @@
 
 using namespace std;
 
-//This method is used to make a list of Kmers, where all Kmers are just once in
-vector<string> giveKmers(vector<Node>& nodeList) {
-    vector<string> allKmers; // The set of all different Kmers
-    bool elementOf;
-    //go through all nodes
-    for (unsigned i = 0; i<nodeList.size(); i++) {
-        elementOf = false;
-        //go through all nodes we discovered already to check if they are in the list
-        for (unsigned j = 0; j < i; j++) {
-            if(nodeList.at(i).kmer == nodeList.at(j).kmer) {
-                elementOf = true;
-                break;
-            }
-        }
-        //push the nodes who aren't in yet
-        if(!elementOf) {
-            allKmers.push_back(nodeList.at(i).kmer);
-        }
-    }
-    return allKmers;
-}
-
 //Method for troubleshooting bad arguments
 void printHelp(){
     cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
@@ -45,31 +23,23 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
         sf::Vector2f vSize(window.getView().getSize().x, window.getView().getSize().y);
         sf::Vector2f newCenter = window.getView().getCenter();
         sf::Vector2f temp = wSize - vSize;
-        float vec = 0.5;
-        temp = temp * vec;
-        newCenter = newCenter + temp;
+        temp *= (float)0.5;
+        newCenter += temp;
         actualView = sf::View(newCenter, wSize);
-        actualView.setViewport(sf::FloatRect(0.f, 0.1f, 1.f, 0.9f));
-        window.setView(sf::View(newCenter, wSize));
+        window.setView(actualView);
     }
     //reset window
     window.clear(sf::Color::White);
-    //Example for draw sth in Bar
-    window.setView(scoreBar);
-    window.draw(example);
-    //continue the main part
-    window.setView(defaultView);
-    for ( auto &arr : selectedEdges )
+    for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant);
     setCoords(Nodes, nodeList);
-    window.setView(actualView);
     drawShape(window);
     drawText(window);
 }
 
 //Method which catches all events of the window
-void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState) {
-    window.setView(actualView);
+void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
+                                 vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos) {
     //Move the view of the window
     enum direction {Down, Left, Right, Up, Space};
     if (event.type == sf::Event::EventType::KeyPressed) {
@@ -84,35 +54,31 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
         if (event.key.code == sf::Keyboard::Space)
             moveWindow(Space);
     }
-    //Get hovercoords of the window
-    sf::Vector2i posOfMouse1(event.mouseMove.x, event.mouseMove.y);
-    auto movePos = window.mapPixelToCoords(posOfMouse1);
+
     //Now check what gets hovered
     if (event.type == sf::Event::EventType::MouseMoved) {
         //highlight the hovered Node
-        if (!nodeHovered && !nodeClicked && isPositionNode(movePos, Nodes, nodeList)) {
-            hoverNode(nodeList, Nodes, movePos);
+        if (!nodeHovered && !nodeClicked && isPositionNode(mouse_pos, Nodes, nodeList)) {
+            hoverNode(nodeList, Nodes, mouse_pos);
         //remove the highlight of the Node
-        } else if (nodeHovered && !isPositionNode(movePos, Nodes, nodeList)) {
+        } else if (nodeHovered && !isPositionNode(mouse_pos, Nodes, nodeList)) {
             deHoverNode();
         }
         //highlight a hovered edge, if possible
-        if (nodeClicked && !edgeHovered && isPositionEdge(movePos)) {
-            hoverEdge(movePos);
+        if (nodeClicked && !edgeHovered && isPositionEdge(mouse_pos)) {
+            hoverEdge(mouse_pos);
         //remove this highlight
-        } else if (nodeClicked && edgeHovered && !isPositionEdge(movePos)) {
+        } else if (nodeClicked && edgeHovered && !isPositionEdge(mouse_pos)) {
             deHoverEdge();
         }
     }
-    //Get clickcoords of the window
-    sf::Vector2i posOfMouse2(event.mouseButton.x, event.mouseButton.y);
-    auto clickPos = window.mapPixelToCoords(posOfMouse2);
+
     //Now check what gets clicked
     if (event.type == sf::Event::EventType::MouseButtonPressed) {
         //select the Node you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeHovered && !nodeClicked) {
-            clickNode(nodeList, Nodes, clickPos);
-            showEdges(nodeList, Nodes, clickPos, gameState);
+            clickNode(nodeList, Nodes, mouse_pos);
+            showEdges(nodeList, Nodes, mouse_pos, gameState);
         //remove the selected Node
         } else if (event.mouseButton.button == sf::Mouse::Right && nodeClicked) {
             deClickNode();
@@ -123,19 +89,25 @@ void GraphRenderer::eventHandler(sf::Event event, sf::RenderWindow& window, vect
     }
 }
 
-void GraphRenderer::scoreHandler(sf::Event event, sf::RenderWindow& window) {
-    window.setView(scoreBar);
-    //example to include events
-    if (event.type == sf::Event::EventType::MouseButtonPressed) {
-        if (event.mouseButton.button == sf::Mouse::Middle) {
-            sf::RectangleShape temp;
-            temp.setPosition(sf::Vector2f(0, 0));
-            temp.setSize(scoreBar.getSize());
-            temp.setFillColor(sf::Color(128, 128, 255));
-            window.draw(temp);
-            example = temp;
-        }
-    }
+void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameState) {
+    int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
+    int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
+
+    sf::RectangleShape rect(sf::Vector2f(window.getSize().x, 130));
+    rect.setPosition(x_pos, y_pos);
+  
+    sf::Font font;
+    if (!font.loadFromFile("Amiko-Regular.ttf"))
+        std::cout << "Can't find the font file" << std::endl;
+
+    std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
+    std::string AgentScore = "Computer Score: " + (std::string)"?"; // TODO: need a score from an Agent    
+    sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
+    text.setColor(sf::Color::Black);
+    text.setPosition(x_pos + 150, y_pos);
+
+    window.draw(rect);
+    window.draw(text);
 }
 
 //Method which will set the move speed in terms of Computer speed with an upper Bound
@@ -143,7 +115,8 @@ void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
 }
 
-void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes) {
+void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
+                                   const state& GameState, Button& menuButton) {
     vector<DrawNode> newNodes = Nodes;
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
@@ -169,7 +142,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 diff = (newNodes.at(s).coordinate.x - newNodes.at(e).coordinate.x);
                 while (index != newNodes.size() && newNodes.at(e).coordinate.y == newNodes.at(index).coordinate.y) {
                     newNodes.at(index).coordinate.x += diff;
-                    index = index + 1;
+                    index++;
                 }
             }
             if (newNodes.at(s).coordinate.x < newNodes.at(e).coordinate.x) {
@@ -177,7 +150,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 diff = (newNodes.at(e).coordinate.x - newNodes.at(s).coordinate.x);
                 while (index != newNodes.size() && newNodes.at(s).coordinate.y == newNodes.at(index).coordinate.y) {
                     newNodes.at(index).coordinate.x += diff;
-                    index += 1;
+                    index++;
                 }
             }
         }
@@ -199,15 +172,14 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 Nodes.at(i).coordinate.x += ranges.at(i);
             }
             window.clear(sf::Color::White);
-            window.setView(scoreBar);
-            window.draw(example);
-            window.setView(defaultView);
-            for ( auto &arr : selectedEdges )
+            for (auto &arr : selectedEdges)
                 arr.setCoordsByPos(Nodes, sizeConstant);
             setCoords(Nodes, nodeList);
             window.setView(actualView);
             drawShape(window);
             drawText(window);
+            display_score(window, GameState);
+            window.draw(menuButton.get_Button_Sprite());
             window.display();
         }
     }
@@ -237,27 +209,12 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     }
     direction.push_back(0);
     direction.push_back(0);
-    //state place(edgeList);
-    //gameState = place;
     nodeHovered = false;
     nodeClicked = false;
     edgeHovered = false;
     defaultView = window.getDefaultView();
-    scoreBar = defaultView;
-    scoreBar.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 0.1f));
-    defaultView.setViewport(sf::FloatRect(0.f, 0.1f, 1.f, 0.9f));
     actualView = defaultView;
     initShapes(Nodes, nodeList);
-    window.setView(scoreBar);
-    sf::RectangleShape temp;
-    temp.setPosition(sf::Vector2f(0, 0));
-    temp.setSize(scoreBar.getSize());
-    temp.setFillColor(sf::Color(128, 128, 128));
-    window.draw(temp);
-    example = temp;
-    window.setView(actualView);
-    drawShape(window);
-    drawText(window);
 }
 
 //Method which will move the window in a choosed direction or resets it
@@ -290,27 +247,22 @@ void GraphRenderer::moveWindow(int dir) {
         case 4: //resets all
             actualView = defaultView;
             //selectedEdges.clear();
-            /*for (unsigned i = 0; i < gameState.edges.size(); i++) {
-                gameState.selectedSubset.at(i) = false;
-                gameState.selectable.at(i) = true;
-            }*/
+            //gameState.reset();
             direction.at(0) = 0;
             direction.at(1) = 0;
             break;
     }
 }
 
-
-
-//This Method draws the text
+//This method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
-    int size_text = txt.size();
+    unsigned int size_text = txt.size();
     sf::Text text;
     sf::Font font;
     //load font out of file
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
-    for (int i = 0; i < size_text; i++) {
+    for (unsigned int i = 0; i < size_text; i++) {
         text.setFont(font);
         text.setColor(txt[i].col);
         text.setPosition(txt[i].pos[0], txt[i].pos[1]);
@@ -320,25 +272,25 @@ void GraphRenderer::drawText(sf::RenderWindow& window) {
     }
 }
 
-//This Method draws all shapes
+//This method draws all shapes
 void GraphRenderer::drawShape(sf::RenderWindow& window) {
-    int size_Rect = rects.size();
-    int size_seq;
-    int size_rowArrows = rowArrows.size();
-    int size_tempArr = consistentEdges.size();
-    int size_arrowList = selectedEdges.size();
+    unsigned int size_Rect = rects.size();
+    unsigned int size_seq;
+    unsigned int size_rowArrows = rowArrows.size();
+    unsigned int size_tempArr = consistentEdges.size();
+    unsigned int size_arrowList = selectedEdges.size();
     //iterate through vectors to draw all
-    for (int i = 0; i < size_rowArrows; i++) {
+    for (unsigned int i = 0; i < size_rowArrows; i++) {
         rowArrows.at(i).Draw(window);
     }
-    for (int i = 0; i < size_Rect; i++) {
+    for (unsigned int i = 0; i < size_Rect; i++) {
         size_seq = rects.at(i).size();
-        for (int j = 0; j < size_seq; j++)
+        for (unsigned int j = 0; j < size_seq; j++)
             window.draw(rects.at(i).at(j));
     }
-    for (int i = 0; i < size_tempArr; i++)
+    for (unsigned int i = 0; i < size_tempArr; i++)
         consistentEdges.at(i).Draw(window);
-    for (int i = 0; i < size_arrowList; i++)
+    for (unsigned int i = 0; i < size_arrowList; i++)
         selectedEdges.at(i).Draw(window);
 }
 
@@ -495,6 +447,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
 void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gameState.select(ind);
+    gameState.calculate_score();
     Edge temp = gameState.edges.at(ind);
     //select via state
     int start = 0;

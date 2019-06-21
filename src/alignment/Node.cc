@@ -14,4 +14,6 @@ Node::Node(unsigned int i, unsigned int j, string kmer) {
     this->kmer = kmer;
 }
 
-
+bool Node::operator ==(const Node& a){
+     return a.i == this->i && a.j == this->j;     
+}

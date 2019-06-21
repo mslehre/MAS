@@ -4,8 +4,6 @@
 #include "Graph.h"
 #include <vector>
 #include <iostream>
-#include <algorithm>
-#include <cmath>
 
 using namespace std;
 
@@ -54,7 +52,7 @@ void state::reset(){
 void state::updateSelectability(int i){
     int left = i;
     unsigned int right = i;
-    while (left != -1 && edges[left].first->i == edges[i].first->i) { 
+    while (left != -1 && edges[left].first->i == edges[i].first->i) {
         if ((edges[left].first->j <= edges[i].first->j && edges[left].second->j >= edges[i].second->j) 
             || (edges[left].first->j >= edges[i].first->j && edges[left].second->j <= edges[i].second->j)) {
             this->selectable[left] = false;
@@ -72,7 +70,7 @@ void state::updateSelectability(int i){
 
 // requires that e.first->i = f.first->i and e.second->i = f.second->i            
 bool state::consistent(Edge& e, Edge& f){
-    if (e.first->j == f.first->j && e.second->j == f.second->j) { 
+    if (e.first->j == f.first->j && e.second->j == f.second->j) {
         return true; // edges e and f are equal
     } else if ((e.first->j <= f.first->j && e.second->j >= f.second->j) ||
                (e.first->j >= f.first->j && e.second->j <= f.second->j)) {
@@ -82,6 +80,7 @@ bool state::consistent(Edge& e, Edge& f){
     }
 }
 
+
 bool state::hasEdge() {
 	for (unsigned int i = 0; i < selectable.size(); i++) {
 		if (selectable[i] == true)
@@ -90,33 +89,23 @@ bool state::hasEdge() {
 	return false;
 }
 
-// functions for scoring
-
-bool state::is_equal(Node& a, Node& b){
-    if (a.i == b.i && a.j == b.j) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void state::calculate_score(){ 
+void state::calculate_score(){
     score = 0;
     vector<bool> visited(selectedEdgeIndex.size(), false);
 
     for (unsigned int i = 0; i < selectedEdgeIndex.size(); i++) {
-        if (visited[i] == false) { 
+        if (visited[i] == false) {
             unsigned int path_length = 1;
             Edge current_edge = edges[selectedEdgeIndex[i]];
             visited[i] = true;
             for (unsigned int j = i; j < selectedEdgeIndex.size(); j++) {
-                if (is_equal(*current_edge.second, *edges[selectedEdgeIndex[j]].first)) {
+                if (*current_edge.second == *edges[selectedEdgeIndex[j]].first) {
                     current_edge = edges[selectedEdgeIndex[j]];
                     path_length++;
                     visited[j] = true;
                 }
             }
-            score += (pow(path_length, 2) + path_length) / 2;                            
+            score += (path_length * (path_length + 1)) / 2;                         
         }            
     }
 }
@@ -131,7 +120,6 @@ vector<bool> state::calcSuccessorStates() {
             indexSet.push_back(true);
         }else {
             indexSet.push_back(false);
-            
         }
     }
     return indexSet;

@@ -165,4 +165,12 @@ void Graph::calcNodeList(vector<string>& stringList) {
             }
         }
     }
-} 
+}
+
+// Method: reset the graph
+void Graph::resetGraph(){
+    k = 0;
+    edges.clear();
+    nodes.clear();
+}
+

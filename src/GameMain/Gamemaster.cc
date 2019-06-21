@@ -9,15 +9,18 @@
 
 using namespace std;
 
-Gamemaster::Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
-    simulate(number_of_sequences, length, probability);     
+Gamemaster::Gamemaster(){};
+
+void Gamemaster::makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability){
+    simulate(number_of_sequences, length, probability);
+    GameGraph.resetGraph();
     GameGraph.readFastaFiles("sequences.fa", k);
     remove("sequences.fa");
     state statetemp(GameGraph);
     GameState = statetemp;
 
     //Initialize colomap
-    vector<string> Kmers = giveKmers(GameGraph.getNodes());
+    vector<string> Kmers = getKmers(GameGraph.getNodes());
     colorlist colorExample(Kmers.size());
     vector<sf::Color> colors = colorExample.giveList();
     colormap mapExample(Kmers, colors);
@@ -34,7 +37,7 @@ Graph Gamemaster::getGameGraph(){
     return GameGraph;
 }
 
-vector<string> Gamemaster::giveKmers(vector<Node>& nodeList) {
+vector<string> Gamemaster::getKmers(vector<Node>& nodeList) {
     vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
         allKmers[i] = nodeList.at(i).kmer;

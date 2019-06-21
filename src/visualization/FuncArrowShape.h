@@ -1,4 +1,3 @@
-
 #ifndef FuncArrowShape_H_
 #define FuncArrowShape_H_
 

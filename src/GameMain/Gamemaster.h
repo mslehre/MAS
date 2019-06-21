@@ -17,17 +17,23 @@ class Gamemaster {
          * \return a vector of unique strings
          */
 
-        std::vector<std::string> giveKmers(std::vector<Node>& nodeList);
+        std::vector<std::string> getKmers(std::vector<Node>& nodeList);
 
         /**
          * \param k is the length of the kmers
          * \param length is the length of the created sequences
          * \param number_of_sequences is the number of sequences that will created   
-         * \param probability is the probability for mutations in the sequencens  
+         * \param probability is the probability for mutations in the sequences
          */
 
-        Gamemaster(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
-        
+        void makeGame(unsigned int k, unsigned int length, unsigned int number_of_sequences, double probability);
+
+        /**
+         * standard constructor, which does nothing
+         */
+
+        Gamemaster();
+
         /**
          * \return Gamegraph  
          */
@@ -36,5 +42,4 @@ class Gamemaster {
 
 };
 
-#endif //Gamemaster_H_ 
-
+#endif //Gamemaster_H_

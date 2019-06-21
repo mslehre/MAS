@@ -14,16 +14,6 @@
  */
 
 class state{
-    private:
-
-     /** 
-     * \param a is a Node
-     * \param b is a Node
-     * \return TRUE if a and b have the same indices
-     */
-
-    bool is_equal(Node& a, Node& b);
-
 
     public:
     state(Graph& graph); ///< Constructor with a Graph
@@ -70,13 +60,6 @@ class state{
      */
 
     bool consistent(Edge& e, Edge& f);
-   
-    /** 
-     * \param graph is a graph
-     * calculate the score for a given graph
-     */
-
-    void calculate_score();
 	
 	/** This function determines whether state has a selectable edge.
 	 * \return Returns true if it has selectable edge and false otherwise.
@@ -91,6 +74,16 @@ class state{
     /** This function determines all direct successor states.
      */
     vector<bool> calcSuccessorStates();
+
+    /**
+     * update the current score of the state: 
+     * \f$ \textrm{score} = \sum_{c \in C} |c| (|c| - 1) / 2\f$, 
+     * where C is the set of connected components and |c| is the number of nodes in connected 
+     * component c.
+     * This function requires that the edges are sorted increasingly by i.
+     */
+    void calculate_score();
+
 
 };
 

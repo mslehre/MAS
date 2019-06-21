@@ -74,7 +74,7 @@ int main(){
     for (unsigned int i = 0; i < graph.getEdges().size(); i++) {
         s.select(i); //select all edges
     }  
-    s.calculate_score(graph); 
+    s.calculate_score(); 
     unsigned int score = s.score;
 
     if (score == 16) {
