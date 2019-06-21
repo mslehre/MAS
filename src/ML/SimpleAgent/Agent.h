@@ -26,7 +26,7 @@ class Agent {
     state s;    ///< The initial state where every episode starts.
     Policy* policy;    ///< Pointer to the Policy that Agent currently uses.
 
-    Agent(){};    ///< Default constructor
+    Agent();    ///< Default constructor
     ~Agent(){};    ///< Default destructor
     
     /** Constructor with Graph and policy being set. 
