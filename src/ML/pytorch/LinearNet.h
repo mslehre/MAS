@@ -1,11 +1,15 @@
-#pragma once
+#ifndef LINEARNET_H
+#define LINEARNET_H
+
 #include <iostream>
 #include <torch/torch.h>
 
-// Define a new Module.
+/** \brief This class defines a new Module */
 class LinearNet : public torch::nn::Module {
     public:
+
         LinearNet(){};
+
         LinearNet(unsigned ds) : dim_state(ds) {
             // Construct and register a Linear submodule
             lin_mod = register_module("fc", torch::nn::Linear(dim_state, 1));
@@ -20,3 +24,4 @@ class LinearNet : public torch::nn::Module {
         unsigned dim_state;
         torch::nn::Linear lin_mod{nullptr};
 };
+#endif
