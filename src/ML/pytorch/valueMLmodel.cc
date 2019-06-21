@@ -1,7 +1,9 @@
 #include "valueMLmodel.h"
 
+//default constructor
 valueMLmodel::valueMLmodel(){}
 
+//constructor
 valueMLmodel::valueMLmodel(unsigned int dimstate) {
     this->dimstate = dimstate;
     linearNet = std::make_shared<LinearNet>(dimstate);
@@ -10,7 +12,7 @@ valueMLmodel::valueMLmodel(unsigned int dimstate) {
 void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsigned int batch_size, float alpha) {
     auto data_set = dataSet.map(torch::data::transforms::Stack<>());
     // create a multi-threaded data loader for the MNIST dataset.
-    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), /*batch size=*/batch_size);
+    auto data_loader = torch::data::make_data_loader<torch::data::samplers::SequentialSampler>(std::move(data_set), batch_size);
     // instantiate an SGD optimization algorithm to update our LinearNet's parameters.
     torch::optim::SGD optimizer(linearNet->parameters(), /*lr=*/alpha);
     for (size_t epoch = 1; epoch <= numberOfEpochs; ++epoch) {
@@ -34,12 +36,20 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
 }
 
 vector<float> valueMLmodel::calcValueEstimates(state* s) {
-    vector<bool> index = s->calcSuccessorStates();		
-    torch::Tensor succStates = vectorToTensor(s->successorStates);		
+    /* Calculate all possible successor states of s.
+       Returns a boolean vector corresponding to edges in such a way that true means an edge is selectable */
+    vector<bool> index = s->calcSuccessorStates();     
+
+    torch::Tensor succStates = vectorToTensor(s->successorStates);
+
+    // Returns the value prediction for all successor states.       
     torch::Tensor pred = linearNet->forward(succStates);
+
     vector<float> tempPrediction = tensorToVector(pred);
     vector<float> prediction;
     unsigned int counter = 0;
+
+    // To get a vector of the size of the state, we set 0 for every not selectable edge.
     for (unsigned int i = 0; i < dimstate; i++) {
         if (index.at(i)) {
             prediction.push_back(tempPrediction.at(counter));
@@ -51,16 +61,18 @@ vector<float> valueMLmodel::calcValueEstimates(state* s) {
     return prediction;                              
 }
 
+// Transforms a vector of states into a tensor
 torch::Tensor valueMLmodel::vectorToTensor(vector<vector<bool>>& vec) {
     torch::Tensor tens = torch::zeros({(long int) vec.size(),(long int) vec.at(0).size()});
     for (unsigned int i = 0; i < vec.size(); i++){
-        for (unsigned int j = 0; j < vec.at(i).size(); j++) {				
+        for (unsigned int j = 0; j < vec.at(i).size(); j++) {                
             tens[i][j] = (float)vec.at(i).at(j);
-        }			
+        }           
     }
     return tens;
 }
 
+// Transforms a tensor of values for the successor states into a vector
 vector<float> valueMLmodel::tensorToVector(torch::Tensor& tens) {
     vector<float*> vec;
     vector<float> vecReturn;
