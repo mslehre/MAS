@@ -1,6 +1,6 @@
 include ../../common.mk
 CC = -std=c++11
-OBJ = TestDataset.o State.o Graph.o Node.o Edge.o
+OBJ = TestDataset.o State.o Graph.o Node.o Edge.o Agent.o
 H1 = ../../alignment/Graph.h
 H2 = ../../alignment/Edge.h
 H3 = ../../alignment/Node.h
@@ -19,6 +19,10 @@ TestDataset: $(OBJ)
 TestDataset.o: TestDataset.cc $(H1) $(H2) $(H3) $(H4) $(H5) $(H6) $(H7) $(H8)
 	g++ $(CXXFLAGS) -c TestDataset.cc -I libtorch/include/torch/csrc/api/include -I libtorch/include/ -L libtorch/lib/ \
 	$(torchOpt1) $(torchOpt2)
+
+Agent.o: ../SimpleAgent/Agent.cc $(H6)
+	g++ -c ../SimpleAgent/Agent.cc -I libtorch/include/torch/csrc/api/include -I libtorch/include/ -L libtorch/lib/ \
+	$(CXXFLAGS) $(torchOpt2)
 
 State.o: ../../alignment/State.cc $(H4) $(H2) $(H3)
 	g++ $(CXXFLAGS) $(torchOpt2) -c ../../alignment/State.cc 

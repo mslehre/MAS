@@ -1,9 +1,8 @@
-#ifndef LEARNEDPOLICY_H
-#define LEARNEDPOLICY_H
-
 #include "../SimpleAgent/Policy.h"
 #include "valueMLmodel.h"
 
+#ifndef LEARNEDPOLICY_H
+#define LEARNEDPOLICY_H
 
 class LearnedPolicy : public Policy {
     public:

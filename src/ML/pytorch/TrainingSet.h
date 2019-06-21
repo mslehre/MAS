@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TRAININGSET_H
+#define TRAININGSET_H
 #include <iostream>
 #include "../../alignment/State.h"
 #include "../../alignment/Graph.h"
@@ -22,13 +23,7 @@ using namespace std;
 class TrainingSet {
 
     public:
-        TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, unsigned int learningRate) {
-            this->learningRepetitions = learningRepetitions;
-            this->epochs = epochs;
-            this->numbEpisodes = numbEpisodes;
-            this->batchSize = batchSize;
-            this->learningRate = learningRate;
-        };
+        TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, unsigned int learningRate); 
 	
         unsigned int learningRepetitions;   ///< Number of times the agent gets trained
         unsigned int epochs;    ///< Number of epochs
@@ -36,35 +31,19 @@ class TrainingSet {
         unsigned int learningRate;   ///< The rate of learning (alpha)
         unsigned int numbEpisodes;   ///< The number of episodes
         
-        void setLearningRepetitions(unsigned int learningRepetitions) {
-            this->learningRepetitions = learningRepetitions;
-        };
-        void setEpochs(unsigned int epochs) {
-            this->epochs = epochs;
-        };
-        void setNumbEpisodes(unsigned int numbEpisodes) {
-            this->numbEpisodes = numbEpisodes;
-        };
-        void setBatchSize(unsigned int batchSize) {
-            this->batchSize = batchSize;
-        };
-        void setLearningRate(unsigned int learningRate) {
-            this->learningRate = learningRate;
-        };
+        void setLearningRepetitions(unsigned int learningRepetitions);
+
+        void setEpochs(unsigned int epochs);
+
+        void setNumbEpisodes(unsigned int numbEpisodes);
+
+        void setBatchSize(unsigned int batchSize);
+
+        void setLearningRate(unsigned int learningRate);
 
         /** \brief This function trains an agent a designated number of times.
          *  \param agent requires an agent that has learnedPolicy that has learned at least once.
          */ 
-        void train(Agent* agent, LearnedPolicy lpol) {
-            agent->setPolicy(&lpol);
-            vector<Episode> episodes;
-            for (unsigned int i = 0; i < learningRepetitions; i++) {
-                for (unsigned int j = 0; j < numbEpisodes; j++) {
-                    episodes.push_back(agent->getEpisode());
-                }
-                RLDataset dataSet(episodes);
-                episodes.clear();
-                lpol.vModel->learn(dataSet, epochs, batchSize, learningRate);
-            }
-        };
+        void train(Agent* agent, LearnedPolicy lpol);
 };
+#endif
