@@ -2,11 +2,15 @@
 
 RLDataset::RLDataset(vector<Episode>& episodes) { 
     this->episodes = episodes;
-    numbEpisodes = episodes.size();         
-    vector<vector<bool>> s;            // vector of states
-    vector<vector<bool>> a;           // vector of actions
-    unsigned int score;                     // score of one episode
-    unsigned int numbStates = 0;            // total number of states of all episodes
+    numbEpisodes = episodes.size();  
+	// Vector of states       
+    vector<vector<bool>> s;   
+    // vector of actions         
+    vector<vector<bool>> a;
+    // score of one episode           
+    unsigned int score;      
+    // total number of states of all episodes               
+    unsigned int numbStates = 0;            
 
     // calculate the total number of all states of all episodes
     for (unsigned int i = 0; i < numbEpisodes; i++) { 
