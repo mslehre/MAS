@@ -62,6 +62,18 @@ class GraphRenderer{
         int sizeConstant; ///< a constant which defines the scale of the visuals
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
+        vector<double> animationSpeed; ///< a vector of doubles for the speed during the animation
+
+    private:
+
+        /**
+         * a function which calculate the speed during the animation
+         *
+         * \param size is the numer of steps we want during the animation
+         */
+
+        void calcAnimationSpeed(unsigned int size);
+
 	public:
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
@@ -245,21 +257,12 @@ class GraphRenderer{
         bool isPositionEdge(sf::Vector2f pos);
 
         /**
-         * a function which check if the argument is the position of a node
+         * check if the argument is the position of a node
          *
          * \param a position vector we want to check
          */
 
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
-
-        /**
-         * this function calculate the spped for the animation
-         *
-         * \param size is the numer of steps we want during the animation
-         * \return a vector with length (size + 1) which contains increasing numbers from zero to one
-         */
-
-        std::vector<double> calcAnimationSpeed(unsigned int size);
 };
 
 #endif //GraphRenderer_H_

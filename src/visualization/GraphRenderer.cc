@@ -215,6 +215,8 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     defaultView = window.getDefaultView();
     actualView = defaultView;
     initShapes(Nodes, nodeList);
+    const unsigned int animationSteps = 100; // number of steps for the animation
+    calcAnimationSpeed(animationSteps);
 }
 
 //Method which will move the window in a choosed direction or resets it
@@ -511,31 +513,28 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     return false;
 }
 
-vector<double> GraphRenderer::calcAnimationSpeed(unsigned int size){
-    vector<double> r(size + 1);
+void GraphRenderer::calcAnimationSpeed(unsigned int size){
+    animationSpeed.resize(size + 1);
     for (unsigned int i = 0; i <= size; i++) {
         double x = i / (double)size ;
-        //r[i] = x;   // constant speed
-        //r[i] = x * x; // Quaternary acceleration
-        r[i] = x * (3 + (x - 3) * x);
-    }
-    return r;
+        //animationSpeed[i] = x;   // constant speed
+        //animationSpeed[i] = x * x; // Quaternary acceleration
+        animationSpeed[i] = x * (3 + (x - 3) * x);
+    }   
 }
  /*   
 sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
 
-vector<double> r = calcAnimationSpeed(100); // müsste einmal berechnet werden (in der main)
-
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
-                              Button& menuButton, vector<double>& r){
+                              Button& menuButton){
     vector<Node> old_nodes_coord = nodeList;
     sf::Vector2f new_nodes_coord = calcNewNodeCoord(gamemaster.GameState, nodeList, gamemaster.GameNodes);
 
-    for (unsigned i = 0; i < r.size(); i++) {
+    for (unsigned i = 0; i < speed.size(); i++) {
         for (unsigned j = 0; j < nodeList.size(); j++) {
             if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord[j].x)
-                nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - r[i]) 
-                                            + new_nodes_coord[j].x * r[i];        
+                nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - animationSpeed[i]) 
+                                            + new_nodes_coord[j].x * animationSpeed[i];        
         }
         // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
         for (unsigned i = 0; i < Knotenvektor.size(); i++) {
