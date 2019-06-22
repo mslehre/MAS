@@ -511,19 +511,20 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     return false;
 }
 
-/*
-
-vector<double> calcR(unsigned int size){
-    vector<double> r(size);
-    for (unsigned i = 0; i < size; i++) {
-        r[i] = //hier coole Funktion in [0, 1]
+vector<double> GraphRenderer::calcAnimationSpeed(unsigned int size){
+    vector<double> r(size + 1);
+    for (unsigned int i = 0; i <= size; i++) {
+        double x = i / (double)size ;
+        //r[i] = x;   // constant speed
+        //r[i] = x * x; // Quaternary acceleration
+        r[i] = x * (3 + (x - 3) * x);
     }
     return r;
 }
-    
+ /*   
 sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
 
-vector<double> r = calcR(100); // müsste einmal berechnet werden (in der main)
+vector<double> r = calcAnimationSpeed(100); // müsste einmal berechnet werden (in der main)
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
                               Button& menuButton, vector<double>& r){

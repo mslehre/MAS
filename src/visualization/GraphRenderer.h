@@ -251,6 +251,15 @@ class GraphRenderer{
          */
 
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
+
+        /**
+         * this function calculate the spped for the animation
+         *
+         * \param size is the numer of steps we want during the animation
+         * \return a vector with length (size + 1) which contains increasing numbers from zero to one
+         */
+
+        std::vector<double> calcAnimationSpeed(unsigned int size);
 };
 
 #endif //GraphRenderer_H_
