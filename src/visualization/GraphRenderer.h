@@ -257,7 +257,7 @@ class GraphRenderer{
         bool isPositionEdge(sf::Vector2f pos);
 
         /**
-         * check if the argument is the position of a node
+         * a function which check if the argument is the position of a node
          *
          * \param a position vector we want to check
          */

@@ -518,8 +518,8 @@ void GraphRenderer::calcAnimationSpeed(unsigned int size){
     for (unsigned int i = 0; i <= size; i++) {
         double x = i / (double)size ;
         //animationSpeed[i] = x;   // constant speed
-        //animationSpeed[i] = x * x; // Quaternary acceleration
-        animationSpeed[i] = x * (3 + (x - 3) * x);
+        //animationSpeed[i] = x * x; // quaternary acceleration
+        animationSpeed[i] = x * (3 + (x - 3) * x); // acceleration and slowing down
     }   
 }
  /*   
@@ -530,14 +530,14 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
     vector<Node> old_nodes_coord = nodeList;
     sf::Vector2f new_nodes_coord = calcNewNodeCoord(gamemaster.GameState, nodeList, gamemaster.GameNodes);
 
-    for (unsigned i = 0; i < speed.size(); i++) {
-        for (unsigned j = 0; j < nodeList.size(); j++) {
+    for (unsigned int i = 0; i < speed.size(); i++) {
+        for (unsigned int j = 0; j < nodeList.size(); j++) {
             if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord[j].x)
                 nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - animationSpeed[i]) 
                                             + new_nodes_coord[j].x * animationSpeed[i];        
         }
         // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
-        for (unsigned i = 0; i < Knotenvektor.size(); i++) {
+        for (unsigned int i = 0; i < Knotenvektor.size(); i++) {
             Knotenvektor.at(i).draw(window);
         }
     }

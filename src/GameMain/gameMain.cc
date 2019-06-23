@@ -25,7 +25,7 @@ int main() {
     Gamemaster gamemaster;
     vector<Node> nodeList;
     GraphRenderer GrRend;
-    
+
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
     Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
