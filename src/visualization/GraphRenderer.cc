@@ -302,8 +302,8 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
-    int j2;
-    int i2;
+    unsigned i2;
+    unsigned j2;
     double j3;
     //Iterate to declare all shapes we need in the beginning
     for (unsigned k = 0; k < size_nodes; k++){
@@ -331,8 +331,7 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
-    int i2;
-    int j2;
+    unsigned i2;
     //Placeholder for the Text
     TextProps tx;
     tx.col = sf::Color::Black;
@@ -344,7 +343,6 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
         i = Nodes.at(k).coordinate.y + offset;
         j = Nodes.at(k).coordinate.x;
         i2 = nodeList.at(k).i;
-        j2 = nodeList.at(k).j;
         rect.setFillColor(Nodes.at(k).col);
         rect.setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
         while (rects.size() != i2 + 1) {
