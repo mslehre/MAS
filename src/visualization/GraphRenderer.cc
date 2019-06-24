@@ -522,8 +522,12 @@ void GraphRenderer::calcAnimationSpeed(unsigned int size){
         animationSpeed[i] = x * (3 + (x - 3) * x); // acceleration and slowing down
     }   
 }
- /*   
-sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
+
+/*   
+
+sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes){
+...
+}
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
                               Button& menuButton){
@@ -535,14 +539,21 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
             if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord[j].x)
                 nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - animationSpeed[i]) 
                                             + new_nodes_coord[j].x * animationSpeed[i];        
-        }
+        }        
+        window.clear(sf::Color::White);
         // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
         for (unsigned int i = 0; i < Knotenvektor.size(); i++) {
             Knotenvektor.at(i).draw(window);
         }
+        for (auto &arr : selectedEdges)
+            arr.setCoordsByPos(Nodes, sizeConstant);
+        setCoords(Nodes, nodeList);
+        window.setView(actualView);
+        drawShape(window);
+        drawText(window);
+        display_score(window, GameState);
+        window.draw(menuButton.get_Button_Sprite());
+        window.display();
     }
-    display_score(window, gamemaster.GameState);
-    window.draw(menuButton.get_Button_Sprite());
-    window.display();
 }
 */
