@@ -36,7 +36,7 @@ int main() {
                              &number_of_sequences, &probability] () {
             gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
             nodeList = gamemaster.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes);
+            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes, 1);
             GrRend = gtemp;
     });
  

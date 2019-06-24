@@ -60,6 +60,7 @@ class GraphRenderer{
         unsigned maxNodesPerRow; ///< an upper bound for the row lengths
         unsigned maxSequences; ///< an upper boudn for the column lengths
         int sizeConstant; ///< a constant which defines the scale of the visuals
+        float offset; ///< a constant which make a offset on the upper horizontal
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
         vector<double> animationSpeed; ///< a vector of doubles for the speed during the animation
@@ -90,7 +91,7 @@ class GraphRenderer{
          * \param edgeList a vector of Edges we use for the game (state inits)
          */
 
-        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes);
+        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, float xoffset);
 
         /**
          * The standard constructor, which do nothing.

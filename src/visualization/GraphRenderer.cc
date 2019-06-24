@@ -31,7 +31,7 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     //reset window
     window.clear(sf::Color::White);
     for (auto &arr : selectedEdges)
-        arr.setCoordsByPos(Nodes, sizeConstant);
+        arr.setCoordsByPos(Nodes, sizeConstant, offset);
     setCoords(Nodes, nodeList);
     drawShape(window);
     drawText(window);
@@ -173,7 +173,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
             }
             window.clear(sf::Color::White);
             for (auto &arr : selectedEdges)
-                arr.setCoordsByPos(Nodes, sizeConstant);
+                arr.setCoordsByPos(Nodes, sizeConstant, offset);
             setCoords(Nodes, nodeList);
             window.setView(actualView);
             drawShape(window);
@@ -191,7 +191,8 @@ GraphRenderer::GraphRenderer() {
 }
 
 //Complete Constructor
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, float xoffset) {
+    offset = xoffset;
     vector<Node> nodeList = gr.getNodes();
     vector<Edge> edgeList = gr.getEdges();
     maxNodesPerRow = 0;
@@ -303,19 +304,19 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
-    int j2;
-    int i2;
+    unsigned i2;
+    unsigned j2;
     double j3;
     //Iterate to declare all shapes we need in the beginning
     for (unsigned k = 0; k < size_nodes; k++){
-        i = Nodes.at(k).coordinate.y;
+        i = Nodes.at(k).coordinate.y + offset;
         j = Nodes.at(k).coordinate.x;
         i2 = nodeList.at(k).i;
         j2 = nodeList.at(k).j;
         rects.at(i2).at(j2).setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
         txt.at(k).pos.at(0) = sizeConstant * (0.3 + 1.8 * j);
         txt.at(k).pos.at(1) = sizeConstant * (0.25 + 1.5 * i);
-        if (k != Nodes.size() - 1 && i == Nodes.at(k + 1).coordinate.y) {
+        if (k != Nodes.size() - 1 && i2 == nodeList.at(k + 1).i) {
             j3 = Nodes.at(k + 1).coordinate.x;
             sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             sf::Vector2f end(sizeConstant * (0.05 + 1.8 * j3), sizeConstant * (0.45 + 1.5 * i));
@@ -332,6 +333,7 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
     //Placeholder for readablity OF THE NODES
     double i;
     double j;
+    unsigned i2;
     //Placeholder for the Text
     TextProps tx;
     tx.col = sf::Color::Black;
@@ -340,22 +342,23 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
     rect.setSize(sf::Vector2f(sizeConstant, sizeConstant / 2));
     //Iterate to declare all shapes we need in the beginning
     for (unsigned k = 0; k < size_nodes; k++){
-        i = Nodes.at(k).coordinate.y;
+        i = Nodes.at(k).coordinate.y + offset;
         j = Nodes.at(k).coordinate.x;
+        i2 = nodeList.at(k).i;
         rect.setFillColor(Nodes.at(k).col);
         rect.setPosition(sizeConstant * (0.2 + 1.8 * j), sizeConstant * (0.2 + 1.5 * i));
-        while (rects.size() != i + 1) {
+        while (rects.size() != i2 + 1) {
             vector<sf::RectangleShape> fill;
             rects.push_back(fill);
         }
-        rects.at(i).push_back(rect);
+        rects.at(i2).push_back(rect);
         tx.pos.push_back(sizeConstant * (0.3 + 1.8 * j));
         tx.pos.push_back(sizeConstant * (0.25 + 1.5 * i));
         tx.kmer = nodeList.at(k).kmer;
         tx.charSize = sizeConstant * 0.25;
         txt.push_back(tx);
         tx.pos.clear();
-        if (k != Nodes.size() - 1 && i == Nodes.at(k + 1).coordinate.y) {
+        if (k != Nodes.size() - 1 && i2 == nodeList.at(k + 1).i) {
             sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             sf::Vector2f end(sizeConstant * (1.85 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             ArrowShape placeholder(start, end, sizeConstant, sf::Color::Black);
@@ -439,7 +442,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
                     break;
                 }
             }
-            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i);
+            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset);
             consistentEdges.push_back(tempArr);
         }
     }
@@ -462,7 +465,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, 
             break;
         }
     }
-    FuncArrowShape fill(Nodes, sizeConstant, sf::Color::Black, start, end, ind);
+    FuncArrowShape fill(Nodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
     consistentEdges.clear();
@@ -474,7 +477,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, 
 //Method for calculating the nearest node pos of the argument pos
 sf::Vector2f GraphRenderer::positionToCoords(sf::Vector2f pos) {
     int x = floor((pos.x - sizeConstant * 0.2) / (sizeConstant * 1.8));
-    int y = floor((pos.y - sizeConstant * 0.2) / (sizeConstant * 1.5));
+    int y = floor(((pos.y - sizeConstant * 1.5 * offset) - sizeConstant * 0.2) / (sizeConstant * 1.5));
     return sf::Vector2f(x, y);
 }
 
@@ -483,7 +486,7 @@ Node* GraphRenderer::positionToNode(sf::Vector2f pos, vector<Node>& nodeList, ve
     sf::Vector2f temp = positionToCoords(pos);
     Node *actualNode = nullptr;
     for (unsigned i = 0; i < nodeList.size(); i++) {
-        if ((int)Nodes.at(i).coordinate.y == temp.y && (int)Nodes.at(i).coordinate.x == temp.x) {
+        if (nodeList.at(i).i == temp.y && (int)Nodes.at(i).coordinate.x == temp.x) {
             actualNode = &nodeList.at(i);
             break;
         }
