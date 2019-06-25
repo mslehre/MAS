@@ -34,16 +34,16 @@ class Agent {
      *  \param pol Type of Policy, either Random or Learned
      */
     Agent(Graph& g, Policytype pol) : s0(g.getEdges()) {
-    switch(pol) {
-        case rnd:
-            policy = new RandomPolicy();
-            break;
-        case rl:
-            policy = new LearnedPolicy();
-            break;
-        default: 
-            break;
-                }
+        switch(pol) {
+            case rnd:
+                policy = new RandomPolicy();
+                break;
+            case rl:
+                policy = new LearnedPolicy();
+                break;
+            default: 
+                break;
+        }
     }
 
     /** This function runs an episode. It relies on s and policy
