@@ -18,6 +18,7 @@ addons:
 
 before_install:
   - printenv | grep -E '^TRAVIS_' > .env
+  - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/src/ML/pytorch/libtorch/lib
 
 script:
   - make all
