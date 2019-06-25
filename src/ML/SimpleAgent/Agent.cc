@@ -3,18 +3,18 @@
 Agent::Agent(){}
 
 Episode Agent::getEpisode() {
-	// Reset s so that it is the beginning state.
-    s.reset();
+	// Reset s0 so that it is the beginning state.
+    s0.reset();
     Episode episode;
 	// Get the size of the states
-    unsigned int n = s.edges.size();
+    unsigned int n = s0.edges.size();
 	// Initialise a boolean vector for an action 
     vector <bool> action(n, false);
 	// Pushes the initial state at the beginning of an episode. 
-    episode.states.push_back(s.selectedSubset); 
+    episode.states.push_back(s0.selectedSubset); 
     unsigned int counter = 0;
 	// The agent chooses the first action and first successor state with a given policy.
-    std::pair <state*, unsigned int> stateAction = executePolicy(&s, policy);
+    std::pair <state*, unsigned int> stateAction = executePolicy(&s0, policy);
         
 	// While the actual state has a selectable edge.
     while (stateAction.first->hasEdge()) { 

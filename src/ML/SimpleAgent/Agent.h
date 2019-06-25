@@ -23,7 +23,7 @@ enum Policytype {rnd, rl};
 class Agent {
     public:
  
-    state s;    ///< The initial state where every episode starts.
+    state s0;    ///< The initial state where every episode starts.
     Policy* policy;    ///< Pointer to the Policy that Agent currently uses.
 
     Agent();    ///< Default constructor
@@ -33,7 +33,7 @@ class Agent {
      *  \param g Graph being used to create state
      *  \param pol Type of Policy, either Random or Learned
      */
-    Agent(Graph& g, Policytype pol) : s(g.getEdges()) {
+    Agent(Graph& g, Policytype pol) : s0(g.getEdges()) {
     switch(pol) {
         case rnd:
 
