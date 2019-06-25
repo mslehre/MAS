@@ -76,7 +76,13 @@ class GraphRenderer{
 
         void calcAnimationSpeed(unsigned int size);
 
+        unsigned int currentAnimationStep;
+        std::vector<sf::Vector2f> new_coord;
+        vector<DrawNode> old_nodes;
+
 	public:
+        bool animate;
+
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
@@ -119,7 +125,7 @@ class GraphRenderer{
          */
 
         void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
-                          vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos);
+                          Gamemaster& gamemaster, const sf::Vector2f& mouse_pos);
 
         /**
          * a function which display the current score of the game
@@ -186,7 +192,7 @@ class GraphRenderer{
          * a function which select a clicked edge (in the state and in visuals)
          */
 
-        void selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState);
+        void selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster);
 
         /**
          * a function which highlight a hovered node
@@ -267,7 +273,7 @@ class GraphRenderer{
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
 
         void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
-        std::vector<sf::Vector2f> calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
+        std::vector<sf::Vector2f> calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList);
 };
 
 #endif //GraphRenderer_H_

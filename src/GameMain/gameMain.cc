@@ -65,8 +65,7 @@ int main() {
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
             if (status == "game")
-                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState,
-                                    mouse_position);
+                GrRend.eventHandler(event, window, nodeList, gamemaster, mouse_position);
         }
 
         if (status == "menu") {
@@ -94,6 +93,7 @@ int main() {
             window.draw(menuButtonGame.get_Button_Sprite());
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation
+            //GrRend.animation(window, gamemaster, nodeList, menuButton); 
         }
         window.display();
     }
