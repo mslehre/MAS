@@ -36,13 +36,12 @@ class Agent {
     Agent(Graph& g, Policytype pol) : s0(g.getEdges()) {
     switch(pol) {
         case rnd:
-
             policy = new RandomPolicy();
             break;
         case rl:
             policy = new LearnedPolicy();
             break;
-        default : 
+        default: 
             break;
                 }
     }
