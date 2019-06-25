@@ -17,7 +17,7 @@ Episode Agent::getEpisode() {
     std::pair <state*, unsigned int> stateAction = executePolicy(&s0, policy);
         
     // While the actual state has a selectable edge.
-    while (stateAction.second != -1) { 
+    while ((int)stateAction.second != -1) { 
         // Pushes the actual state in the states vector.
         episode.states.push_back(stateAction.first->selectedSubset);
         // Pushes an "empty" action in the action vector.

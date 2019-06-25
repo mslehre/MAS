@@ -58,6 +58,3 @@ vector<float> valueMLmodel::calcValueEstimates(state* s) {
      }
     return prediction1;
 }
-    
-
-   
