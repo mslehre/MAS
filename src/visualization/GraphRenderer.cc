@@ -191,10 +191,10 @@ GraphRenderer::GraphRenderer() {
 }
 
 //Complete Constructor
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, float xoffset) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset) {
     offset = xoffset;
-    vector<Node> nodeList = gr.getNodes();
-    vector<Edge> edgeList = gr.getEdges();
+    vector<Node> nodeList = gamemaster.GameGraph.getNodes();
+    vector<Edge> edgeList = gamemaster.GameGraph.getEdges();
     maxNodesPerRow = 0;
     maxSequences = 0;
     for (unsigned i = 0; i < nodeList.size(); i++) {
@@ -215,7 +215,8 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     edgeHovered = false;
     defaultView = window.getDefaultView();
     actualView = defaultView;
-    initShapes(Nodes, nodeList);
+    initShapes(gamemaster.GameNodes, nodeList);
+
     const unsigned int animationSteps = 100; // number of steps for the animation
     calcAnimationSpeed(animationSteps);
 }
@@ -526,37 +527,33 @@ void GraphRenderer::calcAnimationSpeed(unsigned int size){
     }   
 }
 
-/*   
-
-sf::Vector2f calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes){
-...
+vector<sf::Vector2f> GraphRenderer::calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes){
+    vector<sf::Vector2f> new_coord;
+    return new_coord;
 }
 
-void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
-                              Button& menuButton){
-    vector<Node> old_nodes_coord = nodeList;
-    sf::Vector2f new_nodes_coord = calcNewNodeCoord(gamemaster.GameState, nodeList, gamemaster.GameNodes);
 
-    for (unsigned int i = 0; i < speed.size(); i++) {
+void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
+Button& menuButton){
+    vector<DrawNode> old_nodes = gamemaster.GameNodes;
+    vector<sf::Vector2f> new_coord = calcNewNodeCoord(gamemaster.GameState, nodeList, gamemaster.GameNodes);
+
+    for (unsigned int i = 0; i < animationSpeed.size(); i++) {
         for (unsigned int j = 0; j < nodeList.size(); j++) {
-            if (old_nodes_coord.at(j).coordinate.x != new_nodes_coord[j].x)
-                nodeList.at(j).coordinate.x = old_nodes_coord.at(j).coordinate.x * (1 - animationSpeed[i]) 
-                                            + new_nodes_coord[j].x * animationSpeed[i];        
+            if (old_nodes.at(j).coordinate.x != new_coord[j].x)
+                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x * (1 - animationSpeed[i]) 
+                                                        + new_coord[j].x * animationSpeed[i];        
         }        
         window.clear(sf::Color::White);
-        // vielleicht Draw funktion für einzelnen Knoten schreiben (macht Code möglicherweise übersichtlicher)
-        for (unsigned int i = 0; i < Knotenvektor.size(); i++) {
-            Knotenvektor.at(i).draw(window);
-        }
         for (auto &arr : selectedEdges)
-            arr.setCoordsByPos(Nodes, sizeConstant);
-        setCoords(Nodes, nodeList);
+            arr.setCoordsByPos(gamemaster.GameNodes, sizeConstant, offset);
+        setCoords(gamemaster.GameNodes, nodeList);
         window.setView(actualView);
         drawShape(window);
         drawText(window);
-        display_score(window, GameState);
+        display_score(window, gamemaster.GameState);
         window.draw(menuButton.get_Button_Sprite());
         window.display();
     }
 }
-*/
+     

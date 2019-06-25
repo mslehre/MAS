@@ -18,6 +18,7 @@
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 #include "Button.h"
+#include "../GameMain/Gamemaster.h"
 
 void printHelp(); ///< a function which calls a troubleshooting for bad arguments
 
@@ -91,7 +92,7 @@ class GraphRenderer{
          * \param edgeList a vector of Edges we use for the game (state inits)
          */
 
-        GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, float xoffset);
+        GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset);
 
         /**
          * The standard constructor, which do nothing.
@@ -264,6 +265,9 @@ class GraphRenderer{
          */
 
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
+
+        void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
+        std::vector<sf::Vector2f> calcNewNodeCoord(const state& GameState, vector<Node>& nodeList, vector<DrawNode>& Nodes);
 };
 
 #endif //GraphRenderer_H_
