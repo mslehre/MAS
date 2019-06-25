@@ -55,7 +55,7 @@ class Agent {
     /** The member executePolicy selects an edge in state s according to Policy p.
      * \param s Expects a state s as input parameter.
      * \param p Expects a policy p as input parameter.
-     * \return Returns a state action pair.
+     * \return Returns a state action pair
      */
     std::pair <state*, unsigned int> executePolicy(state* s, Policy* p);
 

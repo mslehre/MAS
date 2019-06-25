@@ -13,9 +13,10 @@ class LinearNet : public torch::nn::Module {
         LinearNet(unsigned ds) : dim_state(ds) {
             // Construct and register a Linear submodule
             lin_mod = register_module("fc", torch::nn::Linear(dim_state, 1));
-            for (auto& p : this->parameters()) {
-                torch::nn::init::constant_(p, 0);
-            }
+            /*for (auto& p : this->parameters()) {
+                torch::nn::init::constant_(p, 0.1);
+                //p.uniform_(0,0);
+            }*/
         }
 
         // Implement the Net's algorithm.

@@ -32,9 +32,7 @@ int main() {
 	
 	//Start of linear Regression learning with LearnedPolicy by setting agent's policy to lpol
     //agent.setPolicy(&lpol);
-    /*LearnedPolicy lpol;
-    valueMLmodel valModel(g.getEdges().size());
-    lpol.setVModel(&valModel)*/
+    
     TrainingSet TS(3, 100, 20, 64, 0.1);
     TS.train(&agent, lpol);
 }
