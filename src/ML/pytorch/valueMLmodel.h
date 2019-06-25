@@ -14,6 +14,8 @@ class valueMLmodel {
         valueMLmodel();
         valueMLmodel(unsigned int dimstate);
 
+        torch::Tensor tensState;
+        
         std::shared_ptr<LinearNet> linearNet;
         unsigned int dimstate;    ///< Number of possible edges in state.
 
