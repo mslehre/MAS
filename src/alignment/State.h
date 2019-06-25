@@ -14,6 +14,7 @@
  */
 
 class state{
+
     public:
     state(Graph& graph); ///< Constructor with a Graph
     state(std::vector <Edge> e); ///< Constructor with an Edge vector
@@ -30,6 +31,8 @@ class state{
     std::vector <bool> selectable;    ///< Shows whether edge is selectable in the current subset (true = selectable)
     std::vector<unsigned int> selectedEdgeIndex; ///< contains indices from "edges" for all edges that are selected
     unsigned int score; ///< The score of the State
+    vector<vector<bool>> successorStates; ///< The direct successor States
+    
         
     /**
      * Selects edge i if selectable (does nothing otherwise)
@@ -57,10 +60,20 @@ class state{
      */
 
     bool consistent(Edge& e, Edge& f);
-   
-    /** 
-     * calculate the score for the state
+	
+	/** This function determines whether state has a selectable edge.
+	 * \return Returns true if it has selectable edge and false otherwise.
+	 */
+	bool hasEdge();
+    
+    /** This function calculates the beginning state
+    * \param e is vector of edges
+    */
+    void reset();
+
+    /** This function determines all direct successor states.
      */
+    vector<bool> calcSuccessorStates();
 
     /**
      * update the current score of the state: 
@@ -70,6 +83,7 @@ class state{
      * This function requires that the edges are sorted increasingly by i.
      */
     void calculate_score();
+
 
 };
 
