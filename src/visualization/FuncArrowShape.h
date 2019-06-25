@@ -47,13 +47,13 @@ class FuncArrowShape : public ArrowShape {
          * \param sizeConstant an integer which scales the arrow
          * \param col the color of the arrow
          */
-        FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2);
+        FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, float offset);
         /**
          * a function to get the protected index
          *
          * \return an integer which is the index in the corresponded edge vector in state
          */
-        void setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant);
+        void setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant, float offset);
         sf::Vector2i getIndexOfArrow();
         int getIndex();
         /**

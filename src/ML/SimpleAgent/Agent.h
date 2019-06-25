@@ -23,7 +23,7 @@ enum Policytype {rnd, rl};
 class Agent {
     public:
  
-    state s;    ///< The initial state where every episode starts.
+    state s0;    ///< The initial state where every episode starts.
     Policy* policy;    ///< Pointer to the Policy that Agent currently uses.
 
     Agent();    ///< Default constructor
@@ -33,18 +33,17 @@ class Agent {
      *  \param g Graph being used to create state
      *  \param pol Type of Policy, either Random or Learned
      */
-    Agent(Graph& g, Policytype pol) : s(g.getEdges()) {
-    switch(pol) {
-        case rnd:
-
-            policy = new RandomPolicy();
-            break;
-        case rl:
-            policy = new LearnedPolicy();
-            break;
-        default : 
-            break;
-                }
+    Agent(Graph& g, Policytype pol) : s0(g.getEdges()) {
+        switch(pol) {
+            case rnd:
+                policy = new RandomPolicy();
+                break;
+            case rl:
+                policy = new LearnedPolicy();
+                break;
+            default: 
+                break;
+        }
     }
 
     /** This function runs an episode. It relies on s and policy
@@ -56,6 +55,7 @@ class Agent {
     /** The member executePolicy selects an edge in state s according to Policy p.
      * \param s Expects a state s as input parameter.
      * \param p Expects a policy p as input parameter.
+     * \return Returns a state action pair
      */
     std::pair <state*, unsigned int> executePolicy(state* s, Policy* p);
 

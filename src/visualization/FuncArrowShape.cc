@@ -5,9 +5,9 @@ using namespace std;
 FuncArrowShape::FuncArrowShape() {
 }
 
-FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2) {
-    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(start).coordinate.x), sizeConstant * (0.7 + 1.5 * Nodes.at(start).coordinate.y));
-    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(end).coordinate.x), sizeConstant * (0.2 + 1.5 * Nodes.at(end).coordinate.y));
+FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, float offset) {
+    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(start).coordinate.x), sizeConstant * (0.7 + 1.5 * (Nodes.at(start).coordinate.y + offset)));
+    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(end).coordinate.x), sizeConstant * (0.2 + 1.5 * (Nodes.at(end).coordinate.y + offset)));
     hovCol = col;
     sf::Vector2i temp(start, end);
     indexOfState = ind2;
@@ -21,9 +21,9 @@ FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant,
     setProps(sizeConstant, col);
 }
 
-void FuncArrowShape::setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant) {
-    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.x).coordinate.x), sizeConstant * (0.7 + 1.5 * Nodes.at(indexOfDrawNode.x).coordinate.y));
-    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.y).coordinate.x), sizeConstant * (0.2 + 1.5 * Nodes.at(indexOfDrawNode.y).coordinate.y));
+void FuncArrowShape::setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant, float offset) {
+    sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.x).coordinate.x), sizeConstant * (0.7 + 1.5 * (Nodes.at(indexOfDrawNode.x).coordinate.y + offset)));
+    sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(indexOfDrawNode.y).coordinate.x), sizeConstant * (0.2 + 1.5 * (Nodes.at(indexOfDrawNode.y).coordinate.y + offset)));
     setCoords(s, e);
 }
 
