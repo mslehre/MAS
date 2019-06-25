@@ -3,7 +3,7 @@
 RLDataset::RLDataset(vector<Episode>& episodes) { 
     this->episodes = episodes;
     numbEpisodes = episodes.size();  
-	// Vector of states       
+    // Vector of states       
     vector<vector<bool>> s;   
     // vector of actions         
     vector<vector<bool>> a;
@@ -21,7 +21,7 @@ RLDataset::RLDataset(vector<Episode>& episodes) {
     std::cout << "Number of edges: " << numbEdges << std::endl;                
     states = torch::zeros({numbStates, numbEdges});                ///< dataset of states
     actions = torch::zeros({numbStates, numbEdges});                ///< dataset of actions
-    scores = torch::zeros({numbStates,1});                          ///< corresponding scores
+    scores = torch::zeros({numbStates, 1});                          ///< corresponding scores
            
     unsigned int counter = 0;
         

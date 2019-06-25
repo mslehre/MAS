@@ -57,7 +57,7 @@ std::pair <state*, unsigned int> Agent::executePolicy(state* s, Policy* p) {
         s->select(edgeSelection);
     }
 	// Returns a pair of the successor state and the action chosen to get there
-    return std::make_pair(s,edgeSelection);
+    return std::make_pair(s, edgeSelection);
 }
 
 void Agent::setPolicy(Policy *pol) {
