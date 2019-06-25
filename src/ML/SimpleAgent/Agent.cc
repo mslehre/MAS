@@ -61,5 +61,5 @@ std::pair <state*, unsigned int> Agent::executePolicy(state* s, Policy* p) {
 }
 
 void Agent::setPolicy(Policy *pol) {
-    this->policy = pol;
+    policy = pol;
 } 
