@@ -19,7 +19,7 @@ addons:
 before_install:
   - printenv | grep -E '^TRAVIS_' > .env
   - cd src/ML/pytorch
-  - wget https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-latest.zip
+  - wget https://download.pytorch.org/libtorch/cpu/libtorch-shared-with-deps-latest.zip --quiet
   - unzip libtorch-shared-with-deps-latest.zip
   - export LD_LIBRARY_PATH=$TRAVIS_BUILD_DIR/src/ML/pytorch/libtorch/lib
   - cd ../../..
