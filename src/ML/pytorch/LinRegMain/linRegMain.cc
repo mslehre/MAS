@@ -32,7 +32,8 @@ int main() {
 	
 	//Start of linear Regression learning with LearnedPolicy by setting agent's policy to lpol
     //agent.setPolicy(&lpol);
-    
+    //TODO: Agent agent(g, Policytype::rl);
     TrainingSet TS(10, 100, 20, 64, 0.1);
+    //TODO: TS.train(&agent);
     TS.train(&agent, lpol);
 }
