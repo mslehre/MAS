@@ -24,9 +24,9 @@ int main() {
     //Creation of dataSet and valModel, "learning" by influencing learnedPolicy
     RLDataset dataSet1(episodes1);
     valueMLmodel valModel(g.getEdges().size());
-    LearnedPolicy lpol;
+    LearnedPolicy lpol(&valModel);
     
-    lpol.setVModel(&valModel); 
+    
     
     lpol.vModel->learn(dataSet1, 100, 64, 0.1);
 	

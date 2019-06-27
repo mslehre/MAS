@@ -6,8 +6,8 @@
 
 class LearnedPolicy : public Policy {
     public:
-
-        LearnedPolicy();
+        LearnedPolicy(){};
+        LearnedPolicy(valueMLmodel* valModel);
         ~LearnedPolicy(){};
 
         /** This valueMLmodel contains data required for prediction of
