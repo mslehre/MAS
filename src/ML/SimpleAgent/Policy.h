@@ -14,6 +14,6 @@ class Policy {
      * \param s Expects a state as input parameter.
      * \return Returns the vector of probabilities for each action.
      */
-    virtual std::vector <float> runPolicy(state* s) const = 0;
+   // virtual std::vector <float> runPolicy(state* s) const = 0;
 };
 #endif

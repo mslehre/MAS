@@ -12,7 +12,7 @@ using namespace std;
 int main() {
     Graph g;
     g.readFastaFiles("../../../alignment/sequences.fa" , 3);
-
+    /*
 	// Start of linear Regression learning with RandomPolicy
     Agent agent(g, Policytype::rnd);
 	//Creation of Episodes
@@ -29,11 +29,11 @@ int main() {
     
     
     lpol.vModel->learn(dataSet1, 100, 64, 0.1);
-	
+	*/
 	//Start of linear Regression learning with LearnedPolicy by setting agent's policy to lpol
     //agent.setPolicy(&lpol);
-    //TODO: Agent agent(g, Policytype::rl);
-    TrainingSet TS(10, 100, 20, 64, 0.1);
+    Agent agent(g);
+    TrainingSet TS(10, 100, 20, 64, 0.1);    
     //TODO: TS.train(&agent);
-    TS.train(&agent, lpol);
+    TS.train(&agent);
 }

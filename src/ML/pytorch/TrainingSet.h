@@ -44,6 +44,6 @@ class TrainingSet {
         /** \brief This function trains an agent a designated number of times.
          *  \param agent requires an agent that has learnedPolicy that has learned at least once.
          */ 
-        void train(Agent* agent, LearnedPolicy lpol);
+        void train(Agent* agent);
 };
 #endif

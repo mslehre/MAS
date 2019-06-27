@@ -1,9 +1,5 @@
 #include "LearnedPolicy.h"
 
-LearnedPolicy::LearnedPolicy(valueMLmodel* valModel) {
-    vModel = valModel;
+LearnedPolicy::LearnedPolicy(unsigned int dimstate) :  vModel(dimstate){    
 }
 
-void LearnedPolicy::setVModel(valueMLmodel* valModel) {
-    vModel = valModel;
-}

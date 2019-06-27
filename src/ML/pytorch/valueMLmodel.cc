@@ -1,13 +1,15 @@
 #include "valueMLmodel.h"
+#include <typeinfo>
+
 
 //default constructor
 valueMLmodel::valueMLmodel(){}
 
 //constructor
-valueMLmodel::valueMLmodel(unsigned int dimstate) {
-    this->dimstate = dimstate;
-    linearNet = std::make_shared<LinearNet>(dimstate);
-    tensState = torch::zeros({dimstate,dimstate});
+valueMLmodel::valueMLmodel(unsigned int ds) {
+    dim = ds;
+    linearNet = std::make_shared<LinearNet>(dim);
+    tensState = torch::zeros({dim,dim});
 }
 
 void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsigned int batch_size, float alpha) {
@@ -40,17 +42,16 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
 vector<float> valueMLmodel::calcValueEstimates(state* s) {
     /* Calculate all possible successor states of s.
        Returns a boolean vector corresponding to edges in such a way that true means an edge is selectable */
-    for (unsigned int i = 0; i < dimstate; i++) {
-        tensState[i] = (float) s->selectedSubset.at(i);
+    for (unsigned int j = 0; j < dim; j++) {
+        tensState[j] = (float) s->selectedSubset.at(j);
         
     }
-    vector<unsigned int> index = s->calcSuccessorStates();     
-    vector<float*> prediction(dimstate,0);
-    vector<float> prediction1(dimstate,0);
-    torch::Tensor pred = torch::zeros(dimstate);
+    vector<unsigned int> index = s->calcSuccessorStates();    
+    vector<float*> prediction(dim,0);
+    vector<float> prediction1(dim,0);
+    torch::Tensor pred = torch::zeros(dim);
     for (unsigned int i = 0; i < index.size(); i++) {
         tensState[index[i]] = 1;
-        
         pred = linearNet->forward(tensState);
         prediction.at(index.at(i)) = pred.data<float>();
         prediction1.at(index.at(i)) = *prediction.at(index.at(i));
