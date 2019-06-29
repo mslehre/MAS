@@ -2,16 +2,6 @@
 
 using namespace std;
 
-//Method for troubleshooting bad arguments
-void printHelp(){
-    cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
-    cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
-    cout << "\t fasta file: Must be a file with the ending .fa" << endl;
-    cout << "\t\t fasta files are there to save the information of multiple sequences.\n" << endl;
-    cout << "\t k: Must be an integer greater than zero." << endl;
-    cout << "\t\t k is the length of the Kmers we observe.\n" << endl;
-}
-
 //Method for rendering the actual window view with its components
 void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList) {
     //update window view, if changed in class
@@ -546,7 +536,7 @@ void GraphRenderer::calcAnimationSpeed(unsigned int size){
 }
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
-Button& menuButton){
+                              Button& menuButton){
 
     if (animate && currentAnimationStep < animationSpeed.size() - 1) {
         for (unsigned int j = 0; j < nodeList.size(); j++) {

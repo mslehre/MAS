@@ -20,8 +20,6 @@
 #include "Button.h"
 #include "../GameMain/Gamemaster.h"
 
-void printHelp(); ///< a function which calls a troubleshooting for bad arguments
-
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
  *
  * This Class Stores different functionalitys: The shape and text data which visualize the Graph
