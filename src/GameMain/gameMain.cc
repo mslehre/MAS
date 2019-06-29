@@ -48,7 +48,7 @@ int main() {
     Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
     Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
     Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
-    Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
+    Slider slider_mutation(450, 700, 0, 100, probability, "Mutation probability");
 
     while (window.isOpen()) {
         sf::Event event;
