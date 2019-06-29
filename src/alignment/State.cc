@@ -8,12 +8,9 @@
 using namespace std;
 
 state::state(Graph& graph){
-    vector<bool> tempSelectedSubset(graph.getEdges().size(), false);
-    vector<bool> tempSelectable(graph.getEdges().size(), true);
-    this->selectedSubset = tempSelectedSubset;
-    this->selectable = tempSelectable;
     this->edges = graph.getEdges();
-    this->score = 0;
+    reset();
+
 }
 
 state::state(vector <Edge> e){
@@ -41,6 +38,15 @@ void state::select(int i){
         selectedEdgeIndex.push_back(i);
         sort(selectedEdgeIndex.begin(), selectedEdgeIndex.end()); 
     }
+}
+
+void state::reset(){
+    selectedEdgeIndex.clear();
+    vector<bool> tempSelectedSubset(edges.size(), false);
+    vector<bool> tempSelectable(edges.size(), true);
+    this->selectedSubset = tempSelectedSubset;
+    this->selectable = tempSelectable;
+    this->score = 0;
 }
 
 void state::updateSelectability(int i){
@@ -74,6 +80,15 @@ bool state::consistent(Edge& e, Edge& f){
     }
 }
 
+
+bool state::hasEdge() {
+	for (unsigned int i = 0; i < selectable.size(); i++) {
+		if (selectable[i] == true)
+			return true;
+	}
+	return false;
+}
+
 void state::calculate_score(){
     score = 0;
     vector<bool> visited(selectedEdgeIndex.size(), false);
@@ -90,7 +105,25 @@ void state::calculate_score(){
                     visited[j] = true;
                 }
             }
-            score += (path_length * (path_length + 1)) / 2;
-        }
+            score += (path_length * (path_length + 1)) / 2;                         
+        }            
     }
 }
+
+vector<bool> state::calcSuccessorStates() {
+    vector<bool> indexSet;
+    for (unsigned int i = 0; i < edges.size(); i++) {
+        if (!selectedSubset.at(i) && selectable.at(i)) {
+            selectedSubset.at(i) = true;
+            successorStates.push_back(selectedSubset);
+            selectedSubset.at(i) = false;
+            indexSet.push_back(true);
+        }else {
+            indexSet.push_back(false);
+        }
+    }
+    return indexSet;
+  
+}
+            
+       

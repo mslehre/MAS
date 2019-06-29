@@ -11,5 +11,8 @@ src/alignment/State_test
 src/GameMain/game_main
 src/ML/pytorch/example/mnist
 src/ML/pytorch/example/net.pt
-src/ML/pytorch/libtorch/
+src/ML/pytorch/libtorch/bin
+src/ML/pytorch/libtorch/build-hash
+src/ML/pytorch/libtorch/build-version
+src/ML/pytorch/libtorch/share
 

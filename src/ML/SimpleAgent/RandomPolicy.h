@@ -12,13 +12,15 @@
  */
 class RandomPolicy : public Policy {
     public:
+
     RandomPolicy(){};
     ~RandomPolicy(){};
+
     /** The function act returns probability vector of 0 if edge not selectable, 1/# of selectable edges otherwise.
      * \param s Expects a state s as input parameter.
      * \return Returns the probability vector.
      */
-    virtual std::vector <float> act(state* s) const override {
+    virtual std::vector <float> runPolicy(state* s) const override {
         unsigned int n = s->edges.size();
         std::vector <float> probAct(n, 0);
         int cTemp = std::count(s->selectable.begin(), s->selectable.end(), true);
@@ -27,26 +29,7 @@ class RandomPolicy : public Policy {
             if (s->selectable[i] == true)
                 probAct[i] = (float)(1/counter);
         }
-        return probAct;
-        /*
-        std::mt19937 gen(std::chrono::high_resolution_clock::now().time_since_epoch().count());
-        std::vector <int> selectableIndices;
-        bool hasEdge = false;
-        for (unsigned int j = 0; j < s->selectable.size(); j++) {
-            if (s->selectable[j] == true) {
-                selectableIndices.push_back(j);
-                hasEdge = true;
-            }
-        }
-        if (hasEdge == true) {
-            std::uniform_int_distribution<> dis(0, selectableIndices.size() - 1);
-            unsigned int edgeIndex = selectableIndices[dis(gen)];
-            s->select(edgeIndex);    ///<The select in the act function is for tests ONLY
-            return edgeIndex;
-        }
-        else {
-            return -1;
-        }*/
+        return probAct;     
     }
 };
 #endif
