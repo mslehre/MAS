@@ -550,8 +550,9 @@ Button& menuButton){
     if (animate && currentAnimationStep < animationSpeed.size() - 1) {
         for (unsigned int j = 0; j < nodeList.size(); j++) {
             if (old_nodes.at(j).coordinate.x != new_coord[j].x)
-                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x * (1 - animationSpeed[currentAnimationStep]) 
-                                                        + new_coord[j].x * animationSpeed[currentAnimationStep];        
+                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x 
+                                                        * (1 - animationSpeed[currentAnimationStep]) 
+                                                        + new_coord[j].x * animationSpeed[currentAnimationStep];
         }        
         window.clear(sf::Color::White);
         for (auto &arr : selectedEdges)

@@ -279,6 +279,15 @@ class GraphRenderer{
 
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
 
+        /**
+         * a function for the animation
+         *
+         * \param window is the current RenderWindow
+         * \param gamemaster contains the current coordinates of all nodes
+         * \param nodeList contains all nodes
+         * \param menuButton is the button to return to the menu
+         */
+
         void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
 };
 
