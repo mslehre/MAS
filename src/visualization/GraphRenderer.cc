@@ -433,7 +433,8 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
     int size_Edges = gameState.edges.size();
     for (int i = 0; i < size_Edges; i++) {
         //just look at all edges that come from the selected node
-        if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i && recent->j == gameState.edges.at(i).first->j) {
+        if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i 
+                                       && recent->j == gameState.edges.at(i).first->j) {
             Edge temp = gameState.edges.at(i);
             int start = 0;
             int end = 0;
