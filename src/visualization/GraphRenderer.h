@@ -64,9 +64,13 @@ class GraphRenderer{
         float offset; ///< a constant which make a offset on the upper horizontal
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
-        vector<double> animationSpeed; ///< a vector of doubles for the speed during the animation
 
     private:
+        bool animate; ///< true, if the animation is running
+        unsigned int currentAnimationStep; ///< the current step of the animation
+        std::vector<sf::Vector2f> new_coord; ///< a vector with new coordinates for the nodes
+        vector<DrawNode> old_nodes; ///< a vector with the old nodes
+        vector<double> animationSpeed; ///< a vector of doubles for the speed during the animation
 
         /**
          * a function which calculate the speed during the animation
@@ -75,14 +79,17 @@ class GraphRenderer{
          */
 
         void calcAnimationSpeed(unsigned int size);
+    
+        /**
+         * a function which calculate the new node coordinates afer a edge is set
+         *
+         * \param gamemaster contains the State and the DrawNodes vector that we need for the calculation
+         * \param nodeList contains the Nodes which is needed for the calculation   
+         */
 
-        unsigned int currentAnimationStep;
-        std::vector<sf::Vector2f> new_coord;
-        vector<DrawNode> old_nodes;
-
+        std::vector<sf::Vector2f> calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList);
+        
 	public:
-        bool animate;
-
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
@@ -273,7 +280,6 @@ class GraphRenderer{
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
 
         void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
-        std::vector<sf::Vector2f> calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList);
 };
 
 #endif //GraphRenderer_H_

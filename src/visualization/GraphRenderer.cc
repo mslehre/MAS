@@ -217,8 +217,8 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, f
     actualView = defaultView;
     initShapes(gamemaster.GameNodes, nodeList);
 
-    const unsigned int animationSteps = 100; // number of steps for the animation
-    unsigned int currentAnimationStep = 0;
+    const unsigned int animationSteps = 120 ; // number of animation steps
+    currentAnimationStep = 0;
     calcAnimationSpeed(animationSteps);
     animate = false; 
 }
@@ -524,7 +524,13 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
 }
 
 vector<sf::Vector2f> GraphRenderer::calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList){
-    vector<sf::Vector2f> new_coord;
+    // for testing   length of kmer = 5 sequence lenght = 10 number of sequences = 2 mutationprop. = 0 
+    sf::Vector2f t1(0, 1);
+    sf::Vector2f t2(2, 1);
+    sf::Vector2f t3(1, 2);
+    sf::Vector2f t4(2, 2);
+    vector<sf::Vector2f> new_coord = {t1, t2, t3, t4};
+    //TODO: we need a new coordinate calculation function
     return new_coord;
 }
 
@@ -540,6 +546,7 @@ void GraphRenderer::calcAnimationSpeed(unsigned int size){
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
 Button& menuButton){
+
     if (animate && currentAnimationStep < animationSpeed.size() - 1) {
         for (unsigned int j = 0; j < nodeList.size(); j++) {
             if (old_nodes.at(j).coordinate.x != new_coord[j].x)

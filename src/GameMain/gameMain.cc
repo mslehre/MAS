@@ -85,6 +85,7 @@ int main() {
             clock.restart();
         }
         if (status == "game") {
+            //GrRend.animation(window, gamemaster, nodeList, menuButtonGame); 
             GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
@@ -93,7 +94,6 @@ int main() {
             window.draw(menuButtonGame.get_Button_Sprite());
             sf::Time elapsed = clock.restart();
             GrRend.update(elapsed.asSeconds()); //scroll speed computation
-            //GrRend.animation(window, gamemaster, nodeList, menuButton); 
         }
         window.display();
     }
