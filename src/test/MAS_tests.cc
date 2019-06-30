@@ -9,7 +9,7 @@ namespace MAS_test {
         EXPECT_EQ(0,0);
     }
 // Timon: score_test
-    TEST(MAS_tests, test_test) {
+    TEST(alignment_tests, score_test) {
         Node n1(0,0,"AA");
         Node n2(0,1,"TT");
         Node n3(0,2,"GG");
