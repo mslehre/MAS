@@ -152,6 +152,57 @@ namespace MAS_test {
         for (auto &a : edgesIndices ) {
             EXPECT_EQ(a.first,a.second);
         }
+        // MORITZ
+        // get 5 nodes for the test with length of k-mer = 2
+        vector<Node> nodes = g.getNodes();
+        Node node1 = nodes.at(0);
+        Node node2 = nodes.at(2);
+        Node node3= nodes.at(7);
+        Node node4 = nodes.at(9);
+        Node node5 = nodes.at(12);
+        // save indices of nodes
+        vector<std::pair<int,int>> nodesIndices = {
+            std::make_pair(node1.i,0),
+            std::make_pair(node1.j,0),
+            std::make_pair(node2.i,0),
+            std::make_pair(node2.j,2),
+            std::make_pair(node3.i,0),
+            std::make_pair(node3.j,7),
+            std::make_pair(node4.i,1),
+            std::make_pair(node4.j,0),
+            std::make_pair(node5.i,1),
+            std::make_pair(node5.j,3),
+        };
+        // tests of indices i and j of nodes
+        for (auto &a : nodesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
+        // get 5 nodes for the test with length of k-mer = 3
+        nodes.clear();
+        nodes = g2.getNodes();
+        node1 = nodes.at(3);
+        node2 = nodes.at(6);
+        node3= nodes.at(11);
+        node4 = nodes.at(13);
+        node5 = nodes.at(21);
+        // save indices of nodes
+        nodesIndices.clear();
+        nodesIndices = {
+            std::make_pair(node1.i,1),
+            std::make_pair(node1.j,1),
+            std::make_pair(node2.i,1),
+            std::make_pair(node2.j,4),
+            std::make_pair(node3.i,2),
+            std::make_pair(node3.j,4),
+            std::make_pair(node4.i,3),
+            std::make_pair(node4.j,0),
+            std::make_pair(node5.i,5),
+            std::make_pair(node5.j,0),
+        };
+        // tests of indices i and j of nodes
+        for (auto &a : nodesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
     }
 // Maurice: consistency_check
     TEST(alignment_tests, consistency_check) {
