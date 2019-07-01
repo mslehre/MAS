@@ -1,12 +1,28 @@
 #include <gtest/gtest.h>
+#include <SFML/Graphics/Color.hpp>
 #include "../alignment/State.h"
 #include "../alignment/Edge.h"
 #include "../alignment/Node.h"
 #include "../alignment/Graph.h"
+#include "../visualization/colorlist.h"
 
 namespace MAS_test {
     TEST(MAS_tests, test_test) {
         EXPECT_EQ(0,0);
+    }
+// Lucas: colortest
+    TEST(visualization_tests, color_test) {
+        colorlist example(30);
+        std::vector<sf::Color> clist = example.giveList();
+        EXPECT_NE(clist.at(22).r, clist.at(21).r);
+        EXPECT_NE(clist.at(22).r, clist.at(23).r);
+        EXPECT_NE(clist.at(24).r, clist.at(23).r);
+        EXPECT_NE(clist.at(22).g, clist.at(21).g);
+        EXPECT_NE(clist.at(22).g, clist.at(23).g);
+        EXPECT_NE(clist.at(24).g, clist.at(23).g);
+        EXPECT_NE(clist.at(22).b, clist.at(21).b);
+        EXPECT_NE(clist.at(22).b, clist.at(23).b);
+        EXPECT_NE(clist.at(24).b, clist.at(23).b);
     }
 // Timon: score_test
     TEST(alignment_tests, score_test) {
