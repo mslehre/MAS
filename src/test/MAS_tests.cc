@@ -73,6 +73,86 @@ namespace MAS_test {
         unsigned int score = s.score;
         EXPECT_EQ(score,16);
     }
+
+//  SEBASTIAN and MORITZ: graph_test
+    TEST(alignment_tests, graph_tests) {
+        // SEBASTIAN
+        Graph g;
+        // reading fasta file "sequences.fa" and selected length of k-mer = 2
+        g.readFastaFiles("sequences.fa",2);
+        // get 5 edges for the test
+        vector<Edge> edges = g.getEdges();
+        Edge edge1 = edges.at(0);
+        Edge edge2 = edges.at(8);
+        Edge edge3 = edges.at(10);
+        Edge edge4 = edges.at(14);   
+        Edge edge5 = edges.at(16);
+        // save indices of eges
+        vector<std::pair<int,int>> edgesIndices = {
+            std::make_pair(edge1.first->i,0),
+            std::make_pair(edge1.first->j,0),
+            std::make_pair(edge2.first->i,0),
+            std::make_pair(edge2.first->j,8),
+            std::make_pair(edge3.first->i,1),
+            std::make_pair(edge3.first->j,2),
+            std::make_pair(edge4.first->i,1),
+            std::make_pair(edge4.first->j,5),
+            std::make_pair(edge5.first->i,1),
+            std::make_pair(edge5.first->j,7),
+            std::make_pair(edge1.second->i,1),
+            std::make_pair(edge1.second->j,4),
+            std::make_pair(edge2.second->i,1),
+            std::make_pair(edge2.second->j,9),
+            std::make_pair(edge3.second->i,2),
+            std::make_pair(edge3.second->j,1),
+            std::make_pair(edge4.second->i,2),
+            std::make_pair(edge4.second->j,5),
+            std::make_pair(edge5.second->i,2),
+            std::make_pair(edge5.second->j,4)
+        };
+        // tests if first and second Node of edge have the right indices
+        for (auto &a : edgesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
+        Graph g2;
+        // reading fasta file "sequences.fa" and selected length of k-mer = 3
+        g2.readFastaFiles("sequences.fa",3);
+        // get 5 edges for the test
+        edges = g2.getEdges();
+        edge1 = edges.at(0);
+        edge2 = edges.at(2);
+        edge3 = edges.at(4);
+        edge4 = edges.at(5);   
+        edge5 = edges.at(8);
+        edgesIndices.clear();
+        // save indices of eges
+        edgesIndices = {
+            std::make_pair(edge1.first->i,0),
+            std::make_pair(edge1.first->j,1),
+            std::make_pair(edge2.first->i,3),
+            std::make_pair(edge2.first->j,0),
+            std::make_pair(edge3.first->i,3),
+            std::make_pair(edge3.first->j,3),
+            std::make_pair(edge4.first->i,4),
+            std::make_pair(edge4.first->j,2),
+            std::make_pair(edge5.first->i,6),
+            std::make_pair(edge5.first->j,2),
+            std::make_pair(edge1.second->i,1),
+            std::make_pair(edge1.second->j,1),
+            std::make_pair(edge2.second->i,4),
+            std::make_pair(edge2.second->j,3),
+            std::make_pair(edge3.second->i,4),
+            std::make_pair(edge3.second->j,2),
+            std::make_pair(edge4.second->i,5),
+            std::make_pair(edge4.second->j,4),
+            std::make_pair(edge5.second->i,7),
+            std::make_pair(edge5.second->j,3)
+        };
+        // tests if first and second Node of edge have the right indices
+        for (auto &a : edgesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
+    }
 // Maurice: consistency_check
     TEST(alignment_tests, consistency_check) {
         vector <Edge> edgeList;
