@@ -73,6 +73,36 @@ namespace MAS_test {
         unsigned int score = s.score;
         EXPECT_EQ(score,16);
     }
+//  SEBASTIAN and MORITZ: graph_test
+    TEST(alignment_tests, graph_tests) {
+        Graph g;
+        // reading fasta file "sequences.fa" and selected length of k-mer = 2
+        g.readFastaFiles("sequences.fa",2);
+        // get edges
+        vector<Edge> edges = g.getEdges();
+        Edge edge1 = edges.at(0);
+        Edge edge2 = edges.at(8);
+        Edge edge3 = edges.at(10);
+        Edge edge4 = edges.at(14);   
+        Edge edge5 = edges.at(16);
+
+        vector<std::pair<int,int>> edgesIndices = {
+            std::make_pair(edge1.second->i,1),
+            std::make_pair(edge1.second->j,4),
+            std::make_pair(edge2.second->i,1),
+            std::make_pair(edge2.second->j,9),
+            std::make_pair(edge3.second->i,2),
+            std::make_pair(edge3.second->j,1),
+            std::make_pair(edge4.second->i,2),
+            std::make_pair(edge4.second->j,5),
+            std::make_pair(edge5.second->i,2),
+            std::make_pair(edge5.second->j,4)
+        };
+
+        for (auto &a : edgesIndices ) {
+            EXPECT_EQ(a.first,a.second);                
+        }
+    }
 }
 
 int main(int argc, char **argv) {
