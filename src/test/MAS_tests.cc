@@ -160,7 +160,7 @@ namespace MAS_test {
         Node node3= nodes.at(7);
         Node node4 = nodes.at(9);
         Node node5 = nodes.at(12);
-        // save indices of nodes
+        // save the indices of nodes
         vector<std::pair<int,int>> nodesIndices = {
             std::make_pair(node1.i,0),
             std::make_pair(node1.j,0),
@@ -173,7 +173,7 @@ namespace MAS_test {
             std::make_pair(node5.i,1),
             std::make_pair(node5.j,3),
         };
-        // tests of indices i and j of nodes
+        // tests of the indices i and j of nodes
         for (auto &a : nodesIndices ) {
             EXPECT_EQ(a.first,a.second);
         }
