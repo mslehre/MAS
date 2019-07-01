@@ -36,7 +36,7 @@ int main() {
                              &number_of_sequences, &probability] () {
             gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
             nodeList = gamemaster.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes, 1);
+            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes, 0.7);
             GrRend = gtemp;
     });
  
@@ -70,13 +70,12 @@ int main() {
         }
 
         if (status == "menu") {
-            if (time)
-                time = false;
+            if (timed)
+                timed = false;
             window.clear(sf::Color::White);
             window.draw(startButton.get_Button_Sprite());
             window.draw(settingsButton.get_Button_Sprite());
             window.draw(quitButton.get_Button_Sprite());
-            clock.restart();
         }
         if (status == "settings") {
             window.clear(sf::Color::White);
@@ -85,9 +84,11 @@ int main() {
             slider_numSeq.draw(window, number_of_sequences);
             slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());
-            clock.restart();
         }
         if (status == "game") {
+            if (!timed) {
+                clock.restart();
+            }
             GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
@@ -95,6 +96,7 @@ int main() {
             GrRend.display_score(window, gamemaster.GameState);
             window.draw(menuButtonGame.get_Button_Sprite());
             if (!timed) {
+                GrRend.updateBoundaries(gamemaster.GameNodes);
                 sf::Time elapsed = clock.restart();
                 GrRend.update(elapsed.asSeconds()); //scroll speed computation
                 timed = true;

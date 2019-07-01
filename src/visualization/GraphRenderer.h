@@ -119,7 +119,7 @@ class GraphRenderer{
         void display_score(sf::RenderWindow& window, const state& gamestate);
         void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
                             const state& GameState, Button& menuButton);
-        void updateBoundaries();
+        void updateBoundaries(const vector<DrawNode>& Nodes);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
