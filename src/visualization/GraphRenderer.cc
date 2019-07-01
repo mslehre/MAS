@@ -25,7 +25,6 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     setCoords(Nodes, nodeList);
     drawShape(window);
     drawText(window);
-
 }
 
 //Method which catches all events of the window
@@ -518,5 +517,4 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.draw(menuButton.get_Button_Sprite());
         window.display();
     }
-}
-     
+}   
