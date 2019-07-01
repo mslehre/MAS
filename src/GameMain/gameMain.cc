@@ -84,9 +84,8 @@ int main() {
             window.draw(menuButtonSettings.get_Button_Sprite());
             clock.restart();
         }
-        if (status == "game") {
-            //GrRend.animation(window, gamemaster, nodeList, menuButtonGame); 
-            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
+        if (status == "game") {            
+            GrRend.animation(window, gamemaster, nodeList, menuButtonGame); 
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                        window.getView().getCenter().y - (window.getSize().y / 2));

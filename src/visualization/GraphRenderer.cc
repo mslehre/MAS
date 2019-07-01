@@ -103,14 +103,20 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
 //Method which will set the move speed in terms of Computer speed with an upper Bound
 void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
+    if (currentAnimationStep <= 170) {
+        currentAnimationStep += delta;
+        float step = currentAnimationStep / 170;
+        animationSpeed = step * (3 + (step - 3) * step); // acceleration and slowing down
+    } else {
+        currentAnimationStep = 0;
+        animate = false;
+    }
 }
 
-void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                                   const state& GameState, Button& menuButton) {
-    vector<DrawNode> newNodes = Nodes;
+vector<DrawNode> GraphRenderer::updateDrawNode(vector<Node>& nodeList) {
+    vector<DrawNode> newNodes = old_nodes;
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
-    bool computed = false;
     for (unsigned i = 0; i < selectedEdges.size(); i++) {
         nodeIndices.push_back(selectedEdges.at(i).getIndexOfArrow());
     }
@@ -123,7 +129,6 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
     unsigned index;
     float diff;
     while (!checked) {
-        computed = true;
         for (unsigned i = 0; i < nodeIndices.size(); i++) {
             int s = nodeIndices.at(i).x;
             int e = nodeIndices.at(i).y;
@@ -152,28 +157,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 checked = false;
         }
     }
-    if (computed) {
-        vector<double> ranges;
-        for (unsigned i = 0; i < newNodes.size(); i++) {
-            ranges.push_back((newNodes.at(i).coordinate.x - Nodes.at(i).coordinate.x) * 0.01);
-        }
-        for (unsigned j = 0; j < 100; j++) {
-            for (unsigned i = 0; i < newNodes.size(); i++) {
-                Nodes.at(i).coordinate.x += ranges.at(i);
-            }
-            window.clear(sf::Color::White);
-            for (auto &arr : selectedEdges)
-                arr.setCoordsByPos(Nodes, sizeConstant, offset);
-            setCoords(Nodes, nodeList);
-            window.setView(actualView);
-            drawShape(window);
-            drawText(window);
-            display_score(window, GameState);
-            window.draw(menuButton.get_Button_Sprite());
-            window.display();
-        }
-    }
-    Nodes = newNodes;
+    return newNodes;
 }
 
 //Default Constructor
@@ -468,7 +452,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     deClickNode();
     // calculate new node coordinate
     old_nodes = gamemaster.GameNodes;
-    new_coord = calcNewNodeCoord(gamemaster, nodeList);
+    new_nodes = updateDrawNode(nodeList);
     animate = true; 
 }
 
@@ -514,36 +498,25 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     return false;
 }
 
-vector<sf::Vector2f> GraphRenderer::calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList){
-    // for testing   length of kmer = 5 sequence lenght = 10 number of sequences = 2 mutationprop. = 0 
-    sf::Vector2f t1(0, 1);
-    sf::Vector2f t2(2, 1);
-    sf::Vector2f t3(1, 2);
-    sf::Vector2f t4(2, 2);
-    vector<sf::Vector2f> new_coord = {t1, t2, t3, t4};
-    //TODO: we need a new coordinate calculation function
-    return new_coord;
-}
-
 void GraphRenderer::calcAnimationSpeed(unsigned int size){
-    animationSpeed.resize(size + 1);
+ /*   animationSpeed.resize(size + 1);
     for (unsigned int i = 0; i <= size; i++) {
         double x = i / (double)size ;
         //animationSpeed[i] = x;   // constant speed
         //animationSpeed[i] = x * x; // quaternary acceleration
         animationSpeed[i] = x * (3 + (x - 3) * x); // acceleration and slowing down
-    }   
+    }
+*/   
 }
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
                               Button& menuButton){
-
-    if (animate && currentAnimationStep < animationSpeed.size() - 1) {
+    if (animate) {
         for (unsigned int j = 0; j < nodeList.size(); j++) {
-            if (old_nodes.at(j).coordinate.x != new_coord[j].x)
-                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x 
-                                                        * (1 - animationSpeed[currentAnimationStep]) 
-                                                        + new_coord[j].x * animationSpeed[currentAnimationStep];
+            if (old_nodes.at(j).coordinate.x != new_nodes.at(j).coordinate.x)
+                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x // alt*(1-x)+new*x
+                                                        * (1 - animationSpeed) 
+                                                        + new_nodes.at(j).coordinate.x * animationSpeed;
         }        
         window.clear(sf::Color::White);
         for (auto &arr : selectedEdges)
@@ -557,7 +530,6 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.display();
         currentAnimationStep++;
     } else {
-        currentAnimationStep = 0;
         animate = false;
     }
 }

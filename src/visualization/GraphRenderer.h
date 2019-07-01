@@ -65,10 +65,10 @@ class GraphRenderer{
 
     private:
         bool animate; ///< true, if the animation is running
-        unsigned int currentAnimationStep; ///< the current step of the animation
-        std::vector<sf::Vector2f> new_coord; ///< a vector with new coordinates for the nodes
+        float currentAnimationStep; ///< the current step of the animation
+        vector<DrawNode>new_nodes; ///< a vector with the new nodes
         vector<DrawNode> old_nodes; ///< a vector with the old nodes
-        vector<double> animationSpeed; ///< a vector of doubles for the speed during the animation
+        float animationSpeed; ///< the speed during the animation
 
         /**
          * a function which calculate the speed during the animation
@@ -77,15 +77,6 @@ class GraphRenderer{
          */
 
         void calcAnimationSpeed(unsigned int size);
-    
-        /**
-         * a function which calculate the new node coordinates afer a edge is set
-         *
-         * \param gamemaster contains the State and the DrawNodes vector that we need for the calculation
-         * \param nodeList contains the Nodes which is needed for the calculation   
-         */
-
-        std::vector<sf::Vector2f> calcNewNodeCoord(Gamemaster& gamemaster, vector<Node>& nodeList);
         
 	public:
         bool nodeHovered; ///< true, if a node is hovered
@@ -139,8 +130,7 @@ class GraphRenderer{
          */        
 
         void display_score(sf::RenderWindow& window, const state& gamestate);
-        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                            const state& GameState, Button& menuButton);
+        std::vector<DrawNode> updateDrawNode(vector<Node>& nodeList);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
