@@ -15,7 +15,8 @@ Episode Agent::getEpisode() {
     episode.states.push_back(s0.selectedSubset); 
     unsigned int counter = 0;
     // The agent chooses the first action and first successor state with a given policy.
-    std::pair <state*, unsigned int> stateAction = executePolicy(&s0, lpolicy);      
+    std::pair <state*, unsigned int> stateAction = executePolicy(&s0, lpolicy); 
+    //std::pair <state*, unsigned int> stateAction = std::make_pair(s0*, 0); 
     // While the actual state has a selectable edge.
     while ((int)stateAction.second != -1) { 
         // Pushes the actual state in the states vector.
