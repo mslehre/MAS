@@ -6,6 +6,14 @@
 #include "../alignment/Graph.h"
 #include "../visualization/colorlist.h"
 
+//Written for the colortest to make it more clear
+bool operator==(sf::Color& left, sf::Color& right) {
+    if (left.r == right.r && left.g == right.g && left.b == right.b)
+        return true;
+    else
+        return false;
+}
+
 namespace MAS_test {
     TEST(MAS_tests, test_test) {
         EXPECT_EQ(0,0);
@@ -14,15 +22,13 @@ namespace MAS_test {
     TEST(visualization_tests, color_test) {
         colorlist example(30);
         std::vector<sf::Color> clist = example.giveList();
-        EXPECT_NE(clist.at(22).r, clist.at(21).r);
-        EXPECT_NE(clist.at(22).r, clist.at(23).r);
-        EXPECT_NE(clist.at(24).r, clist.at(23).r);
-        EXPECT_NE(clist.at(22).g, clist.at(21).g);
-        EXPECT_NE(clist.at(22).g, clist.at(23).g);
-        EXPECT_NE(clist.at(24).g, clist.at(23).g);
-        EXPECT_NE(clist.at(22).b, clist.at(21).b);
-        EXPECT_NE(clist.at(22).b, clist.at(23).b);
-        EXPECT_NE(clist.at(24).b, clist.at(23).b);
+        EXPECT_TRUE(clist.at(21) == clist.at(21));
+        EXPECT_FALSE(clist.at(22) == clist.at(21));
+        EXPECT_FALSE(clist.at(23) == clist.at(21));
+        EXPECT_FALSE(clist.at(24) == clist.at(21));
+        EXPECT_FALSE(clist.at(25) == clist.at(21));
+        EXPECT_FALSE(clist.at(26) == clist.at(21));
+        EXPECT_FALSE(clist.at(29) == clist.at(21));
     }
 // Timon: score_test
     TEST(alignment_tests, score_test) {
