@@ -12,13 +12,14 @@ Episode Agent::getEpisode() {
     // Initialise a boolean vector for an action 
     vector <bool> action(n, false);
     // Pushes the initial state at the beginning of an episode. 
-    episode.states.push_back(s0.selectedSubset); 
+    //episode.states.push_back(s0.selectedSubset); 
     unsigned int counter = 0;
     // The agent chooses the first action and first successor state with a given policy.
-    std::pair <state*, unsigned int> stateAction = executePolicy(&s0, lpolicy); 
-    //std::pair <state*, unsigned int> stateAction = std::make_pair(s0*, 0); 
+    //std::pair <state*, unsigned int> stateAction = executePolicy(&s0, lpolicy);
+    state* s0prime = &s0; 
+    std::pair <state*, unsigned int> stateAction = std::make_pair(s0prime, 0); 
     // While the actual state has a selectable edge.
-    while ((int)stateAction.second != -1) { 
+    while (stateAction.first->hasEdge()) { 
         // Pushes the actual state in the states vector.
         episode.states.push_back(stateAction.first->selectedSubset);
         // Pushes an "empty" action in the action vector.
@@ -28,6 +29,7 @@ Episode Agent::getEpisode() {
         counter++;
         // Choose an action and a successor state for the actual state with a given policy.
         stateAction = executePolicy(stateAction.first, lpolicy);
+            
     }
     // Pushes an empty action so that every episode has the same number of states and actions
     episode.actions.push_back(action);

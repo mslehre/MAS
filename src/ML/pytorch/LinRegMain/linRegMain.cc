@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
     Graph g;
-    g.readFastaFiles("../../../alignment/sequences.fa" , 3);
+    g.readFastaFiles("../../../alignment/sequences.fa" , 2);
     /*
 	// Start of linear Regression learning with RandomPolicy
     Agent agent(g, Policytype::rnd);
@@ -33,7 +33,7 @@ int main() {
 	//Start of linear Regression learning with LearnedPolicy by setting agent's policy to lpol
     //agent.setPolicy(&lpol);
     Agent agent(g);
-    TrainingSet TS(10, 100, 20, 64, 0.1);    
+    TrainingSet TS(200, 10, 20, 64, 0.01);    
     //TODO: TS.train(&agent);
     TS.train(&agent);
 }

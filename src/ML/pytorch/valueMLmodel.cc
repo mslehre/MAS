@@ -59,10 +59,9 @@ vector<float> valueMLmodel::calcValueEstimates(state* s) {
         succsStates[i][index[i]] = 1;
 
     }
-    std::cout<< index.size() <<std::endl;
-    std::cout<< s->hasEdge() <<std::endl;
     torch::Tensor tensPred = linearNet->forward(succsStates);
     unsigned int sum = 0;
+    // Softmax:
     for(unsigned int i = 0; i < index.size(); i++) {
         sum += exp((double) *tensPred[i].data<float>());
     }
@@ -72,15 +71,9 @@ vector<float> valueMLmodel::calcValueEstimates(state* s) {
     }
     
     vector<float> prediction(dim,0);
-    //torch::Tensor pred = torch::zeros(dim);
     
     for (unsigned int i = 0; i < index.size(); i++) {
         prediction.at(index.at(i)) = *tensPred[i].data<float>();
-        /*tensState[index[i]] = 1;
-        pred = linearNet->forward(tensState);
-        prediction.at(index.at(i)) = pred.data<float>();
-        prediction1.at(index.at(i)) = *prediction.at(index.at(i));
-        tensState[index[i]] = 0;*/
      }
     return prediction;
 }
