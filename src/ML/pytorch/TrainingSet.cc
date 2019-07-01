@@ -30,12 +30,13 @@ void TrainingSet::setLearningRate(unsigned int learningRate) {
 
 void TrainingSet::train(Agent* agent) {
     vector<Episode> episodes;
+    RLDataset dataSet;
     for (unsigned int i = 0; i < learningRepetitions; i++) {
         for (unsigned int j = 0; j < numbEpisodes; j++) {
             episodes.push_back(agent->getEpisode());
         }
-    RLDataset dataSet(episodes);
-    episodes.clear();
-    agent->lpolicy.vModel.learn(dataSet, epochs, batchSize, learningRate);
+        dataSet.set(episodes);
+        episodes.clear();
+        agent->lpolicy.vModel.learn(dataSet, epochs, batchSize, learningRate);
     }
 }

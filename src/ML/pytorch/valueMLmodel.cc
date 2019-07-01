@@ -1,5 +1,7 @@
 #include "valueMLmodel.h"
 #include <typeinfo>
+#include <math.h>
+
 
 
 //default constructor
@@ -42,20 +44,43 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
 vector<float> valueMLmodel::calcValueEstimates(state* s) {
     /* Calculate all possible successor states of s.
        Returns a boolean vector corresponding to edges in such a way that true means an edge is selectable */
+   
     for (unsigned int j = 0; j < dim; j++) {
         tensState[j] = (float) s->selectedSubset.at(j);
         
     }
-    vector<unsigned int> index = s->calcSuccessorStates();    
-    vector<float*> prediction(dim,0);
-    vector<float> prediction1(dim,0);
-    torch::Tensor pred = torch::zeros(dim);
+    
+    vector<unsigned int> index = s->calcSuccessorStates();
+    torch::Tensor succsStates = torch::zeros({index.size(), dim});
     for (unsigned int i = 0; i < index.size(); i++) {
-        tensState[index[i]] = 1;
+        for (unsigned int j = 0; j < dim; j++) {
+                succsStates[i][j] = *tensState[j].data<float>();          
+        }
+        succsStates[i][index[i]] = 1;
+
+    }
+    std::cout<< index.size() <<std::endl;
+    std::cout<< s->hasEdge() <<std::endl;
+    torch::Tensor tensPred = linearNet->forward(succsStates);
+    unsigned int sum = 0;
+    for(unsigned int i = 0; i < index.size(); i++) {
+        sum += exp((double) *tensPred[i].data<float>());
+    }
+    
+    for(unsigned int i = 0; i < index.size(); i++) {
+        tensPred[i] = exp((double) *tensPred[i].data<float>())/sum;
+    }
+    
+    vector<float> prediction(dim,0);
+    //torch::Tensor pred = torch::zeros(dim);
+    
+    for (unsigned int i = 0; i < index.size(); i++) {
+        prediction.at(index.at(i)) = *tensPred[i].data<float>();
+        /*tensState[index[i]] = 1;
         pred = linearNet->forward(tensState);
         prediction.at(index.at(i)) = pred.data<float>();
         prediction1.at(index.at(i)) = *prediction.at(index.at(i));
-        tensState[index[i]] = 0;
+        tensState[index[i]] = 0;*/
      }
-    return prediction1;
+    return prediction;
 }
