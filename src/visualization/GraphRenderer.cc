@@ -2,8 +2,12 @@
 
 using namespace std;
 
+bool myfunction(float i, float j) { 
+    return (i < j);
+}
+
 //Method for troubleshooting bad arguments
-void printHelp(){
+void printHelp() {
     cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
     cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
     cout << "\t fasta file: Must be a file with the ending .fa" << endl;
@@ -186,6 +190,22 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
     Nodes = newNodes;
 }
 
+void updateBoundaries(const vector<DrawNode>& Nodes) {
+    boundary.clear();
+    vector<float> xvalues;
+    vector<float> yvalues;
+    for (auto &nodes : Nodes) {
+        xvalues.push_back(nodes.coordinate.x);
+        yvalues.push_back(nodes.coordinate.y);
+    }
+    sort(xvalues.begin(), xvalues.end(), myfunction);
+    sort(yvalues.begin(), yvalues.end(), myfunction);
+    boundary.push_back(xvalues.front());
+    boundary.push_back(xvalues.back());
+    boundary.push_back(yvalues.front());
+    boundary.push_back(yvalues.back());
+}
+
 //Default Constructor
 GraphRenderer::GraphRenderer() {
 }
@@ -222,28 +242,28 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
 void GraphRenderer::moveWindow(int dir) {
     switch (dir) {
         case 0: //to the down
-            //if (direction.at(1) + moveConstant <= sizeConstant * (0.9 + 1.5 * maxSequences)) {
+            if (direction.at(1) + moveConstant <= sizeConstant * (0.9 + 1.5 * maxSequences)) {
                 actualView.move(0, moveConstant);
                 direction.at(1) += moveConstant;
-            //}
+            }
             break;
         case 1: //to the left
-            //if (direction.at(0) > 0) {
+            if (direction.at(0) > 0) {
                 actualView.move(- moveConstant, 0);
                 direction.at(0) -= moveConstant;
-            //}
+            }
             break;
         case 2: //to the right
-            //if (direction.at(0) + moveConstant <= sizeConstant * (1.4 + 1.8 * maxNodesPerRow)) {
+            if (direction.at(0) + moveConstant <= sizeConstant * (1.4 + 1.8 * maxNodesPerRow)) {
                 actualView.move(moveConstant, 0);
                 direction.at(0) += moveConstant;
-            //}
+            }
             break;
         case 3: //to the up
-            //if (direction.at(1) > 0) {
+            if (direction.at(1) > 0) {
                 actualView.move(0,- moveConstant);
                 direction.at(1) -= moveConstant;
-            //}
+            }
             break;
         case 4: //resets all
             actualView = defaultView;

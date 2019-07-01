@@ -8,6 +8,7 @@
 #include <string>
 #include <stdlib.h>
 #include <cmath>
+#include <algorithm>
 #include <string>
 #include "colorlist.h"
 #include "colormap.h"
@@ -62,8 +63,9 @@ class GraphRenderer{
         int sizeConstant; ///< a constant which defines the scale of the visuals
         float offset; ///< a constant which make a offset on the upper horizontal
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
+        vector<float> boundary; ///< a vector which save the maximum amount of nodes in each direction
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
-	public:
+    public:
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
@@ -117,6 +119,7 @@ class GraphRenderer{
         void display_score(sf::RenderWindow& window, const state& gamestate);
         void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
                             const state& GameState, Button& menuButton);
+        void updateBoundaries();
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.

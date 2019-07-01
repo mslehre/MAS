@@ -13,7 +13,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1600, 900), "MAS");
     window.setFramerateLimit(120);
     sf::View defaultView = window.getDefaultView();
-
+    bool timed = false;
     //default parameter for the game
     unsigned int k = 3;
     unsigned int length_of_sequences = 42;
@@ -25,7 +25,7 @@ int main() {
     Gamemaster gamemaster;
     vector<Node> nodeList;
     GraphRenderer GrRend;
-
+    
     Button startButton = Button("../../fig/startButton.png", 550, 100, "game", "menu");
     Button settingsButton = Button("../../fig/settingsButton.png", 550, 300, "settings", "menu");
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
@@ -57,7 +57,7 @@ int main() {
 
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
-                window.close(); 
+                window.close();
 
             startButton.eventHandler(event, status, mouse_position);
             settingsButton.eventHandler(event, status, mouse_position);
@@ -70,6 +70,8 @@ int main() {
         }
 
         if (status == "menu") {
+            if (time)
+                time = false;
             window.clear(sf::Color::White);
             window.draw(startButton.get_Button_Sprite());
             window.draw(settingsButton.get_Button_Sprite());
@@ -92,8 +94,11 @@ int main() {
                                        window.getView().getCenter().y - (window.getSize().y / 2));
             GrRend.display_score(window, gamemaster.GameState);
             window.draw(menuButtonGame.get_Button_Sprite());
-            sf::Time elapsed = clock.restart();
-            GrRend.update(elapsed.asSeconds()); //scroll speed computation
+            if (!timed) {
+                sf::Time elapsed = clock.restart();
+                GrRend.update(elapsed.asSeconds()); //scroll speed computation
+                timed = true;
+            }
         }
         window.display();
     }
