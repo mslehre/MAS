@@ -65,18 +65,10 @@ class GraphRenderer{
 
     private:
         bool animate; ///< true, if the animation is running
-        float currentAnimationStep; ///< the current step of the animation
-        vector<DrawNode>new_nodes; ///< a vector with the new nodes
-        vector<DrawNode> old_nodes; ///< a vector with the old nodes
-        float animationSpeed; ///< the speed during the animation
-
-        /**
-         * a function which calculate the speed during the animation
-         *
-         * \param size is the numer of steps we want during the animation
-         */
-
-        void calcAnimationSpeed(unsigned int size);
+        float AnimationStep; ///< the step of the animation
+        float AnimationSpeed; ///< the speed during the animation
+        vector<DrawNode> new_nodes; ///< a vector with the new nodes during the animation
+        vector<DrawNode> old_nodes; ///< a vector with the old nodes during the animation
         
 	public:
         bool nodeHovered; ///< true, if a node is hovered

@@ -25,6 +25,7 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     setCoords(Nodes, nodeList);
     drawShape(window);
     drawText(window);
+
 }
 
 //Method which catches all events of the window
@@ -103,12 +104,14 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
 //Method which will set the move speed in terms of Computer speed with an upper Bound
 void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
-    if (currentAnimationStep <= 170) {
-        currentAnimationStep += delta;
-        float step = currentAnimationStep / 170;
-        animationSpeed = step * (3 + (step - 3) * step); // acceleration and slowing down
+    const double maxDelta = 2.5;
+    if (animate && AnimationStep <= maxDelta) {
+        AnimationStep += delta;
+        float step = AnimationStep / maxDelta;
+        AnimationSpeed = step * (3 + (step - 3) * step); // acceleration and slowing down
     } else {
-        currentAnimationStep = 0;
+        AnimationStep = 0;
+        AnimationSpeed = 0;
         animate = false;
     }
 }
@@ -187,14 +190,12 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, f
     nodeHovered = false;
     nodeClicked = false;
     edgeHovered = false;
+    animate = false; 
     defaultView = window.getDefaultView();
     actualView = defaultView;
     initShapes(gamemaster.GameNodes, nodeList);
-
-    const unsigned int animationSteps = 120 ; // number of animation steps
-    currentAnimationStep = 0;
-    calcAnimationSpeed(animationSteps);
-    animate = false; 
+    AnimationStep = 0;
+    AnimationSpeed = 0;
 }
 
 //Method which will move the window in a choosed direction or resets it
@@ -278,7 +279,7 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
     //Get all nodes we need
     rowArrows.clear();
     unsigned size_nodes = Nodes.size();
-    //Placeholder for readablity OF THE NODES
+    //Placeholder for readablity of the nodes
     double i;
     double j;
     unsigned i2;
@@ -498,26 +499,14 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     return false;
 }
 
-void GraphRenderer::calcAnimationSpeed(unsigned int size){
- /*   animationSpeed.resize(size + 1);
-    for (unsigned int i = 0; i <= size; i++) {
-        double x = i / (double)size ;
-        //animationSpeed[i] = x;   // constant speed
-        //animationSpeed[i] = x * x; // quaternary acceleration
-        animationSpeed[i] = x * (3 + (x - 3) * x); // acceleration and slowing down
-    }
-*/   
-}
-
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
                               Button& menuButton){
     if (animate) {
-        for (unsigned int j = 0; j < nodeList.size(); j++) {
-            if (old_nodes.at(j).coordinate.x != new_nodes.at(j).coordinate.x)
-                gamemaster.GameNodes.at(j).coordinate.x = old_nodes.at(j).coordinate.x // alt*(1-x)+new*x
-                                                        * (1 - animationSpeed) 
-                                                        + new_nodes.at(j).coordinate.x * animationSpeed;
-        }        
+        for (unsigned int i = 0; i < nodeList.size(); i++) {
+            if (old_nodes.at(i).coordinate.x != new_nodes.at(i).coordinate.x)
+                gamemaster.GameNodes.at(i).coordinate.x = old_nodes.at(i).coordinate.x * (1 - AnimationSpeed)
+                                                        + new_nodes.at(i).coordinate.x * AnimationSpeed;
+        }
         window.clear(sf::Color::White);
         for (auto &arr : selectedEdges)
             arr.setCoordsByPos(gamemaster.GameNodes, sizeConstant, offset);
@@ -528,9 +517,6 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         display_score(window, gamemaster.GameState);
         window.draw(menuButton.get_Button_Sprite());
         window.display();
-        currentAnimationStep++;
-    } else {
-        animate = false;
     }
 }
      

@@ -92,7 +92,7 @@ int main() {
             GrRend.display_score(window, gamemaster.GameState);
             window.draw(menuButtonGame.get_Button_Sprite());
             sf::Time elapsed = clock.restart();
-            GrRend.update(elapsed.asSeconds()); //scroll speed computation
+            GrRend.update(elapsed.asSeconds()); //scroll and animation speed computation
         }
         window.display();
     }
