@@ -189,12 +189,17 @@ namespace MAS_test {
         EXPECT_FALSE(inEdge.selectable[2]);
         // test if selectable is false after trying to select every edge
         state s(edgeList);
-        for (unsigned int i = 0; i < s.edges.size(); i++) {
-            if (s.selectable[i] == true)		
+        for (unsigned int i = 0; i < s.edges.size(); i++) {		
                 s.select(i);
         }
         for (unsigned int i = 0; i < s.edges.size(); i++) {
             EXPECT_FALSE(s.selectable[i]);
+        }
+        // test if expected selectedSubset matches actual
+        vector <bool> expectedSS = { true, false, false, false, true, true, false,
+        true, false, true, false, false, true, false };
+        for (unsigned int i = 0; i < s.edges.size(); i++) {
+            EXPECT_EQ(expectedSS[i], s.selectedSubset[i]);
         }
     }
 }
