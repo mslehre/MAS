@@ -521,15 +521,33 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     }
     return false;
 }
+/*
+ else {
+        AnimationStep = 0;
+        AnimationSpeed = 0;
+        animate = false;
+    }
+*/
+
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
-                              Button& menuButton){
+                              Button& menuButton){        
+    unsigned int equal = 0; // number of equal nodes in new_nodes and old_nodes 
     if (animate) {
         for (unsigned int i = 0; i < nodeList.size(); i++) {
-            if (old_nodes.at(i).coordinate.x != new_nodes.at(i).coordinate.x)
+            if (old_nodes.at(i).coordinate.x != new_nodes.at(i).coordinate.x) {
                 gamemaster.GameNodes.at(i).coordinate.x = old_nodes.at(i).coordinate.x * (1 - AnimationSpeed)
-                                                        + new_nodes.at(i).coordinate.x * AnimationSpeed;
+                                                        + new_nodes.at(i).coordinate.x * AnimationSpeed;            
+            } else {
+                equal++;
+            }
         }
+        if (equal == nodeList.size()) { // all nodes are equal -> we don't need a animation
+            AnimationStep = 0;
+            AnimationSpeed = 0;
+            animate = false;
+        }
+    
         window.clear(sf::Color::White);
         for (auto &arr : selectedEdges)
             arr.setCoordsByPos(gamemaster.GameNodes, sizeConstant, offset);
@@ -541,6 +559,8 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.draw(menuButton.get_Button_Sprite());
         window.display();
         updateBoundaries(new_nodes);
+    } else {
+        equal = 0;
     }
 }
 
