@@ -1,12 +1,34 @@
 #include <gtest/gtest.h>
+#include <SFML/Graphics/Color.hpp>
 #include "../alignment/State.h"
 #include "../alignment/Edge.h"
 #include "../alignment/Node.h"
 #include "../alignment/Graph.h"
+#include "../visualization/colorlist.h"
+
+//Written for the colortest to make it more clear
+bool operator==(sf::Color& left, sf::Color& right) {
+    if (left.r == right.r && left.g == right.g && left.b == right.b)
+        return true;
+    else
+        return false;
+}
 
 namespace MAS_test {
     TEST(MAS_tests, test_test) {
         EXPECT_EQ(0,0);
+    }
+// Lucas: colortest
+    TEST(visualization_tests, color_test) {
+        colorlist example(30);
+        std::vector<sf::Color> clist = example.giveList();
+        EXPECT_TRUE(clist.at(21) == clist.at(21));
+        EXPECT_FALSE(clist.at(22) == clist.at(21));
+        EXPECT_FALSE(clist.at(23) == clist.at(21));
+        EXPECT_FALSE(clist.at(24) == clist.at(21));
+        EXPECT_FALSE(clist.at(25) == clist.at(21));
+        EXPECT_FALSE(clist.at(26) == clist.at(21));
+        EXPECT_FALSE(clist.at(29) == clist.at(21));
     }
 // Timon: score_test
     TEST(alignment_tests, score_test) {
@@ -150,6 +172,57 @@ namespace MAS_test {
         };
         // tests if first and second Node of edge have the right indices
         for (auto &a : edgesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
+        // MORITZ
+        // get 5 nodes for the test with length of k-mer = 2
+        vector<Node> nodes = g.getNodes();
+        Node node1 = nodes.at(0);
+        Node node2 = nodes.at(2);
+        Node node3= nodes.at(7);
+        Node node4 = nodes.at(9);
+        Node node5 = nodes.at(12);
+        // save the indices of nodes
+        vector<std::pair<int,int>> nodesIndices = {
+            std::make_pair(node1.i,0),
+            std::make_pair(node1.j,0),
+            std::make_pair(node2.i,0),
+            std::make_pair(node2.j,2),
+            std::make_pair(node3.i,0),
+            std::make_pair(node3.j,7),
+            std::make_pair(node4.i,1),
+            std::make_pair(node4.j,0),
+            std::make_pair(node5.i,1),
+            std::make_pair(node5.j,3),
+        };
+        // tests of the indices i and j of nodes
+        for (auto &a : nodesIndices ) {
+            EXPECT_EQ(a.first,a.second);
+        }
+        // get 5 nodes for the test with length of k-mer = 3
+        nodes.clear();
+        nodes = g2.getNodes();
+        node1 = nodes.at(3);
+        node2 = nodes.at(6);
+        node3= nodes.at(11);
+        node4 = nodes.at(13);
+        node5 = nodes.at(21);
+        // save indices of nodes
+        nodesIndices.clear();
+        nodesIndices = {
+            std::make_pair(node1.i,1),
+            std::make_pair(node1.j,1),
+            std::make_pair(node2.i,1),
+            std::make_pair(node2.j,4),
+            std::make_pair(node3.i,2),
+            std::make_pair(node3.j,4),
+            std::make_pair(node4.i,3),
+            std::make_pair(node4.j,0),
+            std::make_pair(node5.i,5),
+            std::make_pair(node5.j,0),
+        };
+        // tests of indices i and j of nodes
+        for (auto &a : nodesIndices ) {
             EXPECT_EQ(a.first,a.second);
         }
     }
