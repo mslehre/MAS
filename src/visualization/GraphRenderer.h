@@ -61,6 +61,7 @@ class GraphRenderer{
         int sizeConstant; ///< a constant which defines the scale of the visuals
         float offset; ///< a constant which make a offset on the upper horizontal
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
+        vector<float> boundary; ///< a vector which save the maximum amount of nodes in each direction
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
 
     private:        
@@ -277,7 +278,8 @@ class GraphRenderer{
          */
 
         bool getAnimate();
+
+        void updateBoundaries(const vector<DrawNode>& Nodes);
 };
 
 #endif //GraphRenderer_H_
-

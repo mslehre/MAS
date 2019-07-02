@@ -2,6 +2,10 @@
 
 using namespace std;
 
+bool myfunction(float i, float j) { 
+    return (i < j);
+}
+
 //Method for rendering the actual window view with its components
 void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList) {
     //update window view, if changed in class
@@ -84,6 +88,9 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
     int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
 
     sf::RectangleShape rect(sf::Vector2f(window.getSize().x, 130));
+    rect.setFillColor(sf::Color(230, 230, 230));
+    rect.setOutlineColor(sf::Color(100, 100, 100));
+    rect.setOutlineThickness(2);
     rect.setPosition(x_pos, y_pos);
   
     sf::Font font;
@@ -162,6 +169,22 @@ vector<DrawNode> GraphRenderer::updateDrawNode(vector<Node>& nodeList) {
     return newNodes;
 }
 
+void GraphRenderer::updateBoundaries(const vector<DrawNode>& Nodes) {
+    boundary.clear();
+    vector<float> xvalues;
+    vector<float> yvalues;
+    for (auto &nodes : Nodes) {
+        xvalues.push_back(nodes.coordinate.x);
+        yvalues.push_back(nodes.coordinate.y);
+    }
+    sort(xvalues.begin(), xvalues.end(), myfunction);
+    sort(yvalues.begin(), yvalues.end(), myfunction);
+    boundary.push_back(xvalues.front());
+    boundary.push_back(xvalues.back());
+    boundary.push_back(yvalues.front());
+    boundary.push_back(yvalues.back());
+}
+
 //Default Constructor
 GraphRenderer::GraphRenderer() {
 }
@@ -199,30 +222,31 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, f
 
 //Method which will move the window in a choosed direction or resets it
 void GraphRenderer::moveWindow(int dir) {
+    sf::Vector2f size = actualView.getSize();
     switch (dir) {
         case 0: //to the down
-            //if (direction.at(1) + moveConstant <= sizeConstant * (0.9 + 1.5 * maxSequences)) {
+            if (sizeConstant * (0.7 + 1.5 * boundary.at(3)) > direction.at(1) + size.y) {
                 actualView.move(0, moveConstant);
                 direction.at(1) += moveConstant;
-            //}
+            }
             break;
         case 1: //to the left
-            //if (direction.at(0) > 0) {
+            if (sizeConstant * (0.2 + 1.8 * boundary.at(0)) < direction.at(0)) {
                 actualView.move(- moveConstant, 0);
                 direction.at(0) -= moveConstant;
-            //}
+            }
             break;
         case 2: //to the right
-            //if (direction.at(0) + moveConstant <= sizeConstant * (1.4 + 1.8 * maxNodesPerRow)) {
+            if (sizeConstant * (1.2 + 1.8 * boundary.at(1)) > direction.at(0) + size.x) {
                 actualView.move(moveConstant, 0);
                 direction.at(0) += moveConstant;
-            //}
+            }
             break;
         case 3: //to the up
-            //if (direction.at(1) > 0) {
+            if (sizeConstant * (0.2 + 1.5 * boundary.at(2)) < direction.at(1)) {
                 actualView.move(0,- moveConstant);
                 direction.at(1) -= moveConstant;
-            //}
+            }
             break;
         case 4: //resets all
             actualView = defaultView;
@@ -516,6 +540,7 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         display_score(window, gamemaster.GameState);
         window.draw(menuButton.get_Button_Sprite());
         window.display();
+        updateBoundaries(new_nodes);
     }
 }
 
