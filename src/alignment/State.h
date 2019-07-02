@@ -32,8 +32,7 @@ class state{
     std::vector<unsigned int> selectedEdgeIndex; ///< contains indices from "edges" for all edges that are selected
     unsigned int score; ///< The score of the State
     vector<vector<bool>> successorStates; ///< The direct successor States
-    
-        
+            
     /**
      * Selects edge i if selectable (does nothing otherwise)
      * \param i is the index of the edge
@@ -67,12 +66,13 @@ class state{
 	bool hasEdge();
     
     /** This function calculates the beginning state
-    * \param e is vector of edges
-    */
+     * \param e is vector of edges
+     */
     void reset();
 
     /** This function determines all direct successor states.
      */
+
     vector<bool> calcSuccessorStates();
 
     /**
@@ -82,6 +82,7 @@ class state{
      * component c.
      * This function requires that the edges are sorted increasingly by i.
      */
+
     void calculate_score();
 
 
