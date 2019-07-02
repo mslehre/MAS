@@ -521,14 +521,6 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
     }
     return false;
 }
-/*
- else {
-        AnimationStep = 0;
-        AnimationSpeed = 0;
-        animate = false;
-    }
-*/
-
 
 void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
                               Button& menuButton){        
