@@ -33,4 +33,4 @@ colorlist.o: ../visualization/colorlist.cc $(HEADER6)
 	$(CC) $(CXXFLAGS) -c $< -o $@
 
 clean:
-rm -f *.o MAS_tests
+	rm -f *.o MAS_tests
