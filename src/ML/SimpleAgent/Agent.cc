@@ -52,7 +52,7 @@ std::pair <state*, unsigned int> Agent::executePolicy(state* s, LearnedPolicy& p
     // Create a distribution dependant on the value estimates
     std::discrete_distribution<> dis(probActions.begin(), probActions.end());
     // Randomly choose an action with probabalities of distribution
-    unsigned int edgeSelection = dis(gen);
+    int edgeSelection = dis(gen);
     if (s->selectable[edgeSelection] == false) {
         edgeSelection = -1;
     } else {

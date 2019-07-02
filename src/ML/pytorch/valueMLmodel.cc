@@ -27,6 +27,7 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
         for (auto& batch : *data_loader) {
             // Reset gradients.
             optimizer.zero_grad();
+            //cout << batch.target << endl;
             // Execute the model on the input data.
             prediction = linearNet->forward(batch.data);
             // Compute a loss value to judge the prediction of our model.
@@ -69,11 +70,13 @@ vector<float> valueMLmodel::calcValueEstimates(state* s) {
     for(unsigned int i = 0; i < index.size(); i++) {
         tensPred[i] = exp((double) *tensPred[i].data<float>())/sum;
     }
+
     
     vector<float> prediction(dim,0);
     
     for (unsigned int i = 0; i < index.size(); i++) {
         prediction.at(index.at(i)) = *tensPred[i].data<float>();
      }
+    
     return prediction;
 }
