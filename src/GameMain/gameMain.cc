@@ -64,7 +64,7 @@ int main() {
             quitButton.eventHandler(event, status, mouse_position);
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
-            if (status == "game")
+            if (status == "game" && GrRend.getAnimate() == false)
                 GrRend.eventHandler(event, window, nodeList, gamemaster, mouse_position);
         }
 

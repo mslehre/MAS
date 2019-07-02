@@ -63,81 +63,20 @@ class GraphRenderer{
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
 
-    private:
-        bool animate; ///< true, if the animation is running
-        float AnimationStep; ///< the step of the animation
-        float AnimationSpeed; ///< the speed during the animation
-        vector<DrawNode> new_nodes; ///< a vector with the new nodes during the animation
-        vector<DrawNode> old_nodes; ///< a vector with the old nodes during the animation
-        
-	public:
+    private:        
+        bool animate; ///< true, if the animation is running 
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
+        float AnimationStep; ///< the step of the animation
+        float AnimationSpeed; ///< the speed during the animation        
         int hoveredEdgeIndex; ///< the index of the hovered edge
+        vector<DrawNode> new_nodes; ///< a vector with the new nodes during the animation
+        vector<DrawNode> old_nodes; ///< a vector with the old nodes during the animation
         sf::View actualView; ///< a View which we use as main-"view"
         sf::View defaultView; ///< a View to reset our actualView
 
-        /**
-         * The Complete Constructor, which initialize the visuals in the referenced window.
-         *
-         * \param window a renderWindow what gets the drawed shapes and texts
-         * \param nodeList a vector of Nodes we use for the game (shape inits)
-         * \param edgeList a vector of Edges we use for the game (state inits)
-         */
-
-        GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset);
-
-        /**
-         * The standard constructor, which do nothing.
-         */
-
-        GraphRenderer();
-
-        /**
-         * a function which draw the shapes of the class in the argument window
-         *
-         * \param window a renderWindow what gets the drawed shapes and texts
-         */
-
-        void render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList);
-
-        /**
-         * a function which handles events that are given by argument and make
-         * adjustments in the argument window
-         *
-         * \param window a renderWindow which is needed to get informations (i.e. mousepos)
-         * \param event a Event which will describe the event that will happen
-         * \param nodeList a vector of Nodes which is needed for a few methods
-         * \param mouse_pos the current mouse position
-         */
-
-        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
-                          Gamemaster& gamemaster, const sf::Vector2f& mouse_pos);
-
-        /**
-         * a function which display the current score of the game
-         * \param window a renderWindow what gets the new score
-         * \param gamestate is the current state of the game
-         */        
-
-        void display_score(sf::RenderWindow& window, const state& gamestate);
         std::vector<DrawNode> updateDrawNode(vector<Node>& nodeList);
-
-        /**
-         * a function which set an upper bound for the scroll speed via the arrow buttons.
-         *
-         * \param delta a float which gets the upper bound
-         */
-
-        void update(float delta);
-
-        /**
-         * a function which initialize the shapes and texts in terms of the NodeList. this is only
-         * called in the constructor.
-         *
-         * \param nodeList a vector of Nodes which we want to draw as rectangles with text
-         */
 
         void initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
         void setCoords(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
@@ -268,7 +207,76 @@ class GraphRenderer{
          * \param menuButton is the button to return to the menu
          */
 
+	public:
+       
+        /**
+         * The Complete Constructor, which initialize the visuals in the referenced window.
+         *
+         * \param window a renderWindow what gets the drawed shapes and texts
+         * \param nodeList a vector of Nodes we use for the game (shape inits)
+         * \param edgeList a vector of Edges we use for the game (state inits)
+         */
+
+        GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset);
+
+        /**
+         * The standard constructor, which do nothing.
+         */
+
+        GraphRenderer();
+
+        /**
+         * a function which draw the shapes of the class in the argument window
+         *
+         * \param window a renderWindow what gets the drawed shapes and texts
+         */
+
+        void render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList);
+
+        /**
+         * a function which handles events that are given by argument and make
+         * adjustments in the argument window
+         *
+         * \param window a renderWindow which is needed to get informations (i.e. mousepos)
+         * \param event a Event which will describe the event that will happen
+         * \param nodeList a vector of Nodes which is needed for a few methods
+         * \param mouse_pos the current mouse position
+         */
+
+        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
+                          Gamemaster& gamemaster, const sf::Vector2f& mouse_pos);
+
+        /**
+         * a function which display the current score of the game
+         * \param window a renderWindow what gets the new score
+         * \param gamestate is the current state of the game
+         */        
+
+        void display_score(sf::RenderWindow& window, const state& gamestate);
+
+        /**
+         * a function which set an upper bound for the scroll speed via the arrow buttons.
+         *
+         * \param delta a float which gets the upper bound
+         */
+
+        void update(float delta);
+
+        /**
+         * a function which initialize the shapes and texts in terms of the NodeList. this is only
+         * called in the constructor.
+         *
+         * \param nodeList a vector of Nodes which we want to draw as rectangles with text
+         */
+
+        
         void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
+    
+        /**
+         * \return animate
+         */
+
+        bool getAnimate();
 };
 
 #endif //GraphRenderer_H_

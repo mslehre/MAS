@@ -517,4 +517,9 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.draw(menuButton.get_Button_Sprite());
         window.display();
     }
-}   
+}
+
+bool GraphRenderer::getAnimate(){
+    return animate;
+}
+   
