@@ -33,8 +33,7 @@ class Agent {
      *  \param g Graph being used to create state
      *  \param pol Type of Policy, either Random or Learned
      */
-    Agent(Graph& g) : lpolicy(g.getEdges().size()), s0(g.getEdges()) {  
-    };
+    Agent(Graph& g) : s0(g.getEdges()), lpolicy(g.getEdges().size()) {};
 
     /** This function runs an episode. It relies on s and policy
      *  to calculate state-action pairs as well as score.
