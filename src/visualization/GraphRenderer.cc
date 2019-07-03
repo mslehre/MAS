@@ -6,16 +6,6 @@ bool myfunction(float i, float j) {
     return (i < j);
 }
 
-//Method for troubleshooting bad arguments
-void printHelp() {
-    cout << "\t Call program with:\t./visualization [fasta file] [k] \n" << endl;
-    cout << "\t Example: ./visualization sequence.fa 3\n" << endl;
-    cout << "\t fasta file: Must be a file with the ending .fa" << endl;
-    cout << "\t\t fasta files are there to save the information of multiple sequences.\n" << endl;
-    cout << "\t k: Must be an integer greater than zero." << endl;
-    cout << "\t\t k is the length of the Kmers we observe.\n" << endl;
-}
-
 //Method for rendering the actual window view with its components
 void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList) {
     //update window view, if changed in class
@@ -43,7 +33,7 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
 
 //Method which catches all events of the window
 void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
-                                 vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos) {
+                                 Gamemaster& gamemaster, const sf::Vector2f& mouse_pos) {
     //Move the view of the window
     enum direction {Down, Left, Right, Up, Space};
     if (event.type == sf::Event::EventType::KeyPressed) {
@@ -62,10 +52,10 @@ void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window
     //Now check what gets hovered
     if (event.type == sf::Event::EventType::MouseMoved) {
         //highlight the hovered Node
-        if (!nodeHovered && !nodeClicked && isPositionNode(mouse_pos, Nodes, nodeList)) {
-            hoverNode(nodeList, Nodes, mouse_pos);
+        if (!nodeHovered && !nodeClicked && isPositionNode(mouse_pos, gamemaster.GameNodes, nodeList)) {
+            hoverNode(nodeList, gamemaster.GameNodes, mouse_pos);
         //remove the highlight of the Node
-        } else if (nodeHovered && !isPositionNode(mouse_pos, Nodes, nodeList)) {
+        } else if (nodeHovered && !isPositionNode(mouse_pos, gamemaster.GameNodes, nodeList)) {
             deHoverNode();
         }
         //highlight a hovered edge, if possible
@@ -81,15 +71,15 @@ void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window
     if (event.type == sf::Event::EventType::MouseButtonPressed) {
         //select the Node you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeHovered && !nodeClicked) {
-            clickNode(nodeList, Nodes, mouse_pos);
-            showEdges(nodeList, Nodes, mouse_pos, gameState);
+            clickNode(nodeList, gamemaster.GameNodes, mouse_pos);
+            showEdges(nodeList, gamemaster.GameNodes, mouse_pos, gamemaster.GameState);
         //remove the selected Node
         } else if (event.mouseButton.button == sf::Mouse::Right && nodeClicked) {
             deClickNode();
         }
         //select a Edge you hovered
         if (event.mouseButton.button == sf::Mouse::Left && nodeClicked && edgeHovered)
-            selectEdge(nodeList, Nodes, gameState);
+            selectEdge(nodeList, gamemaster);
     }
 }
 
@@ -120,14 +110,22 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
 //Method which will set the move speed in terms of Computer speed with an upper Bound
 void GraphRenderer::update(float delta) {
     moveConstant = delta * 10000;
+    const double maxDelta = 2.5;
+    if (animate && AnimationStep <= maxDelta) {
+        AnimationStep += delta;
+        float step = AnimationStep / maxDelta;
+        AnimationSpeed = step * (3 + (step - 3) * step); // acceleration and slowing down
+    } else {
+        AnimationStep = 0;
+        AnimationSpeed = 0;
+        animate = false;
+    }
 }
 
-void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                                   const state& GameState, Button& menuButton) {
-    vector<DrawNode> newNodes = Nodes;
+vector<DrawNode> GraphRenderer::updateDrawNode(vector<Node>& nodeList) {
+    vector<DrawNode> newNodes = old_nodes;
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
-    bool computed = false;
     for (unsigned i = 0; i < selectedEdges.size(); i++) {
         nodeIndices.push_back(selectedEdges.at(i).getIndexOfArrow());
     }
@@ -140,7 +138,6 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
     unsigned index;
     float diff;
     while (!checked) {
-        computed = true;
         for (unsigned i = 0; i < nodeIndices.size(); i++) {
             int s = nodeIndices.at(i).x;
             int e = nodeIndices.at(i).y;
@@ -169,29 +166,7 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 checked = false;
         }
     }
-    if (computed) {
-        vector<double> ranges;
-        for (unsigned i = 0; i < newNodes.size(); i++) {
-            ranges.push_back((newNodes.at(i).coordinate.x - Nodes.at(i).coordinate.x) * 0.01);
-        }
-        for (unsigned j = 0; j < 100; j++) {
-            for (unsigned i = 0; i < newNodes.size(); i++) {
-                Nodes.at(i).coordinate.x += ranges.at(i);
-            }
-            window.clear(sf::Color::White);
-            for (auto &arr : selectedEdges)
-                arr.setCoordsByPos(Nodes, sizeConstant, offset);
-            setCoords(Nodes, nodeList);
-            window.setView(actualView);
-            drawShape(window);
-            drawText(window);
-            display_score(window, GameState);
-            window.draw(menuButton.get_Button_Sprite());
-            window.display();
-            updateBoundaries(newNodes);
-        }
-    }
-    Nodes = newNodes;
+    return newNodes;
 }
 
 void GraphRenderer::updateBoundaries(const vector<DrawNode>& Nodes) {
@@ -215,10 +190,10 @@ GraphRenderer::GraphRenderer() {
 }
 
 //Complete Constructor
-GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNode>& Nodes, float xoffset) {
+GraphRenderer::GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset) {
     offset = xoffset;
-    vector<Node> nodeList = gr.getNodes();
-    vector<Edge> edgeList = gr.getEdges();
+    vector<Node> nodeList = gamemaster.GameGraph.getNodes();
+    vector<Edge> edgeList = gamemaster.GameGraph.getEdges();
     maxNodesPerRow = 0;
     maxSequences = 0;
     for (unsigned i = 0; i < nodeList.size(); i++) {
@@ -237,9 +212,12 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     nodeHovered = false;
     nodeClicked = false;
     edgeHovered = false;
+    animate = false; 
     defaultView = window.getDefaultView();
     actualView = defaultView;
-    initShapes(Nodes, nodeList);
+    initShapes(gamemaster.GameNodes, nodeList);
+    AnimationStep = 0;
+    AnimationSpeed = 0;
 }
 
 //Method which will move the window in a choosed direction or resets it
@@ -324,7 +302,7 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
     //Get all nodes we need
     rowArrows.clear();
     unsigned size_nodes = Nodes.size();
-    //Placeholder for readablity OF THE NODES
+    //Placeholder for readablity of the nodes
     double i;
     double j;
     unsigned i2;
@@ -453,7 +431,8 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
     int size_Edges = gameState.edges.size();
     for (int i = 0; i < size_Edges; i++) {
         //just look at all edges that come from the selected node
-        if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i && recent->j == gameState.edges.at(i).first->j) {
+        if (gameState.selectable.at(i) && recent->i == gameState.edges.at(i).first->i 
+                                       && recent->j == gameState.edges.at(i).first->j) {
             Edge temp = gameState.edges.at(i);
             int start = 0;
             int end = 0;
@@ -472,11 +451,11 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
 }
 
 //This method select an edge which got hovered
-void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState) {
+void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
-    gameState.select(ind);
-    gameState.calculate_score();
-    Edge temp = gameState.edges.at(ind);
+    gamemaster.GameState.select(ind);
+    gamemaster.GameState.calculate_score();
+    Edge temp = gamemaster.GameState.edges.at(ind);
     //select via state
     int start = 0;
     int end = 0;
@@ -488,13 +467,17 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, 
             break;
         }
     }
-    FuncArrowShape fill(Nodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
+    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
     consistentEdges.clear();
     nodeClicked = false;
     edgeHovered = false;
     deClickNode();
+    // calculate new node coordinate
+    old_nodes = gamemaster.GameNodes;
+    new_nodes = updateDrawNode(nodeList);
+    animate = true; 
 }
 
 //Method for calculating the nearest node pos of the argument pos
@@ -537,4 +520,43 @@ bool GraphRenderer::isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, ve
         }
     }
     return false;
-} //&& temp.x >= positionToCoords(rects.at(temp.y).at(0).getOrigin()).x && temp.x < positionToCoords(rects.at(temp.y).back().getOrigin()).x)
+}
+
+void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, 
+                              Button& menuButton){        
+    unsigned int equal = 0; // number of equal nodes in new_nodes and old_nodes 
+    if (animate) {
+        for (unsigned int i = 0; i < nodeList.size(); i++) {
+            if (old_nodes.at(i).coordinate.x != new_nodes.at(i).coordinate.x) {
+                gamemaster.GameNodes.at(i).coordinate.x = old_nodes.at(i).coordinate.x * (1 - AnimationSpeed)
+                                                        + new_nodes.at(i).coordinate.x * AnimationSpeed;            
+            } else {
+                equal++;
+            }
+        }
+        if (equal == nodeList.size()) { // all nodes are equal -> we don't need a animation
+            AnimationStep = 0;
+            AnimationSpeed = 0;
+            animate = false;
+        }
+    
+        window.clear(sf::Color::White);
+        for (auto &arr : selectedEdges)
+            arr.setCoordsByPos(gamemaster.GameNodes, sizeConstant, offset);
+        setCoords(gamemaster.GameNodes, nodeList);
+        window.setView(actualView);
+        drawShape(window);
+        drawText(window);
+        display_score(window, gamemaster.GameState);
+        window.draw(menuButton.get_Button_Sprite());
+        window.display();
+        updateBoundaries(new_nodes);
+    } else {
+        equal = 0;
+    }
+}
+
+bool GraphRenderer::getAnimate(){
+    return animate;
+}
+   

@@ -36,7 +36,7 @@ int main() {
                              &number_of_sequences, &probability] () {
             gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
             nodeList = gamemaster.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gamemaster.GameGraph, gamemaster.GameNodes, 0.7);
+            GraphRenderer gtemp(window, gamemaster, 0.7);
             GrRend = gtemp;
     });
  
@@ -48,7 +48,7 @@ int main() {
     Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
     Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
     Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
-    Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
+    Slider slider_mutation(450, 700, 0, 100, probability, "Mutation probability");
 
     while (window.isOpen()) {
         sf::Event event;
@@ -64,9 +64,8 @@ int main() {
             quitButton.eventHandler(event, status, mouse_position);
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
-            if (status == "game")
-                GrRend.eventHandler(event, window, nodeList, gamemaster.GameNodes, gamemaster.GameState,
-                                    mouse_position);
+            if (status == "game" && GrRend.getAnimate() == false)
+                GrRend.eventHandler(event, window, nodeList, gamemaster, mouse_position);
         }
 
         if (status == "menu") {
@@ -85,22 +84,20 @@ int main() {
             slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());
         }
-        if (status == "game") {
-            if (!timed) {
-                clock.restart();
-            }
-            GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
+        if (status == "game") {            
+            GrRend.animation(window, gamemaster, nodeList, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                        window.getView().getCenter().y - (window.getSize().y / 2));
             GrRend.display_score(window, gamemaster.GameState);
             window.draw(menuButtonGame.get_Button_Sprite());
-            if (!timed) {
-                GrRend.updateBoundaries(gamemaster.GameNodes);
-                sf::Time elapsed = clock.restart();
-                GrRend.update(elapsed.asSeconds()); //scroll speed computation
+            if (!timed) {                
+                clock.restart();
+                GrRend.updateBoundaries(gamemaster.GameNodes);                
                 timed = true;
             }
+            sf::Time elapsed = clock.restart();
+            GrRend.update(elapsed.asSeconds()); //scroll speed computation
         }
         window.display();
     }
