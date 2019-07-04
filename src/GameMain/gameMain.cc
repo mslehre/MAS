@@ -58,7 +58,6 @@ int main() {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
-
             startButton.eventHandler(event, status, mouse_position);
             settingsButton.eventHandler(event, status, mouse_position);
             quitButton.eventHandler(event, status, mouse_position);
@@ -84,7 +83,9 @@ int main() {
             slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());
         }
-        if (status == "game") {            
+        if (status == "game") {
+            auto mouse_pixelPos = sf::Mouse::getPosition(window);
+            GrRend.moveWindowWithMouse(mouse_pixelPos);
             GrRend.animation(window, gamemaster, nodeList, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),

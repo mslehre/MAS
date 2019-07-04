@@ -209,6 +209,7 @@ class GraphRenderer{
          */
 
 	public:
+        void moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos);
        
         /**
          * The Complete Constructor, which initialize the visuals in the referenced window.
