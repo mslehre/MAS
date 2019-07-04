@@ -2,7 +2,7 @@ include ../common.mk
 
 CC = g++
 OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o \
-    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o
+    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o scrollbar.o
 HEADER1 = ../alignment/Graph.h
 HEADER2 = ../alignment/Node.h
 HEADER3 = ../alignment/Edge.h
@@ -17,6 +17,7 @@ HEADER11 = ../visualization/ArrowShape.h
 HEADER12 = ../visualization/FuncArrowShape.h
 HEADER13 = ../visualization/Button.h
 HEADER14 = ../visualization/Slider.h
+HEADER16 = ../visualization/scrollbar.h
 HEADER15 = Gamemaster.h
 
 all: game_main
@@ -67,6 +68,9 @@ FuncArrowShape.o: ../visualization/FuncArrowShape.cc $(HEADER11) $(HEADER12)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 Slider.o: ../visualization/Slider.cc $(HEADER14)
+	$(CC) -c $(CXXFLAGS) $< -o $@
+
+scrollbar.o: ../visualization/scrollbar.cc $(HEADER16)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
 clean:

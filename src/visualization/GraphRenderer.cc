@@ -37,7 +37,7 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
     for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant, offset);
     setCoords(Nodes, nodeList);
-    drawShape(window);
+    drawShape(window, nodeList);
     drawText(window);
 }
 
@@ -174,6 +174,8 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
         for (unsigned i = 0; i < newNodes.size(); i++) {
             ranges.push_back((newNodes.at(i).coordinate.x - Nodes.at(i).coordinate.x) * 0.01);
         }
+            updateBoundaries(newNodes);
+            updateChunks(newNodes);
         for (unsigned j = 0; j < 100; j++) {
             for (unsigned i = 0; i < newNodes.size(); i++) {
                 Nodes.at(i).coordinate.x += ranges.at(i);
@@ -183,15 +185,54 @@ void GraphRenderer::updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeL
                 arr.setCoordsByPos(Nodes, sizeConstant, offset);
             setCoords(Nodes, nodeList);
             window.setView(actualView);
-            drawShape(window);
+            drawShape(window, nodeList);
             drawText(window);
             display_score(window, GameState);
             window.draw(menuButton.get_Button_Sprite());
             window.display();
-            updateBoundaries(newNodes);
         }
     }
     Nodes = newNodes;
+}
+
+void GraphRenderer::updateChunks(const vector<DrawNode>& Nodes) {
+    RendHelper.indOfNodes.clear();
+    RendHelper.xBound = sf::Vector2i(boundary.at(0) - 3, boundary.at(1) + 3);
+    RendHelper.yBound = sf::Vector2i(boundary.at(2) - 3, boundary.at(3) + 3);
+    int l = 0;
+    for (int i = RendHelper.yBound.x; i <= RendHelper.yBound.y; i++) {
+        vector<int> temp;
+        bool lined = false;
+        for (int j = RendHelper.xBound.x; j <= RendHelper.xBound.y; j++) {
+            if (l < Nodes.size() && (lined || Nodes.at(l).coordinate.y == i)) {
+                lined = true;
+                if (l < Nodes.size() && j == Nodes.at(l).coordinate.x) {
+                    temp.push_back(l);
+                    l++;
+                } else if (l < Nodes.size() && j < Nodes.at(l).coordinate.x) {
+                    int low = Nodes.at(l).coordinate.x - j;
+                    for (int k = 0; k < low; k++) {
+                        temp.push_back(-1);
+                        j++;
+                    }
+                    j -= 1;
+                } else if (l >= Nodes.size() || j > Nodes.at(l).coordinate.x) {
+                    int low = RendHelper.xBound.y - j;
+                    for (int k = 0; k <= low; k++) {
+                        temp.push_back(-1);
+                        j++;
+                    }
+                }
+            } else {
+                int low = RendHelper.xBound.y - j;
+                for (int k = 0; k <= low; k++) {
+                    temp.push_back(-1);
+                    j++;
+                }
+            }
+        }
+        RendHelper.indOfNodes.push_back(temp);
+    }
 }
 
 void GraphRenderer::updateBoundaries(const vector<DrawNode>& Nodes) {
@@ -234,6 +275,8 @@ GraphRenderer::GraphRenderer(sf::RenderWindow& window, Graph& gr, vector<DrawNod
     }
     direction.push_back(0);
     direction.push_back(0);
+    updateBoundaries(Nodes);
+    updateChunks(Nodes);
     nodeHovered = false;
     nodeClicked = false;
     edgeHovered = false;
@@ -282,37 +325,51 @@ void GraphRenderer::moveWindow(int dir) {
 
 //This method draws the text
 void GraphRenderer::drawText(sf::RenderWindow& window) {
-    unsigned int size_text = txt.size();
     sf::Text text;
     sf::Font font;
     //load font out of file
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
-    for (unsigned int i = 0; i < size_text; i++) {
-        text.setFont(font);
-        text.setColor(txt[i].col);
-        text.setPosition(txt[i].pos[0], txt[i].pos[1]);
-        text.setString(txt[i].kmer);
-        text.setCharacterSize(txt[i].charSize);
-        window.draw(text);
+    
+    int xoff = RendHelper.xBound.x;
+    int yoff = RendHelper.yBound.x;
+    sf::Vector2f upperLeft = positionToCoords(sf::Vector2f(direction.at(0), direction.at(1)));
+    sf::Vector2f lowerRight = positionToCoords(sf::Vector2f(direction.at(0) + actualView.getSize().x, direction.at(1) + actualView.getSize().y));
+    //iterate through vectors to draw all
+    for (int i = upperLeft.y; i <= lowerRight.y; i++) {
+        for (int j = upperLeft.x; j <= lowerRight.x; j++) {
+            if (RendHelper.indOfNodes.at(i - yoff).at(j - xoff) != -1) {
+                text.setFont(font);
+                text.setColor(txt[RendHelper.indOfNodes.at(i - yoff).at(j - xoff)].col);
+                text.setPosition(txt[RendHelper.indOfNodes.at(i - yoff).at(j - xoff)].pos[0], txt[RendHelper.indOfNodes.at(i - yoff).at(j - xoff)].pos[1]);
+                text.setString(txt[RendHelper.indOfNodes.at(i - yoff).at(j - xoff)].kmer);
+                text.setCharacterSize(txt[RendHelper.indOfNodes.at(i - yoff).at(j - xoff)].charSize);
+                window.draw(text);
+            }
+        }
     }
 }
 
 //This method draws all shapes
-void GraphRenderer::drawShape(sf::RenderWindow& window) {
-    unsigned int size_Rect = rects.size();
-    unsigned int size_seq;
-    unsigned int size_rowArrows = rowArrows.size();
+void GraphRenderer::drawShape(sf::RenderWindow& window, const vector<Node>& nodeList) {
     unsigned int size_tempArr = consistentEdges.size();
     unsigned int size_arrowList = selectedEdges.size();
+    sf::Vector2f upperLeft = positionToCoords(sf::Vector2f(direction.at(0), direction.at(1)));
+    sf::Vector2f lowerRight = positionToCoords(sf::Vector2f(direction.at(0) + actualView.getSize().x, direction.at(1) + actualView.getSize().y));
+    int xoff = RendHelper.xBound.x;
+    int yoff = RendHelper.yBound.x;
     //iterate through vectors to draw all
-    for (unsigned int i = 0; i < size_rowArrows; i++) {
-        rowArrows.at(i).Draw(window);
-    }
-    for (unsigned int i = 0; i < size_Rect; i++) {
-        size_seq = rects.at(i).size();
-        for (unsigned int j = 0; j < size_seq; j++)
-            window.draw(rects.at(i).at(j));
+    for (int i = upperLeft.y; i <= lowerRight.y; i++) {
+        for (int j = upperLeft.x; j <= lowerRight.x; j++) {
+            if (RendHelper.indOfNodes.at(i - yoff).at(j - xoff) != -1) {
+                unsigned x = nodeList.at(RendHelper.indOfNodes.at(i - yoff).at(j - xoff)).j;
+                unsigned y = nodeList.at(RendHelper.indOfNodes.at(i - yoff).at(j - xoff)).i;
+                window.draw(rects.at(y).at(x));
+                rowArrows.at(RendHelper.indOfNodes.at(i - yoff).at(j - xoff)).Draw(window);
+            }
+            if (RendHelper.indOfNodes.at(i - yoff).at(j - xoff) > 0 && j == upperLeft.x)
+                rowArrows.at(RendHelper.indOfNodes.at(i - yoff).at(j - xoff) - 1).Draw(window);
+        }
     }
     for (unsigned int i = 0; i < size_tempArr; i++)
         consistentEdges.at(i).Draw(window);
@@ -344,6 +401,9 @@ void GraphRenderer::setCoords(const vector<DrawNode>& Nodes, const vector<Node>&
             sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             sf::Vector2f end(sizeConstant * (0.05 + 1.8 * j3), sizeConstant * (0.45 + 1.5 * i));
             ArrowShape placeholder(start, end, sizeConstant, sf::Color::Black);
+            rowArrows.push_back(placeholder);
+        } else {
+            ArrowShape placeholder(sf::Vector2f(0, 0), sf::Vector2f(0, 0), sizeConstant, sf::Color::Transparent);
             rowArrows.push_back(placeholder);
         }
     }
@@ -385,6 +445,9 @@ void GraphRenderer::initShapes(const vector<DrawNode>& Nodes, const vector<Node>
             sf::Vector2f start(sizeConstant * (1.2 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             sf::Vector2f end(sizeConstant * (1.85 + 1.8 * j), sizeConstant * (0.45 + 1.5 * i));
             ArrowShape placeholder(start, end, sizeConstant, sf::Color::Black);
+            rowArrows.push_back(placeholder);
+        } else {
+            ArrowShape placeholder(sf::Vector2f(0, 0), sf::Vector2f(0, 0), sizeConstant, sf::Color::Transparent);
             rowArrows.push_back(placeholder);
         }
     }

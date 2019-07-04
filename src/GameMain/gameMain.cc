@@ -6,6 +6,7 @@
 #include "../visualization/GraphRenderer.h"
 #include "../visualization/Button.h"
 #include "../visualization/Slider.h"
+#include "../visualization/scrollbar.h"
 #include "Gamemaster.h"
 
 int main() {
@@ -50,6 +51,8 @@ int main() {
     Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
     Slider slider_mutation(450, 700, 0, 100, probability, "Mutationprobability");
 
+    scrollbar scroll(window, sf::Vector2f(0, 0), sf::Vector2f(0, 2000), sf::Vector2f(0, 400), 20);
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -91,6 +94,7 @@ int main() {
             }
             GrRend.updateDrawNode(window, nodeList, gamemaster.GameNodes, gamemaster.GameState, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
+            scroll.draw(window, GrRend.actualView);
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                        window.getView().getCenter().y - (window.getSize().y / 2));
             GrRend.display_score(window, gamemaster.GameState);
@@ -101,6 +105,7 @@ int main() {
                 GrRend.update(elapsed.asSeconds()); //scroll speed computation
                 timed = true;
             }
+            std::cout << window.getView().getCenter().x << std::endl;
         }
         window.display();
     }
