@@ -97,7 +97,7 @@ void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
             actualView.move(move, 0);
             direction.at(0) += move;
         } else if (mouse_pixelPos.x < edge && sizeConstant * (0.2 + 1.8 * boundary.at(0)) < direction.at(0)) { // left
-            move = mouseMoveConstant / (mouse_pixelPos.x  + 1);
+            move = mouseMoveConstant / (mouse_pixelPos.x);
             actualView.move(- move, 0);
             direction.at(0) -= move;
         } else if (yPosdiff < edge && sizeConstant * (0.7 + 1.5 * boundary.at(3)) > direction.at(1) + size.y) { // down
@@ -105,7 +105,7 @@ void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
             actualView.move(0, move);
             direction.at(1) += move;
         } else if (mouse_pixelPos.y < edge && sizeConstant * (0.2 + 1.5 * boundary.at(2)) < direction.at(1)) { // up
-            move = mouseMoveConstant / (mouse_pixelPos.y  + 1);
+            move = mouseMoveConstant / (mouse_pixelPos.y);
             actualView.move(0, - move);
             direction.at(1) -= move;
         }

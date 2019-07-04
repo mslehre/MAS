@@ -77,9 +77,22 @@ class GraphRenderer{
         sf::View actualView; ///< a View which we use as main-"view"
         sf::View defaultView; ///< a View to reset our actualView
 
+        /**
+         * TODO
+         */
+
         std::vector<DrawNode> updateDrawNode(vector<Node>& nodeList);
 
+        /**
+         * TODO
+         */
+
         void initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
+
+        /**
+         * TODO
+         */
+
         void setCoords(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
 
         /**
@@ -209,7 +222,6 @@ class GraphRenderer{
          */
 
 	public:
-        void moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos);
        
         /**
          * The Complete Constructor, which initialize the visuals in the referenced window.
@@ -226,6 +238,14 @@ class GraphRenderer{
          */
 
         GraphRenderer();
+
+        /**
+         * a function which manipulate the view with the help of mouse movements
+         *
+         * \param mouse_pixelPos is the current mouse position
+         */
+
+        void moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos);
 
         /**
          * a function which draw the shapes of the class in the argument window
@@ -279,6 +299,10 @@ class GraphRenderer{
          */
 
         bool getAnimate();
+
+        /**
+         * TODO
+         */
 
         void updateBoundaries(const vector<DrawNode>& Nodes);
 };

@@ -58,6 +58,7 @@ int main() {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
+
             startButton.eventHandler(event, status, mouse_position);
             settingsButton.eventHandler(event, status, mouse_position);
             quitButton.eventHandler(event, status, mouse_position);
