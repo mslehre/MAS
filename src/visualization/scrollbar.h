@@ -35,7 +35,7 @@ class scrollbar{
          * \param variable is variable that will be changed with the slider
          * \param name this string will draw above the slider in the window
          */
-
+        scrollbar();
         scrollbar(sf::RenderWindow& window, sf::Vector2f posOfWin, sf::Vector2f xbound, sf::Vector2f ybound, float thickness);
 
         /** 
@@ -43,7 +43,8 @@ class scrollbar{
          * \param number is variable that will be changed with the slider
          */
 
-         void draw(sf::RenderWindow& window, sf::View& myView, std::vector<float>& direction);
+        void draw(sf::RenderWindow& window, sf::View& myView, std::vector<float>& direction);
+        void setBounds(sf::Vector2f xBound, sf::Vector2f yBound);
 };
 
 #endif //scrollbar_H_

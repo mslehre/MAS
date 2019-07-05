@@ -16,9 +16,11 @@
 #include "../alignment/Edge.h"
 #include "../alignment/State.h"
 #include "../alignment/DrawNode.h"
+#include "../GameMain/Gamemaster.h"
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 #include "Button.h"
+#include "scrollbar.h"
 
 void printHelp(); ///< a function which calls a troubleshooting for bad arguments
 
@@ -51,6 +53,7 @@ class GraphRenderer{
     };
     struct nodeChunks {
         std::vector<std::vector<int>> indOfNodes;
+        std::vector<std::vector<int>> indOfArrows;
         sf::Vector2i xBound;
         sf::Vector2i yBound;
     };
@@ -62,6 +65,7 @@ class GraphRenderer{
         std::vector<std::vector<sf::RectangleShape>> rects; ///< vector of vector of rectangles where a rectangle represent a node (with analogue indices)
         std::vector<TextProps> txt; ///< vector of textproperties to draw Node strings
         nodeChunks RendHelper;
+        scrollbar scroll;
         sf::Vector2i hoverPosition; ///< a index vector for the actual hovered Node
         sf::Vector2i clickPosition; ///< a index vector for the actual clicked Node
         sf::Color colorOfClickedNode; ///< the color of the Node rectangle, which is in the position of the clickPosition
@@ -101,7 +105,7 @@ class GraphRenderer{
          * \param window a renderWindow what gets the drawed shapes and texts
          */
 
-        void render(sf::RenderWindow& window, vector<DrawNode>& Nodes, vector<Node>& nodeList);
+        void render(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList);
 
         /**
          * a function which handles events that are given by argument and make
