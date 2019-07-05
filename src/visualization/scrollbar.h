@@ -6,6 +6,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <string>
+#include <vector>
 
 class scrollbar{
     private:
@@ -13,10 +14,10 @@ class scrollbar{
         sf::Vector2f xbound;
         sf::Vector2f ybound; 
         sf::Vector2f posOfWin;
-        float yPos;
+        float xQuot;
+        float yQuot;
         float xPos;
-        float xRange;
-        float yRange;
+        float yPos;
         unsigned thickness;
         bool movable1;  
         bool movable2;
@@ -42,7 +43,7 @@ class scrollbar{
          * \param number is variable that will be changed with the slider
          */
 
-         void draw(sf::RenderWindow& window, sf::View& myView);
+         void draw(sf::RenderWindow& window, sf::View& myView, std::vector<float>& direction);
 };
 
 #endif //scrollbar_H_

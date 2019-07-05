@@ -33,7 +33,6 @@ void GraphRenderer::render(sf::RenderWindow& window, vector<DrawNode>& Nodes, ve
         window.setView(actualView);
     }
     //reset window
-    window.clear(sf::Color::White);
     for (auto &arr : selectedEdges)
         arr.setCoordsByPos(Nodes, sizeConstant, offset);
     setCoords(Nodes, nodeList);
