@@ -19,6 +19,13 @@ class Button {
         std::string next_status;    ///< the next GUI status after the Button was clicked
         std::function<void()> Button_function;  ///< function of the Button
 
+        /**
+         * This function load a new texture for the Button. 
+         * \param name is the name of the new texture
+         */
+
+        void load_Texture(std::string name);
+
     public:
 
         /** 
@@ -31,13 +38,6 @@ class Button {
 
         Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, std::string nextStatus, std::string myStatus);
         
-        /**
-         * This function load a new texture for the Button. 
-         * \param name is the name of the new texture
-         */
-
-        void load_Texture(std::string name);
-
         /** 
          * \return Button_Sprite
          */
@@ -66,6 +66,13 @@ class Button {
          */
 
         void setPosition(float x_pos, float y_pos);
+        
+        /** 
+         * change the path of the texture
+         * \param newName is the path of the new texture
+         */
+
+        void setTextureName(std::string newName);
 
 };
 

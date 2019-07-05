@@ -14,12 +14,14 @@ int main() {
     window.setFramerateLimit(120);
     sf::View defaultView = window.getDefaultView();
     bool timed = false;
+
     //default parameter for the game
     unsigned int k = 3;
     unsigned int length_of_sequences = 42;
     unsigned int number_of_sequences = 4;
     unsigned int probability = 25; // the actual probability is 25%
-    std::string status = "menu"; // "status" of the window {menu, game, settings, quit} 
+    std::string status = "menu"; // "status" of the window {menu, game, settings, quit}
+    bool scrollbar = true;
 
     sf::Clock clock; //clock to compute a scroll speed
     Gamemaster gamemaster;
@@ -31,13 +33,27 @@ int main() {
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
     Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
+    Button GameMovementMouse = Button("../../fig/uncheckedBox.png", 900, 100, "settings", "settings");
+    Button GameMovementBar = Button("../../fig/checkedBox.png", 900, 300, "settings", "settings");
 
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
                              &number_of_sequences, &probability] () {
-            gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
-            nodeList = gamemaster.GameGraph.getNodes();
-            GraphRenderer gtemp(window, gamemaster, 0.7);
-            GrRend = gtemp;
+        gamemaster.makeGame(k, length_of_sequences, number_of_sequences, (double)probability / 100);
+        nodeList = gamemaster.GameGraph.getNodes();
+        GraphRenderer gtemp(window, gamemaster, 0.7);
+        GrRend = gtemp;
+    });
+
+    GameMovementMouse.setFunction([&GameMovementMouse, &GameMovementBar, &scrollbar] () {
+        scrollbar = false;
+        GameMovementBar.setTextureName("../../fig/uncheckedBox.png");
+        GameMovementMouse.setTextureName("../../fig/checkedBox.png");
+    });
+
+    GameMovementBar.setFunction([&GameMovementMouse,&GameMovementBar, &scrollbar] () {
+        scrollbar = true;
+        GameMovementBar.setTextureName("../../fig/checkedBox.png");
+        GameMovementMouse.setTextureName("../../fig/uncheckedBox.png");
     });
  
     settingsButton.setFunction([] () {});
@@ -45,10 +61,10 @@ int main() {
     menuButtonGame.setFunction([&window, &defaultView] () {window.setView(defaultView); });
     menuButtonSettings.setFunction([&window, &defaultView] () {window.setView(defaultView); });
 
-    Slider slider_k(450, 100, 1, 6, k, "Length of kmer");
-    Slider slider_lengSeq(450, 300, 10, 500, length_of_sequences, "Length of sequences");
-    Slider slider_numSeq(450, 500, 2, 50, number_of_sequences, "Number of sequences");
-    Slider slider_mutation(450, 700, 0, 100, probability, "Mutation probability");
+    Slider slider_k(250, 100, 1, 6, k, "Length of kmer");
+    Slider slider_lengSeq(250, 300, 10, 500, length_of_sequences, "Length of sequences");
+    Slider slider_numSeq(250, 500, 2, 50, number_of_sequences, "Number of sequences");
+    Slider slider_mutation(250, 700, 0, 100, probability, "Mutation probability");
 
     while (window.isOpen()) {
         sf::Event event;
@@ -64,6 +80,8 @@ int main() {
             quitButton.eventHandler(event, status, mouse_position);
             menuButtonGame.eventHandler(event, status, mouse_position);
             menuButtonSettings.eventHandler(event, status, mouse_position);
+            GameMovementBar.eventHandler(event, status, mouse_position);
+            GameMovementMouse.eventHandler(event, status, mouse_position);
             if (status == "game" && GrRend.getAnimate() == false)
                 GrRend.eventHandler(event, window, nodeList, gamemaster, mouse_position);
         }
@@ -83,10 +101,13 @@ int main() {
             slider_numSeq.draw(window, number_of_sequences);
             slider_mutation.draw(window, probability);
             window.draw(menuButtonSettings.get_Button_Sprite());
+            window.draw(GameMovementMouse.get_Button_Sprite());
+            window.draw(GameMovementBar.get_Button_Sprite());
         }
         if (status == "game") {
             auto mouse_pixelPos = sf::Mouse::getPosition(window);
-            GrRend.moveWindowWithMouse(mouse_pixelPos);
+            if (scrollbar == false)
+                GrRend.moveWindowWithMouse(mouse_pixelPos);
             GrRend.animation(window, gamemaster, nodeList, menuButtonGame);
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),

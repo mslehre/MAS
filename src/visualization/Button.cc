@@ -47,3 +47,7 @@ void Button::setPosition(float x_pos, float y_pos) {
     Button_Sprite.setPosition(sf::Vector2f(x_pos, y_pos));
 }
 
+void Button::setTextureName(std::string newName) {
+    Button_texturename = newName;
+}
+
