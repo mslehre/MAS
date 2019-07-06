@@ -7,8 +7,8 @@
 #include <vector>
 #include <string>
 #include <stdlib.h>
+#include <math.h>
 #include <cmath>
-#include <algorithm>
 #include <string>
 #include "colorlist.h"
 #include "colormap.h"
@@ -21,8 +21,7 @@
 #include "FuncArrowShape.h"
 #include "Button.h"
 #include "scrollbar.h"
-
-void printHelp(); ///< a function which calls a troubleshooting for bad arguments
+#include "../GameMain/Gamemaster.h"
 
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
  *
@@ -75,14 +74,19 @@ class GraphRenderer{
         float offset; ///< a constant which make a offset on the upper horizontal
         float moveConstant; ///< a (upper bound) constant which is used to scroll in terms of computer speed
         vector<float> boundary; ///< a vector which save the maximum amount of nodes in each direction
-        vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view
+        vector<float> direction; ///< a vector of 2 floats which saves the scrolled way of the view       
+        bool animate; ///< true, if the animation is running 
+        bool afterAnimate;
         bool nodeHovered; ///< true, if a node is hovered
         bool nodeClicked; ///< true, if a node is clicked
         bool edgeHovered; ///< true, if a edge is hovered
+        float AnimationStep; ///< the step of the animation
+        float AnimationSpeed; ///< the speed during the animation        
         int hoveredEdgeIndex; ///< the index of the hovered edge
+        vector<DrawNode> new_nodes; ///< a vector with the new nodes during the animation
+        vector<DrawNode> old_nodes; ///< a vector with the old nodes during the animation
         sf::View actualView; ///< a View which we use as main-"view"
         sf::View defaultView; ///< a View to reset our actualView
-
         /**
          * The Complete Constructor, which initialize the visuals in the referenced window.
          *
@@ -97,7 +101,6 @@ class GraphRenderer{
          * The standard constructor, which do nothing.
          */
 
-        GraphRenderer();
 
         /**
          * a function which draw the shapes of the class in the argument window
@@ -117,8 +120,7 @@ class GraphRenderer{
          * \param mouse_pos the current mouse position
          */
 
-        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, 
-                          vector<DrawNode>& Nodes, state& gameState, const sf::Vector2f& mouse_pos);
+        void eventHandler(const sf::Event event, sf::RenderWindow& window, vector<Node>& nodeList, Gamemaster& gamemaster, const sf::Vector2f& mouse_pos);
 
         /**
          * a function which display the current score of the game
@@ -126,9 +128,6 @@ class GraphRenderer{
          * \param gamestate is the current state of the game
          */        
 
-        void display_score(sf::RenderWindow& window, const state& gamestate);
-        void updateDrawNode(sf::RenderWindow& window, vector<Node>& nodeList, vector<DrawNode>& Nodes, 
-                            const state& GameState, Button& menuButton);
         void updateChunks(const vector<DrawNode>& Nodes);
         void updateBoundaries(const vector<DrawNode>& Nodes);
 
@@ -138,7 +137,6 @@ class GraphRenderer{
          * \param delta a float which gets the upper bound
          */
 
-        void update(float delta);
 
         /**
          * a function which initialize the shapes and texts in terms of the NodeList. this is only
@@ -146,6 +144,7 @@ class GraphRenderer{
          *
          * \param nodeList a vector of Nodes which we want to draw as rectangles with text
          */
+        std::vector<DrawNode> updateDrawNode(vector<Node>& nodeList);
 
         void initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
         void setCoords(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
@@ -187,7 +186,7 @@ class GraphRenderer{
          * a function which select a clicked edge (in the state and in visuals)
          */
 
-        void selectEdge(vector<Node>& nodeList, vector<DrawNode>& Nodes, state& gameState);
+        void selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster);
 
         /**
          * a function which highlight a hovered node
@@ -266,7 +265,78 @@ class GraphRenderer{
          */
 
         bool isPositionNode(sf::Vector2f pos, vector<DrawNode>& Nodes, vector<Node>& nodeList);
+
+        /**
+         * a function for the animation
+         *
+         * \param window is the current RenderWindow
+         * \param gamemaster contains the current coordinates of all nodes
+         * \param nodeList contains all nodes
+         * \param menuButton is the button to return to the menu
+         */
+       
+        /**
+         * The Complete Constructor, which initialize the visuals in the referenced window.
+         *
+         * \param window a renderWindow what gets the drawed shapes and texts
+         * \param nodeList a vector of Nodes we use for the game (shape inits)
+         * \param edgeList a vector of Edges we use for the game (state inits)
+         */
+
+        GraphRenderer(sf::RenderWindow& window, Gamemaster& gamemaster, float xoffset);
+
+        /**
+         * The standard constructor, which do nothing.
+         */
+
+        GraphRenderer();
+
+        /**
+         * a function which draw the shapes of the class in the argument window
+         *
+         * \param window a renderWindow what gets the drawed shapes and texts
+         */
+
+        /**
+         * a function which handles events that are given by argument and make
+         * adjustments in the argument window
+         *
+         * \param window a renderWindow which is needed to get informations (i.e. mousepos)
+         * \param event a Event which will describe the event that will happen
+         * \param nodeList a vector of Nodes which is needed for a few methods
+         * \param mouse_pos the current mouse position
+         */
+        /**
+         * a function which display the current score of the game
+         * \param window a renderWindow what gets the new score
+         * \param gamestate is the current state of the game
+         */        
+
+        void display_score(sf::RenderWindow& window, const state& gamestate);
+
+        /**
+         * a function which set an upper bound for the scroll speed via the arrow buttons.
+         *
+         * \param delta a float which gets the upper bound
+         */
+
+        void update(float delta);
+
+        /**
+         * a function which initialize the shapes and texts in terms of the NodeList. this is only
+         * called in the constructor.
+         *
+         * \param nodeList a vector of Nodes which we want to draw as rectangles with text
+         */
+
+        
+        void animation(sf::RenderWindow& window, Gamemaster& gamemaster, vector<Node>& nodeList, Button& menuButton);
+    
+        /**
+         * \return animate
+         */
+
+        bool getAnimate();
 };
 
 #endif //GraphRenderer_H_
-

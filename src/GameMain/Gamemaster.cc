@@ -33,10 +33,6 @@ void Gamemaster::makeGame(unsigned int k, unsigned int length, unsigned int numb
     }
 }
 
-Graph Gamemaster::getGameGraph(){
-    return GameGraph;
-}
-
 vector<string> Gamemaster::getKmers(vector<Node>& nodeList) {
     vector<string> allKmers(nodeList.size());
     for (unsigned int i = 0; i < nodeList.size(); i++) {
