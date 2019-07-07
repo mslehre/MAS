@@ -48,6 +48,7 @@ class Slider{
          * \param x_pos is the x coordinate of the text in the window
          * \param y_pos is the y coordinate of the text in the window
          * \param size is the size of the text
+         * \return a sf::Text 
          */
 
         sf::Text drawText(std::string text, int x_pos, int y_pos, unsigned int size);

@@ -91,7 +91,7 @@ void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
     unsigned int xPosdiff = size.x - mouse_pixelPos.x; 
     unsigned int yPosdiff = size.y - mouse_pixelPos.y; 
     
-    if (xPosdiff > 0 && yPosdiff > 0 &&mouse_pixelPos.x > 0 && mouse_pixelPos.y > 0) {        
+    if (xPosdiff > 0 && yPosdiff > 0 && mouse_pixelPos.x > 0 && mouse_pixelPos.y > 0) {        
         if (xPosdiff < edge && sizeConstant * (1.2 + 1.8 * boundary.at(1)) > direction.at(0) + size.x) { // right
             move = mouseMoveConstant / (xPosdiff);
             actualView.move(move, 0);

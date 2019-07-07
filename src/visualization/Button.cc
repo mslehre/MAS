@@ -51,3 +51,19 @@ void Button::setTextureName(std::string newName) {
     Button_texturename = newName;
 }
 
+void Button::drawText(sf::RenderWindow& window, std::string s, int x_pos, int y_pos, unsigned int size){
+    
+    sf::Text text;
+    sf::Font font;
+
+    if (!font.loadFromFile("Amiko-Regular.ttf"))
+        std::cout << "Can't find the font file" << std::endl;
+
+    text.setFont(font);
+    text.setColor(sf::Color::Black);
+    text.setString(s);	
+    text.setPosition(x_pos, y_pos);
+    text.setCharacterSize(size);
+    window.draw(text);
+}
+
