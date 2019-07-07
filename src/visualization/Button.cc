@@ -52,7 +52,6 @@ void Button::setTextureName(std::string newName) {
 }
 
 void Button::drawText(sf::RenderWindow& window, std::string s, int x_pos, int y_pos, unsigned int size){
-    
     sf::Text text;
     sf::Font font;
 
@@ -66,4 +65,3 @@ void Button::drawText(sf::RenderWindow& window, std::string s, int x_pos, int y_
     text.setCharacterSize(size);
     window.draw(text);
 }
-

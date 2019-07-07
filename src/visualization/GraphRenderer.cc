@@ -85,7 +85,7 @@ void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window
 
 void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
     sf::Vector2f size = actualView.getSize();
-    float mouseMoveConstant = moveConstant / 3 ;
+    float mouseMoveConstant = moveConstant / 3;
     double move = 0;
     const int edge = 50;
     unsigned int xPosdiff = size.x - mouse_pixelPos.x; 
@@ -93,19 +93,19 @@ void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
     
     if (xPosdiff > 0 && yPosdiff > 0 && mouse_pixelPos.x > 0 && mouse_pixelPos.y > 0) {        
         if (xPosdiff < edge && sizeConstant * (1.2 + 1.8 * boundary.at(1)) > direction.at(0) + size.x) { // right
-            move = mouseMoveConstant / (xPosdiff);
+            move = mouseMoveConstant / xPosdiff;
             actualView.move(move, 0);
             direction.at(0) += move;
         } else if (mouse_pixelPos.x < edge && sizeConstant * (0.2 + 1.8 * boundary.at(0)) < direction.at(0)) { // left
-            move = mouseMoveConstant / (mouse_pixelPos.x);
+            move = mouseMoveConstant / mouse_pixelPos.x;
             actualView.move(- move, 0);
             direction.at(0) -= move;
         } else if (yPosdiff < edge && sizeConstant * (0.7 + 1.5 * boundary.at(3)) > direction.at(1) + size.y) { // down
-            move = mouseMoveConstant / (yPosdiff);
+            move = mouseMoveConstant / yPosdiff;
             actualView.move(0, move);
             direction.at(1) += move;
         } else if (mouse_pixelPos.y < edge && sizeConstant * (0.2 + 1.5 * boundary.at(2)) < direction.at(1)) { // up
-            move = mouseMoveConstant / (mouse_pixelPos.y);
+            move = mouseMoveConstant / mouse_pixelPos.y;
             actualView.move(0, - move);
             direction.at(1) -= move;
         }
