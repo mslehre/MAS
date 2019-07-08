@@ -2,7 +2,7 @@ include ../common.mk
 
 CC = g++
 OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o \
-    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o
+    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o TrainingSet.o RLDataset.o
 HEADER1 = ../alignment/Graph.h
 HEADER2 = ../alignment/Node.h
 HEADER3 = ../alignment/Edge.h
@@ -18,6 +18,7 @@ HEADER12 = ../visualization/FuncArrowShape.h
 HEADER13 = ../visualization/Button.h
 HEADER14 = ../visualization/Slider.h
 HEADER15 = Gamemaster.h
+HEADER16 = ../ML/pytorch/RLDataset.h
 torchOpt1 = -l benchmark -l benchmark_main -l c10d -l Caffe2_perfkernels_avx2 -l Caffe2_perfkernels_avx -l caffe2_protos -l clog -l cpuinfo -l cpuinfo_internals -l foxi_loader -l gloo -l gloo_builder -l gmock -l gmock_main -l gtest -l gtest_main -l mkldnn -l nnpack -l nnpack_reference_layers -l onnx -l onnxifi_loader -l onnx_proto -l protobuf -l protobuf-lite -l protoc -l pthreadpool -l qnnpack -l THD -l c10 -l caffe2_detectron_ops -l caffe2_module_test_dynamic -l caffe2 -l foxi_dummy -l foxi -l onnxifi_dummy -l onnxifi -l torch -lpthread
 torchOpt2 = -D_GLIBCXX_USE_CXX11_ABI=0
 torchOpt3 = -I ../ML/pytorch/libtorch/include/torch/csrc/api/include -I ../ML/pytorch/libtorch/include/ -L ../ML/pytorch/libtorch/lib/
@@ -43,11 +44,14 @@ Edge.o: ../alignment/Edge.cc $(HEADER3)
 State.o: ../alignment/State.cc $(HEADER4)
 	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
-Agent.o: ../../SimpleAgent/Agent.cc $(H6)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../../SimpleAgent/Agent.cc $(torchOpt1) $(torchOpt2) $(torchOpt3)
+Agent.o: ../ML/SimpleAgent/Agent.cc ../ML/SimpleAgent/Agent.h
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/SimpleAgent/Agent.cc $(torchOpt1) $(torchOpt2) $(torchOpt3)
 
-TrainingSet.o: ../TrainingSet.cc $(H13)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../TrainingSet.cc $(torchOpt1) $(torchOpt2) $(torchOpt3)
+TrainingSet.o: ../ML/pytorch/TrainingSet.cc ../ML/pytorch/TrainingSet.h
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/pytorch/TrainingSet.cc $(torchOpt1) $(torchOpt2) $(torchOpt3)
+
+RLDataset.o: ../ML/pytorch/RLDataset.cc ../ML/pytorch/RLDataset.cc
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/pytorch/RLDataset.cc $(torchOpt1) $(torchOpt2) $(torchOpt3)
 
 Button.o: ../visualization/Button.cc $(HEADER1) $(HEADER13)
 	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
@@ -67,8 +71,8 @@ Gamemaster.o: Gamemaster.cc $(HEADER1) $(HEADER4) $(HEADER5) $(HEADER6) $(HEADER
 colorlist.o: ../visualization/colorlist.cc $(HEADER8)
 	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
 
-GraphRenderer.o: ../visualization/GraphRenderer.cc $(HEADER1) $(HEADER10) $(HEADER11) $(HEADER13) $(HEADER15)
-	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
+GraphRenderer.o: ../visualization/GraphRenderer.cc $(HEADER1) $(HEADER10) $(HEADER11) $(HEADER13) $(HEADER15) 
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt1) $(torchOpt2) $(torchOpt3)
 
 ArrowShape.o: ../visualization/ArrowShape.cc $(HEADER11)
 	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
