@@ -114,7 +114,8 @@ vector<DrawNode> GraphRenderer::updateDrawNode(vector<Node>& nodeList) {
     vector<sf::Vector2i> nodeIndices;
     bool checked = true;
     for (unsigned i = 0; i < selectedEdges.size(); i++) {
-        nodeIndices.push_back(selectedEdges.at(i).getIndexOfArrow());
+        if (!selectedEdges.at(i).getEnemy())
+            nodeIndices.push_back(selectedEdges.at(i).getIndexOfArrow());
     }
     for (unsigned i = 0; i < nodeIndices.size(); i++) {
         int s = nodeIndices.at(i).x;
@@ -508,7 +509,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
                     break;
                 }
             }
-            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset);
+            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset, false);
             consistentEdges.push_back(tempArr);
         }
     }
@@ -531,7 +532,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
             break;
         }
     }
-    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
+    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset, false);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
     consistentEdges.clear();
@@ -541,7 +542,7 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     // calculate new node coordinate
     old_nodes = gamemaster.GameNodes;
     new_nodes = updateDrawNode(nodeList);
-    animate = true; 
+    animate = true;
 }
 
 //Method for calculating the nearest node pos of the argument pos

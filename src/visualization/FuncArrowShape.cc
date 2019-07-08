@@ -5,7 +5,7 @@ using namespace std;
 FuncArrowShape::FuncArrowShape() {
 }
 
-FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, float offset) {
+FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, float offset, bool enem) {
     sf::Vector2f s(sizeConstant * (0.7 + 1.8 * Nodes.at(start).coordinate.x), sizeConstant * (0.7 + 1.5 * (Nodes.at(start).coordinate.y + offset)));
     sf::Vector2f e(sizeConstant * (0.7 + 1.8 * Nodes.at(end).coordinate.x), sizeConstant * (0.2 + 1.5 * (Nodes.at(end).coordinate.y + offset)));
     hovCol = col;
@@ -14,6 +14,7 @@ FuncArrowShape::FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Co
     indexOfDrawNode = temp;
     setCoords(s, e);
     setProps(sizeConstant, col);
+    enemy = enem;
 }
 
 FuncArrowShape::FuncArrowShape(sf::Vector2f s, sf::Vector2f e, int sizeConstant, sf::Color col) {
@@ -43,4 +44,8 @@ int FuncArrowShape::getIndex() {
 
 sf::Vector2i FuncArrowShape::getIndexOfArrow() {
     return indexOfDrawNode;
+}
+
+bool FuncArrowShape::getEnemy() {
+    return enemy;
 }
