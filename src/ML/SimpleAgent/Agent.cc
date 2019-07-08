@@ -1,4 +1,5 @@
 #include "Agent.h"
+using namespace std;
 
 Agent::Agent(){}
 
@@ -11,13 +12,14 @@ Episode Agent::getEpisode() {
     // Initialise a boolean vector for an action 
     vector <bool> action(n, false);
     // Pushes the initial state at the beginning of an episode. 
-    episode.states.push_back(s0.selectedSubset); 
+    //episode.states.push_back(s0.selectedSubset); 
     unsigned int counter = 0;
     // The agent chooses the first action and first successor state with a given policy.
-    std::pair <state*, unsigned int> stateAction = executePolicy(&s0, policy);
-        
+    //std::pair <state*, unsigned int> stateAction = executePolicy(&s0, lpolicy);
+    state* s0prime = &s0; 
+    std::pair <state*, unsigned int> stateAction = std::make_pair(s0prime, 0); 
     // While the actual state has a selectable edge.
-    while (stateAction.second != -1) { 
+    while (stateAction.first->hasEdge()) { 
         // Pushes the actual state in the states vector.
         episode.states.push_back(stateAction.first->selectedSubset);
         // Pushes an "empty" action in the action vector.
@@ -26,9 +28,9 @@ Episode Agent::getEpisode() {
         episode.actions.at(counter).at(stateAction.second)=true;
         counter++;
         // Choose an action and a successor state for the actual state with a given policy.
-        stateAction = executePolicy(stateAction.first, policy);
+        stateAction = executePolicy(stateAction.first, lpolicy);
+            
     }
-
     // Pushes an empty action so that every episode has the same number of states and actions
     episode.actions.push_back(action);
     // Set the number of States
@@ -41,16 +43,16 @@ Episode Agent::getEpisode() {
     return episode;
 }
 
-std::pair <state*, unsigned int> Agent::executePolicy(state* s, Policy* p) {
+std::pair <state*, unsigned int> Agent::executePolicy(state* s, Policy& p) {
     // Create random device.
     std::random_device rd;
     std::mt19937 gen(rd());
     // Get the value estimates for every action of a given state dependant on the policy
-    std::vector <float> probActions = p->runPolicy(s);
+    std::vector <float> probActions = p.runPolicy(s);
     // Create a distribution dependant on the value estimates
     std::discrete_distribution<> dis(probActions.begin(), probActions.end());
     // Randomly choose an action with probabalities of distribution
-    unsigned int edgeSelection = dis(gen);
+    int edgeSelection = dis(gen);
     if (s->selectable[edgeSelection] == false) {
         edgeSelection = -1;
     } else {
@@ -59,7 +61,3 @@ std::pair <state*, unsigned int> Agent::executePolicy(state* s, Policy* p) {
     // Returns a pair of the successor state and the action chosen to get there
     return std::make_pair(s, edgeSelection);
 }
-
-void Agent::setPolicy(Policy *pol) {
-    policy = pol;
-} 
