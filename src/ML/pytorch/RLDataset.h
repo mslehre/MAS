@@ -21,6 +21,9 @@ class RLDataset : public torch::data::Dataset<RLDataset>
          * \param agent random agent
          */
         RLDataset(vector<Episode>& episodes);
+        RLDataset(){};
+
+        void set(vector<Episode>& episodes);
         
         torch::data::Example<> get(size_t index) override {
             return {states[index], scores[index]};
