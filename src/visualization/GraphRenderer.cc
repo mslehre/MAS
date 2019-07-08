@@ -112,7 +112,7 @@ void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
     }
 }
 
-void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameState) {
+void GraphRenderer::display_score(sf::RenderWindow& window, const Gamemaster& gamemaster) {
     int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
     int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
 
@@ -126,7 +126,7 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
 
-    std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
+    std::string PlayerScore = "Your Score: " + std::to_string(gamemaster.GameState.score);
     std::string AgentScore = "Computer Score: " + (std::string)"?"; // TODO: need a score from an Agent    
     sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
     text.setColor(sf::Color::Black);
@@ -576,7 +576,7 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.setView(actualView);
         drawShape(window);
         drawText(window);
-        display_score(window, gamemaster.GameState);
+        display_score(window, gamemaster);
         window.draw(menuButton.get_Button_Sprite());
         window.display();
         updateBoundaries(new_nodes);

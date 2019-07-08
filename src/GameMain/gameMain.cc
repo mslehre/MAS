@@ -108,7 +108,7 @@ int main() {
             GrRend.render(window, gamemaster.GameNodes, nodeList);  //Render method for update window
             menuButtonGame.setPosition(window.getView().getCenter().x - (window.getSize().x / 2),
                                        window.getView().getCenter().y - (window.getSize().y / 2));
-            GrRend.display_score(window, gamemaster.GameState);
+            GrRend.display_score(window, gamemaster);
             window.draw(menuButtonGame.get_Button_Sprite());
             if (!timed) {                
                 clock.restart();

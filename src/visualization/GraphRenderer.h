@@ -271,10 +271,10 @@ class GraphRenderer{
         /**
          * a function which display the current score of the game
          * \param window a renderWindow what gets the new score
-         * \param gamestate is the current state of the game
+         * \param gamemaster contains the current state of the game
          */        
 
-        void display_score(sf::RenderWindow& window, const state& gamestate);
+        void display_score(sf::RenderWindow& window, const Gamemaster& gamemaster);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
