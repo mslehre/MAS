@@ -6,11 +6,9 @@
 #include "../../alignment/Node.h"
 #include "../../alignment/Edge.h"
 #include "../SimpleAgent/Agent.h"
-#include "../SimpleAgent/Policy.h"
-#include "../SimpleAgent/RandomPolicy.h"
 #include "../SimpleAgent/Episode.h"
 #include "valueMLmodel.h"
-#include "LearnedPolicy.h"
+#include "Policy.h"
 #include "LinearNet.h"
 #include "RLDataset.h"
 #include <torch/torch.h>
@@ -19,16 +17,15 @@
 using std::vector;
 using namespace std;
 
-
 class TrainingSet {
 
     public:
-        TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, unsigned int learningRate); 
+        TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, float learningRate); 
 	
         unsigned int learningRepetitions;   ///< Number of times the agent gets trained
         unsigned int epochs;    ///< Number of epochs
         unsigned int batchSize;    ///< The size of a batch
-        unsigned int learningRate;   ///< The rate of learning (alpha)
+        float learningRate;   ///< The rate of learning (alpha)
         unsigned int numbEpisodes;   ///< The number of episodes
         
         void setLearningRepetitions(unsigned int learningRepetitions);
@@ -39,11 +36,11 @@ class TrainingSet {
 
         void setBatchSize(unsigned int batchSize);
 
-        void setLearningRate(unsigned int learningRate);
+        void setLearningRate(float learningRate);
 
         /** \brief This function trains an agent a designated number of times.
          *  \param agent requires an agent that has learnedPolicy that has learned at least once.
          */ 
-        void train(Agent* agent, LearnedPolicy lpol);
+        void train(Agent* agent);
 };
 #endif

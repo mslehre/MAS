@@ -1,7 +1,7 @@
 #ifndef RANDOM_POLICY_H
 #define RANDOM_POLICY_H
 
-#include "Policy.h"
+#include "../pytorch/Policy.h"
 #include "../../alignment/State.h"
 #include <stdlib.h>
 #include <random>
@@ -20,7 +20,7 @@ class RandomPolicy : public Policy {
      * \param s Expects a state s as input parameter.
      * \return Returns the probability vector.
      */
-    virtual std::vector <float> runPolicy(state* s) const override {
+    /*virtual std::vector <float> runPolicy(state* s) const override {
         unsigned int n = s->edges.size();
         std::vector <float> probAct(n, 0);
         int cTemp = std::count(s->selectable.begin(), s->selectable.end(), true);
@@ -30,6 +30,6 @@ class RandomPolicy : public Policy {
                 probAct[i] = (float)(1/counter);
         }
         return probAct;     
-    }
+    }*/
 };
 #endif

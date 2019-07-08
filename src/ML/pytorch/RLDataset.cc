@@ -1,6 +1,10 @@
 #include "RLDataset.h"
 
 RLDataset::RLDataset(vector<Episode>& episodes) { 
+    set(episodes);
+}
+
+void RLDataset::set(vector<Episode>& episodes) {
     this->episodes = episodes;
     numbEpisodes = episodes.size();  
     // Vector of states       
