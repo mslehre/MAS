@@ -473,7 +473,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
                     break;
                 }
             }
-            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset);
+            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset, false);
             consistentEdges.push_back(tempArr);
         }
     }

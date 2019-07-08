@@ -21,6 +21,7 @@ class FuncArrowShape : public ArrowShape {
         sf::Color hovCol; ///< the color of a hovered edge (see GraphRenderer.h)
         int indexOfState; ///< the index of the edge for the state vectors (see State.h)
         sf::Vector2i indexOfDrawNode;
+        bool enemy;
     public:
         /**
          * The standard constructor. This does nothing.
@@ -47,7 +48,8 @@ class FuncArrowShape : public ArrowShape {
          * \param sizeConstant an integer which scales the arrow
          * \param col the color of the arrow
          */
-        FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, float offset);
+        FuncArrowShape(vector<DrawNode>& Nodes, int sizeConstant, sf::Color col, int start, int end, int ind2, 
+                       float offset, bool enem);
         /**
          * a function to get the protected index
          *
@@ -56,6 +58,7 @@ class FuncArrowShape : public ArrowShape {
         void setCoordsByPos(vector<DrawNode>& Nodes, int sizeConstant, float offset);
         sf::Vector2i getIndexOfArrow();
         int getIndex();
+        bool getEnemy();
         /**
          * A function which manipulate the FuncArrowShape
          */
