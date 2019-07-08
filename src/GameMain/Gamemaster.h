@@ -15,6 +15,7 @@ class Gamemaster {
         std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
         Agent GameAgent; ///< The Agent of the game
         TrainingSet GameTS; ///< The TrainingSet of the game
+        state AgentState; ///< The initial State for the GameAgent
 
         /**
          * This function make a list of unique Kmers 
