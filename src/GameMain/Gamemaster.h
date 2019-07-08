@@ -6,7 +6,6 @@
 #include "../alignment/State.h"
 #include "../ML/SimpleAgent/Agent.h"
 #include "../ML/pytorch/TrainingSet.h"
-#include "../ML/pytorch/valueMLmodel.h"
 
 class Gamemaster {
     public:

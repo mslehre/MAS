@@ -18,56 +18,66 @@ HEADER12 = ../visualization/FuncArrowShape.h
 HEADER13 = ../visualization/Button.h
 HEADER14 = ../visualization/Slider.h
 HEADER15 = Gamemaster.h
+torchOpt1 = -l benchmark -l benchmark_main -l c10d -l Caffe2_perfkernels_avx2 -l Caffe2_perfkernels_avx -l caffe2_protos -l clog -l cpuinfo -l cpuinfo_internals -l foxi_loader -l gloo -l gloo_builder -l gmock -l gmock_main -l gtest -l gtest_main -l mkldnn -l nnpack -l nnpack_reference_layers -l onnx -l onnxifi_loader -l onnx_proto -l protobuf -l protobuf-lite -l protoc -l pthreadpool -l qnnpack -l THD -l c10 -l caffe2_detectron_ops -l caffe2_module_test_dynamic -l caffe2 -l foxi_dummy -l foxi -l onnxifi_dummy -l onnxifi -l torch -lpthread
+torchOpt2 = -D_GLIBCXX_USE_CXX11_ABI=0
+torchOpt3 = -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/
+
 
 all: game_main
 
 game_main: $(OBJ)
-	$(CC) $(CXXFLAGS) $(OBJ) -o $@ -lsfml-graphics -lsfml-window -lsfml-system
+	$(CC) $(CXXFLAGS) $(OBJ) -o $@ -lsfml-graphics -lsfml-window -lsfml-system $(torchOpt1) $(torchOpt2) $(torchOpt3)
 
 gameMain.o: gameMain.cc $(HEADER10) $(HEADER13) $(HEADER14)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt1) $(torchOpt2) $(torchOpt3)
 
 Graph.o: ../alignment/Graph.cc $(HEADER1) $(HEADER2) $(HEADER3)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
 
 Node.o: ../alignment/Node.cc $(HEADER2)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
 
 Edge.o: ../alignment/Edge.cc $(HEADER3)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2)
 
 State.o: ../alignment/State.cc $(HEADER4)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
+
+Agent.o: ../../SimpleAgent/Agent.cc $(H6)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../../SimpleAgent/Agent.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
+
+TrainingSet.o: ../TrainingSet.cc $(H13)
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../TrainingSet.cc -I ../libtorch/include/torch/csrc/api/include -I ../libtorch/include/ -L ../libtorch/lib/ \
 
 Button.o: ../visualization/Button.cc $(HEADER1) $(HEADER13)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 sequence.o: ../SequenceSimulation/sequence.cc $(HEADER6)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 generator.o: ../SequenceSimulation/generator.cc $(HEADER7)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 colormap.o: ../visualization/colormap.cc $(HEADER9)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 Gamemaster.o: Gamemaster.cc $(HEADER1) $(HEADER4) $(HEADER5) $(HEADER6) $(HEADER8) $(HEADER9) $(HEADER15)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 colorlist.o: ../visualization/colorlist.cc $(HEADER8)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 GraphRenderer.o: ../visualization/GraphRenderer.cc $(HEADER1) $(HEADER10) $(HEADER11) $(HEADER13) $(HEADER15)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 ArrowShape.o: ../visualization/ArrowShape.cc $(HEADER11)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 FuncArrowShape.o: ../visualization/FuncArrowShape.cc $(HEADER11) $(HEADER12)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 Slider.o: ../visualization/Slider.cc $(HEADER14)
-	$(CC) -c $(CXXFLAGS) $< -o $@
+	$(CC) -c $(CXXFLAGS) $< -o $@ $(torchOpt2) $(torchOpt3)
 
 clean:
 	rm -f *.o game_main
