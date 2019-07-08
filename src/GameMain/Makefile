@@ -95,8 +95,7 @@ RLDataset.o: ../ML/pytorch/RLDataset.cc $(H12)
 	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/pytorch/RLDataset.cc -I ../ML/pytorch/libtorch/include/torch/csrc/api/include -I ../ML/pytorch/libtorch/include/ -L ../ML/pytorch/libtorch/lib/ \
 
 TrainingSet.o: ../ML/pytorch/TrainingSet.cc $(H13)
-	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/pytorch/
-	TrainingSet.cc -I ../ML/pytorch/libtorch/include/torch/csrc/api/include -I ../ML/pytorch/libtorch/include/ -L ../ML/pytorch/libtorch/lib/ \
+	g++ $(CXXFLAGS) $(torchOpt2) -c ../ML/pytorch/TrainingSet.cc -I ../ML/pytorch/libtorch/include/torch/csrc/api/include -I ../ML/pytorch/libtorch/include/ -L ../ML/pytorch/libtorch/lib/ \
 
 clean:
 	rm -f *.o game_main
