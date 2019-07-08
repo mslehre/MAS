@@ -484,9 +484,8 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gamemaster.GameState.select(ind);
     gamemaster.GameState.calculate_score();
-    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent.executePolicy(gamemaster.AgentState, 
-                                                                                      gamemaster.GameAgent.policy);
-    gamemaster.AgentState = stateAction.first;
+    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent.executePolicy(gamemaster.AgentState, gamemaster.GameAgent.lpolicy);
+    gamemaster.AgentState = *stateAction.first;
     gamemaster.AgentState.calculate_score();
     Edge temp = gamemaster.GameState.edges.at(ind);
     //select via state
