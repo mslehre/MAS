@@ -484,7 +484,8 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gamemaster.GameState.select(ind);
     gamemaster.GameState.calculate_score();
-    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent.executePolicy(gamemaster.AgentState, gamemaster.GameAgent.policy);
+    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent.executePolicy(gamemaster.AgentState, 
+                                                                                      gamemaster.GameAgent.policy);
     gamemaster.AgentState = stateAction.first;
     gamemaster.AgentState.calculate_score();
     Edge temp = gamemaster.GameState.edges.at(ind);
@@ -511,7 +512,8 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
         }
     }
     FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset, false);
-    FuncArrowShape fillAgent(gamemaster.GameNodes, sizeConstant, sf::Color::Red, startAgent, endAgent, stateAction.second, offset, true);
+    FuncArrowShape fillAgent(gamemaster.GameNodes, sizeConstant, sf::Color::Red, startAgent, endAgent, 
+                             stateAction.second, offset, true);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
     selectedEdges.push_back(fillAgent);
