@@ -4,12 +4,17 @@
 #include "../alignment/DrawNode.h"
 #include "../alignment/Graph.h"
 #include "../alignment/State.h"
+#include "../ML/SimpleAgent/Agent.h"
+#include "../ML/pytorch/TrainingSet.h"
+#include "../ML/pytorch/valueMLmodel.h"
 
 class Gamemaster {
     public:
         Graph GameGraph; ///< The Graph of the game
         state GameState; ///< The State of GameGraph
         std::vector<DrawNode> GameNodes; ///< DrawNodes of GameGraph
+        Agent GameAgent; ///< The Agent of the game
+        TrainingSet GameTS; ///< The TrainingSet of the game
 
         /**
          * This function make a list of unique Kmers 
