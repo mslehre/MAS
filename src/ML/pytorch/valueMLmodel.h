@@ -10,12 +10,15 @@
 using std::vector;
 
 class valueMLmodel {
+
     public:
         valueMLmodel();
-        valueMLmodel(unsigned int dimstate);
+        valueMLmodel(unsigned int ds);
 
+        torch::Tensor tensState;
+        
         std::shared_ptr<LinearNet> linearNet;
-        unsigned int dimstate;    ///< Number of possible edges in state.
+         unsigned int dim;    ///< Number of possible edges in state.
 
         /** "Der lernt halt. Also... passt die Werte des Nets an" - Moritz L. Grillo, 21.06.2019
          */  

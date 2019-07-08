@@ -1,12 +1,15 @@
 #include "valueMLmodel.h"
+#include <typeinfo>
+#include <math.h>
 
 //default constructor
 valueMLmodel::valueMLmodel(){}
 
 //constructor
-valueMLmodel::valueMLmodel(unsigned int dimstate) {
-    this->dimstate = dimstate;
-    linearNet = std::make_shared<LinearNet>(dimstate);
+valueMLmodel::valueMLmodel(unsigned int ds) {
+    dim = ds;
+    linearNet = std::make_shared<LinearNet>(dim);
+    tensState = torch::zeros({dim,dim});
 }
 
 void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsigned int batch_size, float alpha) {
@@ -22,6 +25,7 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
         for (auto& batch : *data_loader) {
             // Reset gradients.
             optimizer.zero_grad();
+            //cout << batch.target << endl;
             // Execute the model on the input data.
             prediction = linearNet->forward(batch.data);
             // Compute a loss value to judge the prediction of our model.
@@ -33,53 +37,42 @@ void valueMLmodel::learn(RLDataset& dataSet, unsigned int numberOfEpochs, unsign
             // Output the loss and checkpoint every 100 batches
         }
         std::cout << "Epoch: " << epoch << " | Loss: " << loss.item<float>() << std::endl;
-    }
+    }             
 }
 
 vector<float> valueMLmodel::calcValueEstimates(state* s) {
     /* Calculate all possible successor states of s.
        Returns a boolean vector corresponding to edges in such a way that true means an edge is selectable */
-    vector<bool> index = s->calcSuccessorStates();     
-
-    torch::Tensor succStates = vectorToTensor(s->successorStates);
-
-    // Returns the value prediction for all successor states.       
-    torch::Tensor pred = linearNet->forward(succStates);
-
-    vector<float> tempPrediction = tensorToVector(pred);
-    vector<float> prediction;
-    unsigned int counter = 0;
-
-    // To get a vector of the size of the state, we set 0 for every not selectable edge.
-    for (unsigned int i = 0; i < dimstate; i++) {
-        if (index.at(i)) {
-            prediction.push_back(tempPrediction.at(counter));
-            counter++;
-        } else {
-        prediction.push_back(0);
+   
+    for (unsigned int j = 0; j < dim; j++) {
+        tensState[j] = (float) s->selectedSubset.at(j);   
+    }
+    
+    vector<unsigned int> index = s->calcSuccessorStates();
+    torch::Tensor succsStates = torch::zeros({index.size(), dim});
+    for (unsigned int i = 0; i < index.size(); i++) {
+        for (unsigned int j = 0; j < dim; j++) {
+                succsStates[i][j] = *tensState[j].data<float>();          
         }
-    }                                        
-    return prediction;                              
-}
+        succsStates[i][index[i]] = 1;
 
-// Transforms a vector of states into a tensor
-torch::Tensor valueMLmodel::vectorToTensor(vector<vector<bool>>& vec) {
-    torch::Tensor tens = torch::zeros({(long int) vec.size(),(long int) vec.at(0).size()});
-    for (unsigned int i = 0; i < vec.size(); i++){
-        for (unsigned int j = 0; j < vec.at(i).size(); j++) {                
-            tens[i][j] = (float)vec.at(i).at(j);
-        }           
     }
-    return tens;
-}
+    torch::Tensor tensPred = linearNet->forward(succsStates);
+    unsigned int sum = 0;
+    // Softmax:
+    for(unsigned int i = 0; i < index.size(); i++) {
+        sum += exp((double) *tensPred[i].data<float>());
+    }
+    
+    for(unsigned int i = 0; i < index.size(); i++) {
+        tensPred[i] = exp((double) *tensPred[i].data<float>())/sum;
+    }
 
-// Transforms a tensor of values for the successor states into a vector
-vector<float> valueMLmodel::tensorToVector(torch::Tensor& tens) {
-    vector<float*> vec;
-    vector<float> vecReturn;
-    for (unsigned int i = 0; i < tens.numel(); i++) {
-        vec.push_back(tens[i].data<float>());
-        vecReturn.push_back(*vec.at(i));
-    }
-    return vecReturn;
+    vector<float> prediction(dim,0);
+    
+    for (unsigned int i = 0; i < index.size(); i++) {
+        prediction.at(index.at(i)) = *tensPred[i].data<float>();
+     }
+    
+    return prediction;
 }
