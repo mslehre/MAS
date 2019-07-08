@@ -1,6 +1,6 @@
 #include "TrainingSet.h"
 
-TrainingSet::TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, unsigned int learningRate) {
+TrainingSet::TrainingSet(unsigned int learningRepetitions, unsigned int epochs, unsigned int numbEpisodes, unsigned int batchSize, float learningRate) {
     this->learningRepetitions = learningRepetitions;
     this->epochs = epochs;
     this->numbEpisodes = numbEpisodes;
@@ -24,19 +24,19 @@ void TrainingSet::setBatchSize(unsigned int batchSize) {
     this->batchSize = batchSize;
 }
         
-void TrainingSet::setLearningRate(unsigned int learningRate) {
+void TrainingSet::setLearningRate(float learningRate) {
     this->learningRate = learningRate;
 }
 
-void TrainingSet::train(Agent* agent, LearnedPolicy lpol) {
-    agent->setPolicy(&lpol);
+void TrainingSet::train(Agent* agent) {
     vector<Episode> episodes;
+    RLDataset dataSet;
     for (unsigned int i = 0; i < learningRepetitions; i++) {
         for (unsigned int j = 0; j < numbEpisodes; j++) {
             episodes.push_back(agent->getEpisode());
         }
-    RLDataset dataSet(episodes);
-    episodes.clear();
-    lpol.vModel->learn(dataSet, epochs, batchSize, learningRate);
+        dataSet.set(episodes);
+        episodes.clear();
+        agent->lpolicy.vModel.learn(dataSet, epochs, batchSize, learningRate);
     }
 }
