@@ -127,7 +127,7 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const Gamemaster& ga
         std::cout << "Can't find the font file" << std::endl;
 
     std::string PlayerScore = "Your Score: " + std::to_string(gamemaster.GameState.score);
-    std::string AgentScore = "Computer Score: " + (std::string)"?"; // TODO: need a score from an Agent    
+    std::string AgentScore = "Computer Score: " + std::to_string(gamemaster.AgentState.score);  
     sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
     text.setColor(sf::Color::Black);
     text.setPosition(x_pos + 150, y_pos);
@@ -484,6 +484,9 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gamemaster.GameState.select(ind);
     gamemaster.GameState.calculate_score();
+    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent.executePolicy(gamemaster.AgentState, gamemaster.GameAgent.policy);
+    gamemaster.AgentState = stateAction.first;
+    gamemaster.AgentState.calculate_score();
     Edge temp = gamemaster.GameState.edges.at(ind);
     //select via state
     int start = 0;
@@ -496,9 +499,22 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
             break;
         }
     }
-    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
+    Edge tempAgent = gamemaster.GameState.edges.at(stateAction.second);
+    int startAgent = 0;
+    int endAgent = 0;
+    for (unsigned i = 0; i < nodeList.size(); i++) {
+        if (tempAgent.first->i == nodeList.at(i).i && tempAgent.first->j == nodeList.at(i).j)
+            startAgent = i;
+        if (tempAgent.second->i == nodeList.at(i).i && tempAgent.second->j == nodeList.at(i).j) {
+            endAgent = i;
+            break;
+        }
+    }
+    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset, false);
+    FuncArrowShape fillAgent(gamemaster.GameNodes, sizeConstant, sf::Color::Red, startAgent, endAgent, stateAction.second, offset, true);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
+    selectedEdges.push_back(fillAgent);
     consistentEdges.clear();
     nodeClicked = false;
     edgeHovered = false;
