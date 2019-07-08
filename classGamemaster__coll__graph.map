@@ -1,0 +1,4 @@
+<map id="Gamemaster" name="Gamemaster">
+<area shape="rect" id="node2" href="$classGraph.html" title="Graph" alt="" coords="5,95,63,121"/>
+<area shape="rect" id="node3" href="$classstate.html" title="This state class encapsulates the current game state. It can output possible actions and select them..." alt="" coords="114,95,165,121"/>
+</map>

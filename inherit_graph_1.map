@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classArrowShape.html" title="This Class stores the methods to draw a Arrow with a start and end coordinate. " alt="" coords="5,5,99,32"/>
+<area shape="rect" id="node2" href="$classFuncArrowShape.html" title="This Class stores the methods to draw an arrow for the game with some functionalities. " alt="" coords="147,5,269,32"/>
+</map>

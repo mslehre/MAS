@@ -1,0 +1,9 @@
+\form#0:$ \textrm{score} = \sum_{c \in C} |c| (|c| - 1) / 2$
+\form#1:$ \pi $
+\form#2:$ ||\cdot||_2 $
+\form#3:$ <\cdot ,\cdot > $
+\form#4:$\texttt{nodeList, edgeList}$
+\form#5:$\texttt{sizeConstant}$
+\form#6:$\texttt{window}$
+\form#7:$\texttt{sizeConstant}\textrm{:}$
+\form#8:$\textrm{For the Rectangle }R_{i,j}\textrm{ and a sizeConstant }s\textrm{ ,where }i\textrm{ and }j\textrm{ are the indices of the nodes, holds that length}(R_{i,j})=s, \textrm{width}(R_{i,j})=\frac{1}{2}\cdot s \textrm{ and upperleftpoint}(R_{i,j})= (s\cdot(0,2 + 1,8\cdot j),s\cdot(0,2 + 1,5\cdot i))$

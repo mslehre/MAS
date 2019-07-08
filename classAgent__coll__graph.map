@@ -1,0 +1,3 @@
+<map id="Agent" name="Agent">
+<area shape="rect" id="node2" href="$classstate.html" title="This state class encapsulates the current game state. It can output possible actions and select them..." alt="" coords="56,95,107,121"/>
+</map>
