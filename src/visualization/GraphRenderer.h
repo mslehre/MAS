@@ -18,7 +18,9 @@
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 #include "Button.h"
-#include "../GameMain/Gamemaster.h"
+#include "../GameMain/Gamemaster.h"	
+#include <utility>
+#include <memory>
 
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
  *
