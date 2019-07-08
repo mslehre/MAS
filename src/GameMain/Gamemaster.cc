@@ -19,9 +19,9 @@ void Gamemaster::makeGame(unsigned int k, unsigned int length, unsigned int numb
     state statetemp(GameGraph);
     GameState = statetemp;
 	AgentState = statetemp;
-	GameAgent.reset(new Agent(g));
-	GameTS.reset(new Trainingsset(10, 30, 5, 64, 0.1));
-	GameTS.train(GameAgent.get());
+	GameAgent.reset(new Agent(GameGraph));
+	GameTS.reset(new TrainingSet(10, 30, 5, 64, 0.1));
+	GameTS->train(GameAgent.get());
     //Initialize colomap
     vector<string> Kmers = getKmers(GameGraph.getNodes());
     colorlist colorExample(Kmers.size());
