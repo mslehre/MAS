@@ -2,7 +2,7 @@ include ../common.mk
 
 CC = g++
 OBJ = gameMain.o Button.o Graph.o Node.o Edge.o Gamemaster.o sequence.o State.o generator.o colorlist.o colormap.o \
-    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o Policy.o valueMLmodel.o Agent.o TrainingSet.o RLDataset.o
+    GraphRenderer.o ArrowShape.o FuncArrowShape.o Slider.o scrollbar.o Policy.o valueMLmodel.o Agent.o TrainingSet.o RLDataset.o
 
 HEADER1 = ../alignment/Graph.h
 HEADER2 = ../alignment/Node.h
