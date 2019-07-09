@@ -83,7 +83,36 @@ void GraphRenderer::eventHandler(const sf::Event event, sf::RenderWindow& window
     }
 }
 
-void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameState) {
+void GraphRenderer::moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos) {
+    sf::Vector2f size = actualView.getSize();
+    float mouseMoveConstant = moveConstant / 3;
+    double move = 0;
+    const int edge = 50;
+    unsigned int xPosdiff = size.x - mouse_pixelPos.x; 
+    unsigned int yPosdiff = size.y - mouse_pixelPos.y; 
+    
+    if (xPosdiff > 0 && yPosdiff > 0 && mouse_pixelPos.x > 0 && mouse_pixelPos.y > 0) {        
+        if (xPosdiff < edge && sizeConstant * (1.2 + 1.8 * boundary.at(1)) > direction.at(0) + size.x) { // right
+            move = mouseMoveConstant / xPosdiff;
+            actualView.move(move, 0);
+            direction.at(0) += move;
+        } else if (mouse_pixelPos.x < edge && sizeConstant * (0.2 + 1.8 * boundary.at(0)) < direction.at(0)) { // left
+            move = mouseMoveConstant / mouse_pixelPos.x;
+            actualView.move(- move, 0);
+            direction.at(0) -= move;
+        } else if (yPosdiff < edge && sizeConstant * (0.7 + 1.5 * boundary.at(3)) > direction.at(1) + size.y) { // down
+            move = mouseMoveConstant / yPosdiff;
+            actualView.move(0, move);
+            direction.at(1) += move;
+        } else if (mouse_pixelPos.y < edge && sizeConstant * (0.2 + 1.5 * boundary.at(2)) < direction.at(1)) { // up
+            move = mouseMoveConstant / mouse_pixelPos.y;
+            actualView.move(0, - move);
+            direction.at(1) -= move;
+        }
+    }
+}
+
+void GraphRenderer::display_score(sf::RenderWindow& window, const Gamemaster& gamemaster) {
     int x_pos = window.getView().getCenter().x - (window.getSize().x / 2);
     int y_pos = window.getView().getCenter().y - (window.getSize().y / 2);
 
@@ -97,8 +126,8 @@ void GraphRenderer::display_score(sf::RenderWindow& window, const state& gameSta
     if (!font.loadFromFile("Amiko-Regular.ttf"))
         std::cout << "Can't find the font file" << std::endl;
 
-    std::string PlayerScore = "Your Score: " + std::to_string(gameState.score);
-    std::string AgentScore = "Computer Score: " + (std::string)"?"; // TODO: need a score from an Agent    
+    std::string PlayerScore = "Your Score: " + std::to_string(gamemaster.GameState.score);
+    std::string AgentScore = "Computer Score: " + std::to_string(gamemaster.AgentState.score);  
     sf::Text text(PlayerScore + "\n" + AgentScore, font, 45);
     text.setColor(sf::Color::Black);
     text.setPosition(x_pos + 150, y_pos);
@@ -444,7 +473,7 @@ void GraphRenderer::showEdges(vector<Node>& nodeList, vector<DrawNode>& Nodes, s
                     break;
                 }
             }
-            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset);
+            FuncArrowShape tempArr(Nodes, sizeConstant, sf::Color(200, 200, 200), start, end, i, offset, false);
             consistentEdges.push_back(tempArr);
         }
     }
@@ -455,6 +484,9 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
     int ind = consistentEdges.at(hoveredEdgeIndex).getIndex();
     gamemaster.GameState.select(ind);
     gamemaster.GameState.calculate_score();
+    std::pair <state*, unsigned int> stateAction = gamemaster.GameAgent->executePolicy(&gamemaster.AgentState, gamemaster.GameAgent->lpolicy);
+    gamemaster.AgentState = *stateAction.first;
+    gamemaster.AgentState.calculate_score();
     Edge temp = gamemaster.GameState.edges.at(ind);
     //select via state
     int start = 0;
@@ -467,9 +499,23 @@ void GraphRenderer::selectEdge(vector<Node>& nodeList, Gamemaster& gamemaster) {
             break;
         }
     }
-    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset);
+    Edge tempAgent = gamemaster.GameState.edges.at(stateAction.second);
+    int startAgent = 0;
+    int endAgent = 0;
+    for (unsigned i = 0; i < nodeList.size(); i++) {
+        if (tempAgent.first->i == nodeList.at(i).i && tempAgent.first->j == nodeList.at(i).j)
+            startAgent = i;
+        if (tempAgent.second->i == nodeList.at(i).i && tempAgent.second->j == nodeList.at(i).j) {
+            endAgent = i;
+            break;
+        }
+    }
+    FuncArrowShape fill(gamemaster.GameNodes, sizeConstant, sf::Color::Black, start, end, ind, offset, false);
+    FuncArrowShape fillAgent(gamemaster.GameNodes, sizeConstant, sf::Color::Red, startAgent, endAgent, 
+                             stateAction.second, offset, true);
     //Save the selected edge in visuals
     selectedEdges.push_back(fill);
+    selectedEdges.push_back(fillAgent);
     consistentEdges.clear();
     nodeClicked = false;
     edgeHovered = false;
@@ -547,7 +593,7 @@ void GraphRenderer::animation(sf::RenderWindow& window, Gamemaster& gamemaster, 
         window.setView(actualView);
         drawShape(window);
         drawText(window);
-        display_score(window, gamemaster.GameState);
+        display_score(window, gamemaster);
         window.draw(menuButton.get_Button_Sprite());
         window.display();
         updateBoundaries(new_nodes);

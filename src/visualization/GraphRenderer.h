@@ -18,7 +18,9 @@
 #include "ArrowShape.h"
 #include "FuncArrowShape.h"
 #include "Button.h"
-#include "../GameMain/Gamemaster.h"
+#include "../GameMain/Gamemaster.h"	
+#include <utility>
+#include <memory>
 
 /** \brief This Class stores Methods which manipulates a window in terms of a MAS Game-Structure.
  *
@@ -77,9 +79,22 @@ class GraphRenderer{
         sf::View actualView; ///< a View which we use as main-"view"
         sf::View defaultView; ///< a View to reset our actualView
 
+        /**
+         * TODO
+         */
+
         std::vector<DrawNode> updateDrawNode(vector<Node>& nodeList);
 
+        /**
+         * TODO
+         */
+
         void initShapes(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
+
+        /**
+         * TODO
+         */
+
         void setCoords(const vector<DrawNode>& Nodes, const vector<Node>& nodeList);
 
         /**
@@ -227,6 +242,14 @@ class GraphRenderer{
         GraphRenderer();
 
         /**
+         * a function which manipulate the view with the help of mouse movements
+         *
+         * \param mouse_pixelPos is the current mouse position
+         */
+
+        void moveWindowWithMouse(const sf::Vector2i& mouse_pixelPos);
+
+        /**
          * a function which draw the shapes of the class in the argument window
          *
          * \param window a renderWindow what gets the drawed shapes and texts
@@ -250,10 +273,10 @@ class GraphRenderer{
         /**
          * a function which display the current score of the game
          * \param window a renderWindow what gets the new score
-         * \param gamestate is the current state of the game
+         * \param gamemaster contains the current state of the game
          */        
 
-        void display_score(sf::RenderWindow& window, const state& gamestate);
+        void display_score(sf::RenderWindow& window, const Gamemaster& gamemaster);
 
         /**
          * a function which set an upper bound for the scroll speed via the arrow buttons.
@@ -278,6 +301,10 @@ class GraphRenderer{
          */
 
         bool getAnimate();
+
+        /**
+         * TODO
+         */
 
         void updateBoundaries(const vector<DrawNode>& Nodes);
 };

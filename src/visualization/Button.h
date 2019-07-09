@@ -19,6 +19,13 @@ class Button {
         std::string next_status;    ///< the next GUI status after the Button was clicked
         std::function<void()> Button_function;  ///< function of the Button
 
+        /**
+         * This function load a new texture for the Button. 
+         * \param name is the name of the new texture
+         */
+
+        void load_Texture(std::string name);
+
     public:
 
         /** 
@@ -29,15 +36,9 @@ class Button {
          * \return a Button with a texture on a specific position
          */
 
-        Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, std::string nextStatus, std::string myStatus);
+        Button(std::string texturename, unsigned int x_pos, unsigned int y_pos, std::string nextStatus, 
+               std::string myStatus);
         
-        /**
-         * This function load a new texture for the Button. 
-         * \param name is the name of the new texture
-         */
-
-        void load_Texture(std::string name);
-
         /** 
          * \return Button_Sprite
          */
@@ -66,6 +67,23 @@ class Button {
          */
 
         void setPosition(float x_pos, float y_pos);
+        
+        /** 
+         * change the path of the texture
+         * \param newName is the path of the new texture
+         */
+
+        void setTextureName(std::string newName);
+
+        /**
+         * \param window is the current RenderWindow
+         * \param text is the string that will be displayed in the window
+         * \param x_pos is the x coordinate of the text in the window
+         * \param y_pos is the y coordinate of the text in the window
+         * \param size is the size of the text
+         */
+
+        void drawText(sf::RenderWindow& window, std::string s, int x_pos, int y_pos, unsigned int size);
 
 };
 
