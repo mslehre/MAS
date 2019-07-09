@@ -33,7 +33,7 @@ int main() {
     Button quitButton = Button("../../fig/quitButton.png", 550, 500, "quit", "menu");
     Button menuButtonGame = Button("../../fig/menuButton.png", 0, 0, "menu", "game");
     Button menuButtonSettings = Button("../../fig/menuButton.png", 0, 0, "menu", "settings");
-    Button GameScrollBar = Button("../../fig/checkedBox.png", 1000, 100, "settings", "settings");
+    Button GameScrollBar = Button("../../fig/uncheckedBox.png", 1000, 100, "settings", "settings");
 
     startButton.setFunction([&nodeList, &gamemaster, &GrRend, &window, &k, &length_of_sequences,
                              &number_of_sequences, &probability] () {
