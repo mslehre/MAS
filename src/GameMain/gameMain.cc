@@ -21,7 +21,7 @@ int main() {
     unsigned int number_of_sequences = 4;
     unsigned int probability = 25; // the actual probability is 25%
     std::string status = "menu"; // "status" of the window {menu, game, settings, quit}
-    bool scrollbar = true;
+    bool scrollbar = false;
 
     sf::Clock clock; //clock to compute a scroll speed
     Gamemaster gamemaster;
